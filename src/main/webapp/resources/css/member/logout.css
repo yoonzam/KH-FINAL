@@ -1,0 +1,38 @@
+.container{
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.wrap-txt{
+
+}
+.wrap-logo{
+  height: 30%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.txt span{
+  color: var(--point-color);
+  font-weight: 800;
+}
+.txt{
+  display: block;
+  text-align: center;
+  padding: 10px;
+  font-weight: 700;
+  font-size: 18px;
+  margin-bottom: 40px;
+}
+.wrap-img{
+  /* width: 300px; */
+  /* padding: 20px; */
+  margin: 0 auto;
+  text-align: center;
+}
+
+.wrap-img img{
+  width: 200px;
+}

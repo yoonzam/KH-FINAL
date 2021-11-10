@@ -1,0 +1,67 @@
+.header-join{
+  border: none;
+}
+.header.pc.join{
+  justify-content: center;
+}
+.container{
+  width: 1300px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  height: calc(100vh - 100px);
+}
+.box-logo{
+}
+.box-logo img{
+  width: 400px;
+  border-radius: 5px;
+}
+.line{
+  border: 1px solid #ccc;
+  height: 400px;
+
+}
+.join-form{
+  width: 30%;
+}
+.tit-join{
+  text-align: center;
+  margin-bottom: 15px;
+  margin-top: 0;
+}
+input{
+  display: block;
+  padding: 10px;
+  border-radius: 8px;
+  width: 100%;
+  margin: 8px 0;
+  outline: none;
+  border: 1px solid #ddd;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.034);
+}
+.wrap-nick{
+  display: flex;
+}
+.btn-chk-nick{
+  width: 30%;
+  margin-left: 5px;
+}
+.btn-chk-nick, button{
+  border: none;
+  box-shadow: none;
+}
+button{
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  margin-top: 15px;
+}
+.btn-chk-nick:hover, button:hover{
+  background-color: transparent;
+  box-shadow: 0 0 7px var(--point-color);
+  color: var(--point-color);
+  font-weight: 800;
+  cursor: pointer;
+}
