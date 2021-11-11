@@ -17,7 +17,6 @@
        <div class="box-logo">
          <img src="/resources/img/common/EatsMap_logo.png" alt="">
        </div>
-       <div class="line"></div>
        <form action="#" class="find-pw" name="find-pw">
          <h2 class="tit-find-pw">비밀번호 찾기</h2>
 

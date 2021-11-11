@@ -17,7 +17,6 @@
        <div class="box-logo">
          <img src="/resources/img/common/EatsMap_logo.png" alt="">
        </div>
-       <div class="line"></div>
        <form action="#" class="join-form" name="join-form">
          <h2 class="tit-login">로그인</h2>
          <input type="email" name="email" id="email" placeholder="이메일을 입력해주세요">

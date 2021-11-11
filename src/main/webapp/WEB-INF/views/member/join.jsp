@@ -17,7 +17,6 @@
        <div class="box-logo">
          <img src="/resources/img/common/EatsMap_logo.png" alt="">
        </div>
-       <div class="line"></div>
        <form action="#" class="join-form" name="join-form">
          <h2 class="tit-join">회원가입</h2>
          <label for="email">이메일</label>
