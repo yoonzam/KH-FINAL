@@ -57,11 +57,11 @@ button{
   padding: 10px;
   border-radius: 8px;
   margin-top: 15px;
+  font-weight: 800;
+  background-color: var(--main-color);
+  color: #fff;
 }
 .btn-chk-nick:hover, button:hover{
-  background-color: transparent;
-  box-shadow: 0 0 7px var(--point-color);
-  color: var(--point-color);
-  font-weight: 800;
+  background-color: var(--hover-color);
   cursor: pointer;
 }

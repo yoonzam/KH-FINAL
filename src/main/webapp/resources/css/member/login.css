@@ -10,7 +10,7 @@
   display: flex;
   justify-content: space-around;
   align-items: center;
-  height: calc(100vh - 100px);
+  margin-top: 50px;
 }
 .box-logo{
 }
@@ -55,6 +55,12 @@ button{
   border-radius: 8px;
   margin-top: 15px;
   margin-bottom: 10px;
+  cursor: pointer;
+  background-color: var(--main-color);
+  color: #fff;
+}
+button:hover{
+  background-color: #fa5433;
   cursor: pointer;
 }
 .box-btn{

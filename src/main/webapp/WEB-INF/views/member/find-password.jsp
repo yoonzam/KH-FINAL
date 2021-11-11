@@ -22,7 +22,7 @@
 
          <div class="wrap-find-pw">
            <input type="text" name="password" id="password" placeholder="이메일을 입력하세요">
-           <button class="btn-tmp-pw">임시비밀번호 발급</button>
+           <button class="btn-tmp-pw">비밀번호 발급</button>
          </div>
          <h5 class="msg">가입한 이메일로 임시비밀번호가 발송됩니다.</h5>
          <!-- <h5 class="msg">메일을 확인해보세요! 임시비밀번호가 발송되었습니다.</h5> -->
