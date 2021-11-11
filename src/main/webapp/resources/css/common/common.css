@@ -39,6 +39,9 @@ header{width: 100%; position: fixed; background-color: #fff; z-index: 100; borde
 .gnb li{display: inline-block; cursor:pointer; color:#333; font-size:20px; padding:6px 15px; font-weight: 700;}
 .util.m{display:none;}
 
+/* header-member */
+.header-member{border: none;}
+.header.pc.member, .header.m.member{justify-content: center;}
 footer{color:#aaa; font-size:0.8em; padding:30px; text-align:center;}
 
 /* popup */

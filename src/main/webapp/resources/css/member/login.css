@@ -1,16 +1,10 @@
-.header-login{
-  border: none;
-}
-.header.pc.login{
-  justify-content: center;
-}
 .container{
-  max-width: 1100px;
+  max-width: 1000px;
   margin: 0 auto;
   display: flex;
   justify-content: space-around;
   align-items: center;
-  margin-top: 50px;
+  height: calc(100vh - 200px);
 }
 .box-logo{
 }
@@ -24,17 +18,19 @@
 
 }
 .join-form{
-  width: 30%;
+  width: 40%;
 }
 .tit-login{
   text-align: center;
   margin-bottom: 15px;
   margin-top: 0;
 }
+input, button{
+  border-radius: 8px;
+}
 input{
   display: block;
   padding: 15px;
-  border-radius: 8px;
   width: 100%;
   margin: 8px 0;
   outline: none;
@@ -52,7 +48,6 @@ button{
   height: 50px;
   font-size: 17px;
   font-weight: 800;
-  border-radius: 8px;
   margin-top: 15px;
   margin-bottom: 10px;
   cursor: pointer;
@@ -60,7 +55,7 @@ button{
   color: #fff;
 }
 button:hover{
-  background-color: #fa5433;
+  background-color: var(--hover-color);
   cursor: pointer;
 }
 .box-btn{
@@ -76,3 +71,6 @@ button:hover{
   font-size: 13px;
 }
 
+@media screen and (max-width: 768px)  {
+	.box-btn{padding: 30px 0;}
+}
