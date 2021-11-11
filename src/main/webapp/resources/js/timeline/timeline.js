@@ -10,14 +10,8 @@ let resizeImg = () => {
     let thum = $(".timeline-brd .thum");
     let thumWidth = thum.width();
     Array.from(thum).forEach((e)=>{
-        let thumImg = e.children[0];
         e.style.height=thumWidth+'px';
-        if(thumImg.width >= thumImg.height){
-            thumImg.style.height=thumWidth+'px';
-        } else{
-            thumImg.style.width=thumWidth+'px';
-        }
-    })
+    });
 }
 
 $('.eats-list').hover((e) => {

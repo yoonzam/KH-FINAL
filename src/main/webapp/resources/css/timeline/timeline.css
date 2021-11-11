@@ -16,7 +16,7 @@
 }
 .search-area{
 	max-width: 1300px;
-	padding:30px;
+	padding:25px 30px;
 	margin:0 auto;
 }
 .search-form{
@@ -27,7 +27,7 @@
 .search-form input{
 	width:100%;
 	padding:20px 40px 20px 140px;
-	font-size:18px;
+	font-size:16px;
 	border: none;
 }
 .search-form .filter-btn{
@@ -70,7 +70,7 @@
 }
 .filter-menu li{
 	width:28%;
-	padding-right: 15px;
+	padding-right: 20px;
 }
 .filter-menu li:first-child{
 	width:16%;
@@ -126,8 +126,13 @@
 	width:100%;
 	display: flex;
 	align-items: center;
-	
+	background-color: #aaa;
 	overflow: hidden;
+}
+.timeline-brd .thum img{
+	width:100%;
+	height:100%;
+	object-fit:cover;
 }
 .timeline-brd .info{
 	padding: 10px;
@@ -146,7 +151,7 @@
 	color:#aaa;
 }
 .timeline-brd .eats-like:hover{
-	color: #fa5433;
+	color: #f15050;
 }
 .timeline-brd .eats-tag{
 	max-height:48px;
