@@ -13,8 +13,9 @@ import com.mongodb.MongoCredential;
 import com.mongodb.ServerAddress;
 
 
-@EnableMongoRepositories
+
 @Configuration
+//@EnableMongoRepositories
 public class MongoConfig extends AbstractMongoClientConfiguration{
 
 	
