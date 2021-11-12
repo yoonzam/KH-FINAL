@@ -48,7 +48,7 @@
 	</aop:config>
 	 -->
 	 
-	<!-- <mongo:repositories base-package="com.kh.eatsMap.*.model.repository" />    --> 
+	<mongo:repositories base-package="com.kh.eatsMap.*.model.repository" />    
 	<context:component-scan base-package="com.kh.eatsMap" />
 
 	

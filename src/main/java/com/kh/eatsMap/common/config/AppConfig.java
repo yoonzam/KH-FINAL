@@ -10,7 +10,6 @@ import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 
 @Configuration
-@EnableMongoRepositories
 public class AppConfig {
 
   public @Bean MongoClient mongoClient() {
