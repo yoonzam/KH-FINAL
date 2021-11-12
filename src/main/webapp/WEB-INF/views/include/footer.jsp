@@ -5,3 +5,4 @@
 	</footer>
 </div>
 <%@ include file="/WEB-INF/views/common/review.jsp" %>
+<%@ include file="/WEB-INF/views/common/upload.jsp" %>

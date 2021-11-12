@@ -1,8 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<div class="dimmed-wrap">
+<div class="dimmed-wrap" style="display:none;">
 	<div class="dimmed"></div>
-	<div class="layer-popup">
+	<div class="layer-popup review">
 		<div class="content view">
 			<div class="slide-img-wrap">
 				<ul class="slide-img">
