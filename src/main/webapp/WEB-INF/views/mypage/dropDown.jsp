@@ -48,9 +48,9 @@
 	   <div class="sidenav">
 	   		<!-- 드랍다운 버튼 -->
 			<div>
-	               <span><a class="glyphicon glyphicon-menu-hamburger" data-toggle="collapse" href="#collapseExample"></a></span>
+	        	<span><a class="glyphicon glyphicon-menu-hamburger" data-toggle="collapse"  href="#collapseOne" ></a></span>
 	        </div>  
-	        <div class="btn-group btn-group-vertical collapse "  id="collapseExample">
+	        <div class="btn-group btn-group-vertical collapse in"  id="collapseOne">
 	            <br>
 	            <button type="button" class="btn " style="width: 105px"
 	            onClick="location.href='${pageContext.request.contextPath}/myeats/group'" >그룹 관리</button>
@@ -62,21 +62,10 @@
 	            onClick="location.href='${pageContext.request.contextPath}/myeats/detail'">맛찜 리스트</button>
 	            <br>
 	            <button type="button" class="btn " style="width: 105px"
-	            onClick="location.href='${pageContext.request.contextPath}/myeats/detail'">회원정보 수정</button>
+	            onClick="location.href='${pageContext.request.contextPath}/myeats/groupDetail'">회원정보 수정</button>
 	        </div>
      </div>
-     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
-  <script>
-  
-  $(".collapse").on({ window.onload = function() { 
-	  $(".collapse").collapse("show"); },
-  
-	  $(".btn").click(function(){
-	        $(".collapse").collapse("toggle");
-		});
-    
-    	
-  </script>
+
      
      
 	
