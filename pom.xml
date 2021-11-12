@@ -69,12 +69,21 @@
 		    <version>5.5.2</version>
 		</dependency>
 		
-		<!-- mongoDB -->
+		<!-- MongoDB Driver -->
+		<!-- https://mvnrepository.com/artifact/org.mongodb/mongo-java-driver -->
+		 <dependency>
+	        <groupId>org.mongodb</groupId>
+	        <artifactId>mongodb-driver-sync</artifactId>
+	        <version>4.1.2</version>
+    	</dependency>
+
+		<!-- MongoDB Spring -->		
+		 <!-- https://mvnrepository.com/artifact/org.springframework.data/spring-data-mongodb -->
 		<dependency>
-		    <groupId>org.mongodb</groupId>
-		    <artifactId>mongo-java-driver</artifactId>
-		    <version>3.12.10</version>
-		</dependency>		
+		    <groupId>org.springframework.data</groupId>
+		    <artifactId>spring-data-mongodb</artifactId>
+		    <version>3.1.1</version>
+		</dependency>	
 		
 		<!-- AspectJ -->
 		<dependency>
