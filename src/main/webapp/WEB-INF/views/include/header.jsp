@@ -14,7 +14,7 @@
 			<ul class="gnb">
 				<li>잇츠맵</li>
 				<li>잇츠캘린더</li>
-				<li>타임라인</li>
+				<li onclick="location.href='/timeline/'">타임라인</li>
 				<li>마이잇츠</li>
 			</ul>
 			<div class="util">
