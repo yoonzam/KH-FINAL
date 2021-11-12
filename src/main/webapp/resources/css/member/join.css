@@ -55,6 +55,7 @@ button{
   font-weight: 800;
   background-color: var(--main-color);
   color: #fff;
+  font-size: 17px;
 }
 button:hover{
   background-color: var(--hover-color); 
@@ -99,4 +100,12 @@ button:hover{
 }
 .fas{
   color: var(--red-color);
+
+}
+/* member-common */
+@media screen and (max-width: 768px)  {
+	.box-logo{display: none;}
+	.join-form{width: calc(100% - 30px);}
+	.box-btn{padding: 30px 0;}
+	
 }

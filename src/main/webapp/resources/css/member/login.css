@@ -25,7 +25,8 @@
   margin-bottom: 15px;
   margin-top: 0;
 }
-input, button{
+
+input, button, .btn-kakao{
   border-radius: 8px;
 }
 input{
@@ -37,22 +38,26 @@ input{
   border: 1px solid #ddd;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.034);
 }
-.btn-kakao img{
-  width: 100%;
-  height: 50px;
-}
-button{
+
+button, .btn-kakao{
   width: 100%;
   border: none;
   box-shadow: none;
   height: 50px;
-  font-size: 17px;
-  font-weight: 800;
-  margin-top: 15px;
-  margin-bottom: 10px;
   cursor: pointer;
   background-color: var(--main-color);
+  line-height: 50px;
+  text-align: center;
+}
+button, .btn-kakao span{
+  font-size: 17px;
+  font-weight: 800;
   color: #fff;
+
+}
+button{
+  margin-top: 15px;
+  margin-bottom: 8px;
 }
 button:hover{
   background-color: var(--hover-color);
@@ -66,11 +71,33 @@ button:hover{
 .box-btn span{
   border: 1px solid #ccc;
 }
-.search-pw, .join{
+.search-pw, .join, .btn-kakao{
   padding: 0 10px;
   font-size: 13px;
 }
 
+
+.btn-kakao{
+  background-color: #FFCD00;
+  display: block;
+  position: relative;
+  margin-bottom: 8px;
+}
+.btn-kakao img{
+  width: 30x;
+  height: 30px;
+  position: absolute;
+  top: 25px;
+  left: 28px;
+  transform :translate(-50%, -50%);
+}
+.btn-kakao:hover{
+	background-color: #ffdb48;
+}
+/* member-common */
 @media screen and (max-width: 768px)  {
+	.box-logo{display: none;}
+	.login-form{width: calc(100% - 30px);}
 	.box-btn{padding: 30px 0;}
+	
 }

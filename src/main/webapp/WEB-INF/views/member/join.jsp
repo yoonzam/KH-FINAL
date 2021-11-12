@@ -48,7 +48,7 @@
           <label for="nickname">닉네임</label>
           <div class="wrap-nick">
             <input type="text" name="nickname" id="nickname" placeholder="닉네임을 입력하세요">
-            <input type="button" value="인증하기" class="btn-chk-nick">
+            <input type="button" value="중복확인" class="btn-chk-nick">
           </div>
           <div class="box-valid-msg nickname">
             <em></em>

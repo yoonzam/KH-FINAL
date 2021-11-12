@@ -20,13 +20,14 @@
        <div class="box-logo">
          <img src="/resources/img/common/gif_logo.gif" alt="/resources/img/common/EatsMap_logo.png">
        </div>
-       <form action="/member/join" method="post" class="join-form" name="join-form">
+       <form action="/member/join" method="post" class="login-form" name="login-form">
          <h2 class="tit-login">로그인</h2>
          <input type="email" name="email" id="email" placeholder="이메일을 입력해주세요">
          <input type="password" name="chk-password" id="chk-password" placeholder="비밀번호를 입력해주세요">
          <button>로그인</button>
          <a onclick="kakaoLogin()" class="btn-kakao">
-           <img src="/resources/img/common/kakao_login_large_wide.png" alt="">
+         	<img src="/resources/img/common/kakao-logo.png">
+         	<span>카카오 로그인</span>
          </a>
          <div class="box-btn">
            <a href="/member/find-password" class="search-pw">비밀번호 찾기</a>
