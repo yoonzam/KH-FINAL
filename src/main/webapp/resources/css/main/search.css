@@ -1,0 +1,159 @@
+@charset "UTF-8";
+
+
+
+.search-form > li{
+  position: absolute;
+  transform: translate(-210px, -15px);
+  padding:13px;
+  margin: 15px auto;
+  width:200px;
+  height:100%;
+  border:none;
+  background: white;
+  color: #707070;
+  border-radius:7px;
+  transition:all 0.3s ease;
+  text-align:center;
+  list-style-type:none;
+  font-size:large;
+  font-weight: 600;
+  font-family:sans-serif;
+}
+
+.search-form > li:hover{
+  background: white;
+  cursor:pointer;
+}
+
+.dropdown{
+  z-index:-1;
+  position:absolute;
+  visibility: hidden;
+  opacity:0;
+  color:black;
+  background: #eee;
+  width:200px;
+  margin-top:20px;
+  margin-left:-12px;
+  transition:all 0.3s ease;
+  border-radius:0px 0px 7px 7px;
+  transform:translateY(15px);
+  cursor: default;
+}
+
+.search-form > li:hover > .dropdown{
+  z-index:1;
+  opacity:1;
+  visibility: visible;
+  transform:translateY(0px);
+}
+
+.search-form > i {
+  font-family: 'xeicon';
+  border: solid white;
+  margin-left:5px;
+  border-width: 0 3px 3px 0;
+  display: inline-block;
+  padding: 3px;
+}
+
+.xi-angle-down:before {
+    content: "\e941";
+    margin-left: 15px;
+    font-size: 25px;
+}
+
+.down {
+  transform: rotate(45deg);
+  -webkit-transform: rotate(45deg);
+}
+
+.drop-link{
+  display:block;
+  text-align:left;
+  text-decoration:none;
+  font-size:15px;
+  padding:10px 15px;
+  transition:all 0.3s ease;
+  color: #434343;
+  font-family:sans-serif;
+}
+
+.drop-link:hover{
+  font-size:18px;
+  background: #e5e5e5;
+}
+
+.drop-link:last-of-type{
+  border-radius:0px 0px 7px 7px;
+}
+
+.drop-link:not(:first-child){
+  border-top:1px solid #d4dade;
+}
+
+
+
+
+
+
+
+
+.search-wrap{
+	background-color: #eee;
+}
+.search-area{
+	max-width: 1300px;
+	padding:25px 275px 30px 240px;
+	margin:0 auto;
+}
+.search-form{
+	position: relative;
+	border:1px solid #ddd;
+	background-color: #fff;
+}
+.search-form input{
+	width:100%;
+	padding:20px 40px 20px 20px;
+	font-size:16px;
+	border: none;
+}
+
+
+
+.search-form .search-btn{
+	position: absolute;
+	top:0px;
+	right:-250px;
+	width:235px;
+	height:100%;
+	padding:10px;
+	text-align: center;
+	cursor: pointer;
+	margin-left: 10px; 
+	padding:17px; 
+	border-radius: 5px; 
+	color: #fff; 
+	background-color: #fa8633; 
+	font-size:larger;
+	font-weight: 700; 
+	transition-duration:0.5s;
+}
+
+.search-btn:hover{background-color: #ffa54f;}
+
+.search-form button{
+	position: absolute;
+	top:0px;
+	right:0px;
+	padding:18px;
+	font-size:22px;
+	background-color: transparent;
+	border: none;
+	float: right;
+	cursor: pointer;
+}
+.search-form .filter-btn i{color: #fa8633;}
+.search-form button i{color: #fa8633;}
+
