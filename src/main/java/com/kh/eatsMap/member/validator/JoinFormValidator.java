@@ -2,7 +2,6 @@ package com.kh.eatsMap.member.validator;
 
 import java.util.regex.Pattern;
 
-import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
@@ -28,9 +27,9 @@ public class JoinFormValidator implements Validator{
 		JoinForm form = (JoinForm) target;
 		
 		//1. 아이디 존재 유무
-		if(memberRepository.selectMemberByUserId(form.getUserId()) != null ) {
-			errors.rejectValue("userId", "err-userId", "이미 존재하는 아이디 입니다.");
-		}
+//		if(memberRepository.selectMemberByUserId(form.getUserId()) != null ) {
+//			errors.rejectValue("userId", "err-userId", "이미 존재하는 아이디 입니다.");
+//		}
 		
 		//2. 비밀번호가 8글자 이상, 숫자 영문자 특수문자 조합인 지 확인
 		if(!Pattern.matches("(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[^a-zA-Zㄱ-힣0-9]).{8,}", form.getPassword())) {
