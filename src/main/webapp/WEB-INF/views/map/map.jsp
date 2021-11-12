@@ -6,10 +6,11 @@
 <%@ include file="/WEB-INF/views/include/head.jsp"%>
 <link rel="stylesheet" type="text/css"
 	href="/resources/css/timeline/timeline.css" />
-<script type="text/javascript" src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=5bdae166c6881cf42916fd1d25349e6e&libraries=services,clusterer,drawing"></script>
+<script type="text/javascript"
+	src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=5bdae166c6881cf42916fd1d25349e6e&libraries=services,clusterer,drawing"></script>
 <style type="text/css">
 .container {
-	width: 1300px;
+	width: 100%;
 	margin: auto;
 	display: grid;
 	grid-template-columns: repeat(4, 1fr); /* 균일한 크기로 3등분 */
@@ -35,7 +36,16 @@
 	display: flex;
 	flex-direction: column;
 	overflow: scroll;
-	z-index: 999;
+	z-index: 3;
+	padding-left: 10px;
+	z-index: 3;
+}
+
+.review::-webkit-scrollbar {
+	display: none;
+}
+body::-webkit-scrollbar {
+	display: none;
 }
 
 .eatsMap {
@@ -109,10 +119,15 @@ select option {
 }
 
 .review_wrap {
-	margin-bottom: 20px;
-	width: 100%;
+	margin-bottom: 10px;
+	margin-top: 10px;
+	width: 98%;
 	height: 25%;
 	display: flex;
+	border-radius: 8px;
+	border: 1px;
+	background-color: white;
+	box-shadow: 2px 2px 4px rgb(0 0 0 / 30%);
 }
 
 .img-box {
@@ -125,6 +140,8 @@ select option {
 	width: 100%;
 	height: 100%;
 	object-fit: cover;
+	border-radius: 8px 0px 0px 8px;
+	
 }
 
 .eats-tag span {
@@ -137,23 +154,25 @@ select option {
 }
 
 .eats-name {
-    color: #333;
-    font-size: 20px;
-    font-weight: 700;
-    margin-top: 10px;
-    margin-bottom: 10px;
+	color: #333;
+	font-size: 20px;
+	font-weight: 700;
+	margin-top: 10px;
+	margin-bottom: 10px;
 }
-.info{
+
+.info {
 	margin-left: 10px;
 }
-.eats-location{
-	 margin-bottom: 10px;
+
+.eats-location {
+	margin-bottom: 10px;
 }
-#map{
+
+#map {
 	width: 100%;
 	height: 100%;
 }
-
 </style>
 </head>
 <body>
@@ -189,7 +208,7 @@ select option {
 					</div>
 					<div class="info">
 						<div class="eats-name">
-							스시 아루히 <i onclick="clickLike();" class="fas fa-lock"></i>
+							스시 아루히 &emsp;&emsp;&emsp;<i onclick="clickLike();" class="fas fa-lock"></i>
 						</div>
 						<div class="eats-location">서울 영등포구</div>
 						<div class="eats-tag">
@@ -197,7 +216,7 @@ select option {
 						</div>
 					</div>
 				</div>
-				
+
 				<div class="review_wrap">
 					<div class="img-box">
 						<img class="image-thumbnail" src="/resources/img/upload/01.jpg">
@@ -205,8 +224,72 @@ select option {
 					<div class="info">
 						<div class="eats-name">
 
-						
-							스시 아루히 <i onclick="clickLike();" class="fas fa-unlock"></i>
+
+							스시 아루히 &emsp;&emsp;&emsp;<i onclick="clickLike();" class="fas fa-unlock"></i>
+						</div>
+						<div class="eats-location">서울 영등포구</div>
+						<div class="eats-tag">
+							<span>#가성비</span> <span>#친근함</span> <span>#1~2만원대</span>
+						</div>
+					</div>
+				</div>
+				<div class="review_wrap">
+					<div class="img-box">
+						<img class="image-thumbnail" src="/resources/img/upload/01.jpg">
+					</div>
+					<div class="info">
+						<div class="eats-name">
+
+
+							스시 아루히 &emsp;&emsp;&emsp;<i onclick="clickLike();" class="fas fa-unlock"></i>
+						</div>
+						<div class="eats-location">서울 영등포구</div>
+						<div class="eats-tag">
+							<span>#가성비</span> <span>#친근함</span> <span>#1~2만원대</span>
+						</div>
+					</div>
+				</div>
+				<div class="review_wrap">
+					<div class="img-box">
+						<img class="image-thumbnail" src="/resources/img/upload/01.jpg">
+					</div>
+					<div class="info">
+						<div class="eats-name">
+
+
+							스시 아루히 &emsp;&emsp;&emsp;<i onclick="clickLike();" class="fas fa-unlock"></i>
+						</div>
+						<div class="eats-location">서울 영등포구</div>
+						<div class="eats-tag">
+							<span>#가성비</span> <span>#친근함</span> <span>#1~2만원대</span>
+						</div>
+					</div>
+				</div>
+				<div class="review_wrap">
+					<div class="img-box">
+						<img class="image-thumbnail" src="/resources/img/upload/01.jpg">
+					</div>
+					<div class="info">
+						<div class="eats-name">
+
+
+							스시 아루히 &emsp;&emsp;&emsp;<i onclick="clickLike();" class="fas fa-unlock"></i>
+						</div>
+						<div class="eats-location">서울 영등포구</div>
+						<div class="eats-tag">
+							<span>#가성비</span> <span>#친근함</span> <span>#1~2만원대</span>
+						</div>
+					</div>
+				</div>
+				<div class="review_wrap">
+					<div class="img-box">
+						<img class="image-thumbnail" src="/resources/img/upload/01.jpg">
+					</div>
+					<div class="info">
+						<div class="eats-name">
+
+
+							스시 아루히 &emsp;&emsp;&emsp;<i onclick="clickLike();" class="fas fa-unlock"></i>
 						</div>
 						<div class="eats-location">서울 영등포구</div>
 						<div class="eats-tag">
@@ -223,16 +306,16 @@ select option {
 	</section>
 
 	<%@ include file="/WEB-INF/views/include/footer.jsp"%>
-<script type="text/javascript">
+	<script type="text/javascript">
+		var container = document.getElementById('map'); //지도를 담을 영역의 DOM 레퍼런스
+		var options = { //지도를 생성할 때 필요한 기본 옵션
+			center : new kakao.maps.LatLng(33.450701, 126.570667), //지도의 중심좌표.
+			level : 3
+		//지도의 레벨(확대, 축소 정도)
+		};
 
-var container = document.getElementById('map'); //지도를 담을 영역의 DOM 레퍼런스
-var options = { //지도를 생성할 때 필요한 기본 옵션
-	center: new kakao.maps.LatLng(33.450701, 126.570667), //지도의 중심좌표.
-	level: 3 //지도의 레벨(확대, 축소 정도)
-};
-
-var map = new kakao.maps.Map(container, options); //지도 생성 및 객체 리턴
-</script>
+		var map = new kakao.maps.Map(container, options); //지도 생성 및 객체 리턴
+	</script>
 
 </body>
 </html>
