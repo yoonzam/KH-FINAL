@@ -7,17 +7,20 @@
 <link rel="stylesheet" href="/resources/css/member/find-password.css">
 </head>
 <body>
-   <header class="header-find-pw">
- 		<div class="header pc find-pw">
-       <h1><img src="/resources/img/common/logo_ver1.png"></h1>
-     </div>    
-   </header>
+  <header class="header-member">
+    <div class="header pc member">
+        <h1><img src="/resources/img/common/logo_ver1.png"></h1>
+      </div>    
+    <div class="header m member">
+      <h1><img src="/resources/img/common/logo_ver1.png"></h1>
+    </div>      
+  </header>
    <section>
      <div class="container">
        <div class="box-logo">
          <img src="/resources/img/common/EatsMap_logo.png" alt="">
        </div>
-       <form action="#" class="find-pw" name="find-pw">
+       <form action="/member/find-password" method="post" class="find-pw-form" name="find-pw">
          <h2 class="tit-find-pw">비밀번호 찾기</h2>
 
          <div class="wrap-find-pw">
@@ -29,9 +32,6 @@
        </form>
      </div>
    </section>
-
-
-
 <%@ include file="/WEB-INF/views/include/footer.jsp" %>
 </body>
 </html>

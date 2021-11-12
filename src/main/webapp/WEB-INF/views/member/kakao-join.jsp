@@ -7,13 +7,43 @@
 <link rel="stylesheet" href="/resources/css/member/kakao-join.css">
 </head>
 <body>
-
-
-
-
-
-
-
-<%@ include file="/WEB-INF/views/include/footer.jsp" %>
+  <header class="header-member">
+    <div class="header pc member">
+        <h1><img src="/resources/img/common/logo_ver1.png"></h1>
+      </div>    
+    <div class="header m member">
+      <h1><img src="/resources/img/common/logo_ver1.png"></h1>
+    </div>      
+  </header>
+  <section>
+    <div class="container">
+      <div class="box-logo">
+        <img src="/resources/img/common/EatsMap_logo.png" alt="">
+      </div>
+      <form action="#" class="kakao-form" name="kakao-form">
+        <h2 class="tit-kakao">추가정보 입력</h2>
+        <div class="desc">
+          <h5>소셜 가입 인증을 성공하였습니다.</h5>
+          <h5>가입을 완료하기 위해 아래 추가 정보를 입력해 주세요.</h5>
+        </div>
+        <div class="wrap-input">
+          <input type="text" name="nickname" placeholder="닉네임을 입력하세요">
+          <input class="btn-chk-nick" type="button" value="중복확인">
+        </div>
+        <h5 class="msg">가입한 이메일로 임시비밀번호가 발송됩니다.</h5>
+        <!-- <h5 class="msg">메일을 확인해보세요! 임시비밀번호가 발송되었습니다.</h5> -->
+        <button>가입하기</button>
+      </form>
+    </div>
+  </section>
+  <%@ include file="/WEB-INF/views/include/footer.jsp" %>
+  <script type="text/javascript">
+  
+  let forwardLogin = () => {
+	  alert('회원가입을 취소하시겠습니까?');
+	  location.href='/member/login';
+  }
+  
+  </script> 
 </body>
 </html>
