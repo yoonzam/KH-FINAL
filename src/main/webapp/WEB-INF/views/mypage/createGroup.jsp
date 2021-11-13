@@ -27,7 +27,6 @@
 		  width:960px;
           height :500px;
           margin:auto;
-		  background: url(/resources/img/mypage/food1.png)repeat;
 		  border-radius: 12px;
 		}
         div.container {

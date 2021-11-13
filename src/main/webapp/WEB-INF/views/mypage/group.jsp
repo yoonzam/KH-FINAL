@@ -23,12 +23,11 @@
           padding-top: 150px; 
 		}
 		
-		div.container {
-		
+	div.container {
           width:960px;
           margin:auto;
           border-radius: 12px;
-          
+
           background-color: #ffffff;
           padding: 30px;
           box-shadow: 0px 20px 80px 0px rgb(153 153 153 / 30%);
@@ -41,13 +40,14 @@
         
        
 		/*li */
-		.main ul li {
+		.container ul li {
 		  cursor: pointer;
 		  position: relative;
 		  margin: 10px 100px;
 		  padding: 10px 29px;
 		  list-style-type: none;
 		  background: #fcebc0;
+		  
 		  font-size: 18px;
 		  transition: 0.2s;
 		  user-select: none;
@@ -55,32 +55,32 @@
 		}
 		
 		/*짝수li 배경색*/
-		.main ul li:nth-child(odd) {
+		.container ul li:nth-child(odd) {
 		  background: #fff8e6;
 		}
 		
 		/* hover시 배경색 */
-		.main ul li:hover {
+		.container ul li:hover {
 		  background: #fff4cf;
 		}
 		
 	
 		/* 자세히 보기 버튼 */
-		.main #myUL li .btn{
+		.container #myUL li .btn{
 			position: relative;
-			margin-left: 402px;
+			margin-left: 452px;
 		}
 		
 		/* 새로만들기 버튼 */
-		.main .btn-danger{
+		.container .btn-danger{
 		  margin-left: 20px;
 		}
 		
 		/* display: none줘서 new용도로 사용예정 */
-		.glyphicon{
+		.container .glyphicon{
 		position: absolute;
-		  left: 15px;
-		  top: 30px;
+		  left: 28px;
+		  top: 11px;
 		}
 		
 		

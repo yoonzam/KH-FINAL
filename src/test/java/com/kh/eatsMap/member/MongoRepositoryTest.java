@@ -131,8 +131,4 @@ public class MongoRepositoryTest {
 	
 
 
-	//geo 9.4.3
-//	Member findByAddressZipCode(ZipCode zipCode);
-	
-
 }
