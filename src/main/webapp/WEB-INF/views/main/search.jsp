@@ -6,6 +6,11 @@
 <%@ include file="/WEB-INF/views/include/head.jsp" %>
 <link rel="stylesheet" type="text/css" href="/resources/css/main/search.css" />
 <script defer type="text/javascript" src="/resources/js/main/search.js"></script>
+
+<!-- paging -->
+
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
 </head>
 <body>
 <%@ include file="/WEB-INF/views/include/header.jsp" %>
@@ -58,7 +63,6 @@
 				</div>
 			</div>
 			<div class="timeline-wrap">
-				<h2><i class="fas fa-utensils color-m"></i> 실시간 <span class="color-m">잇친 PICK</span> 맛집을 소개합니다!</h2>
 				<ul class="timeline-brd">
 					<li>
 						<div class="eats-list">
@@ -166,6 +170,22 @@
 					</li>
 				</ul>
 			</div>
+
+			
+			<!-- paging -->
+			<div class="container">
+				<ul class="pagination">
+	              <li class="disabled"><a href="#" >«</a></li>
+	              <li class="active"><a href="#">1 <span class="sr-only">(current)</span></a></li>
+	              <li><a href="#">2</a></li>
+	              <li><a href="#">3</a></li>
+	              <li><a href="#">4</a></li>
+	              <li><a href="#">5</a></li>
+	              <li><a href="#">»</a></li>
+	            </ul>
+			</div>
+
+
 
 		</div>
 	</section>
