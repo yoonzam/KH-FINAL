@@ -46,6 +46,6 @@
 		<property name="maxUploadSize" value="5242880"/>		
 	</bean>
 			
-	<mongo:repositories base-package="com.kh.eatsMap.*.model.repository" />    
+	
 			
 </beans>

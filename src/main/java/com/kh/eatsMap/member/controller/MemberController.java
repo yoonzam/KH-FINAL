@@ -28,7 +28,7 @@ public class MemberController {
 	@GetMapping("login")
 	public void login() {
 		List<Member> member = memberService.findMember();
-		logger.debug(member.toString());
+		member.forEach(e -> logger.debug(e.toString()));
 	}
 	
 	@GetMapping("logout")
