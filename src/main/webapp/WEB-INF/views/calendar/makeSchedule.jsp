@@ -6,17 +6,17 @@
 		<div class="content view">
 			<div class="schedule-make">
 				<div class="popup-title">일정 만들기</div>
-				<ul class="schedule-wrap">
-					<li class="title"><span>제목</span><input class="input" type="text" placeholder="제목을 입력하세요"/></li>
-					<li class="date"><span>일자</span><input class="input" type="date"/></li>
-					<li class="time"><span>시간</span><input class="input" type="time"/></li>
-					<li class="place"><span>장소</span><input class="input" type="text" placeholder="장소를 검색하세요"/></li>
-					<li class="member"><span>참석자</span><input class="input" type="text" placeholder="함께할 잇친을 추가하세요"/></li>
-					<li class="btn-wrap">
-						<a class="submit">확인</a>
-						<a class="cancel">취소</a>
-					</li>
-				</ul>
+				<div class="schedule-wrap">
+					<div class="title" id="list"><span>제목</span><input class="input" type="text" placeholder="제목을 입력하세요"/></div>
+					<div class="date" id="list"><span>일자</span><input class="input" type="date"/></div>
+					<div class="time" id="list"><span>시간</span><input class="input" type="time"/></div>
+					<div class="place" id="list"><span>장소</span><input class="input" type="text" placeholder="장소를 검색하세요"/></div>
+					<div class="member" id="list"><span>참석자</span><input class="input" type="text" placeholder="함께할 잇친을 추가하세요"/></div>
+				</div>
+				<div class="btn-wrap">
+					<button class="submit">확인</button>
+					<button class="cancel">취소</button>
+				</div>
 			</div>
 		</div>
 	</div>

@@ -7,3 +7,4 @@
 <%@ include file="/WEB-INF/views/common/review.jsp" %>
 <%@ include file="/WEB-INF/views/common/upload.jsp" %>
 <%@ include file="/WEB-INF/views/calendar/makeSchedule.jsp" %>
+<%@ include file="/WEB-INF/views/calendar/schedule.jsp" %>
