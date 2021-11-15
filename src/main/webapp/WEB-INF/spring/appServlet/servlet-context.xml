@@ -17,8 +17,13 @@
 
 	<!-- DispatcherServlet Context: defines this servlet's request-processing infrastructure -->
 	
+
+	
 	<!-- Enables the Spring MVC @Controller programming model -->
 	<annotation-driven />
+	
+	<!-- mongo -->
+<!-- 	<context:annotation-config/> -->
 	
 	<!--  Spring batch 어노테이션 등록 -->
 	<task:annotation-driven/>
@@ -40,15 +45,7 @@
 		</interceptor>
 	</interceptors>
 
-<!-- 
-
-	<aop:config>
-		<aop:pointcut expression="execution(* com.kh.eatsMap..*.*ServiceImpl.*(..))" id="txPointCut"/>
-		<aop:advisor advice-ref="txAdvice" pointcut-ref="txPointCut"/>
-	</aop:config>
-	 -->
 	 
-	<mongo:repositories base-package="com.kh.eatsMap.*.model.repository" />    
 	<context:component-scan base-package="com.kh.eatsMap" />
 
 	

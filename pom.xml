@@ -70,6 +70,13 @@
 		</dependency>
 		
 		<!-- MongoDB Driver -->
+		<!-- https://mvnrepository.com/artifact/org.mongodb/mongodb-driver-core -->
+		<dependency>
+		    <groupId>org.mongodb</groupId>
+		    <artifactId>mongodb-driver-core</artifactId>
+		    <version>4.1.2</version>
+		</dependency>
+		
 		<!-- https://mvnrepository.com/artifact/org.mongodb/mongo-java-driver -->
 		 <dependency>
 	        <groupId>org.mongodb</groupId>
