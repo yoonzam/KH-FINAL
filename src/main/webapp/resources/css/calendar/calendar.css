@@ -24,6 +24,7 @@
 }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 .btn-schedule{
 	width:120px;
 	margin-left:10px;
@@ -91,6 +92,11 @@
 
 .schedule{
 >>>>>>> refs/heads/dev
+=======
+/* make Schedule */
+
+.schedule{
+>>>>>>> refs/heads/dev
 	width: 100%;
 	overflow:hidden;
 }
@@ -106,6 +112,7 @@
 }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 .schedule-wrap{
 	padding:20px;
 	
@@ -120,8 +127,12 @@
 =======
 .schedule-list{
 >>>>>>> refs/heads/dev
+=======
+.schedule-list{
+>>>>>>> refs/heads/dev
 	padding:20px;
 }
+<<<<<<< HEAD
 <<<<<<< HEAD
 .schedule-make .btn-wrap button{min-width:100px; cursor:pointer; border:none; padding:18px; border-radius: 5px; color: #fff; font-weight: 700; transition-duration:0.5s;}
 .schedule-make .btn-wrap button.submit{background-color:var(--main-color);}
@@ -130,6 +141,8 @@
 .schedule-make .btn-wrap button.cancel:hover{background-color: #d8d2cf;}
 =======
 .schedule-list #list{
+=======
+.schedule-list .list{
 	padding: 15px;
 	text-align: center;
 	font-size:20px;
@@ -137,10 +150,52 @@
 	color:#333;
 }
 
+.schedule-list .list span{
+	display: inline-block;
+	width: 150px;
+}
+
+.schedule-list .list input{
+	width: 300px;
+	height: 50px;
+	padding-left: 10px;
+} 
+
+/* 참석자 위치... */
+
+.schedule .btn-wrap{
+	text-align: center;
+	padding:20px;
+}
+.schedule .btn-wrap button{min-width:100px; cursor:pointer; border:none; padding:18px; margin:0 30px; border-radius: 5px; color: #fff; font-weight: 700; transition-duration:0.5s;}
+.schedule .btn-wrap button.submit{background-color:var(--main-color);}
+.schedule .btn-wrap button.cancel{background-color:#cbc5c2;}
+.schedule .btn-wrap button.submit:hover{background-color: #ffa54f;}
+.schedule .btn-wrap button.cancel:hover{background-color: #d8d2cf;}
+
+/* schedule-spec */
+.dimmed-wrap .layer-popup.review{
+	max-width: 600px;
+}
+
+.schedule-spec #list{
+>>>>>>> refs/heads/dev
+	padding: 15px;
+	text-align: center;
+	font-size:20px;
+	font-weight: 700;
+	color:#333;
+}
+
+<<<<<<< HEAD
 .schedule-list #list span{
 	padding: 0 70px;
 }
+=======
 
+>>>>>>> refs/heads/dev
+
+<<<<<<< HEAD
 .schedule-list #list .input{
 	width: 300px;
 	height: 50px;
@@ -177,4 +232,6 @@
 =======
 
 
+>>>>>>> refs/heads/dev
+=======
 >>>>>>> refs/heads/dev
