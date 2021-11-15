@@ -14,7 +14,7 @@ import com.mongodb.client.MongoClients;
 public class AppConfig {
 
   public @Bean MongoClient mongoClient() {
-      return MongoClients.create("mongodb+srv://beom:beom123@mongotest.w6gmc.mongodb.net/myFirstDatabase?retryWrites=true&w=majority");
+      return MongoClients.create("mongodb+srv://won:won123@mongotest.w6gmc.mongodb.net/myFirstDatabase?retryWrites=true&w=majority");
   }
 
   public @Bean MongoTemplate mongoTemplate() {

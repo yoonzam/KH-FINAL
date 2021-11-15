@@ -5,12 +5,16 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/")
+@RequestMapping("main")
 public class IndexController {
 	
 	@GetMapping("/")
 	public String index() {
-		return "index";
+		return "main/main";
 	}
 
+	@GetMapping("/search")
+	public String search() {
+		return "main/search";
+	}
 }
