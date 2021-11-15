@@ -9,6 +9,55 @@
 <script type="text/javascript"
 	src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=5bdae166c6881cf42916fd1d25349e6e&libraries=services,clusterer,drawing"></script>
 <link rel="stylesheet" type="text/css" href="/resources/css/map/map.css" />
+<style type="text/css">
+.popup {
+	grid-column: 2/5;
+	grid-row: 14/17;
+	z-index: 5;
+	display: flex;
+	justify-content: center;
+}
+
+.popup-wrap {
+	display: flex;
+	justify-content: center;
+	width: 65%;
+	height: 100%;
+	background-color: white;
+	border-radius: 8px;
+	padding-left: 20px;
+	box-shadow: 2px 2px 4px rgb(0 0 0/ 30%);
+}
+
+.rest-info {
+	display: flex; 
+	flex-direction : column;
+	justify-content: center;
+	width: 80%;
+}
+
+
+.rest-title {
+	font-weight: 700;
+	font-size: 20px;
+	color: #111;
+	margin-bottom: 10px;
+}
+.btn {
+	margin-left: 10px;
+	padding: 18px;
+	border-radius: 5px;
+	color: #fff;
+	background-color: #fa8633;
+	font-weight: 700;
+	transition-duration: 0.5s;
+	margin-top: 28px;
+	height: 50%;
+}
+.btn:hover{
+	background-color:#ffa54f;
+}
+</style>
 </head>
 <body>
 	<%@ include file="/WEB-INF/views/include/header.jsp"%>
@@ -17,8 +66,9 @@
 			<div class="search">
 				<div class="search-form">
 					<div class="search-box">
-						<label><input class="keyword" type="text" placeholder="식당 후기 검색하기"></label>
-						<a id="search" class="search-btn">검색</a>
+						<label><input class="keyword" type="text"
+							placeholder="식당 후기 검색하기"></label> <a id="search"
+							class="search-btn">검색</a>
 					</div>
 					<div class="select-bar">
 						<select name="category" class="select">
@@ -43,7 +93,8 @@
 					</div>
 					<div class="info">
 						<div class="eats-name">
-							스시 아루히 &emsp;&emsp;&emsp;<i onclick="clickLock(this);" class="fas fa-lock"></i>
+							스시 아루히 &emsp;&emsp;&emsp;<i onclick="clickLock(this);"
+								class="fas fa-lock"></i>
 						</div>
 						<div class="eats-location">서울 영등포구</div>
 						<div class="eats-tag">
@@ -60,7 +111,8 @@
 						<div class="eats-name">
 
 
-							스시 아루히 &emsp;&emsp;&emsp;<i onclick="clickLock(this);" class="fas fa-unlock"></i>
+							스시 아루히 &emsp;&emsp;&emsp;<i onclick="clickLock(this);"
+								class="fas fa-unlock"></i>
 						</div>
 						<div class="eats-location">서울 영등포구</div>
 						<div class="eats-tag">
@@ -76,7 +128,8 @@
 						<div class="eats-name">
 
 
-							스시 아루히 &emsp;&emsp;&emsp;<i onclick="clickLock(this);" class="fas fa-unlock"></i>
+							스시 아루히 &emsp;&emsp;&emsp;<i onclick="clickLock(this);"
+								class="fas fa-unlock"></i>
 						</div>
 						<div class="eats-location">서울 영등포구</div>
 						<div class="eats-tag">
@@ -92,7 +145,8 @@
 						<div class="eats-name">
 
 
-							스시 아루히 &emsp;&emsp;&emsp;<i onclick="clickLock(this);" class="fas fa-unlock"></i>
+							스시 아루히 &emsp;&emsp;&emsp;<i onclick="clickLock(this);"
+								class="fas fa-unlock"></i>
 						</div>
 						<div class="eats-location">서울 영등포구</div>
 						<div class="eats-tag">
@@ -108,7 +162,8 @@
 						<div class="eats-name">
 
 
-							스시 아루히 &emsp;&emsp;&emsp;<i onclick="clickLock(this);" class="fas fa-unlock"></i>
+							스시 아루히 &emsp;&emsp;&emsp;<i onclick="clickLock(this);"
+								class="fas fa-unlock"></i>
 						</div>
 						<div class="eats-location">서울 영등포구</div>
 						<div class="eats-tag">
@@ -122,9 +177,8 @@
 					</div>
 					<div class="info">
 						<div class="eats-name">
-
-
-							스시 아루히 &emsp;&emsp;&emsp;<i onclick="clickLock(this);" class="fas fa-unlock"></i>
+							스시 아루히 &emsp;&emsp;&emsp;<i onclick="clickLock(this);"
+								class="fas fa-unlock"></i>
 						</div>
 						<div class="eats-location">서울 영등포구</div>
 						<div class="eats-tag">
@@ -137,9 +191,14 @@
 				<div id="map"></div>
 			</div>
 			<div class="popup">
-				<div class="popup-wrap" style="display: none">
-					
+				<div class="popup-wrap" style="display: none;">
+					<div class="rest-info">
+						<span class="rest-title">스시 아루히</span> <span class="rest-content">서울시
+							영등포구 여의나루길 13</span>
+					</div>
+					<div class="btn">후기등록</div>
 				</div>
+
 			</div>
 		</div>
 
