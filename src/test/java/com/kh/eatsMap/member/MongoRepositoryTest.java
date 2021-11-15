@@ -62,7 +62,7 @@ public class MongoRepositoryTest {
     @Test
     public void findMember() {
     	//distinct
-    	List<Member> members = repository.findDistinctMemberByNicknameOrEmail("nick2","nick4@gmail.com");
+    	List<Member> members = repository.findDistinctMemberByNicknameOrEmail("nick2","nick2@gmail.com");
     	logger.info(members.toString());
     }
 	

@@ -106,27 +106,18 @@
 	color:#fff;
 }
 
-
-h2 {
-    font-size: 32px;
-    margin-bottom: -90px;
-}
-
-
-
-
-
 .visual{
 	max-width: 1240px;
 	margin: 0 auto;
 	position: relative;
+	padding-top:0px !important;
 }
 
 .visual button{
+	cursor:pointer;
 	position: absolute;
 	z-index: 100;
-	top: 55%;
-	transform:translateY(-50%);
+	top: 90px;
 	width: 70px;
 	height: 70px;
 	border-radius: 100%;
@@ -236,14 +227,16 @@ h2 {
 	max-width: 1240px;
 	margin: 0 auto;
 	position: relative;
+	
 	margin-bottom: 100px;
+	padding-top:0px !important;
 }
 
 .visual2 button{
+	cursor:pointer;
 	position: absolute;
 	z-index: 100;
-	top: 55%;
-	transform:translateY(-50%);
+	top: 90px;
 	width: 70px;
 	height: 70px;
 	border-radius: 100%;

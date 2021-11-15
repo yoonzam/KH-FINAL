@@ -12,10 +12,10 @@
 		<div class="header pc">
 			<h1><img src="/resources/img/common/logo_ver1.png"></h1>
 			<ul class="gnb">
-				<li>잇츠맵</li>
-				<li>잇츠캘린더</li>
+				<li onclick="location.href='/map/'">잇츠맵</li>
+				<li onclick="location.href='/calendar/'">잇츠캘린더</li>
 				<li onclick="location.href='/timeline/'">타임라인</li>
-				<li>마이잇츠</li>
+				<li onclick="location.href='/myeats/group'">마이잇츠</li>
 			</ul>
 			<div class="util">
 				<div class="btn-logout">로그아웃</div>
