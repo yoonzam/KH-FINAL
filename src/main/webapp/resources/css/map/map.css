@@ -1,4 +1,5 @@
 @charset "UTF-8";
+
 .container {
 	width: 100%;
 	margin: auto;
@@ -34,6 +35,7 @@
 .review::-webkit-scrollbar {
 	display: none;
 }
+
 body::-webkit-scrollbar {
 	display: none;
 }
@@ -117,7 +119,7 @@ select option {
 	border-radius: 8px;
 	border: 1px;
 	background-color: white;
-	box-shadow: 2px 2px 4px rgb(0 0 0 / 30%);
+	box-shadow: 2px 2px 4px rgb(0 0 0/ 30%);
 }
 
 .img-box {
@@ -131,7 +133,6 @@ select option {
 	height: 100%;
 	object-fit: cover;
 	border-radius: 8px 0px 0px 8px;
-	
 }
 
 .eats-tag span {
@@ -162,4 +163,21 @@ select option {
 #map {
 	width: 100%;
 	height: 100%;
+}
+
+/* 팝업창 css */
+.popup {
+	grid-column: 2/5;
+	grid-row: 14/17;
+	text-align: -webkit-center;
+	z-index: 5;
+	
+}
+
+.popup-wrap {
+	width: 65%;
+	height: 100%;
+	background-color: white;
+	border-radius: 8px;
+	
 }

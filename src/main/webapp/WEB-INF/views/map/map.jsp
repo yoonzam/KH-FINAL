@@ -17,8 +17,8 @@
 			<div class="search">
 				<div class="search-form">
 					<div class="search-box">
-						<label><input type="text" placeholder="식당 후기 검색하기"></label>
-						<a class="search-btn">검색</a>
+						<label><input class="keyword" type="text" placeholder="식당 후기 검색하기"></label>
+						<a id="search" class="search-btn">검색</a>
 					</div>
 					<div class="select-bar">
 						<select name="category" class="select">
@@ -43,7 +43,7 @@
 					</div>
 					<div class="info">
 						<div class="eats-name">
-							스시 아루히 &emsp;&emsp;&emsp;<i onclick="clickLike();" class="fas fa-lock"></i>
+							스시 아루히 &emsp;&emsp;&emsp;<i onclick="clickLock(this);" class="fas fa-lock"></i>
 						</div>
 						<div class="eats-location">서울 영등포구</div>
 						<div class="eats-tag">
@@ -60,7 +60,7 @@
 						<div class="eats-name">
 
 
-							스시 아루히 &emsp;&emsp;&emsp;<i onclick="clickLike();" class="fas fa-unlock"></i>
+							스시 아루히 &emsp;&emsp;&emsp;<i onclick="clickLock(this);" class="fas fa-unlock"></i>
 						</div>
 						<div class="eats-location">서울 영등포구</div>
 						<div class="eats-tag">
@@ -76,7 +76,7 @@
 						<div class="eats-name">
 
 
-							스시 아루히 &emsp;&emsp;&emsp;<i onclick="clickLike();" class="fas fa-unlock"></i>
+							스시 아루히 &emsp;&emsp;&emsp;<i onclick="clickLock(this);" class="fas fa-unlock"></i>
 						</div>
 						<div class="eats-location">서울 영등포구</div>
 						<div class="eats-tag">
@@ -92,7 +92,7 @@
 						<div class="eats-name">
 
 
-							스시 아루히 &emsp;&emsp;&emsp;<i onclick="clickLike();" class="fas fa-unlock"></i>
+							스시 아루히 &emsp;&emsp;&emsp;<i onclick="clickLock(this);" class="fas fa-unlock"></i>
 						</div>
 						<div class="eats-location">서울 영등포구</div>
 						<div class="eats-tag">
@@ -108,7 +108,7 @@
 						<div class="eats-name">
 
 
-							스시 아루히 &emsp;&emsp;&emsp;<i onclick="clickLike();" class="fas fa-unlock"></i>
+							스시 아루히 &emsp;&emsp;&emsp;<i onclick="clickLock(this);" class="fas fa-unlock"></i>
 						</div>
 						<div class="eats-location">서울 영등포구</div>
 						<div class="eats-tag">
@@ -124,7 +124,7 @@
 						<div class="eats-name">
 
 
-							스시 아루히 &emsp;&emsp;&emsp;<i onclick="clickLike();" class="fas fa-unlock"></i>
+							스시 아루히 &emsp;&emsp;&emsp;<i onclick="clickLock(this);" class="fas fa-unlock"></i>
 						</div>
 						<div class="eats-location">서울 영등포구</div>
 						<div class="eats-tag">
@@ -136,20 +136,142 @@
 			<div class="eatsMap">
 				<div id="map"></div>
 			</div>
+			<div class="popup">
+				<div class="popup-wrap" style="display: none">
+					
+				</div>
+			</div>
 		</div>
 
 	</section>
 
 	<%@ include file="/WEB-INF/views/include/footer.jsp"%>
 	<script type="text/javascript">
+	
+		let clickLock = (e) =>{
+			if (e.className.match("fas fa-unlock")) {
+				e.className = "fas fa-lock";
+			}else{
+				e.className = "fas fa-unlock";
+			}
+		}
 		var container = document.getElementById('map'); //지도를 담을 영역의 DOM 레퍼런스
 		var options = { //지도를 생성할 때 필요한 기본 옵션
-			center : new kakao.maps.LatLng(33.450701, 126.570667), //지도의 중심좌표.
+			center : new kakao.maps.LatLng(37.54699, 127.09598), //지도의 중심좌표.
 			level : 3
 		//지도의 레벨(확대, 축소 정도)
 		};
 
 		var map = new kakao.maps.Map(container, options); //지도 생성 및 객체 리턴
+		
+		document.querySelector('#search').addEventListener('click', (e) => {
+		    let keyword = document.querySelector('.keyword').value;
+			searchMap(keyword);
+		});
+		
+		document.querySelector('.keyword').addEventListener('keyup', (e)=> {
+		    if (e.keyCode === 13) {
+		    	let keyword = document.querySelector('.keyword').value;
+				searchMap(keyword);
+		  }  
+		});
+		
+		let searchMap = (keyword) =>{
+			
+			// 장소 검색 객체를 생성합니다
+			var ps = new kakao.maps.services.Places(); 
+
+			// 키워드로 장소를 검색합니다
+			ps.keywordSearch(keyword, placesSearchCB); 
+
+			// 키워드 검색 완료 시 호출되는 콜백함수 입니다
+			function placesSearchCB (data, status, pagination) {
+			    if (status === kakao.maps.services.Status.OK) {
+
+			        // 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해
+			        // LatLngBounds 객체에 좌표를 추가합니다
+			        var bounds = new kakao.maps.LatLngBounds();
+
+			        for (var i=0; i<data.length; i++) {
+			            displayMarker(data[i]);    
+			            bounds.extend(new kakao.maps.LatLng(data[i].y, data[i].x));
+			        }       
+
+			        // 검색된 장소 위치를 기준으로 지도 범위를 재설정합니다
+			        map.setBounds(bounds);
+			    } 
+			}
+
+			// 지도에 마커를 표시하는 함수입니다
+			function displayMarker(place) {
+			    
+			    // 마커를 생성하고 지도에 표시합니다
+			    var marker = new kakao.maps.Marker({
+			        map: map,
+			        position: new kakao.maps.LatLng(place.y, place.x) 
+			    });
+
+			    // 마커에 클릭이벤트를 등록합니다
+			    kakao.maps.event.addListener(marker, 'click', function() {
+					let reviewShow = document.querySelector(".popup-wrap");
+					if (reviewShow.style.display == "none") {
+						reviewShow.style.display = "";
+					}else{
+						reviewShow.style.display = "none";
+					}
+					alert('마커를 클릭했습니다!');
+				    
+				});
+			}
+			
+		}
+		
+		
+		/* 커스텀 마커 생성 */
+		var imageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_red.png', // 마커이미지의 주소입니다    
+	    imageSize = new kakao.maps.Size(64, 69), // 마커이미지의 크기입니다
+	    imageOption = {offset: new kakao.maps.Point(27, 69)}; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
+	
+		// 마커의 이미지정보를 가지고 있는 마커이미지를 생성합니다
+		var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption),
+		    markerPosition = new kakao.maps.LatLng(37.54699, 127.09598); // 마커가 표시될 위치입니다
+		
+		// 마커를 생성합니다
+		var marker = new kakao.maps.Marker({
+		  position: markerPosition,
+		  image: markerImage // 마커이미지 설정 
+		});
+		
+		// 마커가 지도 위에 표시되도록 설정합니다
+		marker.setMap(map);  
+		
+		// 커스텀 오버레이에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
+		var content = '<div class="customoverlay">' +
+		    '  <a href="https://map.kakao.com/link/map/11394059" target="_blank">' +
+		    '    <span class="title">구의야구공원</span>' +
+		    '  </a>' +
+		    '</div>';
+		
+		// 커스텀 오버레이가 표시될 위치입니다 
+		var position = new kakao.maps.LatLng(37.54699, 127.09598);  
+		
+		// 커스텀 오버레이를 생성합니다
+		var customOverlay = new kakao.maps.CustomOverlay({
+		    map: map,
+		    position: position,
+		    content: content,
+		    yAnchor: 1 
+		});
+		kakao.maps.event.addListener(marker, 'click', function() {
+			let reviewShow = document.querySelector('.popup-wrap');
+			if (reviewShow.style.display == "none") {
+				reviewShow.style.display = "";
+			}else{
+				reviewShow.style.display = "none";
+			}
+			alert('마커를 클릭했습니다!');
+		});
+		
 	</script>
 
 </body>
