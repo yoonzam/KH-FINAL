@@ -46,10 +46,5 @@
 		<property name="maxUploadSize" value="5242880"/>		
 	</bean>
 			
-<<<<<<< HEAD
-	
-=======
-	<mongo:repositories base-package="com.kh.eatsMap.*.model.repository.*" />    
->>>>>>> branch 'main' of https://github.com/yoonzam/KH-FINAL.git
 			
 </beans>
