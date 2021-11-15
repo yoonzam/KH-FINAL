@@ -37,7 +37,7 @@
           </div>
           
           <label for="chk-password">비밀번호 확인</label>
-          <input type="password" name="chk-password" id="chk-password">
+          <input type="password" name="chkPassword" id="chk-password">
           <div class="box-valid-msg chk-password">
             <em></em>
             <ul class="valid-msg">
