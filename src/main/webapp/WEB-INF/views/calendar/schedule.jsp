@@ -4,18 +4,12 @@
 	<div class="dimmed"></div>
 	<div class="layer-popup review">
 		<div class="content view">
-			<div class="popup-title">일정 만들기</div>
-			<ul class="schedule-wrap">
-				<li class="title"><span>제목</span><input class="input" type="text" placeholder="제목을 입력하세요"/></li>
-				<li class="date"><span>일자</span><input class="input" type="date"/></li>
-				<li class="time"><span>시간</span><input class="input" type="time"/></li>
-				<li class="place"><span>장소</span><input class="input" type="text" placeholder="장소를 검색하세요"/></li>
-				<li class="member"><span>참석자</span><input class="input" type="text" placeholder="함께할 잇친을 추가하세요"/></li>
-				<li class="btn-wrap">
-					<a class="submit">확인</a>
-					<a class="cancel">취소</a>
-				</li>
-			</ul>
+			<div class="popup-title">떡볶이 먹는 날</div>
+			<div class="schedule-wrap">
+				<div class="date"><span>날짜 : </span><span>2021년 10월 27일</span><span> 18:00</span></div>
+				<div class="place"><span>장소 : </span><span>마뇨 떡볶이</span><span>(서울 관악구 신원로 35)</span></div>
+				<div class="member"><span>참석자 : </span><span>알파카, 마루우</span></div>
+			</div>
 		</div>
 	</div>
 	
