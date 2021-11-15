@@ -33,7 +33,7 @@
 						</div>
 					</li>
 				</ul>
-				<div class="btn">
+				<div class="btn-wrap">
 					<div><span>3</span>/5단계</div>
 					<button class="prev">이전</button>
 					<button class="next">다음</button>

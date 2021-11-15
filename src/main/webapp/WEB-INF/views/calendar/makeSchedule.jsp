@@ -4,9 +4,9 @@
 	<div class="dimmed"></div>
 	<div class="layer-popup review">
 		<div class="content view">
-			<div class="schedule-make">
+			<div class="schedule">
 				<div class="popup-title">일정 만들기</div>
-				<div class="schedule-wrap">
+				<div class="schedule-list">
 					<div class="title" id="list"><span>제목</span><input class="input" type="text" placeholder="제목을 입력하세요"/></div>
 					<div class="date" id="list"><span>일자</span><input class="input" type="date"/></div>
 					<div class="time" id="list"><span>시간</span><input class="input" type="time"/></div>
