@@ -302,7 +302,6 @@ footer{color:#aaa; font-size:0.8em; padding:30px; text-align:center;}
 .review-upload .btn button.next:hover{background-color: #ffa54f;}
 .review-upload .btn button.prev:hover{background-color: #d8d2cf;}
 
-
 @media screen and (max-width: 1000px) {
 
 	.header{padding-top: 15px; padding-bottom: 15px;}

@@ -21,17 +21,14 @@
           padding-top: 150px;
 		}
 		
-	
-		
 		div.background {
 		  width:960px;
-          height :500px;
           margin:auto;
 		  border-radius: 12px;
 		}
+		
         div.container {
           width:960px;
-          height :500px;
           margin:auto;
           border-radius: 12px;
 
@@ -45,9 +42,16 @@
           font-weight:normal;
           color:black;
         }
+        
         div.contents {
-        	margin: 30px;
+        	margin: 78px;
+        	margin-right: -113px;
         }
+        
+        hr{
+			margin-left:-11px;
+			width: 772px;
+		}
         
       
     </style>
@@ -61,31 +65,34 @@
 		<div class="main">
 			<div class="background">
 				<div class="container">
-					<h3>그룹 새로 만들기</h3>
-					<hr width="800px">
-					<br>
-			      <div class="row">
-			        <div class="col-xs-3">프로필</div>
-			        <div class="col-xs-9"><img src="https://via.placeholder.com/60" alt="" class="img-circle"></div>
-			      </div>
-			      <br>
-			      <div class="row">
-			        <div class="col-xs-3">그룹 이름</div>
-			        <div class="col-xs-9"></div>
-			      </div>
-			      <br>
-			      <div class="row">
-			        <div class="col-xs-3">초대하기</div>
-			        <div class="col-xs-9">+ 친구 초대하기</div>
-			      </div>
-			      <div class="row">
-			        <div class="col-xs-3"></div>
-			        <div class="col-xs-9">+ 친구 초대하기</div>
-			      </div>
-			      <div class="row">
-			        <div class="col-xs-3"></div>
-			        <div class="col-xs-9">+ 친구 초대하기</div>
-			      </div>
+					<div class="contents">
+						<span style="font-size: 1.5em">그룹 새로 만들기</span>
+							<hr>
+							<br>
+							<br>
+				      <div class="row">
+				        <div class="col-xs-3">프로필</div>
+				        <div class="col-xs-9"><img src="https://via.placeholder.com/60" alt="" class="img-circle"></div>
+				      </div>
+				      <br>
+				      <div class="row">
+				        <div class="col-xs-3">그룹 이름</div>
+				        <div class="col-xs-9"></div>
+				      </div>
+				      <br>
+				      <div class="row">
+				        <div class="col-xs-3">초대하기</div>
+				        <div class="col-xs-9">+ 친구 초대하기</div>
+				      </div>
+				      <div class="row">
+				        <div class="col-xs-3"></div>
+				        <div class="col-xs-9">+ 친구 초대하기</div>
+				      </div>
+				      <div class="row">
+				        <div class="col-xs-3"></div>
+				        <div class="col-xs-9">+ 친구 초대하기</div>
+			     	 </div>
+			       </div>
 			    </div>
 			</div>    
 
