@@ -66,7 +66,7 @@
 								<img src="/resources/img/upload/01.jpg">
 							</div>
 							<div class="info">
-								<div class="eats-location">서울 영등포구</div>
+								<div class="eats-location">서울 관악구</div>
 								<div class="eats-name">스시 아루히 <i onclick="clickLike();" class="eats-like far fa-heart"></i></div>
 								<div class="eats-tag"><span>#가성비</span> <span>#친근함</span> <span>#1~2만원대</span></div>
 								<div class="eats-score"><i class="fas fa-star"></i>5.0</div>

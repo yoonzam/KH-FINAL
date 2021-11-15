@@ -1,5 +1,6 @@
 package com.kh.eatsMap.member;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.junit.Test;
@@ -10,7 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.domain.Sort.TypedSort;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -28,32 +32,54 @@ public class MongoRepositoryTest {
     @Autowired 
     private MemberRepository repository;
     
+    @Autowired
+    private MongoTemplate mongoTemplate;
+    
     Logger logger = LoggerFactory.getLogger(this.getClass());
 
+    
+    
+    @Test
+    public void saveMember() {
+    	Member member = new Member();
+    	member.setEmail("member@gmail.com");
+    	member.setNickname("nick22");
+    	member.setPassword("1234");
+    	member.setIsLeave(0);
+    	member.setRegDate(LocalDate.now());
+    	//repository.save(member);
+    	
+    	mongoTemplate.save(member);
+    }
+    
+    
     @Test
     public void findAllMembers() {
-      List<Member> members = repository.findAll();
-      repository.findAll();
-      repository.findById("");
-//      repository.save(member);
-      
-      
+    	repository.findAll().forEach(e -> logger.info(e.toString()));
     }
     
     @Test
     public void memberCount() {
-    	logger.info("몇 명?"+ repository.count());
+    	logger.debug("몇 명?"+ repository.count());
+    	
+    	Sort sort = Sort.by("nickname").descending();
+  			 
+
+    	
+    	Query query = new Query().with(sort);
+    	List<Member> member = mongoTemplate.find(query, Member.class, "member");
+    	logger.debug(member.toString());
     }
 
     
     @Test
     public void existMemberById() {
-    	logger.info("아이디가 ~인 멤버 존재? " + repository.existsById("618df2c53519c259d27dc5ef"));
+    	logger.debug("아이디가 ~인 멤버 존재? " + repository.existsById("618df2c53519c259d27dc5ef"));
     }
     
     @Test
     public void findMemberById() {
-    	logger.info(repository.findById("618df2c53519c259d27dc5ef").toString());
+    	logger.debug(repository.findById("618df2c53519c259d27dc5ef").toString());
     }
     
     
@@ -63,13 +89,13 @@ public class MongoRepositoryTest {
     public void findMember() {
     	//distinct
     	List<Member> members = repository.findDistinctMemberByNicknameOrEmail("nick2","nick4@gmail.com");
-    	logger.info(members.toString());
+    	logger.debug(members.toString());
     }
 	
     @Test
     public void findMemberIgnoreCase() {
     	//ignoreCase
-    	logger.info(repository.findByNicknameIgnoreCase("NICK2").toString());
+    	logger.debug(repository.findByNicknameIgnoreCase("NICK2").toString());
     }
 	
 	@Test

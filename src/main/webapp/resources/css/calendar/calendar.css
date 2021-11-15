@@ -20,6 +20,7 @@
 #calendar{
 	display: flex;
 	max-width: 1100px;
+	/* min-height: 1000px; */
 	margin: 40px auto;
 }
 
@@ -40,10 +41,7 @@
 	background-color: #eee;
 }
 
-.schedule-list{
-	padding:20px;
-}
-.schedule-list #list{
+.schedule-list .list{
 	padding: 15px;
 	text-align: center;
 	font-size:20px;
@@ -51,11 +49,12 @@
 	color:#333;
 }
 
-.schedule-list #list span{
-	padding: 0 70px;
+.schedule-list .list span{
+	display: inline-block;
+	width: 150px;
 }
 
-.schedule-list #list .input{
+.schedule-list .list input{
 	width: 300px;
 	height: 50px;
 	padding-left: 10px;
@@ -87,4 +86,16 @@
 }
 
 
+@media screen and (max-width: 1000px) {
+    .timeline-brd li{
+		width:33.3%;
+		padding:15px;
+	}
+}
 
+@media screen and (max-width: 768px) {
+    .timeline-brd li{
+		width:50%;
+		padding:15px;
+	}
+}

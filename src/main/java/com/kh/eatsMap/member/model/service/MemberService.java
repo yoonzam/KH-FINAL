@@ -1,8 +1,13 @@
 package com.kh.eatsMap.member.model.service;
 
-import org.springframework.stereotype.Service;
+import java.util.List;
 
-@Service
+import com.kh.eatsMap.member.model.dto.Member;
+
 public interface MemberService {
+
+	List<Member> findMember();
+
+	void joinMember();
 
 }

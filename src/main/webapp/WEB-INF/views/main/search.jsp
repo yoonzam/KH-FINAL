@@ -63,6 +63,7 @@
 				</div>
 			</div>
 			<div class="timeline-wrap">
+				<h2><i class="fas fa-search color-m"></i> <span class="color-m">영등포 술집</span> 검색결과</h2>
 				<ul class="timeline-brd">
 					<li>
 						<div class="eats-list">
