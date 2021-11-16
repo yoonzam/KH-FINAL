@@ -42,14 +42,14 @@ public class MongoRepositoryTest {
     @Test
     public void saveMember() {
     	Member member = new Member();
-    	member.setEmail("member@gmail.com");
-    	member.setNickname("nick22");
+    	member.setEmail("kim@gmail.com");
+    	member.setNickname("kim");
     	member.setPassword("1234");
     	member.setIsLeave(0);
     	member.setRegDate(LocalDate.now());
-    	//repository.save(member);
+    	repository.save(member);
     	
-    	mongoTemplate.save(member);
+    	//mongoTemplate.save(member);
     }
     
     
@@ -154,7 +154,16 @@ public class MongoRepositoryTest {
     	//sort 조건에 의해 정렬 후, nickname이 nick5인 회원 10명 조회
     	logger.info(repository.findTop10ByNickname("nick5",sort).toString());
     }
-	
+    
+    @Test
+    public void findMemberByNickname() {
+    	repository.findMemberByNickname("nick22").forEach(e -> logger.info(e.toString()));
+    }
+    
+    @Test
+    public void findMemberByEmail() {
+    	logger.debug(repository.findByEmail("qwe@gmail.com").toString());
+    }
 
 
 }

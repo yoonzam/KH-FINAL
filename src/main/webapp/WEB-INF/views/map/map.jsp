@@ -30,10 +30,11 @@
 }
 
 .rest-info {
-	display: flex; 
-	flex-direction : column;
-	justify-content: center;
-	width: 80%;
+	padding: 20px 0;
+	flex:6;
+	display: flex;
+    flex-direction: column;
+    justify-content: space-around;
 }
 
 
@@ -41,18 +42,25 @@
 	font-weight: 700;
 	font-size: 20px;
 	color: #111;
+	margin-top:0;
 	margin-bottom: 10px;
 }
+.wrap-btn{
+	flex:1;
+	position: relative; 
+	display: flex;
+	
+}
 .btn {
-	margin-left: 10px;
 	padding: 18px;
 	border-radius: 5px;
 	color: #fff;
 	background-color: #fa8633;
 	font-weight: 700;
 	transition-duration: 0.5s;
-	margin-top: 28px;
-	height: 50%;
+	position: absolute;
+	top: 50%;
+	transform : translateY(-50%);
 }
 .btn:hover{
 	background-color:#ffa54f;
@@ -193,10 +201,12 @@
 			<div class="popup">
 				<div class="popup-wrap" style="display: none;">
 					<div class="rest-info">
-						<span class="rest-title">스시 아루히</span> <span class="rest-content">서울시
-							영등포구 여의나루길 13</span>
+						<h2 class="rest-title">스시 아루히</h2> 
+						<span class="rest-content">서울시 영등포구 여의나루길 13</span>
 					</div>
-					<div class="btn">후기등록</div>
+					<div class="wrap-btn">
+						<span class="btn">후기등록</span>
+					</div>
 				</div>
 
 			</div>
@@ -206,6 +216,11 @@
 
 	<%@ include file="/WEB-INF/views/include/footer.jsp"%>
 	<script type="text/javascript">
+	
+	/* 유진 추가내용 */
+	document.querySelector('.btn').addEventListener('click',() => {
+		document.querySelector('.dimmed-wrap').style.display='flex';
+	})
 	
 		let clickLock = (e) =>{
 			if (e.className.match("fas fa-unlock")) {
