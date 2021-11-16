@@ -1,0 +1,78 @@
+@charset "UTF-8";
+.container-wrap{max-width:1300px; margin:0 auto; padding:30px;}
+.container{border-radius: 12px; background-color: #fff; padding: 40px; box-shadow: 0px 20px 80px 0px rgb(153 153 153 / 30%);}
+
+.myeats-tab{display:flex; margin-bottom:30px;}
+.myeats-tab > li{width:33.3%; font-size:18px; padding:15px; border-bottom:2px solid #eee; text-align:center; font-weight:700; cursor:pointer;}
+.myeats-tab > li:hover{opacity:0.8;}
+.myeats-tab > li.selected{border-bottom:3px solid var(--main-color); color:var(--main-color);}
+
+.profile{
+  width: 80%;
+  margin: auto;
+  padding: 20px;
+  display: flex;
+}
+.wrap-profile-img{}
+.profile-img{width:150px; height:150px; overflow:hidden; background-color:#ddd; border-radius:75px; margin-right:15px; margin-bottom: 20px;}
+.profile-img img{width:100%; height:100%; object-fit:cover;}
+
+.wrap-profile-info{
+  width: 80%;
+  margin: auto;
+  display: flex;
+  justify-content: space-around;
+}
+.postCnt-txt{
+  font-size: 15px;
+  font-weight: 800;
+}
+.cnt{
+  display: inline-block;
+  width: 100%;
+  padding: 10px;
+  text-align: center;
+  font-size: 14px;
+}
+.btn-wrap{
+  clear: both;
+  width: 80%;
+  margin: 0 auto;
+  margin-bottom: 60px;
+  position: relative;
+}
+.btn-edit-profile{
+  position: absolute;
+  text-align: center;
+  width: 100%;
+  padding: 10px;
+  background-color: var(--main-color);
+  border-radius:5px;
+  color: #fff;
+  transition-duration:0.5s;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 17px;
+}
+.btn-edit-profile:hover{
+  background-color:var(--hover-color);
+}
+
+.timeline-brd li{
+	width:33.3%;
+	padding:15px;
+}
+
+@media screen and (max-width: 1000px) {
+    .timeline-brd li{
+		width:33.3%;
+		padding:15px;
+	}
+}
+
+@media screen and (max-width: 768px) {
+    .timeline-brd li{
+		width:50%;
+		padding:15px;
+	}
+}
