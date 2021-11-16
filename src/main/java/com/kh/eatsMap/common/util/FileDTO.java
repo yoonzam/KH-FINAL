@@ -1,17 +1,22 @@
 package com.kh.eatsMap.common.util;
 
-import java.sql.Date;
+import java.time.LocalDate;
+
+import org.bson.types.ObjectId;
+import org.springframework.data.annotation.Id;
 
 import lombok.Data;
 
 @Data
 public class FileDTO {
-	private String flIdx;
+	
+	@Id
+	private ObjectId flIdx;
 	private String typeIdx;
 	private String originFileName;
 	private String renameFileName;
 	private String savePath;
-	private Date regDate;
+	private LocalDate regDate;
 	private int isDel;
 	
 	public String getDownloadURL() {
