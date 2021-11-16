@@ -47,14 +47,16 @@
 .group-view .group-img img{width:100%; height:100%; object-fit:cover;}
 
 .group-view .group-info{min-width:400px;}
-.group-view .group-title{font-size:30px; color:#111; font-weight: 700; margin-bottom:10px;}
+.group-view .group-title{font-size:30px; color:#111; font-weight: 700;}
 .group-view .group-title i{background-color:var(--red-color); cursor:pointer; color:#fff; padding:10px; font-size:0.6em; transition-duration:0.5s; border-radius:5px;}
 .group-view .group-title i:hover{background-color:var(--pink-color);}
-.group-view .group-member{margin-top:10px;}
-.group-view .group-member h4{font-size:18px; color:#333; font-weight:700; margin-bottom:10px;}
-.group-view .group-member li{line-height:2;}
-.group-view .group-service{border-bottom:1px solid #ddd; border-top:1px solid #ddd; padding:10px 0px;}
+.group-view .group-service{padding:10px 0px;}
 .group-view .group-service button{background-color:#ccc; cursor:pointer; border-radius:5px; padding:14px; transition-duration:0.5s; color:#fff; border:none; font-size:16px;}
 .group-view .group-service button:hover{background-color:#ddd;}
 .group-view .group-service .main-btn{background-color:var(--main-color);}
 .group-view .group-service .main-btn:hover{background-color:var(--hover-color);}
+.group-view .group-member{margin-top:10px;}
+.group-view .group-member h4{font-size:18px; color:#333; font-weight:700;}
+.group-view .group-member li{padding:10px; border:1px solid #ddd; margin-top:10px;}
+.group-view .group-member li a{float:right;}
+.group-view .group-member li a *{color:#999;}
