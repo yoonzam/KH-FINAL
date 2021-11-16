@@ -18,4 +18,6 @@ public interface MemberService {
 
 	Member authenticateUser(Member member);
 
+	void insertMember(JoinForm persistUser);
+
 }

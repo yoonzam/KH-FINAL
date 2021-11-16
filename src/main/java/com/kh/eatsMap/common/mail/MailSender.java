@@ -33,7 +33,7 @@ public class MailSender {
 		    msg.setText(htmlText,"utf-8","html");
 		    mailSender.send(msg);
 		} catch (MessagingException e) {
-			throw new HandlableException(ErrorCode.MAIL_SEND_FAIL_ERROR);
+			throw new HandlableException(ErrorCode.MAIL_SEND_FAIL_ERROR, e);
 		}
 	}
 

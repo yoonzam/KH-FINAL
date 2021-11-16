@@ -8,6 +8,7 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 
 import com.kh.eatsMap.member.model.dto.Member;
+import com.kh.eatsMap.member.validator.JoinForm;
 import com.kh.eatsMap.timeline.model.dto.Timeline;
 
 public interface MemberRepository extends MongoRepository<Member, String>{	//Repository, CrudRepository, PagingAndSortiRepository
@@ -44,5 +45,6 @@ public interface MemberRepository extends MongoRepository<Member, String>{	//Rep
 	Member findTop10ByNickname(String nickname, Sort sort);
 
 	Member findByEmail(String email);
+
 
 }

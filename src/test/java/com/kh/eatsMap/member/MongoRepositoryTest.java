@@ -42,14 +42,14 @@ public class MongoRepositoryTest {
     @Test
     public void saveMember() {
     	Member member = new Member();
-    	member.setEmail("member@gmail.com");
-    	member.setNickname("nick22");
+    	member.setEmail("kim@gmail.com");
+    	member.setNickname("kim");
     	member.setPassword("1234");
     	member.setIsLeave(0);
     	member.setRegDate(LocalDate.now());
-    	//repository.save(member);
+    	repository.save(member);
     	
-    	mongoTemplate.save(member);
+    	//mongoTemplate.save(member);
     }
     
     

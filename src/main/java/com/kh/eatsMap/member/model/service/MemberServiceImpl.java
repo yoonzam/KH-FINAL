@@ -104,5 +104,20 @@ public class MemberServiceImpl implements MemberService{
 		return null;
 	}
 
+	@Override
+	public void insertMember(JoinForm form) {
+//		form.setPassword(passwordEncoder.encode(form.getPassword()));
+		logger.debug(form.toString());
+		
+		Member member = new Member();
+		member.setNickname(form.getNickname());
+		member.setPassword(form.getPassword());
+		member.setEmail(form.getEmail());
+		member.setRegDate(LocalDate.now());
+		member.setIsLeave(0);
+
+		memberRepository.insert(member);
+	}
+
 
 }

@@ -1,23 +1,24 @@
 package com.kh.eatsMap.member.controller;
 
-import java.util.List;
 import java.util.UUID;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.kh.eatsMap.common.code.ErrorCode;
+import com.kh.eatsMap.common.exception.HandlableException;
 import com.kh.eatsMap.common.validator.ValidatorResult;
 import com.kh.eatsMap.member.model.dto.Member;
 import com.kh.eatsMap.member.model.service.MemberService;
@@ -43,8 +44,8 @@ public class MemberController {
 	@PostMapping("login")
 	public String loginImpl(Member member, HttpSession session
 							,RedirectAttributes redirectAttr) {
-		logger.debug(member.toString());
 		Member certifiedUser = memberService.authenticateUser(member);
+		memberService.findMember().forEach(e -> logger.debug(e.toString()));
 		
 		if(certifiedUser == null) {
 			redirectAttr.addFlashAttribute("message", "아이디나 비밀번호가 틀렸습니다.");
@@ -53,6 +54,26 @@ public class MemberController {
 		
 		session.setAttribute("authentication", certifiedUser);
 		return "redirect:/main/";
+	}
+	
+	@GetMapping("join-impl/{token}")
+	public String joinImpl(@PathVariable String token
+						,@SessionAttribute(value = "persistToken", required = false) String persistToken
+						,@SessionAttribute(value = "persistUser", required = false) JoinForm persistUser
+						,HttpSession session
+						,RedirectAttributes redirectAttr
+			) {
+		
+		if(!token.equals(persistToken)) {
+			throw new HandlableException(ErrorCode.AUTHENTICATION_FAILED_ERROR);
+		}
+		//memberService.findMember().forEach(e -> logger.debug(e.toString()));
+		memberService.insertMember(persistUser);
+		
+		session.removeAttribute("persistToken");
+		session.removeAttribute("persistUser");
+		redirectAttr.addFlashAttribute("message", "환영합니다. 고객님");
+		return "redirect:/member/login";
 	}
 	
 	@GetMapping("logout")

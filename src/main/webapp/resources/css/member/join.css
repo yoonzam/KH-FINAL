@@ -67,6 +67,11 @@ button:hover{
   /* font-weight: 800; */
 }
 
+.err-msg{
+	color: crimson;
+	font-size: 13px;
+	margin-left: 10px;
+}
 
 /* valid-msg */
 .box-valid-msg{

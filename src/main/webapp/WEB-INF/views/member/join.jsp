@@ -20,12 +20,25 @@
        <div class="box-logo">
          <img src="/resources/img/common/EatsMap_logo.png" alt="">
        </div>
-       <form action="/member/join" method="post" class="join-form" name="join-form">
+       <form:form modelAttribute="joinForm" action="/member/join" method="post" class="join-form" name="join-form">
          <h2 class="tit-join">회원가입</h2>
          <label for="email">이메일</label>
-         <input type="email" name="email" id="email" placeholder="이메일을 입력하세요">
+         <input type="email" name="email" id="email" placeholder="이메일을 입력하세요"
+         	<c:if test="${empty error.email }">
+         		value="${joinForm.email}"
+         	</c:if>
+         required/>
+         <form:errors path="email" cssClass="err-msg" />
          <label for="password">비밀번호</label>
-         <input type="password" name="password" id="password" placeholder="비밀번호를 입력하세요">
+         <span class="err-msg">비밀번호를 잘못 입력하였습니다.</span>
+         <form:errors path="password" cssClass="err-msg" />
+         <input type="password" name="password" id="password" placeholder="비밀번호를 입력하세요"
+         	<c:if test="${empty error.password }">
+         		value="${joinForm.password}"
+         	</c:if>
+         required/>
+         
+         
          <div class="box-valid-msg password">
             <em></em>
             <ul class="valid-msg">
@@ -37,7 +50,12 @@
           </div>
           
           <label for="chk-password">비밀번호 확인</label>
-          <input type="password" name="chkPassword" id="chk-password">
+          <input type="password" name="chkPassword" id="chk-password"
+         	<c:if test="${empty error.chkPassword }">
+         		value="${joinForm.chkPassword}"
+         	</c:if>                  
+          required/>
+          <form:errors path="chkPassword" cssClass="err-msg" />
           <div class="box-valid-msg chk-password">
             <em></em>
             <ul class="valid-msg">
@@ -58,7 +76,7 @@
             </ul>
           </div>
           <button>가입하기</button>
-        </form>
+        </form:form>
       </div>
     </section>
 
