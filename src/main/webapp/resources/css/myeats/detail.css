@@ -54,10 +54,10 @@
 }
 .detail-brd .eats-like{
 	float:right;
-	color:#aaa;
+	color:#f15050; 
 }
 .detail-brd .eats-like:hover{
-	color: #f15050;
+	color: #ccc;
 }
 .detail-brd .eats-tag{
 	max-height:48px;

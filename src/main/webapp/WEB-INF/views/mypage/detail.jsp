@@ -127,7 +127,7 @@
 							</div>
 						</li>
 					</ul>
-				</div><!-- timeline-wrap -->
+				</div><!-- detail-wrap -->
 			</div><!-- section -->
 		</div><!-- container -->
 	</div><!-- container-wrap -->
