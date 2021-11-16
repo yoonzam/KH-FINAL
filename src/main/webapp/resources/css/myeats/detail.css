@@ -1,16 +1,5 @@
 @charset "UTF-8";
 
-.main-visual{
-	height:347px;
-	background:url(../img/main/main.png) no-repeat center;
-	background-size:cover;
-	position:relative;
-	text-align:center;
-	color:#ffffff;
-	line-height:200px;
-	background-color:gray;
-}
-
 
 .detail-wrap{
 	max-width: 1300px;
@@ -40,18 +29,7 @@
 	height:100%;
 	object-fit:cover;
 }
-.detail-brd .info{
-	padding: 10px;
-	position: relative;
-}
-.detail-brd .info > div{
-	margin-bottom: 5px;
-}
-.detail-brd .eats-name{
-	color:#333;
-	font-size:20px;
-	font-weight: 700;
-}
+
 .detail-brd .eats-like{
 	float:right;
 	color:#f15050; 
@@ -59,31 +37,35 @@
 .detail-brd .eats-like:hover{
 	color: #ccc;
 }
-.detail-brd .eats-tag{
-	max-height:48px;
-	font-size:14px;
-	overflow: hidden;
-}
-.detail-brd .eats-tag span{
-	display: inline-block;
-	background-color: #e7e2df;
-	border-radius: 5px;
-	padding: 3px;
-	margin-bottom:3px;
-	margin-right:3px;
-}
+
 .detail-brd .eats-location{
 	font-size:14px;
+	color: white;
 }
 .detail-brd .eats-score{
 	font-size:14px;
 	font-weight: 900;
+	color: white;
 }
 .detail-brd .eats-score i{
 	color: #fa8633;
 }
 .sort-btn-area{
 	padding:0 30px;
+}
+
+/* 추가css '2'지우면 안됨 */
+.thum2 {
+  position: relative;
+  margin: 0 auto; 
+}
+.thum2 .info2 {
+  position: absolute; 
+  bottom: 0; 
+  background: rgb(0, 0, 0); 
+  background: rgba(0, 0, 0, 0.5); 
+  width: 100%; 
+  padding: 14px; 
 }
 
 @media screen and (max-width: 1000px) {
@@ -98,4 +80,6 @@
 		width:50%;
 		padding:15px;
 	}
+	
+
 }
