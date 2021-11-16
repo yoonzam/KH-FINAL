@@ -74,7 +74,7 @@
 </head>
 <body>
 <%@ include file="/WEB-INF/views/include/header.jsp" %>
-<%@ include file="/WEB-INF/views/mypage/dropDown.jsp" %>    
+<%@ include file="/WEB-INF/views/myeats/dropDown.jsp" %>    
 	
 		<div class="main">
 			<div class="background">
