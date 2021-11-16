@@ -4,162 +4,82 @@
 <html>
 <head>
 <%@ include file="/WEB-INF/views/include/head.jsp" %>
- <!-- 부트스트랩-->
- <meta name="viewport" content="width=device-width, initial-scale=1">
-  <!-- 부트스트랩의 플러그인-->
- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
- <style> 
-       
-		
-		/* 메인 */
-		.main {
-		/* sidebar영역 확보 */
-		  margin-left: 140px;
-		  
-		  font-size: 28px; 
-		  padding: 0px 10px;
-		  
-		  /* header영역 확보 */
-          padding-top: 150px; 
-		}
-		
-	div.container {
-          width:960px;
-          margin:auto;
-          border-radius: 12px;
-
-          background-color: #ffffff;
-          padding: 30px;
-          box-shadow: 0px 20px 80px 0px rgb(153 153 153 / 30%);
-          
-          line-height:26px;
-          font-size:16px;
-          font-weight:normal;
-          color:black; 
-        }
-        
-       
-		/*li */
-		.container ul li {
-		  cursor: pointer;
-		  position: relative;
-		  margin: 10px 100px;
-		  padding: 10px 29px;
-		  list-style-type: none;
-		  background: #fcebc0;
-		  
-		  font-size: 18px;
-		  transition: 0.2s;
-		  user-select: none;
-		  border: solid 1px;
-		}
-		
-		/*짝수li 배경색*/
-		.container ul li:nth-child(odd) {
-		  background: #fff8e6;
-		}
-		
-		/* hover시 배경색 */
-		.container ul li:hover {
-		  background: #fff4cf;
-		}
-		
-	
-		/* 자세히 보기 버튼 */
-		.container #myUL li .btn{
-			position: relative;
-			margin-left: 452px;
-		}
-		
-		/* 새로만들기 버튼 */
-		.container .btn-danger{
-		  margin-left: 20px;
-		}
-		
-		/* display: none줘서 new용도로 사용예정 */
-		.container .glyphicon{
-		position: absolute;
-		  left: 28px;
-		  top: 11px;
-		}
-		
-		
-      
-    </style>
+<link rel="stylesheet" type="text/css" href="/resources/css/myeats/myeats.css" />
 </head>
 <body>
 <%@ include file="/WEB-INF/views/include/header.jsp" %>
-<%@ include file="/WEB-INF/views/mypage/dropDown.jsp" %> 
-     
-<div class="main">
-	<div class="background">
+<section>
+	<div class="container-wrap">
 		<div class="container">
-			<div class="row">
-				<ul id="myUL">
-				  <li>
-				 	<span class="glyphicon glyphicon-circle-arrow-up">
-					</span>
-				  	<img src="https://via.placeholder.com/50" alt="" class="img-circle">
-				  	&nbsp;&nbsp;&nbsp;그룹1
-				  	<input class="btn btn-warning" type="submit" value="자세히 보기">
-				  </li>
-				  <li>
-				  	<span class="glyphicon glyphicon-circle-arrow-up">
-					</span>
-				  	<img src="https://via.placeholder.com/50" alt="" class="img-circle">
-				  	&nbsp;&nbsp;&nbsp;그룹1
-				  	<input class="btn btn-warning" type="submit" value="자세히 보기">
-				  </li>
-				  <li>
-				  	<span class="glyphicon glyphicon-circle-arrow-up">
-					</span>
-				  	<img src="https://via.placeholder.com/50" alt="" class="img-circle">&nbsp;&nbsp;&nbsp;그룹1
-				  	<input class="btn btn-warning" type="submit" value="자세히 보기">
-				  </li>
-				  <li>
-				  	<span class="glyphicon glyphicon-circle-arrow-up">
-					</span>
-				  	<img src="https://via.placeholder.com/50" alt="" class="img-circle">&nbsp;&nbsp;&nbsp;그룹1
-				  	<input class="btn btn-warning" type="submit" value="자세히 보기">
-				  </li>
-				  <li>
-				  	<span class="glyphicon glyphicon-circle-arrow-up">
-					</span>
-				  	<img src="https://via.placeholder.com/50" alt="" class="img-circle">&nbsp;&nbsp;&nbsp;그룹1
-				  	<input class="btn btn-warning" type="submit" value="자세히 보기">
-				  </li>
-				  <li>
-				  	<span class="glyphicon glyphicon-circle-arrow-up">
-					</span>
-				  	<img src="https://via.placeholder.com/50" alt="" class="img-circle">&nbsp;&nbsp;&nbsp;그룹1
-				  	<input class="btn btn-warning" type="submit" value="자세히 보기">
-				  </li>
-				</ul>
+			<ul class="myeats-tab">
+				<li class="selected">그룹관리</li>
+				<li>작성글관리</li>
+				<li>맛찜리스트</li>
+			</ul>
+			<ul class="group-wrap">
+				<li>
+					<div class="group">
+						<div class="group-img"><img src="/resources/img/upload/01.jpg"></div>
+						<p class="group-info">
+							<strong>맛집소녀단</strong><br>
+							<i class="fas fa-user"></i> 5&nbsp;&nbsp;<i class="fas fa-feather"></i> 2021-11-11
+						</p>
+					</div>
+					<div class="controller">
+						<a class="group-menu">그룹관리</a>
+						<a>수정</a>
+						<a>삭제</a>
+					</div>
+				</li>
+				<li>
+					<div class="group">
+						<div class="group-img"><img src="/resources/img/upload/02.jpg"></div>
+						<p class="group-info">
+							<strong>맛집소녀단</strong><br>
+							<i class="fas fa-user"></i> 5&nbsp;&nbsp;<i class="fas fa-feather"></i> 2021-11-11
+						</p>
+					</div>
+					<div class="controller">
+						<a class="group-menu">그룹관리</a>
+						<a>수정</a>
+						<a>삭제</a>
+					</div>
+				</li>
+				<li>
+					<div class="group">
+						<div class="group-img"><img src="/resources/img/upload/03.jpg"></div>
+						<p class="group-info">
+							<strong>맛집소녀단</strong><br>
+							<i class="fas fa-user"></i> 5&nbsp;&nbsp;<i class="fas fa-feather"></i> 2021-11-11
+						</p>
+					</div>
+					<div class="controller">
+						<a class="group-menu">그룹관리</a>
+						<a>수정</a>
+						<a>삭제</a>
+					</div>
+				</li>
+				<li>
+					<div class="group">
+						<div class="group-img"><img src="/resources/img/upload/01.jpg"></div>
+						<p class="group-info">
+							<strong>맛집소녀단</strong><br>
+							<i class="fas fa-user"></i> 5&nbsp;&nbsp;<i class="fas fa-feather"></i> 2021-11-11
+						</p>
+					</div>
+					<div class="controller">
+						<a class="group-menu">그룹관리</a>
+						<a>수정</a>
+						<a>삭제</a>
+					</div>
+				</li>
+			</ul>
+			<div class="btn-area">
+				<button class="create-btn">새로운 그룹 만들기</button>
 			</div>
-			<div class="row">
-				<div class="col-xs-9"></div>
-				<div class="col-xs-3">
-					<input class="btn btn-danger" type="button" value="새로 만들기">
-				</div>
-			</div>
-			<div class="row">
-				<ol class="pager">
-				  <li><a href="#" style="font-size: 16px">이전</a></li>
-				  <li><a href="#" style="font-size: 16px">다음</a></li>
-				</ol>
-				<br>
-			</div>
-		</div> <!-- container -->
-	</div> <!-- background -->
-</div> <!-- main -->
-     
-  
-
-    <!-- 부트스트랩의 플러그인-->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-    <!-- 부트스트랩의 플러그인-->
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
-
+		</div>
+	</div>
+</section>     
 
 <%@ include file="/WEB-INF/views/include/footer.jsp" %>
 
