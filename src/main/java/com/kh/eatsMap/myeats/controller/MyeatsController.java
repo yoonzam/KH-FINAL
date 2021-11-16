@@ -8,24 +8,23 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("myeats")
 public class MyeatsController {
 
-	@GetMapping("/")
+	@GetMapping("/group")
 	public String groupView() {
 		return "myeats/group";
 	}
-	@GetMapping("/")
+	@GetMapping("/createGroup")
 	public String createGroupView() {
 		return "myeats/createGroup";
 	}
-	@GetMapping("/")
+	@GetMapping("/groupDetail")
 	public String groupDetailView() {
 		return "myeats/groupDetail";
 	}
-	@GetMapping("/")
+	@GetMapping("/post")
 	public String postView() {
 		return "myeats/post";
 	}
-	
-	@GetMapping("/")
+	@GetMapping("/detail")
 	public String detailView() {
 		return "myeats/detail";
 	}
