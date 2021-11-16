@@ -10,24 +10,23 @@ public class MyeatsController {
 
 	@GetMapping("/group")
 	public String groupView() {
-		return "mypage/group";
+		return "myeats/group";
 	}
 	@GetMapping("/createGroup")
 	public String createGroupView() {
-		return "mypage/createGroup";
+		return "myeats/createGroup";
 	}
 	@GetMapping("/groupDetail")
 	public String groupDetailView() {
-		return "mypage/groupDetail";
+		return "myeats/groupDetail";
 	}
 	@GetMapping("/post")
 	public String postView() {
-		return "mypage/post";
+		return "myeats/post";
 	}
-	
 	@GetMapping("/detail")
 	public String detailView() {
-		return "mypage/detail";
+		return "myeats/detail";
 	}
 	
 }
