@@ -9,7 +9,7 @@ import org.springframework.data.mongodb.repository.Query;
 
 import com.kh.eatsMap.member.model.dto.Member;
 import com.kh.eatsMap.member.validator.JoinForm;
-import com.kh.eatsMap.timeline.model.dto.Timeline;
+import com.kh.eatsMap.timeline.model.dto.Review;
 
 public interface MemberRepository extends MongoRepository<Member, String>{	//Repository, CrudRepository, PagingAndSortiRepository
 	
@@ -38,7 +38,7 @@ public interface MemberRepository extends MongoRepository<Member, String>{	//Rep
 	List<Member> findByIdOrderByRegDateDesc(String id);
 	List<Member> findByPasswordOrderByNicknameAsc(String password);	//중간 ByOO 없으면 오류남
 
-	Page<Timeline> findByNickname(String nickname, Pageable page);
+	Page<Review> findByNickname(String nickname, Pageable page);
 
 	Member findFirstByOrderByNicknameAsc();
 

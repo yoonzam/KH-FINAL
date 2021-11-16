@@ -21,7 +21,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 
 import com.kh.eatsMap.member.model.dto.Member;
 import com.kh.eatsMap.member.model.repository.MemberRepository;
-import com.kh.eatsMap.timeline.model.dto.Timeline;
+import com.kh.eatsMap.timeline.model.dto.Review;
 
 
 @WebAppConfiguration
@@ -120,7 +120,7 @@ public class MongoRepositoryTest {
 	public void findTimelineWithPage() {
 		String nickname = "nick2";
 		Pageable page = (Pageable) Page.empty();
-		Page<Timeline> timeline = repository.findByNickname(nickname, page);
+		Page<Review> timeline = repository.findByNickname(nickname, page);
 		
 		//Slice<Member> findById(String id, Pageable page);
 	}
