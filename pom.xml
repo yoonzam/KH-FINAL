@@ -8,6 +8,18 @@
 	<packaging>war</packaging>
 	<version>1.0.0-BUILD-SNAPSHOT</version>
 	
+	<dependencyManagement>
+	  <dependencies>
+	    <dependency>
+	      <groupId>org.springframework.data</groupId>
+	      <artifactId>spring-data-bom</artifactId>
+	      <version>2021.0.6</version>
+	      <scope>import</scope>
+	      <type>pom</type>
+	    </dependency>
+	  </dependencies>
+	</dependencyManagement>
+	
 	<properties>
 		<java-version>11</java-version>
 		<org.springframework-version>5.3.10</org.springframework-version>
@@ -68,7 +80,7 @@
 		    <artifactId>spring-security-crypto</artifactId>
 		    <version>5.5.2</version>
 		</dependency>
-		
+
 		<!-- MongoDB Driver -->
 		<!-- https://mvnrepository.com/artifact/org.mongodb/mongodb-driver-core -->
 		<dependency>
@@ -89,8 +101,7 @@
 		<dependency>
 		    <groupId>org.springframework.data</groupId>
 		    <artifactId>spring-data-mongodb</artifactId>
-		    <version>3.1.1</version>
-		</dependency>	
+		</dependency>
 		
 		<!-- AspectJ -->
 		<dependency>
@@ -179,12 +190,6 @@
 			<groupId>javax.servlet</groupId>
 			<artifactId>jstl</artifactId>
 			<version>1.2</version>
-		</dependency>
-		
-		<dependency>
-		    <groupId>oracle</groupId>
-		    <artifactId>ojdbc6</artifactId>
-		    <version>11.2.0.3</version>
 		</dependency>
 
 		<!-- json파싱 -->

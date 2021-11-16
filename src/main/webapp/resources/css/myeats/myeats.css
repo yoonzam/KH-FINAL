@@ -1,0 +1,62 @@
+@charset "UTF-8";
+
+.container-wrap{max-width:1300px; margin:0 auto; padding:30px;}
+.container-wrap .container{border-radius: 12px; background-color: #fff; padding: 50px 40px; box-shadow: 0px 20px 80px 0px rgb(153 153 153 / 30%);}
+.container-wrap .container h3{font-size:30px; color:#111; text-align:center;}
+.container-wrap .container h3 i{color:var(--main-color);}
+
+.myeats-tab{display:flex; margin-bottom:30px;}
+.myeats-tab > li{width:33.3%; font-size:18px; padding:15px; border-bottom:2px solid #eee; text-align:center; font-weight:700; cursor:pointer;}
+.myeats-tab > li:hover{opacity:0.8;}
+.myeats-tab > li.selected{border-bottom:3px solid var(--main-color); color:var(--main-color);}
+
+.group-wrap{display:flex; flex-wrap:wrap;}
+.group-wrap li{width:49%; margin-bottom:2%; margin-right:2%; display:flex; justify-content:space-between; align-items:center; padding:20px 15px; border:1px solid #ddd;}
+.group-wrap li:nth-child(2n){margin-right:0;}
+.group-wrap .group{display:flex; align-items: center;}
+.group-wrap .group .group-img{width:80px; height:80px; overflow:hidden; background-color:#ddd; border-radius:75px; margin-right:15px;}
+.group-wrap .group .group-img img{width:100%; height:100%; object-fit:cover;}
+.group-wrap .group .group-info, .group-wrap .group .group-info i{margin:0; color:#888; font-size:15px;}
+.group-wrap .group .group-info strong{display:inline-block; font-size:24px; font-weight:700; color:#333; margin-bottom:5px;}
+.group-wrap .controller a{display:inline-block; background-color:#ccc; color:#fff; padding:10px; border-radius:5px; transition-duration:0.5s;}
+.group-wrap .controller a:hover {text-decoration: none; background-color:#ddd;}
+.group-wrap .controller a.group-menu{background-color:var(--main-color);}
+.group-wrap .controller a.group-menu:hover{background-color:var(--hover-color);}
+
+.btn-area{text-align:center;}
+.btn-area button{cursor:pointer; font-weight:700; border-radius:5px; font-size:20px; padding:20px 30px; transition-duration:0.5s; color:#fff; border:none;}
+.btn-area .create-btn{background-color:var(--red-color);}
+.btn-area .create-btn:hover{background-color:var(--pink-color);}
+.btn-area .cancel-btn{background-color:#aaa;}
+.btn-area .cancel-btn:hover{background-color:#bbb;}
+
+.group-form{width:100%; max-width:500px; margin:0 auto;}
+.group-form > ul{width:100%; border-top:2px solid var(--main-color); margin-top:20px; margin-bottom:20px;}
+.group-form > ul > li{width:100%; border-bottom:1px solid #ddd;padding:20px; display:flex; align-items: center;}
+.group-form > ul > li > span{width:100px; display:inline-block; font-weight: 500;}
+.group-form input{width: calc(100% - 100px); padding:13px; border-radius:5px; border:1px solid #aaa;}
+.group-form .friend-list{width: calc(100% - 100px);}
+.group-form .friend-list input{width: calc(100% - 85px);}
+.group-form .friend-list button{background-color:var(--main-color); float:right; width:80px; cursor:pointer; border-radius:5px; padding:14px 0px; transition-duration:0.5s; color:#fff; border:none;}
+.group-form .friend-list span{margin-top:10px; display:block;}
+.group-form .friend-list span i{cursor:pointer;}
+
+.group-view{display:flex; width:100%; max-width:500px; margin:0 auto; justify-content: center;}
+.group-view .group-profile{margin-right:30px;}
+.group-view .group-img{width:250px; height:250px; border-radius:50%; overflow:hidden; margin:0 auto;}
+.group-view .group-img img{width:100%; height:100%; object-fit:cover;}
+
+.group-view .group-info{min-width:400px;}
+.group-view .group-title{font-size:30px; color:#111; font-weight: 700;}
+.group-view .group-title i{background-color:var(--red-color); cursor:pointer; color:#fff; padding:10px; font-size:0.6em; transition-duration:0.5s; border-radius:5px;}
+.group-view .group-title i:hover{background-color:var(--pink-color);}
+.group-view .group-service{padding:10px 0px;}
+.group-view .group-service button{background-color:#ccc; cursor:pointer; border-radius:5px; padding:14px; transition-duration:0.5s; color:#fff; border:none; font-size:16px;}
+.group-view .group-service button:hover{background-color:#ddd;}
+.group-view .group-service .main-btn{background-color:var(--main-color);}
+.group-view .group-service .main-btn:hover{background-color:var(--hover-color);}
+.group-view .group-member{margin-top:10px;}
+.group-view .group-member h4{font-size:18px; color:#333; font-weight:700;}
+.group-view .group-member li{padding:10px; border:1px solid #ddd; margin-top:10px;}
+.group-view .group-member li a{float:right;}
+.group-view .group-member li a *{color:#999;}

@@ -8,7 +8,8 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 
 import com.kh.eatsMap.member.model.dto.Member;
-import com.kh.eatsMap.timeline.model.dto.Timeline;
+import com.kh.eatsMap.member.validator.JoinForm;
+import com.kh.eatsMap.timeline.model.dto.Review;
 
 public interface MemberRepository extends MongoRepository<Member, String>{	//Repository, CrudRepository, PagingAndSortiRepository
 	
@@ -21,7 +22,7 @@ public interface MemberRepository extends MongoRepository<Member, String>{	//Rep
 
 	
 	@Query("{ 'nickname' : ?0 }")								//select * from member where user_id = ? ----> set(1, "")
-	List<Member> findByTheMemberNickname(String nickname);
+	List<Member> findMemberByNickname(String nickname);
 
 	@Query(value = "{ 'nickname' : ?0 }", fields="{ 'email' : 1, 'password' : 1}")
 	List<Member> findEmailAndPasswordWithJson(String nickname);
@@ -37,10 +38,13 @@ public interface MemberRepository extends MongoRepository<Member, String>{	//Rep
 	List<Member> findByIdOrderByRegDateDesc(String id);
 	List<Member> findByPasswordOrderByNicknameAsc(String password);	//중간 ByOO 없으면 오류남
 
-	Page<Timeline> findByNickname(String nickname, Pageable page);
+	Page<Review> findByNickname(String nickname, Pageable page);
 
 	Member findFirstByOrderByNicknameAsc();
 
 	Member findTop10ByNickname(String nickname, Sort sort);
+
+	Member findByEmail(String email);
+
 
 }
