@@ -6,6 +6,8 @@ import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import com.kh.eatsMap.common.util.FileDTO;
+
 import lombok.Data;
 
 @Data
@@ -19,4 +21,17 @@ public class Member {
 	private String email;
 	private LocalDate regDate;
 	private int isLeave;
+	private String profile;
+
+
+	public void setProfile(FileDTO file) {	
+		if(file.getSavePath() == null) {
+			this.profile = null;
+		}else {
+			this.profile = file.getSavePath() + file.getRenameFileName();
+
+		}	
+	}
+
+	
 }

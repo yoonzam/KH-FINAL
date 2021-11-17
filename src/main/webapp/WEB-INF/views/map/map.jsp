@@ -94,7 +94,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="review">
+			<div class="map-review">
 				<div class="review_wrap">
 					<div class="img-box">
 						<img class="image-thumbnail" src="/resources/img/upload/01.jpg">

@@ -2,6 +2,7 @@ package com.kh.eatsMap.member.controller;
 
 import java.util.UUID;
 
+import javax.mail.Multipart;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.kh.eatsMap.common.code.ErrorCode;
@@ -134,5 +136,17 @@ public class MemberController {
 	
 	@GetMapping("kakao-join")
 	public void kakaoJoin() {}
+	
+	@GetMapping("edit-profile")
+	public void editProfile() {}
+	
+	@PostMapping("update-img")
+	public String updateImg(MultipartFile profile, @SessionAttribute("authentication") Member member) {
+		logger.debug(profile.toString());
+		
+		memberService.insertProfileImg(member,profile);
+		
+		return "redirect:/member/edit-profile";
+	}
 
 }

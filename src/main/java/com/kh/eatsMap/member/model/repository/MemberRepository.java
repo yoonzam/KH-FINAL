@@ -1,24 +1,31 @@
 package com.kh.eatsMap.member.model.repository;
 import java.util.List;
+import java.util.function.Supplier;
+import java.util.stream.Stream;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
+import org.springframework.data.querydsl.QuerydslPredicateExecutor;
+import org.springframework.data.querydsl.binding.QuerydslBindings;
+import org.springframework.data.util.Streamable;
 
 import com.kh.eatsMap.member.model.dto.Member;
-import com.kh.eatsMap.member.validator.JoinForm;
 import com.kh.eatsMap.timeline.model.dto.Review;
 
 public interface MemberRepository extends MongoRepository<Member, String>{	//Repository, CrudRepository, PagingAndSortiRepository
 	
+
 //	Member save(Member member);
 //	Optional<Member> findById(String id);
 //	List<Member> findAll();
 //	long count();
 //	void delete(Member member);
 //	boolean existsById(String id);
+
+	
 
 	
 	@Query("{ 'nickname' : ?0 }")								//select * from member where user_id = ? ----> set(1, "")
@@ -45,6 +52,13 @@ public interface MemberRepository extends MongoRepository<Member, String>{	//Rep
 	Member findTop10ByNickname(String nickname, Sort sort);
 
 	Member findByEmail(String email);
+
+	Streamable<Member> findByNicknameContaining(String string);
+
+	Streamable<Member> findByEmailContaining(String string);
+
+	@Query("select m from Member m")
+	Stream<Member> findMemberByQuery();
 
 
 }

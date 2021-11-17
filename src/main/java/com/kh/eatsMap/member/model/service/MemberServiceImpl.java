@@ -3,21 +3,19 @@ package com.kh.eatsMap.member.model.service;
 import java.time.LocalDate;
 import java.util.List;
 
-import javax.inject.Inject;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.RequestEntity;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.kh.eatsMap.common.code.Config;
 import com.kh.eatsMap.common.mail.MailSender;
+import com.kh.eatsMap.common.util.FileUtil;
 import com.kh.eatsMap.member.model.dto.Member;
 import com.kh.eatsMap.member.model.repository.MemberRepository;
 import com.kh.eatsMap.member.validator.EmailForm;
@@ -116,6 +114,15 @@ public class MemberServiceImpl implements MemberService{
 		member.setRegDate(LocalDate.now());
 		member.setIsLeave(0);
 
+		memberRepository.insert(member);
+	}
+
+	@Override
+	public void insertProfileImg(Member member, MultipartFile file) {
+
+		FileUtil fileUtil = new FileUtil();
+		member.setProfile(fileUtil.fileUpload(file));
+		
 		memberRepository.insert(member);
 	}
 
