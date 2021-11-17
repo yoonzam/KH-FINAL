@@ -26,7 +26,7 @@ public class EmailValidator implements Validator{
 		EmailForm form = (EmailForm) target;
 		
 		//이메일 확인
-		if(memberRepository.findMemberByNickname(form.getEmail()) == null ) {
+		if(memberRepository.findByEmail(form.getEmail()) == null ) {
 			errors.rejectValue("email", "err-email", "해당 이메일로 가입한 회원은 존재하지 않습니다.");
 		}
 	}	

@@ -1,6 +1,5 @@
 package com.kh.eatsMap.member.model.repository;
 import java.util.List;
-import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 import org.springframework.data.domain.Page;
@@ -8,8 +7,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
-import org.springframework.data.querydsl.QuerydslPredicateExecutor;
-import org.springframework.data.querydsl.binding.QuerydslBindings;
 import org.springframework.data.util.Streamable;
 
 import com.kh.eatsMap.member.model.dto.Member;
@@ -57,8 +54,9 @@ public interface MemberRepository extends MongoRepository<Member, String>{	//Rep
 
 	Streamable<Member> findByEmailContaining(String string);
 
-	@Query("select m from Member m")
+	@Query("select m from Member m")	//안되는 코드임! BsonType에러
 	Stream<Member> findMemberByQuery();
+
 
 
 }

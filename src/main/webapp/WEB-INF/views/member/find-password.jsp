@@ -22,15 +22,17 @@
        </div>
        <form:form modelAttribute="EmailForm" action="/member/find-password" method="post" class="find-pw-form" name="find-pw">
          <h2 class="tit-find-pw">비밀번호 찾기</h2>
-         <h3 class="msg">가입한 이메일로 임시비밀번호가 발송됩니다.</h3>
+         <h3 class="txt-msg">가입한 이메일로 임시비밀번호가 발송됩니다.</h3>
 
          <div class="wrap-find-pw">
-           <input type="text" name="password" id="password" placeholder="이메일을 입력하세요">
+           <input type="text" name="email" id="email" placeholder="이메일을 입력하세요">
            <button class="btn-tmp-pw">비밀번호 발급</button>
          </div>
-         <form:errors path="email" cssClass="err-msg"/>
-         
-         <!-- <h5 class="msg">메일을 확인해보세요! 임시비밀번호가 발송되었습니다.</h5> -->
+         <form:errors path="email" cssClass="err-msg"/>       
+         <c:if test="${not empty msg}">
+         	<h5 class="msg">메일을 확인해보세요!</h5>
+         	<h5 class="msg txt2"><span>임시비밀번호</span>가 발송되었습니다.</h5>
+         </c:if>
        </form:form>
      </div>
    </section>

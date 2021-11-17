@@ -2,7 +2,6 @@ package com.kh.eatsMap.member.controller;
 
 import java.util.UUID;
 
-import javax.mail.Multipart;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
@@ -47,7 +46,6 @@ public class MemberController {
 	public String loginImpl(Member member, HttpSession session
 							,RedirectAttributes redirectAttr) {
 		Member certifiedUser = memberService.authenticateUser(member);
-		memberService.findMember().forEach(e -> logger.debug(e.toString()));
 		
 		if(certifiedUser == null) {
 			redirectAttr.addFlashAttribute("message", "아이디나 비밀번호가 틀렸습니다.");
@@ -69,12 +67,11 @@ public class MemberController {
 		if(!token.equals(persistToken)) {
 			throw new HandlableException(ErrorCode.AUTHENTICATION_FAILED_ERROR);
 		}
-		//memberService.findMember().forEach(e -> logger.debug(e.toString()));
 		memberService.insertMember(persistUser);
 		
 		session.removeAttribute("persistToken");
 		session.removeAttribute("persistUser");
-		redirectAttr.addFlashAttribute("message", "환영합니다. 고객님");
+		redirectAttr.addFlashAttribute("message", "환영합니다. 회원님");
 		return "redirect:/member/login";
 	}
 	
@@ -88,23 +85,29 @@ public class MemberController {
 	@GetMapping("find-password")
 	public void findPassword() {}
 	
-	@PostMapping("tmp-password")
+	@PostMapping("find-password")
 	public String sendTmpPassword(@Validated EmailForm form
 								, Errors errors, Model model, RedirectAttributes redirectAttr) {
+		logger.debug("컨트롤러 : " + form.getEmail());
+		
 		//존재하는 이메일인지 검증
 		ValidatorResult vr = new ValidatorResult();
 		model.addAttribute("error",vr.getError());
 		
 		if(errors.hasErrors()) {
 			vr.addErrors(errors);
-			return "member/find-password";
+			//return "member/find-password";
 		}
 		
 		//임시비밀번호 발급
 		String tmpPassword = UUID.randomUUID().toString().substring(0, 7);
-		memberService.sendTmpPassword(form);
+		memberService.sendTmpPassword(form, tmpPassword);
+		
+		//임시비밀번호로 회원정보 업데이트
+		memberService.updatePassword(form.getEmail(), tmpPassword);
 	
-		return "redirect:/main/";
+		redirectAttr.addFlashAttribute("msg", tmpPassword);
+		return "redirect:/member/find-password";
 	}
 	
 	@GetMapping("join")

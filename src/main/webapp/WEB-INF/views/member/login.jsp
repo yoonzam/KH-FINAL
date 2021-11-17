@@ -25,7 +25,7 @@
          <input type="email" name="email" id="email" placeholder="이메일을 입력해주세요">
          <input type="password" name="password" id="password" placeholder="비밀번호를 입력해주세요">
          <c:if test="${not empty message }">
-			<span>${message }</span>         	
+			<span class="valid-msg">${message }</span>         	
          </c:if>
          
          <button>로그인</button>

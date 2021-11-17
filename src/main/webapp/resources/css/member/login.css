@@ -94,6 +94,10 @@ button:hover{
 .btn-kakao:hover{
 	background-color: #ffdb48;
 }
+.valid-msg{
+	font-size: 13px;
+	color: crimson;
+}
 /* member-common */
 @media screen and (max-width: 768px)  {
 	.box-logo{display: none;}

@@ -43,7 +43,7 @@ public class MemberRepositoryTest {
     @Test
     public void saveMember() {
     	Member member = new Member();
-    	member.setEmail("kim@gmail.com");
+    	member.setEmail("qleen513@gmail.com");
     	member.setNickname("kim");
     	member.setPassword("1234");
     	member.setIsLeave(0);
@@ -169,9 +169,9 @@ public class MemberRepositoryTest {
     }
 
     @Test
-    public void updateMember() {
+    public void deleteMember() {
     	Member member = new Member();
-    	member.setEmail("kim@gmail.com");
+    	member.setEmail("qleen513@gmail.com");
     	member.setNickname("kim");
     	member.setPassword("1234");
     	member.setIsLeave(0);
@@ -194,4 +194,5 @@ public class MemberRepositoryTest {
 			result.forEach(e -> logger.debug(e.toString()));
 		}
     }
+
 }

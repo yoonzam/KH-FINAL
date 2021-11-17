@@ -35,24 +35,6 @@ public class MemberServiceImpl implements MemberService{
 	Logger logger = LoggerFactory.getLogger(this.getClass());
 	
 	@Override
-	public List<Member> findMember() {
-		return memberRepository.findAll();
-	}
-
-	@Override
-	public void joinMember() {
-		
-    	Member member = new Member();
-    	member.setEmail("member@gmail.com");
-    	member.setNickname("nick22");
-    	member.setPassword("1234");
-    	member.setIsLeave(0);
-    	member.setRegDate(LocalDate.now());
-    	
-		memberRepository.save(member);
-	}
-
-	@Override
 	public void authenticateByEmail(JoinForm form, String token) {
 		MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
 		body.add("mail-template", "join-auth-email");
@@ -69,9 +51,10 @@ public class MemberServiceImpl implements MemberService{
 	}
 
 	@Override
-	public void sendTmpPassword(EmailForm form) {
+	public void sendTmpPassword(EmailForm form, String tmpPassword) {
 		MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
 		body.add("mail-template", "tmp-password-email");
+		body.add("tmp", tmpPassword);
 		
 		//RestTemplate의 기본 ContentType이 application/json이다.
 		RequestEntity<MultiValueMap<String, String>> request = RequestEntity.post(Config.DOMAIN.DESC+"/mail")
@@ -84,12 +67,9 @@ public class MemberServiceImpl implements MemberService{
 
 	@Override
 	public Member authenticateUser(Member member) {
-		Member storedMember = new Member();
-		memberRepository.findAll().forEach(e -> logger.debug(e.toString()));
-		
+		Member storedMember = new Member();		
 		
 		storedMember = memberRepository.findByEmail(member.getEmail());
-		//logger.debug(storedMember.toString());
 		
 		//password encode 이전
 		if(storedMember != null && storedMember.getPassword().equals(member.getPassword())) {
@@ -125,6 +105,14 @@ public class MemberServiceImpl implements MemberService{
 		
 		memberRepository.insert(member);
 	}
+
+	@Override
+	public void updatePassword(String email, String tmpPassword) {
+		Member member = memberRepository.findByEmail(email);
+		member.setPassword(tmpPassword);
+		memberRepository.save(member);
+	}
+
 
 
 }
