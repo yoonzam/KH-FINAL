@@ -32,6 +32,14 @@
 			<id>ojdbc6-repo</id>
 			<url>http://www.datanucleus.org/downloads/maven2/</url>
 		</repository>
+		<repository>
+	        <id>sonatype-snapshots</id>
+	        <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+	        <snapshots>
+	            <enabled>true</enabled>
+	        </snapshots>
+	    </repository>
+		
 	</repositories>
 	
 	<dependencies>
@@ -102,6 +110,7 @@
 		    <groupId>org.springframework.data</groupId>
 		    <artifactId>spring-data-mongodb</artifactId>
 		</dependency>
+
 		
 		<!-- AspectJ -->
 		<dependency>
@@ -289,6 +298,8 @@
                     <mainClass>org.test.int1.Main</mainClass>
                 </configuration>
             </plugin>
+		      
+		      
         </plugins>
     </build>
 </project>

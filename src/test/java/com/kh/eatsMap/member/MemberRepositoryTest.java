@@ -2,6 +2,7 @@ package com.kh.eatsMap.member;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Stream;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -11,10 +12,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.domain.Sort.TypedSort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.util.Streamable;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -27,7 +28,7 @@ import com.kh.eatsMap.timeline.model.dto.Review;
 @WebAppConfiguration
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"file:src/main/webapp/WEB-INF/spring/**/*-context.xml"})
-public class MongoRepositoryTest {
+public class MemberRepositoryTest {
 	
     @Autowired 
     private MemberRepository repository;
@@ -61,14 +62,16 @@ public class MongoRepositoryTest {
     @Test
     public void memberCount() {
     	logger.debug("몇 명?"+ repository.count());
-    	
+//    	repository.count(null);
+    }
+    
+    @Test
+    public void sortMember() {
     	Sort sort = Sort.by("nickname").descending();
-  			 
-
     	
     	Query query = new Query().with(sort);
     	List<Member> member = mongoTemplate.find(query, Member.class, "member");
-    	logger.debug(member.toString());
+    	member.forEach(e -> logger.debug(e.toString()));
     }
 
     
@@ -88,7 +91,7 @@ public class MongoRepositoryTest {
     @Test
     public void findMember() {
     	//distinct
-    	List<Member> members = repository.findDistinctMemberByNicknameOrEmail("nick2","nick4@gmail.com");
+    	List<Member> members = repository.findDistinctMemberByNicknameOrEmail("nick22","nick4@gmail.com");
     	logger.debug(members.toString());
     }
 	
@@ -165,5 +168,30 @@ public class MongoRepositoryTest {
     	logger.debug(repository.findByEmail("qwe@gmail.com").toString());
     }
 
+    @Test
+    public void updateMember() {
+    	Member member = new Member();
+    	member.setEmail("kim@gmail.com");
+    	member.setNickname("kim");
+    	member.setPassword("1234");
+    	member.setIsLeave(0);
+    	member.setRegDate(LocalDate.now());
+    	
+    	repository.delete(member);
+    }
 
+    @Test
+    public void findMemberByContaining() {
+    	Streamable<Member> result = repository.findByNicknameContaining("oo")
+    			  .and(repository.findByEmailContaining("qw"));
+    	
+    	result.forEach(e -> logger.debug(e.toString()));
+    }
+    
+    @Test
+    public void findMemberByQuery() {
+    	try (Stream<Member> result = repository.findMemberByQuery()) {
+			result.forEach(e -> logger.debug(e.toString()));
+		}
+    }
 }
