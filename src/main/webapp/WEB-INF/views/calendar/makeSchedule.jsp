@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<div class="dimmed-wrap" style="display:none;">
+<div class="dimmed-wrap" id="pop-schedule-form" style="display:none;">
 	<div class="dimmed"></div>
 	<div class="layer-popup review">
 		<div class="content view">
@@ -14,7 +14,7 @@
 					<div class="list member"><span>참석자</span><input type="text" placeholder="함께할 잇친을 추가하세요"/></div>
 					<div class="btn-wrap">
 						<button class="submit">확인</button>
-						<button class="cancel">취소</button>
+						<button class="cancel" onclick="closePopup();">취소</button>
 					</div>
 			</div>
 			</div>

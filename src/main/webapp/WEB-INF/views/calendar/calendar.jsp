@@ -30,7 +30,9 @@
 	    		custom:{
 	    			text: '일정 만들기',
 	    			click: function(){
-	    				alert('clicked schedule btn');
+	    				/* alert('clicked schedule btn'); */
+	    				/* $('#pop-schedule-form').addClass('open'); */
+	    				$('#pop-schedule-form').css({'display': 'flex'});
 	    			}
 	    		}
     		}
@@ -51,6 +53,8 @@
 			</div>
 	</section>
 <%@ include file="/WEB-INF/views/include/footer.jsp" %>
+<%@ include file="/WEB-INF/views/calendar/makeSchedule.jsp" %>
+<%@ include file="/WEB-INF/views/calendar/schedule.jsp" %>
 <script>
 	$('.btn-schedule').click(function(){
 		$('.schedule-wrap').addClass('active')

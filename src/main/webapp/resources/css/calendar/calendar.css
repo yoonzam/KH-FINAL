@@ -85,6 +85,10 @@
 	color:#333;
 }
 
+/* .open{
+	display:block;
+} */
+
 
 @media screen and (max-width: 1000px) {
     .timeline-brd li{
