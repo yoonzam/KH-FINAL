@@ -113,6 +113,16 @@ public class MemberServiceImpl implements MemberService{
 		memberRepository.save(member);
 	}
 
+	@Override
+	public Member findMember(String kakaoId) {
+		return memberRepository.findByKakaoId(kakaoId);
+	}
+
+	@Override
+	public void saveMember(Member member) {
+		memberRepository.save(member);
+	}
+
 
 
 }

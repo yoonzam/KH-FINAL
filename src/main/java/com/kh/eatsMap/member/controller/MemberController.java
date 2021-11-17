@@ -1,5 +1,6 @@
 package com.kh.eatsMap.member.controller;
 
+import java.util.Optional;
 import java.util.UUID;
 
 import javax.servlet.http.HttpSession;
@@ -13,7 +14,9 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -86,17 +89,19 @@ public class MemberController {
 	public void findPassword() {}
 	
 	@PostMapping("find-password")
-	public String sendTmpPassword(@Validated EmailForm form
-								, Errors errors, Model model, RedirectAttributes redirectAttr) {
+	public String sendTmpPassword(@Validated EmailForm form, Errors errors
+								, Model model, RedirectAttributes redirectAttr) {
 		logger.debug("컨트롤러 : " + form.getEmail());
 		
 		//존재하는 이메일인지 검증
 		ValidatorResult vr = new ValidatorResult();
 		model.addAttribute("error",vr.getError());
 		
+		logger.debug("에러 존재? : " + errors.hasErrors());
+		logger.debug("에러 존재? : " + errors.getFieldError().getField());
 		if(errors.hasErrors()) {
 			vr.addErrors(errors);
-			//return "member/find-password";
+			return "member/find-password";
 		}
 		
 		//임시비밀번호 발급
@@ -137,8 +142,29 @@ public class MemberController {
 		return "redirect:/main/";
 	}
 	
+	@PostMapping("kakao-login")
+	@ResponseBody
+	public String kakaoLoginImpl( String kakaoId) {
+		
+		logger.debug(kakaoId);
+				
+		if(memberService.findMember(kakaoId) == null) {
+			return "kakaoJoin";
+		}else {
+			return "kakaoLogin";
+		}
+	}
+	
 	@GetMapping("kakao-join")
 	public void kakaoJoin() {}
+	
+	@PostMapping("kakao-join")
+	public String kakaoJoinImpl(Member member) {
+		
+		memberService.saveMember(member);
+		
+		return "redirect:/member/login";
+	}
 	
 	@GetMapping("edit-profile")
 	public void editProfile() {}

@@ -12,7 +12,7 @@ let kakaoLogin = () => {
  
  let authKakao = () => {
     Kakao.Auth.login({
-             scope : 'account_email,profile_nickname',
+             
              success : requestInfo()
              
              ,fail : (error) => {
@@ -34,13 +34,8 @@ let kakaoLogin = () => {
 
 let passUserInfo = res => {
 
-	let hasEmail = res.kakao_account.has_email;
-	let nickname = res.kakao_account.profile.nickname;
-	
-	fetch('/member/kakao-login?userId=' + res.id 
-							+ '&email=' + hasEmail ? res.kakao_account.email : '' 
-							+ '&nickname=' + nickname != null ? nickname : '', {
-		method : 'GET',
+	fetch('/member/kakao-login?kakaoId=' + res.id , {
+		method : 'POST',
 	}).then(response => {
 		if(response.ok){
 			return response.text();
@@ -50,11 +45,9 @@ let passUserInfo = res => {
 		
 	}).then(text => {
 		if(text == 'kakaoLogin'){
-			location.href = '/';
+			location.href = '/main/';
 		}else if(text == 'kakaoJoin'){	
-			location.href = '/member/kakao-join?userId='+res.id 
-							+ '&email=' + hasEmail ? res.kakao_account.email : '' 
-							+ '&nickname=' + nickname != null ? nickname : '';		
+			location.href ='/member/kakao-join?kakaoId='+res.id;
 		}
 	}).catch(error => {
 		alert(error + '응답에 실패하였습니다.');

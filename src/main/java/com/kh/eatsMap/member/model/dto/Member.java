@@ -16,6 +16,7 @@ public class Member {
 	
 	@Id
 	private ObjectId id;
+	private String kakaoId;		//카카오회원용
 	private String nickname;
 	private String password;
 	private String email;

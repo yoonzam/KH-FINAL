@@ -18,7 +18,7 @@
 				<li onclick="location.href='/myeats/group'">마이잇츠</li>
 			</ul>
 			<div class="util">
-				<div class="btn-logout">로그아웃</div>
+				<div onclick="location.href='/member/logout'" class="btn-logout">로그아웃</div>
 				<div class="btn-bell new"><i class="fas fa-bell"> 2</i></div>
 				<!--div class="btn-bell"><i class="far fa-bell"></i></div-->
 				<div class="bell-list" style="display: none;">

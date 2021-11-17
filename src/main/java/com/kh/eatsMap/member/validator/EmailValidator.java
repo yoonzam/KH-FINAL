@@ -1,5 +1,7 @@
 package com.kh.eatsMap.member.validator;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
@@ -10,6 +12,7 @@ import com.kh.eatsMap.member.model.repository.MemberRepository;
 public class EmailValidator implements Validator{
 	
 	private final MemberRepository memberRepository;
+	Logger logger =  LoggerFactory.getLogger(this.getClass());
 
 	public EmailValidator(MemberRepository memberRepository) {
 		super();

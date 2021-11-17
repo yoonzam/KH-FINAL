@@ -25,7 +25,7 @@
          <h3 class="txt-msg">가입한 이메일로 임시비밀번호가 발송됩니다.</h3>
 
          <div class="wrap-find-pw">
-           <input type="text" name="email" id="email" placeholder="이메일을 입력하세요">
+           <input type="text" name="email" id="email" placeholder="이메일을 입력하세요"/>
            <button class="btn-tmp-pw">비밀번호 발급</button>
          </div>
          <form:errors path="email" cssClass="err-msg"/>       

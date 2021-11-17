@@ -20,4 +20,9 @@ public interface MemberService {
 
 	void updatePassword(String email, String tmpPassword);
 
+	Member findMember(String kakaoId);
+
+	//카카오용 임시메서드
+	void saveMember(Member member);
+
 }

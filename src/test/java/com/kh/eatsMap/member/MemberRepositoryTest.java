@@ -2,8 +2,10 @@ package com.kh.eatsMap.member;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Stream;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -16,13 +18,22 @@ import org.springframework.data.domain.Sort.TypedSort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.util.Streamable;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.web.context.WebApplicationContext;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kh.eatsMap.member.model.dto.Member;
 import com.kh.eatsMap.member.model.repository.MemberRepository;
 import com.kh.eatsMap.timeline.model.dto.Review;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.setup.MockMvcBuilders.*;
 
 
 @WebAppConfiguration
@@ -36,9 +47,16 @@ public class MemberRepositoryTest {
     @Autowired
     private MongoTemplate mongoTemplate;
     
+    @Autowired 
+	WebApplicationContext context;
+    private MockMvc mockMvc;
     Logger logger = LoggerFactory.getLogger(this.getClass());
-
     
+    
+	@Before
+	public void setup() {
+		this.mockMvc = webAppContextSetup(context).build();
+	}
     
     @Test
     public void saveMember() {
@@ -165,7 +183,9 @@ public class MemberRepositoryTest {
     
     @Test
     public void findMemberByEmail() {
-    	logger.debug(repository.findByEmail("qwe@gmail.com").toString());
+    	Optional<Member> member = Optional.ofNullable(repository.findByEmail("3@gmail.com"));
+    	member.ifPresent(e -> logger.debug(e.toString()));
+    	
     }
 
     @Test
@@ -193,6 +213,22 @@ public class MemberRepositoryTest {
     	try (Stream<Member> result = repository.findMemberByQuery()) {
 			result.forEach(e -> logger.debug(e.toString()));
 		}
+    }
+    
+    @Test
+    public void kakaoJoinTest() throws Exception {
+    	Member member = new Member();
+    	member.setKakaoId("12354dfd");
+    	member.setPassword("1234");
+    	
+    	ObjectMapper mapper = new ObjectMapper();
+    	String memberJson = mapper.writeValueAsString(member);
+    	
+    	mockMvc.perform(post("/member/kakao-login")
+    			.contentType(MediaType.APPLICATION_JSON)
+    			.content(memberJson))
+    	.andExpect(status().isOk())
+    	.andDo(print());
     }
 
 }
