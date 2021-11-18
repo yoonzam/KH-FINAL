@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -16,12 +18,14 @@
 				<li>작성글관리</li>
 				<li>맛찜리스트</li>
 			</ul>
+			
+			<c:forEach items="${list}" var="bvo">
 			<ul class="group-wrap">
 				<li>
 					<div class="group">
 						<div class="group-img"><img src="/resources/img/upload/01.jpg"></div>
 						<p class="group-info">
-							<strong>맛집소녀단</strong><br>
+							<strong>${bvo.groupName}</strong><br>
 							<i class="fas fa-user"></i> 5&nbsp;&nbsp;<i class="fas fa-feather"></i> 2021-11-11
 						</p>
 					</div>
@@ -31,7 +35,7 @@
 						<a>삭제</a>
 					</div>
 				</li>
-				<li>
+				<!-- <li>
 					<div class="group">
 						<div class="group-img"><img src="/resources/img/upload/02.jpg"></div>
 						<p class="group-info">
@@ -72,8 +76,9 @@
 						<a>수정</a>
 						<a>삭제</a>
 					</div>
-				</li>
+				</li> -->
 			</ul>
+			</c:forEach> 
 			<div class="btn-area">
 				<button class="create-btn">새로운 그룹 만들기</button>
 			</div>
