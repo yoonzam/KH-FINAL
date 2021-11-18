@@ -1,5 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    
+   <%@ page import="java.util.Date" %>
+<%@ page import="java.text.SimpleDateFormat" %>
+    <%
+	Date nowTime = new Date();
+	SimpleDateFormat sf = new SimpleDateFormat("yyyy/MM/dd");
+%>
+
+    
 <!DOCTYPE html>
 <html>
 <head>
@@ -13,6 +22,7 @@
 		<div class="container">
 			<h3><i class="fas fa-users-cog"></i> 새로운 그룹 만들기</h3>
 			<form method="post">
+			<input type="hidden" name="groupcreatedate" value="<%= sf.format(nowTime) %>">
 			<div class="group-form">
 				<ul>
 					<li>
@@ -35,8 +45,8 @@
 				</ul>
 			</div>
 			<div class="btn-area">
-				<button class="cancel-btn">취소</button>
-				<button type="submit" class="create-btn">만들기</button>
+				<a href = "group"><button class="cancel-btn">취소</button></a>
+				<a href = "createGroup"><button type="submit" class="create-btn">만들기</button></a>
 			</div>
 			</form>
 		</div>
