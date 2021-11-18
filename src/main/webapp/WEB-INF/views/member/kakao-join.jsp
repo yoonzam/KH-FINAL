@@ -5,6 +5,7 @@
 <head>
 <%@ include file="/WEB-INF/views/include/head.jsp" %>
 <link rel="stylesheet" href="/resources/css/member/kakao-join.css">
+<script defer type="text/javascript" src="/resources/js/member/chkNickname.js"></script>
 </head>
 <body>
   <header class="header-member">
@@ -28,8 +29,9 @@
         </div>
         <div class="wrap-input">
           <input type="hidden" name="kakaoId" value="${param.kakaoId}" >
-          <input type="text" name="nickname" placeholder="닉네임을 입력하세요">
-          <input class="btn-chk-nick" type="button" value="중복확인">
+          <input type="text" name="nickname" id="nickname" placeholder="닉네임을 입력하세요">
+          <input type="button" class="btn-chk-nick" id="checkNickname" value="중복확인">
+          <span class="valid-msg" id="alert_nick"></span>
         </div>
         <button>가입하기</button>
       </form>

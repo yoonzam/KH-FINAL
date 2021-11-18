@@ -28,6 +28,7 @@ import com.kh.eatsMap.member.model.dto.Member;
 import com.kh.eatsMap.member.model.service.MemberService;
 import com.kh.eatsMap.member.validator.EmailForm;
 import com.kh.eatsMap.member.validator.JoinForm;
+import com.kh.eatsMap.member.validator.ModifyForm;
 
 @Controller
 @RequestMapping("member")
@@ -86,7 +87,9 @@ public class MemberController {
 	}
 	
 	@GetMapping("find-password")
-	public void findPassword() {}
+	public void findPassword(Model model) {
+		model.addAttribute(new EmailForm()).addAttribute("error", new ValidatorResult().getError());
+	}
 	
 	@PostMapping("find-password")
 	public String sendTmpPassword(@Validated EmailForm form, Errors errors
@@ -116,7 +119,9 @@ public class MemberController {
 	}
 	
 	@GetMapping("join")
-	public void join() {}
+	public void join(Model model) {
+		model.addAttribute(new JoinForm()).addAttribute("error", new ValidatorResult().getError());
+	}
 	
 	@PostMapping("join")
 	public String joinImpl(@Validated JoinForm form
@@ -142,16 +147,24 @@ public class MemberController {
 		return "redirect:/main/";
 	}
 	
+	@GetMapping("nickname-check")
+	@ResponseBody
+	public String nicknameCheck(String nickname) {
+		Member member = memberService.findMemberByNickname(nickname);
+		
+		return (member == null) ? "available" : "disabled";
+	}
+	
 	@PostMapping("kakao-login")
 	@ResponseBody
-	public String kakaoLoginImpl( String kakaoId) {
-		
-		logger.debug(kakaoId);
-				
-		if(memberService.findMember(kakaoId) == null) {
-			return "kakaoJoin";
-		}else {
+	public String kakaoLoginImpl( String kakaoId, HttpSession session) {
+		Member member = memberService.findKakaoMember(kakaoId);
+						
+		if(member != null) {
+			session.setAttribute("authentication", member);
 			return "kakaoLogin";
+		}else {
+			return "kakaoJoin";
 		}
 	}
 	
@@ -167,7 +180,27 @@ public class MemberController {
 	}
 	
 	@GetMapping("edit-profile")
-	public void editProfile() {}
+	public void editProfile(Model model) {
+		model.addAttribute(new ModifyForm()).addAttribute("error", new ValidatorResult().getError());
+	}
+	
+	@PostMapping("edit-profile")
+	public String editProfileImpl(@Validated ModifyForm modifyForm, Errors errors
+								,@SessionAttribute("authentication") Member member
+								,Model model) {
+		ValidatorResult vr = new ValidatorResult();
+		model.addAttribute("error",vr.getError());		//처음 초기화하는 것? 아니면 vr.getError는 hasError 블록 메서드보다 나중에 도나? Map<errorField, defaultMessage> 형태 -> jsp에서 error.field명 출력
+		
+		if(errors.hasErrors()) {
+			vr.addErrors(errors);
+			return "member/edit-profile";
+		}
+		memberService.updateMemberProfile(member,modifyForm);
+		
+		return "redirect:/myeats/post";
+		
+		
+	}
 	
 	@PostMapping("update-img")
 	public String updateImg(MultipartFile profile, @SessionAttribute("authentication") Member member) {

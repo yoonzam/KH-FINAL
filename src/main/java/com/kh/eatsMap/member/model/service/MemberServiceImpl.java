@@ -20,6 +20,7 @@ import com.kh.eatsMap.member.model.dto.Member;
 import com.kh.eatsMap.member.model.repository.MemberRepository;
 import com.kh.eatsMap.member.validator.EmailForm;
 import com.kh.eatsMap.member.validator.JoinForm;
+import com.kh.eatsMap.member.validator.ModifyForm;
 
 import lombok.RequiredArgsConstructor;
 
@@ -87,14 +88,6 @@ public class MemberServiceImpl implements MemberService{
 //		form.setPassword(passwordEncoder.encode(form.getPassword()));
 		logger.debug(form.toString());
 		
-		Member member = new Member();
-		member.setNickname(form.getNickname());
-		member.setPassword(form.getPassword());
-		member.setEmail(form.getEmail());
-		member.setRegDate(LocalDate.now());
-		member.setIsLeave(0);
-
-		memberRepository.insert(member);
 	}
 
 	@Override
@@ -103,7 +96,7 @@ public class MemberServiceImpl implements MemberService{
 		FileUtil fileUtil = new FileUtil();
 		member.setProfile(fileUtil.fileUpload(file));
 		
-		memberRepository.insert(member);
+		memberRepository.save(member);
 	}
 
 	@Override
@@ -114,12 +107,25 @@ public class MemberServiceImpl implements MemberService{
 	}
 
 	@Override
-	public Member findMember(String kakaoId) {
+	public Member findKakaoMember(String kakaoId) {
 		return memberRepository.findByKakaoId(kakaoId);
 	}
 
 	@Override
 	public void saveMember(Member member) {
+		memberRepository.save(member);
+	}
+
+	@Override
+	public Member findMemberByNickname(String nickname) {
+		return memberRepository.findByNicknameIgnoreCase(nickname);
+	}
+
+	@Override
+	public void updateMemberProfile(Member member, ModifyForm form) {
+		member.setNickname(form.getNickname());
+		member.setPassword(form.getPassword());
+		
 		memberRepository.save(member);
 	}
 

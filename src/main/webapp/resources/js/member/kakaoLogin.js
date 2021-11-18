@@ -11,8 +11,9 @@ let kakaoLogin = () => {
  };
  
  let authKakao = () => {
-    Kakao.Auth.login({
-             
+    Kakao.Auth.createLoginButton({
+			 container: '#CONTAINER_ID',
+             scope: 'account_email',	//추후 기능확장
              success : requestInfo()
              
              ,fail : (error) => {

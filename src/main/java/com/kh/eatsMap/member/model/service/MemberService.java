@@ -5,6 +5,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.kh.eatsMap.member.model.dto.Member;
 import com.kh.eatsMap.member.validator.EmailForm;
 import com.kh.eatsMap.member.validator.JoinForm;
+import com.kh.eatsMap.member.validator.ModifyForm;
 
 public interface MemberService {
 
@@ -20,9 +21,13 @@ public interface MemberService {
 
 	void updatePassword(String email, String tmpPassword);
 
-	Member findMember(String kakaoId);
+	Member findKakaoMember(String kakaoId);
 
 	//카카오용 임시메서드
 	void saveMember(Member member);
+
+	Member findMemberByNickname(String nickname);
+
+	void updateMemberProfile(Member member, ModifyForm modifyForm);
 
 }
