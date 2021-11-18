@@ -25,21 +25,7 @@
 					<div class="group">
 						<div class="group-img"><img src="/resources/img/upload/01.jpg"></div>
 						<p class="group-info">
-							<strong>${bvo.groupName}</strong><br>
-							<i class="fas fa-user"></i> 5&nbsp;&nbsp;<i class="fas fa-feather"></i> 2021-11-11
-						</p>
-					</div>
-					<div class="controller">
-						<a class="group-menu">그룹관리</a>
-						<a>수정</a>
-						<a>삭제</a>
-					</div>
-				</li>
-				<!-- <li>
-					<div class="group">
-						<div class="group-img"><img src="/resources/img/upload/02.jpg"></div>
-						<p class="group-info">
-							<strong>맛집소녀단</strong><br>
+							<strong>${bvo.groupName}홀수만 오게할 예정</strong><br>
 							<i class="fas fa-user"></i> 5&nbsp;&nbsp;<i class="fas fa-feather"></i> 2021-11-11
 						</p>
 					</div>
@@ -50,6 +36,20 @@
 					</div>
 				</li>
 				<li>
+					<div class="group">
+						<div class="group-img"><img src="/resources/img/upload/02.jpg"></div>
+						<p class="group-info">
+							<strong>${bvo.groupName}짝수만 오게할 예정</strong><br>
+							<i class="fas fa-user"></i> 5&nbsp;&nbsp;<i class="fas fa-feather"></i> 2021-11-11
+						</p>
+					</div>
+					<div class="controller">
+						<a class="group-menu">그룹관리</a>
+						<a>수정</a>
+						<a>삭제</a>
+					</div>
+				</li>
+				<!--<li>
 					<div class="group">
 						<div class="group-img"><img src="/resources/img/upload/03.jpg"></div>
 						<p class="group-info">
