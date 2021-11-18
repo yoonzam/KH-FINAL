@@ -9,28 +9,23 @@ import org.springframework.validation.Validator;
 import com.kh.eatsMap.member.model.repository.MemberRepository;
 
 @Component
-public class JoinFormValidator implements Validator{
+public class ModifyValidator implements Validator{
 	
 	private final MemberRepository memberRepository;
 
-	public JoinFormValidator(MemberRepository memberRepository) {
+	public ModifyValidator(MemberRepository memberRepository) {
 		super();
 		this.memberRepository = memberRepository;
 	}
 
 	@Override
 	public boolean supports(Class<?> clazz) {
-		return clazz.equals(JoinForm.class);
+		return clazz.equals(ModifyForm.class);
 	}
 
 	@Override
 	public void validate(Object target, Errors errors) {
-		JoinForm form = (JoinForm) target;
-		
-		//이메일 조회 -> 미가입 회원 여부 검증
-		if(memberRepository.findByEmail(form.getEmail()) != null) {
-			errors.rejectValue("email", "err-email", "이미 가입된 이메일입니다.");
-		}
+		ModifyForm form = (ModifyForm) target;
 		
 		if(memberRepository.findMemberByNickname(form.getNickname()) != null ) {
 			errors.rejectValue("nickname", "err-nickname", "이미 존재하는 닉네임 입니다.");
@@ -45,12 +40,6 @@ public class JoinFormValidator implements Validator{
 		}
 	}
 
-	
-	
-	
-	
-	
-	
-	
-	
+
+
 }

@@ -40,9 +40,6 @@
 					</div>
 				</div><!-- wrap-profile-info -->
 			</div>
-			<div class="btn-wrap">
-				<a href="/member/edit-profile" class="btn-edit-profile">회원정보 수정</a>
-			</div> 
             <div class="section">
 				<div class="detail-wrap">
 					<h2><i class="fas fa-utensils color-m"></i> 내가 <span class="color-m">찜한 </span> 맛집!</h2>
