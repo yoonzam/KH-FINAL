@@ -21,9 +21,14 @@
         <div class="profile">
           <div class="wrap-profile-img">
             <div class="wrap-img">
-              <div class="profile-img">
-                <img src="/resources/img/upload/02.jpg">
-              </div>
+            <div class="profile-img">
+	          <c:if test="${not empty authentication and not empty authentication.profile}">
+	          	<img id="target_img" src="http://localhost:9090/file/${authentication.profile}">
+	          </c:if>
+	          <c:if test="${not empty authentication and empty authentication.profile}">
+	            <img id="target_img" src="/resources/img/member/user.png">
+	          </c:if>   
+            </div>
             </div>
             <div class="wrap-file">
               <label for="profile" class="btn-edit-profile">Edit Profile</label>
