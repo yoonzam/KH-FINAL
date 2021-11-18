@@ -287,20 +287,20 @@ footer{color:#aaa; font-size:0.8em; padding:30px; text-align:center;}
 	clip:rect(0,0,0,0);
 	border: 0
 }
-.review-upload .btn{
+.review-upload .btn-wrap{
 	text-align: center;
 	padding:20px;
 }
-.review-upload .btn > div{
+.review-upload .btn-wrap > div{
 	color:#aaa;
 	margin-bottom:10px;
 }
-.review-upload .btn > div > span{font-weight: 700; color:var(--main-color);}
-.review-upload .btn button{min-width:100px; cursor:pointer; border:none; padding:18px; border-radius: 5px; color: #fff; font-weight: 700; transition-duration:0.5s;}
-.review-upload .btn button.next{background-color:var(--main-color);}
-.review-upload .btn button.prev{background-color:#cbc5c2;}
-.review-upload .btn button.next:hover{background-color: #ffa54f;}
-.review-upload .btn button.prev:hover{background-color: #d8d2cf;}
+.review-upload .btn-wrap > div > span{font-weight: 700; color:var(--main-color);}
+.review-upload .btn-wrap button{min-width:100px; cursor:pointer; border:none; padding:18px; border-radius: 5px; color: #fff; font-weight: 700; transition-duration:0.5s;}
+.review-upload .btn-wrap button.next{background-color:var(--main-color);}
+.review-upload .btn-wrap button.prev{background-color:#cbc5c2;}
+.review-upload .btn-wrap button.next:hover{background-color: #ffa54f;}
+.review-upload .btn-wrap button.prev:hover{background-color: #d8d2cf;}
 
 @media screen and (max-width: 1000px) {
 
