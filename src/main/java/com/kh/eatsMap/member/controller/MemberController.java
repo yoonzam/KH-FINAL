@@ -1,6 +1,5 @@
 package com.kh.eatsMap.member.controller;
 
-import java.util.Optional;
 import java.util.UUID;
 
 import javax.servlet.http.HttpSession;
@@ -56,7 +55,7 @@ public class MemberController {
 	}
 
 	//요청파라미터 값들을 바인드해줌
-	@InitBinder(value = "joinForm")
+	@InitBinder(value = "joinForm")	//jsp form태그 modelAttribute value와 바인딩
 	public void initBinderJoinForm(WebDataBinder webDataBinder) {	
 		webDataBinder.addValidators(joinFormValidator);
 	}
@@ -68,6 +67,7 @@ public class MemberController {
 	public void initBinderModifyForm(WebDataBinder webDataBinder) {	
 		webDataBinder.addValidators(modifyFormValidator);
 	}
+
 
 	@GetMapping("login")
 	public void login() {}
@@ -228,7 +228,6 @@ public class MemberController {
 	
 	@PostMapping("update-img")
 	public String updateImg(MultipartFile profile, @SessionAttribute("authentication") Member member) {
-		logger.debug(profile.toString());
 		
 		memberService.insertProfileImg(member,profile);
 		
@@ -237,5 +236,23 @@ public class MemberController {
 	
 	@GetMapping("quit")
 	public void quit() {}
+	
+	@PostMapping("quit")
+	@ResponseBody
+	public String quitImpl(@RequestBody Member member) {
+		
+		if(!memberService.findMemberByNickname(member.getNickname()).getPassword().equals(member.getPassword())) {
+			return "error";
+		}
+		return "quit";
+	}
+	
+	@GetMapping("leave")
+	public String isLeave(@SessionAttribute("authentication") Member member) {
+		memberService.isLeaveMember(member);
+		
+		return "redirect:/member/login";
+	}
+	
 
 }

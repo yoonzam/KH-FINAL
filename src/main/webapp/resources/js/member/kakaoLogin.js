@@ -4,10 +4,7 @@ Kakao.init('478e845e80d3b693f2a53821b0866272');
 let kakaoLogin = () => {
     Kakao.Auth.login({
              success : (ACCESS_TOKEN) => {
-						/*Kakao.Auth.setAccessToken(ACCESS_TOKEN);*/
-						console.dir('가자')
 						requestInfo();
-						console.dir('실패')
 			}
              ,fail : (err) => {
                 showResult(JSON.stringify(err))

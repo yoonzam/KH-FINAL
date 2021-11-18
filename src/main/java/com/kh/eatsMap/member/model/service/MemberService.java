@@ -30,4 +30,6 @@ public interface MemberService {
 
 	void updateMemberProfile(Member member, ModifyForm modifyForm);
 
+	void isLeaveMember(Member member);
+
 }

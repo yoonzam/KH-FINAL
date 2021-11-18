@@ -129,6 +129,12 @@ public class MemberServiceImpl implements MemberService{
 		memberRepository.save(member);
 	}
 
+	@Override
+	public void isLeaveMember(Member member) {
+		member.setIsLeave(1);
+		memberRepository.save(member);
+	}
+
 
 
 }
