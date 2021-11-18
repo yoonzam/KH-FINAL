@@ -30,9 +30,9 @@
         <div class="wrap-input">
           <input type="hidden" name="kakaoId" value="${param.kakaoId}" >
           <input type="text" name="nickname" id="nickname" placeholder="닉네임을 입력하세요">
-          <input type="button" class="btn-chk-nick" id="checkNickname" value="중복확인">
-          <span class="valid-msg" id="alert_nick"></span>
+          <input type="button" id="check_nick"  class="btn-chk-nick" value="중복확인">
         </div>
+        <span class="valid-msg" id="alert_nick"></span>
         <button>가입하기</button>
       </form>
     </div>

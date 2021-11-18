@@ -5,7 +5,6 @@
 <head>
 <%@ include file="/WEB-INF/views/include/head.jsp" %>
 <link rel="stylesheet" type="text/css" href="/resources/css/member/edit-profile.css" />
-<script defer type="text/javascript" src="/resources/js/member/chkNickname.js"></script>
 </head>
 <body>
 <%@ include file="/WEB-INF/views/include/header.jsp" %>
@@ -36,23 +35,27 @@
             </div> 
           </div>
           <div class="wrap-form">
-            <form action="/member/edit-profile" method="post" class="edit-profile-form">
-              <label for="nickname">닉네임</label>
+            <form:form modelAttribute="modifyForm" action="/member/edit-profile" method="post" class="edit-profile-form" name="editForm">
+              <label for="nickname">닉네임</label><span class="valid-msg" id="alert_nick"></span><form:errors cssClass="valid-msg" path="nickname"/>
               <div class="wrap-nickname">
-                <input type="text" name="nickname" id="nickname">
+                <input type="text" name="nickname" id="nickname" value="${authentication.nickname }">
                 <input type="button" value="중복확인" id="check_nick">
               </div>
-              <label for="password">비밀번호</label>
-              <input type="text" name="password" id="password">
-              <label for="chk-password">비밀번호 확인</label>
-              <input type="text" name="chkPassword" id="chk-password">
+              <label for="password">비밀번호</label><form:errors cssClass="valid-msg" path="password"/>
+              <input type="password" name="password" id="password">
+              <label for="chk-password">비밀번호 확인</label><form:errors cssClass="valid-msg" path="chkPassword"/>
+              <input type="password" name="chkPassword" id="chkPassword">
               <div class="wrap-btn">
-                <button>수정하기</button>
+                <button id="btn-edit">수정하기</button>
                 <a href="/myeats/post" class="btn-cancel">취소하기</a>
               </div>
-            </form>
+            </form:form>
           </div>
         </div>  
+        <div class="wrap-quit">
+          <span class="quit">탈퇴를 원하시면 우측 버튼을 클릭하세요</span>
+          <a href="/member/quit" class="btn-quit">탈퇴하기</a>
+        </div>
       </div>
     </div>
   </section>  
@@ -60,6 +63,65 @@
 <%@ include file="/WEB-INF/views/include/footer.jsp" %>
 
 <script type="text/javascript">
+(() => {    	/* authentication에 접근하므로 분리x */
+	  let confirmNick = '';
+	  let nickname = document.querySelector('#nickname').value;
+	  
+	  document.querySelector('#check_nick').addEventListener('click', ()=>{
+		  
+		  console.dir(nickname);
+		  if(nickname === "" || nickname == null){
+			document.querySelector('#alert_nick').innerHTML = '닉네임을 입력하지 않았습니다.';
+			return;
+		  }
+		  
+		  fetch("/member/nickname-check?nickname=" + nickname)
+		  .then(response => {
+			  if(response.ok){	//통신 성공시
+				  return response.text();
+			  }else{
+				  throw new Error(response.status);
+			  }
+		  }).then(text => {	//promise객체의 text
+			  if(text == 'available'){
+				  confirmNick = nickname;
+				  
+				  document.querySelector('#alert_nick').style.color = 'var(--main-color)';
+				  document.querySelector('#alert_nick').innerHTML = '사용 가능한 닉네임입니다.';
+			  }else{
+				  document.querySelector('#alert_nick').style.color = 'var(--red-color)';
+				  document.querySelector('#alert_nick').innerHTML = '사용 불가능한 닉네임입니다.';
+			  }
+		  }).catch(error => {
+			  document.querySelector('#alert_nick').innerHTML = '응답에 실패하였습니다.';
+		  });
+		  
+	  });
+	  
+	  document.querySelector('#btn-edit').addEventListener('click', e => {
+			e.preventDefault();
+			
+			if(nickname == `${authentication.nickname}`){
+				document.editForm.submit();
+			}
+			
+			if(nickname != `${authentication.nickname}` && confirmNick == ""){
+				document.querySelector('#alert_nick').style.color = 'var(--red-color)';
+				document.querySelector('#alert_nick').innerHTML = '중복확인을 하지 않았습니다.';
+				return;
+			}
+		})
+
+})();
+
+
+document.querySelector('#nickname').addEventListener('keydown',e => {
+	  if (e.keyCode === 13) {
+			e.preventDefault();
+	  };
+})
+
+
 
 document.querySelector('#profile').addEventListener('change', (e) => {
 	

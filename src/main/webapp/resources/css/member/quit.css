@@ -1,0 +1,80 @@
+@charset "UTF-8";
+
+.container-wrap{max-width:1300px; margin:0 auto; padding:30px;}
+.container{border-radius: 12px; background-color: #fff; padding: 40px; box-shadow: 0px 20px 80px 0px rgb(153 153 153 / 30%);}
+
+.myeats-tab{display:flex; margin-bottom:30px;}
+.myeats-tab > li{width:33.3%; font-size:18px; padding:15px; border-bottom:2px solid #eee; text-align:center; font-weight:700; cursor:pointer;}
+.myeats-tab > li:hover{opacity:0.8;}
+.myeats-tab > li.selected{border-bottom:3px solid var(--main-color); color:var(--main-color);}
+
+
+.tit-quit{padding-bottom: 10px;}
+.box-content{
+  margin: auto;
+  padding: 40px;
+  display: flex;
+  justify-content:center;
+}
+.content{flex:1;margin-right:0; position: relative;}
+.wrap-quit-content{
+  width: 90%;
+  padding: 10px 33px;
+  border: 3px solid #ccc; 
+  right: 0;
+  position: absolute;
+}
+.wrap-quit-content h3{text-align: center; padding: 20px;}
+.wrap-quit-content p{line-height: 1.6em; padding-bottom: 10px;}
+.far{color: var(--main-color); margin-right: 5px;}
+.wrap-form{
+  flex:1;
+}
+.quit-form{
+  padding: 20px;
+  width: 70%;
+  margin: auto;
+}
+.quit-form label, .quit-form input{
+  display: block;
+}
+label{
+  margin-bottom: 5px;
+}
+input, .btn-cancel, button{
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 20px;
+  border-radius: 8px;
+  outline: none;
+  border: 1px solid #ddd;
+  font-size: 13px;
+}
+.message{
+  font-size: 13px;
+  color: var(--main-color);
+  font-weight: 700;
+}
+.wrap-btn{display: flex; margin: 20px 0;}
+.wrap-btn button{margin-right:5px; border: none; outline: none; background-color: var(--main-color); color: #fff; cursor: pointer;}
+.wrap-btn button:hover{background-color: var(--hover-color);}
+.btn-cancel{text-align: center;background-color: #eee; border: none;}
+.btn-cancel:hover{background-color: #ccc; color:#fff;}
+
+@media screen and (max-width: 768px) {
+  .box-content{
+    flex-direction: column;
+  }
+  .wrap-quit-content{
+    margin: auto;
+    left: 0;
+  }
+  .wrap-form{
+    margin-top: 300px;
+  }
+  .quit-form{
+    width: 100%;
+    margin-top: 50px;
+  
+  }
+}

@@ -68,8 +68,9 @@ button:hover{
 }
 
 .err-msg{
-	color: crimson;
+	color: var(--red-color);	
 	font-size: 13px;
+	font-weight: 700;
 	margin-left: 10px;
 }
 

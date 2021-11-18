@@ -1,10 +1,11 @@
  (() => {    
 	  let confirmNick = '';
+	  let nickname = document.querySelector('#nickname').value;
 	  
 	  document.querySelector('#check_nick').addEventListener('click', ()=>{
-		  let nickname = document.querySelector('#nickname').value;
 		  
-		  if(nickname == null){
+		  console.dir(nickname);
+		  if(nickname === "" || nickname == null){
 			document.querySelector('#alert_nick').innerHTML = '닉네임을 입력하지 않았습니다.';
 			return;
 		  }
@@ -31,5 +32,19 @@
 		  });
 		  
 	  });
+	  
+	  document.querySelector('#btn-edit').addEventListener('click', e => {
+			e.preventDefault();
+			
+			if(nickname == `${authentication.nickname}`){
+				document.editForm.submit();
+			}
+			
+			if(nickname != `${authentication.nickname}` && confirmNick == ""){
+				document.querySelector('#alert_nick').style.color = 'var(--red-color)';
+				document.querySelector('#alert_nick').innerHTML = '중복확인을 하지 않았습니다.';
+				return;
+			}
+		})
 
  })();

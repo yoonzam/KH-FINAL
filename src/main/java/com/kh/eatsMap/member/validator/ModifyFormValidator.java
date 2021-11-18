@@ -9,11 +9,11 @@ import org.springframework.validation.Validator;
 import com.kh.eatsMap.member.model.repository.MemberRepository;
 
 @Component
-public class ModifyValidator implements Validator{
+public class ModifyFormValidator implements Validator{
 	
 	private final MemberRepository memberRepository;
 
-	public ModifyValidator(MemberRepository memberRepository) {
+	public ModifyFormValidator(MemberRepository memberRepository) {
 		super();
 		this.memberRepository = memberRepository;
 	}
@@ -26,10 +26,6 @@ public class ModifyValidator implements Validator{
 	@Override
 	public void validate(Object target, Errors errors) {
 		ModifyForm form = (ModifyForm) target;
-		
-		if(memberRepository.findMemberByNickname(form.getNickname()) != null ) {
-			errors.rejectValue("nickname", "err-nickname", "이미 존재하는 닉네임 입니다.");
-		}
 		
 		if(!Pattern.matches("(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[^a-zA-Zㄱ-힣0-9]).{8,15}", form.getPassword())) {
 			errors.rejectValue("password", "err-password", "비밀번호는 영문자, 특수문자, 숫자 조합 8~15자입니다.");
