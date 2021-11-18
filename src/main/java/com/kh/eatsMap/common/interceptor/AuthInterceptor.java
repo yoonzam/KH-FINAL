@@ -30,6 +30,9 @@ public class AuthInterceptor implements HandlerInterceptor {
 				case "board":
 					boardAuthorize(request, response, uriArr);
 					break;
+				case "main":
+					mainAuthorize(request, response, uriArr);
+					break;	
 				default:
 					break;
 			}
@@ -37,6 +40,15 @@ public class AuthInterceptor implements HandlerInterceptor {
 		return true;
 	}
 	
+
+	private void mainAuthorize(HttpServletRequest httpRequest, HttpServletResponse httpResponse, String[] uriArr) {
+		
+		HttpSession session = httpRequest.getSession();
+		if(session.getAttribute("authentication") == null){
+			throw new HandlableException(ErrorCode.UNAUTHORIZED_PAGE);
+		}
+	}
+
 
 	private void boardAuthorize(HttpServletRequest httpRequest, HttpServletResponse httpResponse, String[] uriArr) {
 			HttpSession session = httpRequest.getSession();

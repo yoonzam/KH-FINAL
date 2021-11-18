@@ -1,6 +1,25 @@
 $(document).ready(()=>{
     resizeImg();
     resizeImg2();
+    
+    //내위치
+    navigator.geolocation.getCurrentPosition(function(position) {
+    const longitude = position.coords.longitude;	//경도
+    const latitude = position.coords.latitude;	//위도
+ 
+ 	//geojson : 경도, 위도
+/* 	{
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [-122.126986, 47.639754]
+    }
+ */
+    alert("현재 위치는 : " + latitude + ", "+ longitude);
+    
+});
+
+
 });
 
 $(window).resize(() => {

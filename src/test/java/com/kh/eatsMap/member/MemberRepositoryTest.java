@@ -61,8 +61,8 @@ public class MemberRepositoryTest {
     @Test
     public void saveMember() {
     	Member member = new Member();
-    	member.setEmail("qleen513@gmail.com");
-    	member.setNickname("kim");
+    	member.setEmail("ijij1135@gmail.com");
+    	member.setNickname("jkl");
     	member.setPassword("1234");
     	member.setIsLeave(0);
     	member.setRegDate(LocalDate.now());
