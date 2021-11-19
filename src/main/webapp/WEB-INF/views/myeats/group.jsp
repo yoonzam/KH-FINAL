@@ -30,12 +30,14 @@
 				<li><a href="detail">맛찜리스트</a></li>
 				<li>회원정보 수정</li>
 			</ul>
-			<ul class="group-wrap">
 			
-			<c:forEach items="${list}" var="grouplist" begin="0" step="2">
+			
+			
+			<c:forEach items="${list}" var="grouplist" varStatus="status"  begin="0">
+				<c:if test="${status.first}"><ul class="group-wrap"></c:if>
+				<c:choose>
+				<c:when test="${status.count % 2 == 0}">
 				<li>
-				
-				
 					<div class="group">
 						<div class="group-img"><img src="/resources/img/upload/01.jpg"></div>
 						<p class="group-info">
@@ -47,18 +49,22 @@
 					<div class="controller">
 						<a href="groupDetail?groupIdx=${grouplist.groupIdx}" class="group-menu">그룹관리</a>
 						<a href="groupDetail?groupIdx=${grouplist.groupIdx}">수정</a>
+
 						<!-- 폼태그 스타일 유지 위해 div로 display: none 줌 -->
 						<div style="display: none;">
-						<form role="form" method="post">	
+						<form role="form" method="post">	<!-- delete/post로 넘김 -->
 							<input type="hidden" name="id" value="${grouplist.id}" />
 						</form>
 						</div>  
+						
+
 						<a><button type="submit" class="deletebtn">삭제</button></a>
 					</div>
 				</li>
-			</c:forEach>
+				</c:when>
+				
 			
-			<c:forEach items="${list}" var="grouplist" begin="1" step="2">
+			<c:otherwise>
 				<li>
 					<div class="group">
 						<div class="group-img"><img src="/resources/img/upload/02.jpg"></div>
@@ -71,22 +77,39 @@
 					<div class="controller">
 						<a href="groupDetail?groupIdx=${grouplist.groupIdx}" class="group-menu">그룹관리</a>
 						<a href="groupDetail?groupIdx=${grouplist.groupIdx}">수정</a>
+						
+						<!-- 폼태그 스타일 유지 위해 div로 display: none 줌 -->
+						<div style="display: none;">
+						<form role="form" method="post">	
+							<input type="hidden" name="id" value="${grouplist.id}" />
+						</form>
+						</div>  
+						
+						
 						<a><button type="submit" class="deletebtn">삭제</button></a>
+						
 					</div>
-				</li>
+				</li> 
+			
+				</c:otherwise>
+				</c:choose>
+				<c:if test="${status.last}"></ul></c:if>
 				</c:forEach>
-			</ul>
+				
+			
 			<div class="btn-area">
 				<a href ="createGroup"><button class="create-btn">새로운 그룹 만들기</button></a>
 			</div>
 		</div>
 	</div>
-</section>     
+</section>  
+
+   
 
 <%@ include file="/WEB-INF/views/include/footer.jsp" %>
 
 <script>
-//메인화면 자바스크립트
+/* //메인화면 자바스크립트
 var myNodelist = document.getElementsByTagName(".main LI");
 var i;
 
@@ -135,12 +158,12 @@ function newElement() {
   var txt = document.createTextNode("\u00D7");
   span.className = "close";
   span.appendChild(txt);
-  li.appendChild(span);
+  li.appendChild(span); */
   
   //그룹 생성 정상 처리시
   var result = '${result}';
 	
-	if(result == 'Success'){
+	if(result == 'success'){
 		alert("정상 처리 되었습니다!!!");
 	}
 
@@ -152,11 +175,18 @@ $(document).ready(function(){
 	
 	
 	 $(".deletebtn").on("click", function(){
+		
+		 //test
+		 var test =${grouplist.id}
+		 console.log(test);
+		
+		 
 		frmObj.attr("action", "/myeats/delete");
 		frmObj.submit();
 	}); 
 	
 });
+
 </script>
 </body>
 </html>
