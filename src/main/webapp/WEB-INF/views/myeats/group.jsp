@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -17,35 +19,41 @@
 				<li>맛찜리스트</li>
 			</ul>
 			<ul class="group-wrap">
+			<c:forEach items="${list}" var="grouplist" begin="0" step="2">
 				<li>
 					<div class="group">
 						<div class="group-img"><img src="/resources/img/upload/01.jpg"></div>
 						<p class="group-info">
-							<strong>맛집소녀단</strong><br>
-							<i class="fas fa-user"></i> 5&nbsp;&nbsp;<i class="fas fa-feather"></i> 2021-11-11
+							<strong>${grouplist.groupName}</strong><br>
+							<i class="fas fa-user"></i> 5&nbsp;&nbsp;<i class="fas fa-feather"></i>
+							<fmt:formatDate pattern="yyyy/MM/dd" value="${grouplist.groupcreatedate}"/>
 						</p>
 					</div>
 					<div class="controller">
-						<a class="group-menu">그룹관리</a>
+						<a href="groupDetail" class="group-menu">그룹관리</a>
 						<a>수정</a>
 						<a>삭제</a>
 					</div>
 				</li>
+			</c:forEach>
+			<c:forEach items="${list}" var="grouplist" begin="1" step="2">
 				<li>
 					<div class="group">
 						<div class="group-img"><img src="/resources/img/upload/02.jpg"></div>
 						<p class="group-info">
-							<strong>맛집소녀단</strong><br>
-							<i class="fas fa-user"></i> 5&nbsp;&nbsp;<i class="fas fa-feather"></i> 2021-11-11
+							<strong>${grouplist.groupName}</strong><br>
+							<i class="fas fa-user"></i> 5&nbsp;&nbsp;<i class="fas fa-feather"></i>
+							<fmt:formatDate pattern="yyyy/MM/dd" value="${grouplist.groupcreatedate}"/>
 						</p>
 					</div>
 					<div class="controller">
-						<a class="group-menu">그룹관리</a>
+						<a href="groupDetail" class="group-menu">그룹관리</a>
 						<a>수정</a>
 						<a>삭제</a>
 					</div>
 				</li>
-				<li>
+				</c:forEach>
+				<!-- <li>
 					<div class="group">
 						<div class="group-img"><img src="/resources/img/upload/03.jpg"></div>
 						<p class="group-info">
@@ -72,10 +80,10 @@
 						<a>수정</a>
 						<a>삭제</a>
 					</div>
-				</li>
+				</li> -->
 			</ul>
 			<div class="btn-area">
-				<button class="create-btn">새로운 그룹 만들기</button>
+				<a href ="createGroup"><button class="create-btn">새로운 그룹 만들기</button></a>
 			</div>
 		</div>
 	</div>
@@ -134,6 +142,13 @@ function newElement() {
   span.className = "close";
   span.appendChild(txt);
   li.appendChild(span);
+  
+  //그룹 생성 정상 처리시
+  var result = '${result}';
+	
+	if(result == 'Success'){
+		alert("정상 처리 되었습니다!!!");
+	}
 
 }
 </script>

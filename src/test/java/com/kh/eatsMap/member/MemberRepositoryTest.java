@@ -178,7 +178,8 @@ public class MemberRepositoryTest {
     
     @Test
     public void findMemberByNickname() {
-    	repository.findMemberByNickname("nick22").forEach(e -> logger.info(e.toString()));
+    	//repository.findMemberByNickname("지우지마수").forEach(e -> logger.info(e.toString()));
+    	logger.debug(repository.findByNickname("지우지마수").toString());
     }
     
     @Test

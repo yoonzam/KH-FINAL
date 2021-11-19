@@ -2,25 +2,16 @@
 Kakao.init('478e845e80d3b693f2a53821b0866272');
 
 let kakaoLogin = () => {
-    Kakao.Auth.loginForm({
-             success : authKakao()
+    Kakao.Auth.login({
+             success : (ACCESS_TOKEN) => {
+						requestInfo();
+			}
              ,fail : (err) => {
                 showResult(JSON.stringify(err))
              },
           });
  };
  
- let authKakao = () => {
-    Kakao.Auth.createLoginButton({
-			 container: '#CONTAINER_ID',
-             scope: 'account_email',	//추후 기능확장
-             success : requestInfo()
-             
-             ,fail : (error) => {
-                console.dir(error)
-             },
-          });
-};
  
  let requestInfo = () => {
     Kakao.API.request({

@@ -9,12 +9,12 @@ import org.springframework.validation.Validator;
 import com.kh.eatsMap.member.model.repository.MemberRepository;
 
 @Component
-public class EmailValidator implements Validator{
+public class EmailFormValidator implements Validator{
 	
 	private final MemberRepository memberRepository;
 	Logger logger =  LoggerFactory.getLogger(this.getClass());
 
-	public EmailValidator(MemberRepository memberRepository) {
+	public EmailFormValidator(MemberRepository memberRepository) {
 		super();
 		this.memberRepository = memberRepository;
 	}

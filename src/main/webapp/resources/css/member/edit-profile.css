@@ -66,9 +66,31 @@ label, .valid-msg{
 .wrap-btn button:hover{background-color: var(--hover-color);}
 .btn-cancel{text-align: center;background-color: #eee; border: none;}
 .btn-cancel:hover,#check_nick:hover{background-color: #ccc; color:#fff;}
-.valid-msg{ font-size: 13px; font-weight: 700; padding-left:15px;}
+.valid-msg{ color:var(--red-color); font-size: 13px; font-weight: 700; padding-left:15px;}
+
+/* 탈퇴 */
+.wrap-quit{
+  float: right;
+}
+.quit{
+  font-size: 13px;
+}
+.btn-quit{
+  padding: 10px;
+  font-size: 13px;
+  color: var(--red-color);
+  font-weight: 700;
+}
+
 @media screen and (max-width: 768px) {
-  .wrap-profile-img{
+  .profile{
     flex-direction: column;
   }
+  .edit-profile-form{
+    width: 100%;
+    margin-top: 50px;
+  
+  }
+  .wrap-file{margin-top: 20px;}
+}
 }

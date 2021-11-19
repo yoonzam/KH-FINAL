@@ -26,7 +26,7 @@ public interface MemberRepository extends MongoRepository<Member, String>{	//Rep
 
 	
 	@Query("{ 'nickname' : ?0 }")								//select * from member where user_id = ? ----> set(1, "")
-	List<Member> findMemberByNickname(String nickname);
+	List<Member> findMemberByNickname(String nickname);			//얘 검토 필요
 
 	@Query(value = "{ 'nickname' : ?0 }", fields="{ 'email' : 1, 'password' : 1}")
 	List<Member> findEmailAndPasswordWithJson(String nickname);
@@ -59,7 +59,7 @@ public interface MemberRepository extends MongoRepository<Member, String>{	//Rep
 
 	Member findByKakaoId(String kakaoId);
 
-
+	Member findByNickname(String nickname);
 
 
 }

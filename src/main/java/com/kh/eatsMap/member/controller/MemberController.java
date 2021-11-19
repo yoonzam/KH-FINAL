@@ -1,6 +1,5 @@
 package com.kh.eatsMap.member.controller;
 
-import java.util.Optional;
 import java.util.UUID;
 
 import javax.servlet.http.HttpSession;
@@ -11,7 +10,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -27,8 +28,11 @@ import com.kh.eatsMap.common.validator.ValidatorResult;
 import com.kh.eatsMap.member.model.dto.Member;
 import com.kh.eatsMap.member.model.service.MemberService;
 import com.kh.eatsMap.member.validator.EmailForm;
+import com.kh.eatsMap.member.validator.EmailFormValidator;
 import com.kh.eatsMap.member.validator.JoinForm;
+import com.kh.eatsMap.member.validator.JoinFormValidator;
 import com.kh.eatsMap.member.validator.ModifyForm;
+import com.kh.eatsMap.member.validator.ModifyFormValidator;
 
 @Controller
 @RequestMapping("member")
@@ -37,11 +41,33 @@ public class MemberController {
 	Logger logger = LoggerFactory.getLogger(this.getClass());
 	
 	private MemberService memberService;
+	private JoinFormValidator joinFormValidator;
+	private EmailFormValidator emailFormValidator;
+	private ModifyFormValidator modifyFormValidator;
 	
-	public MemberController(MemberService memberService) {
+	public MemberController(MemberService memberService, JoinFormValidator joinFormValidator,
+			EmailFormValidator emailFormValidator, ModifyFormValidator modifyFormValidator) {
 		super();
 		this.memberService = memberService;
+		this.joinFormValidator = joinFormValidator;
+		this.emailFormValidator = emailFormValidator;
+		this.modifyFormValidator = modifyFormValidator;
 	}
+
+	//요청파라미터 값들을 바인드해줌
+	@InitBinder(value = "joinForm")	//jsp form태그 modelAttribute value와 바인딩
+	public void initBinderJoinForm(WebDataBinder webDataBinder) {	
+		webDataBinder.addValidators(joinFormValidator);
+	}
+	@InitBinder(value = "emailForm")
+	public void initBinderEmailForm(WebDataBinder webDataBinder) {	
+		webDataBinder.addValidators(emailFormValidator);
+	}
+	@InitBinder(value = "modifyForm")
+	public void initBinderModifyForm(WebDataBinder webDataBinder) {	
+		webDataBinder.addValidators(modifyFormValidator);
+	}
+
 
 	@GetMapping("login")
 	public void login() {}
@@ -94,14 +120,11 @@ public class MemberController {
 	@PostMapping("find-password")
 	public String sendTmpPassword(@Validated EmailForm form, Errors errors
 								, Model model, RedirectAttributes redirectAttr) {
-		logger.debug("컨트롤러 : " + form.getEmail());
 		
 		//존재하는 이메일인지 검증
 		ValidatorResult vr = new ValidatorResult();
 		model.addAttribute("error",vr.getError());
 		
-		logger.debug("에러 존재? : " + errors.hasErrors());
-		logger.debug("에러 존재? : " + errors.getFieldError().getField());
 		if(errors.hasErrors()) {
 			vr.addErrors(errors);
 			return "member/find-password";
@@ -152,7 +175,7 @@ public class MemberController {
 	public String nicknameCheck(String nickname) {
 		Member member = memberService.findMemberByNickname(nickname);
 		
-		return (member == null) ? "available" : "disabled";
+		return (!nickname.equals("false") && member == null) ? "available" : "disabled";
 	}
 	
 	@PostMapping("kakao-login")
@@ -188,8 +211,9 @@ public class MemberController {
 	public String editProfileImpl(@Validated ModifyForm modifyForm, Errors errors
 								,@SessionAttribute("authentication") Member member
 								,Model model) {
+		logger.debug(modifyForm.toString());
 		ValidatorResult vr = new ValidatorResult();
-		model.addAttribute("error",vr.getError());		//처음 초기화하는 것? 아니면 vr.getError는 hasError 블록 메서드보다 나중에 도나? Map<errorField, defaultMessage> 형태 -> jsp에서 error.field명 출력
+		model.addAttribute("error",vr.getError());		//Map<errorField, defaultMessage> 형태 -> jsp에서 error.field명 출력
 		
 		if(errors.hasErrors()) {
 			vr.addErrors(errors);
@@ -204,11 +228,31 @@ public class MemberController {
 	
 	@PostMapping("update-img")
 	public String updateImg(MultipartFile profile, @SessionAttribute("authentication") Member member) {
-		logger.debug(profile.toString());
 		
 		memberService.insertProfileImg(member,profile);
 		
 		return "redirect:/member/edit-profile";
 	}
+	
+	@GetMapping("quit")
+	public void quit() {}
+	
+	@PostMapping("quit")
+	@ResponseBody
+	public String quitImpl(@RequestBody Member member) {
+		
+		if(!memberService.findMemberByNickname(member.getNickname()).getPassword().equals(member.getPassword())) {
+			return "error";
+		}
+		return "quit";
+	}
+	
+	@GetMapping("leave")
+	public String isLeave(@SessionAttribute("authentication") Member member) {
+		memberService.isLeaveMember(member);
+		
+		return "redirect:/member/login";
+	}
+	
 
 }
