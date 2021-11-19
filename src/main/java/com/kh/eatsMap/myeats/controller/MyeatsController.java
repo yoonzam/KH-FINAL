@@ -36,6 +36,7 @@ public class MyeatsController {
 		logger.info(group.toString());
 		
 		groupService.write(group);
+		reAttr.addFlashAttribute("list", groupService.list());
 		reAttr.addFlashAttribute("result", "success");
 		
 		return "redirect:/myeats/group";
@@ -49,9 +50,18 @@ public class MyeatsController {
 	}
 	
 	@RequestMapping(value="/groupDetail", method=RequestMethod.GET)
-	public void groupDetailGet(@RequestParam("groupIdx") int groupIdx, Model model) throws Exception{
+	public void groupDetailGet(@RequestParam("groupIdx") String groupIdx, Model model) throws Exception{
 		
 		model.addAttribute("groupService",groupService.read(groupIdx)); 
+	}
+	
+	@RequestMapping(value="/delete", method=RequestMethod.POST)
+	public String delete(@RequestParam("id") String id, RedirectAttributes reAttr)throws Exception{ 
+		
+		groupService.remove(id);
+		
+		reAttr.addFlashAttribute("result", "success");		
+		return "redirect:/myeats/group";
 	}
 
 	@GetMapping("/post")

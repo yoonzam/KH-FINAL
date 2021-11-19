@@ -63,9 +63,14 @@ public class GroupRepositoryTest {
     
 	 @Test
 	    public void findByGroupIdx() {
-		 groupRepository.findByGroupIdx(3).forEach(e -> logger.info(e.toString()));
+		 groupRepository.findByGroupIdx("3").forEach(e -> logger.info(e.toString()));
 	    }
-
+	 
+	
+	 @Test
+	    public void deleteById() {
+		 groupRepository.deleteById("619779dce0c6e6637d4999ff");
+	    }
   
   
     

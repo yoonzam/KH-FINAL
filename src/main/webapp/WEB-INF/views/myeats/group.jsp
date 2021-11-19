@@ -7,6 +7,17 @@
 <head>
 <%@ include file="/WEB-INF/views/include/head.jsp" %>
 <link rel="stylesheet" type="text/css" href="/resources/css/myeats/myeats.css" />
+<style type="text/css">
+
+/* css 상태 보고 추후에 이동 예정 */
+.deletebtn {
+	border:none;
+	background-color: #ccc;
+	color: #fff;
+	font-size: 1em;
+	}
+</style>
+
 </head>
 <body>
 <%@ include file="/WEB-INF/views/include/header.jsp" %>
@@ -15,13 +26,16 @@
 		<div class="container">
 			<ul class="myeats-tab">
 				<li class="selected">그룹관리</li>
-				<li>작성글관리</li>
-				<li>맛찜리스트</li>
+				<li><a href="post">작성글관리</a></li>
+				<li><a href="detail">맛찜리스트</a></li>
 				<li>회원정보 수정</li>
 			</ul>
 			<ul class="group-wrap">
+			
 			<c:forEach items="${list}" var="grouplist" begin="0" step="2">
 				<li>
+				
+				
 					<div class="group">
 						<div class="group-img"><img src="/resources/img/upload/01.jpg"></div>
 						<p class="group-info">
@@ -32,11 +46,18 @@
 					</div>
 					<div class="controller">
 						<a href="groupDetail?groupIdx=${grouplist.groupIdx}" class="group-menu">그룹관리</a>
-						<a>수정</a>
-						<a>삭제</a>
+						<a href="groupDetail?groupIdx=${grouplist.groupIdx}">수정</a>
+						<!-- 폼태그 스타일 유지 위해 div로 display: none 줌 -->
+						<div style="display: none;">
+						<form role="form" method="post">	
+							<input type="hidden" name="id" value="${grouplist.id}" />
+						</form>
+						</div>  
+						<a><button type="submit" class="deletebtn">삭제</button></a>
 					</div>
 				</li>
 			</c:forEach>
+			
 			<c:forEach items="${list}" var="grouplist" begin="1" step="2">
 				<li>
 					<div class="group">
@@ -49,8 +70,8 @@
 					</div>
 					<div class="controller">
 						<a href="groupDetail?groupIdx=${grouplist.groupIdx}" class="group-menu">그룹관리</a>
-						<a>수정</a>
-						<a>삭제</a>
+						<a href="groupDetail?groupIdx=${grouplist.groupIdx}">수정</a>
+						<a><button type="submit" class="deletebtn">삭제</button></a>
 					</div>
 				</li>
 				</c:forEach>
@@ -124,6 +145,18 @@ function newElement() {
 	}
 
 }
+
+$(document).ready(function(){
+	var frmObj = $("form[role='form']");
+	console.log("group.jsp지정된 폼태그..");
+	
+	
+	 $(".deletebtn").on("click", function(){
+		frmObj.attr("action", "/myeats/delete");
+		frmObj.submit();
+	}); 
+	
+});
 </script>
 </body>
 </html>
