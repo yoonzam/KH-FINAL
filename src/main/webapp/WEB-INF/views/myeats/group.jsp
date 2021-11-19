@@ -17,6 +17,7 @@
 				<li class="selected">그룹관리</li>
 				<li>작성글관리</li>
 				<li>맛찜리스트</li>
+				<li>회원정보 수정</li>
 			</ul>
 			<ul class="group-wrap">
 			<c:forEach items="${list}" var="grouplist" begin="0" step="2">
@@ -30,7 +31,7 @@
 						</p>
 					</div>
 					<div class="controller">
-						<a href="groupDetail" class="group-menu">그룹관리</a>
+						<a href="groupDetail?groupIdx=${grouplist.groupIdx}" class="group-menu">그룹관리</a>
 						<a>수정</a>
 						<a>삭제</a>
 					</div>
@@ -47,40 +48,12 @@
 						</p>
 					</div>
 					<div class="controller">
-						<a href="groupDetail" class="group-menu">그룹관리</a>
+						<a href="groupDetail?groupIdx=${grouplist.groupIdx}" class="group-menu">그룹관리</a>
 						<a>수정</a>
 						<a>삭제</a>
 					</div>
 				</li>
 				</c:forEach>
-				<!-- <li>
-					<div class="group">
-						<div class="group-img"><img src="/resources/img/upload/03.jpg"></div>
-						<p class="group-info">
-							<strong>맛집소녀단</strong><br>
-							<i class="fas fa-user"></i> 5&nbsp;&nbsp;<i class="fas fa-feather"></i> 2021-11-11
-						</p>
-					</div>
-					<div class="controller">
-						<a class="group-menu">그룹관리</a>
-						<a>수정</a>
-						<a>삭제</a>
-					</div>
-				</li>
-				<li>
-					<div class="group">
-						<div class="group-img"><img src="/resources/img/upload/01.jpg"></div>
-						<p class="group-info">
-							<strong>맛집소녀단</strong><br>
-							<i class="fas fa-user"></i> 5&nbsp;&nbsp;<i class="fas fa-feather"></i> 2021-11-11
-						</p>
-					</div>
-					<div class="controller">
-						<a class="group-menu">그룹관리</a>
-						<a>수정</a>
-						<a>삭제</a>
-					</div>
-				</li> -->
 			</ul>
 			<div class="btn-area">
 				<a href ="createGroup"><button class="create-btn">새로운 그룹 만들기</button></a>

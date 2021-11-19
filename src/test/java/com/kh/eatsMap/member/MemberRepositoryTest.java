@@ -1,10 +1,12 @@
 package com.kh.eatsMap.member;
 
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
+import org.bson.Document;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -232,4 +234,7 @@ public class MemberRepositoryTest {
     	.andDo(print());
     }
 
+    
+
+    
 }
