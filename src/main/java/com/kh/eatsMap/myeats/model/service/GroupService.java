@@ -12,4 +12,5 @@ public interface GroupService {
 	
 	public List<Group> list();
 
+	public List<Group> read(int groupIdx);
 }

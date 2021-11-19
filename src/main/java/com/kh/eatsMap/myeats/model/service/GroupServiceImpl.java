@@ -48,6 +48,9 @@ public class GroupServiceImpl implements GroupService{
 		return groupRepository.findAll();
 	}
 
-
+	@Override
+	public List<Group> read(int groupIdx){
+		return groupRepository.findByGroupIdx(groupIdx);
+	}
 
 }
