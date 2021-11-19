@@ -28,11 +28,11 @@ public class JoinFormValidator implements Validator{
 		JoinForm form = (JoinForm) target;
 		
 		//이메일 조회 -> 미가입 회원 여부 검증
-		if(memberRepository.findByEmail(form.getEmail()) != null) {
+		if(memberRepository.findByEmailAndIsLeave(form.getEmail(), 0) != null) {
 			errors.rejectValue("email", "err-email", "이미 가입된 이메일입니다.");
 		}
 		
-		if(memberRepository.findMemberByNickname(form.getNickname()) != null ) {
+		if(memberRepository.findByNickname(form.getNickname()) != null ) {
 			errors.rejectValue("nickname", "err-nickname", "이미 존재하는 닉네임 입니다.");
 		}
 		

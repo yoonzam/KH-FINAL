@@ -22,11 +22,15 @@
        </div>
        <form action="/member/login" method="post" class="login-form" name="login-form">
          <h2 class="tit-login">로그인</h2>
+         <c:if test="${not empty joinMsg}">
+         	<h3 class="color-m" style="text-align: center; padding: 10px 0;">${joinMsg}</h3>
+         </c:if>
+         <c:if test="${not empty message }">
+			<h3 class="color-m" style="text-align: center; padding: 10px 0;">${message}</h3>      	
+         </c:if>
          <input type="email" name="email" id="email" placeholder="이메일을 입력해주세요">
          <input type="password" name="password" id="password" placeholder="비밀번호를 입력해주세요">
-         <c:if test="${not empty message }">
-			<span class="valid-msg">${message }</span>         	
-         </c:if>
+
          
          <button>로그인</button>
          <a onclick="kakaoLogin()" class="btn-kakao">
