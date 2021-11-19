@@ -109,40 +109,40 @@
 <%@ include file="/WEB-INF/views/include/footer.jsp" %>
 
 <script>
-/* //메인화면 자바스크립트
-var myNodelist = document.getElementsByTagName(".main LI");
-var i;
+ //메인화면 자바스크립트
+/* var myNodelist = document.getElementsByTagName(".main LI");
+var i; */
 
 // 삭제 버튼을 리스트에 붙이는 스크립트
-for (i = 0; i < myNodelist.length; i++) {
+/* for (i = 0; i < myNodelist.length; i++) {
  var span = document.createElement("SPAN");
     /*\u00D7 x표*/
   var txt = document.createTextNode("\u00D7");
   span.className = "close";
   span.appendChild(txt);
   myNodelist[i].appendChild(span);
-}
+} */
 
 // 삭제 버튼 누르면 삭제되는 스크립트
-var close = document.getElementsByClassName("close");
+/* var close = document.getElementsByClassName("close");
 var i;
 for (i = 0; i < close.length; i++) {
   close[i].onclick = function() {
     var div = this.parentElement;
     div.style.display = "none";
   }
-}
+} */
 
 // 추가되면 체크표시 아이콘(미완)
-var list = document.querySelector('ul');
+/* var list = document.querySelector('ul');
 list.addEventListener('click', function(ev) {
   if (ev.target.tagName === 'LI') {
     ev.target.classList.toggle('checked');
   }
-}, false);
+}, false); */
 
 // 추가시 x버튼 등 생성(미완)
-function newElement() {
+/* function newElement() {
   var li = document.createElement("li");
   var inputValue = document.getElementById("myInput").value;
   var t = document.createTextNode(inputValue);
@@ -158,7 +158,7 @@ function newElement() {
   var txt = document.createTextNode("\u00D7");
   span.className = "close";
   span.appendChild(txt);
-  li.appendChild(span); */
+  li.appendChild(span);  */
   
   //그룹 생성 정상 처리시
   var result = '${result}';
