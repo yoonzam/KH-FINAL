@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -13,6 +15,7 @@
 		<div class="container">
 			
 			<div class="group-view">
+			<c:forEach items="${groupService}" var="groupService">
 				<div class="group-info">
 					<div class="group-profile">
 						<div class="group-img">
@@ -20,7 +23,8 @@
 						</div>
 					</div>
 					<div class="group-menu">
-						<div class="group-title"><i class="fas fa-bell"></i> 맛집소녀단</div>
+						<input type="hidden" name="bid" value="${groupService.groupIdx}" />
+						<div class="group-title"><i class="fas fa-bell"></i> ${groupService.groupName}</div>
 						<div class="group-service">
 							<button class="main-btn">잇츠맵 바로가기</button>
 							<button>수정</button>
@@ -36,6 +40,7 @@
 					</ul>
 				</div>
 				<button class="btn-list">그룹 목록으로 돌아가기</button>
+			</c:forEach>	
 			</div>
 		</div>
 	</div>

@@ -18,6 +18,7 @@
 				<li>그룹관리</li>
 				<li class="selected">작성글관리</li>
 				<li>맛찜리스트</li>
+				<li>회원정보 수정</li>
 			</ul>
 		    <div class="profile">
 				<div class="wrap-profile-img">
