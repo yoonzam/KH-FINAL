@@ -180,10 +180,10 @@ public class MemberController {
 	
 	@PostMapping("kakao-login")
 	@ResponseBody
-	public String kakaoLoginImpl( String kakaoId, HttpSession session) {
-		Member member = memberService.findKakaoMember(kakaoId);
+	public String kakaoLoginImpl(@RequestBody Member member, HttpSession session) {
+		Member kakaoMember = memberService.findKakaoMember(member.getKakaoId());
 						
-		if(member != null) {
+		if(kakaoMember != null) {
 			session.setAttribute("authentication", member);
 			return "kakaoLogin";
 		}else {

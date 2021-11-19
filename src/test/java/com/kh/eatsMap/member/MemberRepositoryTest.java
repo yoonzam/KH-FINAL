@@ -234,6 +234,10 @@ public class MemberRepositoryTest {
     	.andDo(print());
     }
 
+    @Test
+    public void findByEmailAndIsLeave() {
+    	logger.debug(repository.findByEmailAndIsLeave("qleen513@gmail.com", 1).toString());
+    }
     
 
     

@@ -69,7 +69,6 @@
 	  
 	  document.querySelector('#check_nick').addEventListener('click', ()=>{
 		  
-		  console.dir(nickname);
 		  if(nickname === "" || nickname == null){
 			document.querySelector('#alert_nick').innerHTML = '닉네임을 입력하지 않았습니다.';
 			return;
