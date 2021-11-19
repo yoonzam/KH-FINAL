@@ -70,7 +70,7 @@ public class MemberServiceImpl implements MemberService{
 	public Member authenticateUser(Member member) {
 		Member storedMember = new Member();		
 		
-		storedMember = memberRepository.findByEmail(member.getEmail());
+		storedMember = memberRepository.findByEmailAndIsLeave(member.getEmail(), 0);
 		
 		//password encode 이전
 		if(storedMember != null && storedMember.getPassword().equals(member.getPassword())) {

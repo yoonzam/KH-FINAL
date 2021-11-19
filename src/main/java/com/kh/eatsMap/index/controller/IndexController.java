@@ -5,6 +5,7 @@ import java.util.List;
 import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.mongodb.core.geo.GeoJson;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -39,21 +40,24 @@ public class IndexController {
 			) {
 
 		//--hashtag픽(잇친아님) 
-		//like컬럼값이 1인 리뷰중(=내가 찜한 리뷰중) 높은 빈도의 hashtag 2개 선별
+		//세션에서 현재 접속한 멤버의 id값 받아옴 
+		//멤버의 like컬럼값이 1인 리뷰중(=내가 찜한 리뷰중) 높은 빈도의 hashtag 2개 선별
 		//그 2개의 hashtag가 포함된 모든 리뷰 출력
 		
 		ObjectId id = member.getId();
-//		List<Review> hashTagList = indexService.findByHashtag();
-//		model.addAttribute(hashTagList);
+		List<Review> hashTagList = indexService.findByHashtag(id);
+		model.addAttribute(hashTagList);
 		
 		
 		
 		//내주변 잇친픽
 		//나의 위치값 받아오기
 		//내 반경안에 들어와있는 식당이면서, 내가 팔로우 한 사람이 작성한 리뷰 
-//		List<Review> nearList = indexService.findByLocation();
-//		model.addAttribute(nearList);
 		
+//		GeoJson<Iterable<?>> location = 
+//		List<Review> nearList = indexService.findByLocation(id);
+//		model.addAttribute(nearList);
+//		
 		return "main/main";
 	}
 
