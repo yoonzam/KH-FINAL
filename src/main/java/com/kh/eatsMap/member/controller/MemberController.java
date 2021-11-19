@@ -106,10 +106,8 @@ public class MemberController {
 	}
 	
 	@GetMapping("logout")
-	public String logout(HttpSession session) {
+	public void logout(HttpSession session) {
 		session.removeAttribute("authentication");
-		
-		return "redirect:/member/login";
 	}
 	
 	@GetMapping("find-password")
