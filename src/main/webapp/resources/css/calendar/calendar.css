@@ -51,7 +51,7 @@
 
 .schedule-list .list span{
 	display: inline-block;
-	width: 150px;
+	width: 80px;
 }
 
 .schedule-list .list input{
@@ -71,6 +71,11 @@
 .schedule .btn-wrap button.cancel{background-color:#cbc5c2;}
 .schedule .btn-wrap button.submit:hover{background-color: #ffa54f;}
 .schedule .btn-wrap button.cancel:hover{background-color: #d8d2cf;}
+
+.schedule .btn-wrap button.change{background-color:var(--main-color);}
+.schedule .btn-wrap button.delete{background-color:#cbc5c2;}
+.schedule .btn-wrap button.change:hover{background-color: #ffa54f;}
+.schedule .btn-wrap button.delete:hover{background-color: #d8d2cf;}
 
 /* schedule-spec */
 .dimmed-wrap .layer-popup.review{
