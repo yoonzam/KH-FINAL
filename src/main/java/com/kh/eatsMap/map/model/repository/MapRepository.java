@@ -9,11 +9,12 @@ import org.springframework.data.geo.Point;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 import com.kh.eatsMap.map.model.dto.Map;
+import com.kh.eatsMap.member.model.dto.Member;
 
 public interface MapRepository extends MongoRepository<Map, String>{
-	
+
 	List<Map> findByLocationWithin(Circle circle);
 	List<Map> findByLocationWithin(Box box);
-	List<Map> findByLocationNear(Point location, Distance distance); 
+	List<Map> findByLocationNear(Point location, Distance distance);
 
 }

@@ -10,6 +10,9 @@ import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.geo.Distance;
+import org.springframework.data.geo.Metrics;
+import org.springframework.data.geo.Point;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -21,9 +24,12 @@ import com.kh.eatsMap.map.model.dto.Map;
 import com.kh.eatsMap.map.model.repository.MapRepository;
 import com.kh.eatsMap.member.model.dto.Member;
 
+import lombok.extern.slf4j.Slf4j;
+
 @WebAppConfiguration
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "file:src/main/webapp/WEB-INF/spring/**/*-context.xml" })
+@Slf4j
 public class MapMongoTest {
 
 	@Autowired
@@ -42,13 +48,18 @@ public class MapMongoTest {
 		this.mockMvc = webAppContextSetup(context).build();
 	}
 
-	@Test
-	public void saveMember() {
-		Map map = new Map();
-		
-		repository.save(map);
+	/*
+	 * @Test public void saveMember() { Map map = new Map();
+	 * 
+	 * repository.save(map);
+	 * 
+	 * // mongoTemplate.save(member); }
+	 */
 
-		// mongoTemplate.save(member);
+	@Test
+	public void geoTest() {
+		repository.findByLocationNear(new Point(127.0956659043071, 37.546965436775125),
+				new Distance(0.2, Metrics.KILOMETERS)).forEach(e -> log.info(e.toString()));
 	}
 
 }
