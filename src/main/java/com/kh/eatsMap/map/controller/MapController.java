@@ -12,5 +12,13 @@ public class MapController {
 	public String map() {
 		return "map/map";
 	}
+	
+	@GetMapping("search")
+	public String searchReview() {
+		
+		
+		
+		return "";
+	}
 
 }
