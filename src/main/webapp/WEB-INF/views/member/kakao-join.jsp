@@ -20,7 +20,7 @@
       <div class="box-logo">
         <img src="/resources/img/common/EatsMap_logo.png" alt="">
       </div>
-      <form action="/member/kakao-join" method="post" class="kakao-form" name="kakao-form">
+      <form action="/member/kakao-join" method="post" class="kakao-form" name="kakaoForm">
         <h2 class="tit-kakao">추가정보 입력</h2>
         <div class="desc">
           <h5>소셜 가입 인증을 성공하였습니다.</h5>
@@ -88,6 +88,8 @@
 				document.querySelector('#alert_nick').style.color = 'var(--red-color)';
 				document.querySelector('#alert_nick').innerHTML = '중복확인을 하지 않았습니다.';
 				return;
+			}else{
+				document.kakaoForm.submit();
 			}
 		});
 

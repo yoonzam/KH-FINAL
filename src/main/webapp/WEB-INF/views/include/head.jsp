@@ -12,5 +12,8 @@
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet">
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
-
+<!-- kakaomap -->
+<script type="text/javascript"
+	src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=5bdae166c6881cf42916fd1d25349e6e&libraries=services,clusterer,drawing"></script>
+	
 <script defer type="text/javascript" src="/resources/js/common/common.js"></script>

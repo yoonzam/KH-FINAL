@@ -106,10 +106,8 @@ public class MemberController {
 	}
 	
 	@GetMapping("logout")
-	public String logout(HttpSession session) {
+	public void logout(HttpSession session) {
 		session.removeAttribute("authentication");
-		
-		return "redirect:/member/login";
 	}
 	
 	@GetMapping("find-password")
@@ -155,7 +153,7 @@ public class MemberController {
 		
 		ValidatorResult vr = new ValidatorResult();
 		model.addAttribute("error",vr.getError());
-		
+				
 		if(errors.hasErrors()) {
 			vr.addErrors(errors);
 			return "member/join";
@@ -166,8 +164,9 @@ public class MemberController {
 		session.setAttribute("persistToken", token);
 		
 		memberService.authenticateByEmail(form,token);
+		redirectAttr.addFlashAttribute("joinMsg","회원가입을 위한 이메일이 발송되었습니다.");
 		
-		return "redirect:/main/";
+		return "redirect:/member/login/";
 	}
 	
 	@GetMapping("nickname-check")
@@ -195,8 +194,7 @@ public class MemberController {
 	public void kakaoJoin() {}
 	
 	@PostMapping("kakao-join")
-	public String kakaoJoinImpl(Member member) {
-		
+	public String kakaoJoinImpl(Member member) {		
 		memberService.saveMember(member);
 		
 		return "redirect:/member/login";
@@ -211,7 +209,6 @@ public class MemberController {
 	public String editProfileImpl(@Validated ModifyForm modifyForm, Errors errors
 								,@SessionAttribute("authentication") Member member
 								,Model model) {
-		logger.debug(modifyForm.toString());
 		ValidatorResult vr = new ValidatorResult();
 		model.addAttribute("error",vr.getError());		//Map<errorField, defaultMessage> 형태 -> jsp에서 error.field명 출력
 		

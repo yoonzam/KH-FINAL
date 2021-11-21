@@ -17,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.kh.eatsMap.common.code.Config;
 import com.kh.eatsMap.common.mail.MailSender;
 import com.kh.eatsMap.common.util.FileUtil;
+import com.kh.eatsMap.member.model.dto.Member;
 import com.kh.eatsMap.member.model.repository.MemberRepository;
 import com.kh.eatsMap.member.validator.EmailForm;
 import com.kh.eatsMap.member.validator.JoinForm;
@@ -40,6 +41,8 @@ public class GroupServiceImpl implements GroupService{
 	
 	@Override
 	public void write(Group group) {
+		String StringgroupIdx = Integer.toString((int)groupRepository.count()+1);
+		group.setGroupIdx(StringgroupIdx);//1부터시작에서 1씩 증가하도록
 		groupRepository.save(group);
 	}
 	
@@ -49,8 +52,16 @@ public class GroupServiceImpl implements GroupService{
 	}
 
 	@Override
-	public List<Group> read(int groupIdx){
+	public List<Group> read(String groupIdx){
 		return groupRepository.findByGroupIdx(groupIdx);
 	}
+	
+	@Override
+	public void remove(String id){
+		groupRepository.deleteById(id);
+	}
+	
+
+
 
 }
