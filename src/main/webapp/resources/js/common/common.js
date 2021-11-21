@@ -54,23 +54,42 @@ let closePopup = () => {
 }
 
 /* 후기등록 */
+let uploadStep;
+let placeFlag;
+let searchPlaces;
+
 $('#btnReview').click(() => {
-	let searchPlaces;
+	//초기화
+	uploadStep = 1;
+	placeFlag = false;
+	searchPlaces = [];
+	uploadStepControl();
 	
+	$('.upload-flag').html('');
+	$('#uploadPrevBtn').hide();
+	$('#uploadNextBtn').show();
+	$('#uploadBtn').hide();
+	$('input[name="uploadPlace"]').val('');
 	$('#pop-review-form').fadeIn(200);
+	
 	let options = { center: new kakao.maps.LatLng(37.55317, 126.97279), level: 8 };
 	let map = new kakao.maps.Map(document.getElementById('uploadMap'), options);
 	
-	$('input[name="uploadLocation"]').keyup(function(){
+	$('input[name="uploadPlace"]').keyup(function(){
 		let keyword = $(this).val();
-		$('.location-list').html('');
-		if(!keyword) return;
+		if(!keyword) {
+			$('.location-list').html('');
+			return;
+		}
 		
 		// 장소 검색 객체 생성
 		let ps = new kakao.maps.services.Places();
 		// 키워드로 장소 검색
 		ps.keywordSearch(keyword, (data, status) => {
-			if (status === kakao.maps.services.Status.OK) displayPlaces(data);
+			if (status === kakao.maps.services.Status.OK) {
+				$('.location-list').html(displayPlaces(data));
+				$('.location-list').show();
+			}
 		}); 
 	});
 	
@@ -80,34 +99,68 @@ $('#btnReview').click(() => {
 		html = '';
 		for ( var i=0; i<places.length; i++ ) {
 			if(places[i].category_group_code == 'FD6' || places[i].category_group_code == 'CE7' )
-				html += '<li data-place-value="'+i+'"><span class="place-name">'+places[i].place_name+'</span> <span class="road-address-name">'+places[i].road_address_name+'</span></li>';
+				html += '<li data-place-idx="'+i+'"><span class="place-name">'+places[i].place_name+'</span> <span class="road-address-name">'+places[i].road_address_name+'</span></li>';
 		}
-		$('.location-list').html(html);
-		$('.location-list').show();
+		return html;
 	}
 	
 	//검색리스트 클릭시 지도에 표시
 	$('.location-list').click(function(e){
+		let placeIdx = e.target.dataset.placeIdx;
+		let place = searchPlaces[placeIdx];
+		
+		$('input[name="uploadPlace"]').val(place.place_name);
+		drawSpecificMap(place);
+		placeFlag = true;
 		$('.location-list').hide();
-		let placeValue = e.target.dataset.placeValue;
-		drawSpecificMap(searchPlaces[placeValue]);
 	})
 	
 	//검색한 음식점 맵에 표시
 	let drawSpecificMap = (place) => {
-		let options = { center: new kakao.maps.LatLng(place.y, place.x), 
-						level: 5, 
-						keyboardShortcuts:true};
+		let latitude = place.y;
+		let longitude = place.x;
+		let options = { center: new kakao.maps.LatLng(latitude, longitude), level: 5 };
 		let map = new kakao.maps.Map(document.getElementById('uploadMap'), options);
-		let content = '<div class="marker-wrap"><p>'+place.place_name+'</p><div></div></div>';
+		let content = '<div class="marker-wrap"><p><i class="fas fa-utensils color-m"></i> '+place.place_name+'</p><div></div></div>';
 		
 		let customOverlay = new kakao.maps.CustomOverlay({
 		    position: new kakao.maps.LatLng(place.y, place.x),
-		    content: content,
-		    xAnchor: 0.3,
-		    yAnchor: 0.91
+		    content: content
 		});
 		customOverlay.setMap(map);
 	}
-});
 	
+});
+
+$('#uploadNextBtn').click(()=>{
+	if(!placeFlag){
+		$('.upload-flag.place').html('※장소를 등록하지 않으면 다음 단계로 갈 수 없어요!');
+		return;
+	} else{
+		$('.upload-flag.place').html('');
+	}
+	uploadStep ++;
+	uploadStepControl();			
+});
+
+$('#uploadPrevBtn').click(()=>{
+	uploadStep --;
+	uploadStepControl();
+});
+
+let uploadStepControl = () => {
+	if(uploadStep == 1) {
+		$('#uploadNextBtn').show();
+		$('#uploadPrevBtn').hide();
+	} else if(uploadStep == 5) {
+		$('#uploadNextBtn').hide();
+		$('#uploadBtn').show();
+	} else {
+		$('#uploadBtn').hide();
+		$('#uploadNextBtn').show();
+		$('#uploadPrevBtn').show();
+	}
+	$('#uploadStep').html(uploadStep);
+	$('.review-upload > ul li').hide();
+	$('.review-upload > ul li[data-upload-step="'+uploadStep+'"]').show();
+}

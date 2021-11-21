@@ -8,9 +8,9 @@
 				<div class="popup-title">후기 등록하기</div>
 				<ul>
 					<li class="location" data-upload-step="1" style="display:block;">
-						<p><strong>#장소등록</strong><br>방문한 곳은 어디인가요?</p>
+						<p><strong>#장소등록</strong><br>방문한 곳은 어디인가요?<span class="upload-flag place"></span></p>
 						<div class="inp-place">
-							<input type="text" name="uploadLocation" placeholder="장소를 입력해주세요." autocomplete="off" spellcheck="false">
+							<input type="text" name="uploadPlace" placeholder="장소를 입력해주세요." autocomplete="off" spellcheck="false">
 							<ul class="location-list">
 							</ul>
 							<div id="uploadMap" class="upload-map"></div>
@@ -43,9 +43,10 @@
 					</li>
 				</ul>
 				<div class="btn-wrap">
-					<div><span>1</span>/5단계</div>
-					<button class="prev">이전</button>
-					<button class="next">다음</button>
+					<div><span id="uploadStep">1</span>/5단계</div>
+					<button id="uploadPrevBtn" class="prev">이전</button>
+					<button id="uploadNextBtn" class="next">다음</button>
+					<button id="uploadBtn" class="next">전송</button>
 				</div>
 			</div>
 		</div>
