@@ -251,5 +251,8 @@ public class MemberController {
 		return "redirect:/member/login";
 	}
 	
+	//파이어베이스
+	@GetMapping("push-test")
+	public void pushTest() {}
 
 }
