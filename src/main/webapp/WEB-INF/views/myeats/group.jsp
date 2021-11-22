@@ -2,20 +2,60 @@
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib prefix="pageNav" tagdir="/WEB-INF/tags" %>
+
 <!DOCTYPE html>
 <html>
 <head>
 <%@ include file="/WEB-INF/views/include/head.jsp" %>
 <link rel="stylesheet" type="text/css" href="/resources/css/myeats/myeats.css" />
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
 <style type="text/css">
 
 /* css 상태 보고 추후에 이동 예정 */
-.deletebtn {
+.delete{
 	border:none;
 	background-color: #ccc;
 	color: #fff;
 	font-size: 1em;
 	}
+	
+/* 페이징 가운데 정렬 */	
+.page{
+  text-align: center;  
+  width: 100%;
+  }
+
+.pagination {
+  list-style: none;
+  display: inline-block;
+  padding: 0;
+  margin-top: 20px;
+  }
+
+.pagination li {
+  display: inline;
+  text-align: center;
+  }
+  
+ .pagination li .active{
+ color: Red;
+  } 
+  
+  
+/* 그룹생성 */	
+.btn-area {
+    text-align: end;
+}
+
+.btn-area button {
+    cursor: pointer;
+    font-weight: 8;
+    font-size: 15px;
+    padding: 10px 15px;
+}
+
+
 </style>
 
 </head>
@@ -31,40 +71,10 @@
 				<li>회원정보 수정</li>
 			</ul>
 			
-			
-			
-			<c:forEach items="${list}" var="grouplist" varStatus="status"  begin="0">
+			<c:forEach items="${list}" var="grouplist" varStatus="status"  begin="0"  >
 				<c:if test="${status.first}"><ul class="group-wrap"></c:if>
 				<c:choose>
-				<c:when test="${status.count % 2 == 0}">
-				<li>
-					<div class="group">
-						<div class="group-img"><img src="/resources/img/upload/01.jpg"></div>
-						<p class="group-info">
-							<strong>${grouplist.groupName}</strong><br>
-							<i class="fas fa-user"></i> 5&nbsp;&nbsp;<i class="fas fa-feather"></i>
-							<fmt:formatDate pattern="yyyy/MM/dd" value="${grouplist.groupcreatedate}"/>
-						</p>
-					</div>
-					<div class="controller">
-						<a href="groupDetail?groupIdx=${grouplist.groupIdx}" class="group-menu">그룹관리</a>
-						<a href="groupDetail?groupIdx=${grouplist.groupIdx}">수정</a>
-
-						<!-- 폼태그 스타일 유지 위해 div로 display: none 줌 -->
-						<div style="display: none;">
-						<form role="form" method="post">	<!-- delete/post로 넘김 -->
-							<input type="hidden" name="id" value="${grouplist.id}" />
-						</form>
-						</div>  
-						
-
-						<a><button type="submit" class="deletebtn">삭제</button></a>
-					</div>
-				</li>
-				</c:when>
-				
-			
-			<c:otherwise>
+				<c:when test="true">
 				<li>
 					<div class="group">
 						<div class="group-img"><img src="/resources/img/upload/02.jpg"></div>
@@ -79,27 +89,36 @@
 						<a href="groupDetail?groupIdx=${grouplist.groupIdx}">수정</a>
 						
 						<!-- 폼태그 스타일 유지 위해 div로 display: none 줌 -->
-						<div style="display: none;">
-						<form role="form" method="post">	
-							<input type="hidden" name="id" value="${grouplist.id}" />
-						</form>
-						</div>  
-						
-						
-						<a><button type="submit" class="deletebtn">삭제</button></a>
-						
+							 <div style="display: none;">
+							<form role="form" method="post">	<!-- delete/post로 넘김 -->
+							<c:if test="${status.last}"><input type="hidden" id="id" name="id" value="${status.current.id}" />
+								 </c:if>
+							</form>
+							</div>
+						 <a><button type="submit" class="delete">삭제</button></a> 
 					</div>
-				</li> 
-			
-				</c:otherwise>
-				</c:choose>
+				</li>
+				</c:when>
+				</c:choose> 
 				<c:if test="${status.last}"></ul></c:if>
 				</c:forEach>
-				
+			
+      		
+      		<!-- 전체 데이터의 개수가 한 페이지를 넘기지 않으면 만들지 않는다. -->
+			<!-- paging -->
 			
 			<div class="btn-area">
-				<a href ="createGroup"><button class="create-btn">새로운 그룹 만들기</button></a>
+				<a href = "createGroup"><button type="submit" class="create-btn">그룹 만들기</button></a>
 			</div>
+			
+      	<div class="page">
+      <ul class="pagination">
+        <li><pageNav:pageNav listURI="group" pageObject="${pageObject}"></pageNav:pageNav></li>
+      </ul>
+   </div>
+			
+			
+      		
 		</div>
 	</div>
 </section>  
@@ -107,85 +126,49 @@
    
 
 <%@ include file="/WEB-INF/views/include/footer.jsp" %>
-
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 <script>
- //메인화면 자바스크립트
-/* var myNodelist = document.getElementsByTagName(".main LI");
-var i; */
+ 	//쓸 때 풀꺼
+ 	
+ 	$(document).ready(function(){
+ 		var frmObj = $("form[role='form']");
+ 		console.log("group.jsp지정된 폼태그..");
+ 			
+ 		  $(".delete").on("click", function(){ 
+ 		 
+ 		//test
+ 		/*   var test =${grouplist.id}
+ 		 console.log(test);  */
+ 		var list = new Array();
+ 		list.push("${grouplist.id}")
+ 		console.log(list[0]);
+ 		
+ 		 
+ 	 
+ 			frmObj.attr("action", "/myeats/delete");
+ 			frmObj.submit();
+ 		}); 
+ 		  
+ 		  
+ 		 $(".pagination li").click(function(){
+ 	        var menu= $(".pagination li");
+ 	        menu.removeClass("active");
+ 	        $(this).addClass("active");
+ 	      })
 
-// 삭제 버튼을 리스트에 붙이는 스크립트
-/* for (i = 0; i < myNodelist.length; i++) {
- var span = document.createElement("SPAN");
-    /*\u00D7 x표*/
-  var txt = document.createTextNode("\u00D7");
-  span.className = "close";
-  span.appendChild(txt);
-  myNodelist[i].appendChild(span);
-} */
+ 		  
+ 		
+ 		
+ 	});
+ 	
+ 	
+ 	
+ 	
+ 	
+	 
 
-// 삭제 버튼 누르면 삭제되는 스크립트
-/* var close = document.getElementsByClassName("close");
-var i;
-for (i = 0; i < close.length; i++) {
-  close[i].onclick = function() {
-    var div = this.parentElement;
-    div.style.display = "none";
-  }
-} */
 
-// 추가되면 체크표시 아이콘(미완)
-/* var list = document.querySelector('ul');
-list.addEventListener('click', function(ev) {
-  if (ev.target.tagName === 'LI') {
-    ev.target.classList.toggle('checked');
-  }
-}, false); */
-
-// 추가시 x버튼 등 생성(미완)
-/* function newElement() {
-  var li = document.createElement("li");
-  var inputValue = document.getElementById("myInput").value;
-  var t = document.createTextNode(inputValue);
-  li.appendChild(t);
-  if (inputValue === '') {
-    alert("You must write something!");
-  } else {
-    document.getElementById("myUL").appendChild(li);
-  }
-  document.getElementById("myInput").value = "";
-
-  var span = document.createElement("SPAN");
-  var txt = document.createTextNode("\u00D7");
-  span.className = "close";
-  span.appendChild(txt);
-  li.appendChild(span);  */
-  
-  //그룹 생성 정상 처리시
-  var result = '${result}';
-	
-	if(result == 'success'){
-		alert("정상 처리 되었습니다!!!");
-	}
-
-}
-
-$(document).ready(function(){
-	var frmObj = $("form[role='form']");
-	console.log("group.jsp지정된 폼태그..");
-	
-	
-	 $(".deletebtn").on("click", function(){
-		
-		 //test
-		 var test =${grouplist.id}
-		 console.log(test);
-		
-		 
-		frmObj.attr("action", "/myeats/delete");
-		frmObj.submit();
-	}); 
-	
-});
 
 </script>
 </body>

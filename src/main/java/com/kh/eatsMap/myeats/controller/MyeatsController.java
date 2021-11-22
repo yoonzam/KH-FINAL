@@ -15,6 +15,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.kh.eatsMap.member.model.service.MemberService;
 import com.kh.eatsMap.myeats.model.dto.Group;
 import com.kh.eatsMap.myeats.model.service.GroupService;
+import com.webjjang.util.PageObject;
 
 @Controller
 @RequestMapping("/myeats/*")
@@ -31,22 +32,31 @@ public class MyeatsController {
 	}
 	
 	@RequestMapping(value="/createGroup", method = RequestMethod.POST)
-	public String writePost(Group group, RedirectAttributes reAttr) throws Exception{
+	public String writePost(Group group, RedirectAttributes reAttr, PageObject pageObject) throws Exception{
 		logger.info("writePost....");
 		logger.info(group.toString());
 		
 		groupService.write(group);
-		reAttr.addFlashAttribute("list", groupService.list());
+		reAttr.addFlashAttribute("list", groupService.list(pageObject));
 		reAttr.addFlashAttribute("result", "success");
 		
 		return "redirect:/myeats/group";
 	}
 	
+//	@RequestMapping(value="/group", method=RequestMethod.GET)
+//	public void groupGet(Model model) throws Exception{
+//		logger.info("groupGet.............");
+//		
+//		model.addAttribute("list", groupService.list());
+//	}
+	
+	//페이징
 	@RequestMapping(value="/group", method=RequestMethod.GET)
-	public void groupGet(Model model) throws Exception{
+	public void groupGet(Model model, PageObject pageObject) throws Exception{
 		logger.info("groupGet.............");
 		
-		model.addAttribute("list", groupService.list());
+		model.addAttribute("list", groupService.list(pageObject));
+		model.addAttribute("pageObject", pageObject);
 	}
 	
 	@RequestMapping(value="/groupDetail", method=RequestMethod.GET)
@@ -59,10 +69,13 @@ public class MyeatsController {
 	public String delete(@RequestParam("id") String id, RedirectAttributes reAttr)throws Exception{ 
 		
 		groupService.remove(id);
+		System.out.println(id);
+		reAttr.addFlashAttribute("result", "success");	
 		
-		reAttr.addFlashAttribute("result", "success");		
 		return "redirect:/myeats/group";
 	}
+	
+
 
 	@GetMapping("/post")
 	public String postView() {
