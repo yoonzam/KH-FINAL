@@ -201,8 +201,8 @@
 			<div class="popup">
 				<div class="popup-wrap" style="display: none;">
 					<div class="rest-info">
-						<h2 class="rest-title">스시 아루히</h2> 
-						<span class="rest-content">서울시 영등포구 여의나루길 13</span>
+						<h2 class="rest-title" id="place-name"></h2> 
+						<span class="rest-content" id="road-address"></span>
 					</div>
 					<div class="wrap-btn">
 						<span class="btn">후기등록</span>
@@ -284,19 +284,57 @@
 			        map: map,
 			        position: new kakao.maps.LatLng(place.y, place.x) 
 			    });
+			    
+			    
 
 			    // 마커에 클릭이벤트를 등록합니다
 			    kakao.maps.event.addListener(marker, 'click', function() {
-					let reviewShow = document.querySelector(".popup-wrap");
+			    	
+			    	
+			    	let reviewShow = document.querySelector(".popup-wrap");
 					if (reviewShow.style.display == "none") {
 						reviewShow.style.display = "";
 					}else{
 						reviewShow.style.display = "none";
 					}
 					alert('마커를 클릭했습니다!');
+			    		
+					
+					//https://dapi.kakao.com/v2/local/search/keyword.json?y=37.514322572335935&x=127.06283102249932&radius=20000&query=카카오프렌즈
+					
+					fetch('https://dapi.kakao.com/v2/local/search/keyword.json?y='+ marker.getPosition().getLat() +'&x='+ marker.getPosition().getLng() +'&radius=1&query=' +keyword, {
+						  headers: {
+						    Authorization: `KakaoAK de36fa19e556a7179bb149f25fa41a95` 
+						  }
+						})
+						.then(response => response.json())
+						.then(json => {
+						// 받은 json으로 기능 구현
+						
+						//음식점 이름, 주소 텍스트로 변환 
+						let placeName = json.documents[0].place_name;
+						let roadAddress = json.documents[0].road_address_name;
+						
+						//팝업창에 내용 기입
+						document.querySelector('#place-name').innerHTML = placeName;
+						document.querySelector('#road-address').innerHTML = roadAddress;
+						
+						
+					});
 				    
 				});
 			}
+			
+		}
+		
+		let shwoBox = () =>{
+			let reviewShow = document.querySelector(".popup-wrap");
+			if (reviewShow.style.display == "none") {
+				reviewShow.style.display = "";
+			}else{
+				reviewShow.style.display = "none";
+			}
+			alert('마커를 클릭했습니다!');
 			
 		}
 		
@@ -336,15 +374,9 @@
 		    content: content,
 		    yAnchor: 1 
 		});
-		kakao.maps.event.addListener(marker, 'click', function() {
-			let reviewShow = document.querySelector('.popup-wrap');
-			if (reviewShow.style.display == "none") {
-				reviewShow.style.display = "";
-			}else{
-				reviewShow.style.display = "none";
-			}
-			alert('마커를 클릭했습니다!');
-		});
+		
+		
+		
 		
 	</script>
 

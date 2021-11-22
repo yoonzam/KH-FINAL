@@ -33,7 +33,6 @@ import com.kh.eatsMap.member.model.repository.MemberRepository;
 import com.kh.eatsMap.myeats.model.dto.Group;
 import com.kh.eatsMap.myeats.model.repository.GroupRepository;
 import com.kh.eatsMap.timeline.model.dto.Review;
-import com.webjjang.util.PageObject;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
