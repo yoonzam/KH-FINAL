@@ -7,9 +7,9 @@
 <!DOCTYPE html>
 <html>
 <head>
-<%@ include file="/WEB-INF/views/include/head.jsp" %>
 <link rel="stylesheet" type="text/css" href="/resources/css/myeats/myeats.css" />
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+<%@ include file="/WEB-INF/views/include/head.jsp" %>
+
 <style type="text/css">
 
 /* css 상태 보고 추후에 이동 예정 */
@@ -38,9 +38,6 @@
   text-align: center;
   }
   
- .pagination li .active{
- color: Red;
-  } 
   
   
 /* 그룹생성 */	
@@ -54,6 +51,19 @@
     font-size: 15px;
     padding: 10px 15px;
 }
+
+/* 페이징 */
+.pagination {
+  display: inline-block;
+}
+
+.pagination a {
+  color: black;
+  float: left;
+  padding: 8px 16px;
+  text-decoration: none;
+}
+
 
 
 </style>
@@ -103,21 +113,18 @@
 				<c:if test="${status.last}"></ul></c:if>
 				</c:forEach>
 			
-      		
-      		<!-- 전체 데이터의 개수가 한 페이지를 넘기지 않으면 만들지 않는다. -->
-			<!-- paging -->
-			
 			<div class="btn-area">
 				<a href = "createGroup"><button type="submit" class="create-btn">그룹 만들기</button></a>
 			</div>
 			
-      	<div class="page">
-      <ul class="pagination">
-        <li><pageNav:pageNav listURI="group" pageObject="${pageObject}"></pageNav:pageNav></li>
-      </ul>
-   </div>
-			
-			
+  		 <!-- 전체 데이터의 개수가 한 페이지를 넘기지 않으면 만들지 않는다. -->
+			<!-- paging -->
+  		 <div class="page">
+      		<ul class="pagination">
+       		 <li><pageNav:pageNav listURI="group" pageObject="${pageObject}"></pageNav:pageNav></li>
+      		</ul>
+  		 </div>
+  		 
       		
 		</div>
 	</div>
@@ -127,7 +134,6 @@
 
 <%@ include file="/WEB-INF/views/include/footer.jsp" %>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 <script>
  	//쓸 때 풀꺼
  	
@@ -162,12 +168,6 @@
  		
  	});
  	
- 	
- 	
- 	
- 	
-	 
-
 
 
 </script>
