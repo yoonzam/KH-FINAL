@@ -130,10 +130,26 @@ $('#btnReview').click(() => {
 		customOverlay.setMap(map);
 	}
 	
+	$('.review-upload input:checkbox').click((e)=>{
+	    let label = e.target.parentNode;
+	    label.classList.toggle('checked');
+	});
+	
+	$('.star-review i').click(function(e){
+		let score = e.target.dataset.score;
+		let category = e.target.parentNode;
+		let inp = category.children[category.children.length-1];
+		inp.value = score;
+		for(i=1; i < category.children.length; i++){
+			if(i <= score) category.children[i].className = 'fas fa-star';
+			else category.children[i].className = 'far fa-star';
+		}
+	});
+	
 });
 
 $('#uploadNextBtn').click(()=>{
-	if(!placeFlag){
+	if(placeFlag){
 		$('.upload-flag.place').html('※장소를 등록하지 않으면 다음 단계로 갈 수 없어요!');
 		return;
 	} else{
@@ -161,6 +177,6 @@ let uploadStepControl = () => {
 		$('#uploadPrevBtn').show();
 	}
 	$('#uploadStep').html(uploadStep);
-	$('.review-upload > ul li').hide();
-	$('.review-upload > ul li[data-upload-step="'+uploadStep+'"]').show();
+	$('.upload-contents li').hide();
+	$('.upload-contents li[data-upload-step="'+uploadStep+'"]').show();
 }
