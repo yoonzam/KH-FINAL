@@ -43,7 +43,7 @@
 						<li><i class="fas fa-user"></i> 퇴근시간<span>(quitting-time@naver.com)</span> <a><i class="fas fa-times"></i>삭제</a></li>
 					</ul>
 				</div>
-				<button class="btn-list">그룹 목록으로 돌아가기</button>
+				<a href = "group"><button class="btn-list">그룹 목록으로 돌아가기</button></a>
 			</c:forEach>	
 			</div>
 		</div>
