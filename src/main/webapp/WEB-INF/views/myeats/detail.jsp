@@ -14,9 +14,10 @@
 	<div class="container-wrap">
 		<div class="container">
 			<ul class="myeats-tab">
-				<li>그룹관리</li>
-				<li>작성글관리</li>
+				<li><a href="group">그룹관리</a></li>
+				<li><a href="post">작성글관리</a></li>
 				<li class="selected">맛찜리스트</li>
+				<li>회원정보 수정</li>
 			</ul>
 			<div class="section">
 				<div class="detail-wrap">

@@ -11,5 +11,9 @@ public interface GroupService {
 	public void write(Group group);
 	
 	public List<Group> list();
-
+	
+	public List<Group> read(String groupIdx);
+	
+	public void remove(String id);
+	
 }

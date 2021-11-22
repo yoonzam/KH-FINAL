@@ -16,7 +16,7 @@ public class Group {
 	
 	@Id
 	private ObjectId id;
-	private int groupIdx;		
+	private String groupIdx; //int에서 String변경 (매개변수로 받을 때 불편)
 	private String groupName;
 	private String memberId;
 	private String mapId;

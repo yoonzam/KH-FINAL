@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -13,6 +15,11 @@
 		<div class="container">
 			
 			<div class="group-view">
+			<c:forEach items="${groupService}" var="groupService">
+			<form role="form" method="post">	
+				<input type="hidden" name="id" value="${groupService.id}" />
+			</form>
+			
 				<div class="group-info">
 					<div class="group-profile">
 						<div class="group-img">
@@ -20,11 +27,12 @@
 						</div>
 					</div>
 					<div class="group-menu">
-						<div class="group-title"><i class="fas fa-bell"></i> 맛집소녀단</div>
+						<input type="hidden" name="groupIdx" value="${groupService.groupIdx}" />
+						<div class="group-title"><i class="fas fa-bell"></i> ${groupService.groupName}</div>
 						<div class="group-service">
 							<button class="main-btn">잇츠맵 바로가기</button>
 							<button>수정</button>
-							<button>삭제</button>
+							<button class="deletebtn">삭제</button>
 						</div>
 					</div>
 				</div>
@@ -36,6 +44,7 @@
 					</ul>
 				</div>
 				<button class="btn-list">그룹 목록으로 돌아가기</button>
+			</c:forEach>	
 			</div>
 		</div>
 	</div>
@@ -45,6 +54,18 @@
 
 <script>
 
+
+$(document).ready(function(){
+	var frmObj = $("form[role='form']");
+	console.log("group.jsp지정된 폼태그..");
+	
+	
+	 $(".deletebtn").on("click", function(){
+		frmObj.attr("action", "/myeats/delete");
+		frmObj.submit();
+	}); 
+	
+});
 </script>
 </body>
 </html>

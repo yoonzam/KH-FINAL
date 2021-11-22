@@ -12,9 +12,10 @@
     <div class="container-wrap">
       <div class="container">
         <ul class="myeats-tab">
-          <li class="selected">그룹관리</li>
-          <li>작성글관리</li>
-          <li>맛찜리스트</li>
+          <li><a href="/myeats/group">그룹관리</a></li>
+          <li><a href="/myeats/post">작성글관리</a></li>
+          <li><a href="/myeats/mylist">맛찜리스트</a></li>
+          <li class="selected"><a href="/member/edit-profile">회원정보 수정</a></li>
         </ul>
         <h2 class="tit-edit-profile">회원정보 수정</h2>
         <div class="profile">
@@ -65,11 +66,10 @@
 <script type="text/javascript">
 (() => {    	/* authentication에 접근하므로 분리x */
 	  let confirmNick = '';
-	  let nickname = document.querySelector('#nickname').value;
 	  
 	  document.querySelector('#check_nick').addEventListener('click', ()=>{
-		  
-		  console.dir(nickname);
+		  let nickname = document.querySelector('#nickname').value;
+
 		  if(nickname === "" || nickname == null){
 			document.querySelector('#alert_nick').innerHTML = '닉네임을 입력하지 않았습니다.';
 			return;
@@ -109,6 +109,8 @@
 				document.querySelector('#alert_nick').style.color = 'var(--red-color)';
 				document.querySelector('#alert_nick').innerHTML = '중복확인을 하지 않았습니다.';
 				return;
+			}else{
+				document.editForm.submit();
 			}
 		})
 

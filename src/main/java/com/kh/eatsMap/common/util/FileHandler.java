@@ -19,7 +19,7 @@ public class FileHandler {
 	Logger logger = LoggerFactory.getLogger(this.getClass());
 	
 	@GetMapping("download")
-	public ResponseEntity<UrlResource> downloadFile(FileDTO file) throws MalformedURLException, UnsupportedEncodingException{
+	public ResponseEntity<UrlResource> downloadFile(Fileinfo file) throws MalformedURLException, UnsupportedEncodingException{
 		
 		UrlResource resource = new UrlResource(Config.DOMAIN.DESC+file.getDownloadURL());
 		logger.debug(file.getDownloadURL());

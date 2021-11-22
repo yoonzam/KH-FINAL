@@ -49,6 +49,8 @@ public interface MemberRepository extends MongoRepository<Member, String>{	//Rep
 	Member findTop10ByNickname(String nickname, Sort sort);
 
 	Member findByEmail(String email);
+	
+	Member findByEmailAndIsLeave(String email, int isLeave);
 
 	Streamable<Member> findByNicknameContaining(String string);
 

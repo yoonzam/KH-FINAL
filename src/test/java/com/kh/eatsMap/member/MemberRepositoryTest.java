@@ -1,5 +1,10 @@
 package com.kh.eatsMap.member;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
+
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -25,15 +30,10 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.context.WebApplicationContext;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kh.eatsMap.member.model.dto.Member;
 import com.kh.eatsMap.member.model.repository.MemberRepository;
 import com.kh.eatsMap.timeline.model.dto.Review;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.setup.MockMvcBuilders.*;
 
 
 @WebAppConfiguration
@@ -232,4 +232,11 @@ public class MemberRepositoryTest {
     	.andDo(print());
     }
 
+    @Test
+    public void findByEmailAndIsLeave() {
+    	logger.debug(repository.findByEmailAndIsLeave("qleen513@gmail.com", 1).toString());
+    }
+    
+
+    
 }

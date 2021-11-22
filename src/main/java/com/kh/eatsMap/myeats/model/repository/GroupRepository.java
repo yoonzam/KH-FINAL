@@ -8,7 +8,7 @@ import com.kh.eatsMap.myeats.model.dto.Group;
 
 public interface GroupRepository extends MongoRepository<Group, String>{	
 	
-
+	List<Group> findByGroupIdx(String groupIdx);
 
 
 

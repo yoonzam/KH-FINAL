@@ -1,12 +1,12 @@
 package com.kh.eatsMap.member.model.service;
 
 import java.time.LocalDate;
-import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
 import org.springframework.http.RequestEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -31,7 +31,7 @@ public class MemberServiceImpl implements MemberService{
 	private final RestTemplate template;
 	private final MailSender mailSender;
 	private final MemberRepository memberRepository;
-
+	private final PasswordEncoder passwordEncoder;
 	
 	Logger logger = LoggerFactory.getLogger(this.getClass());
 	
@@ -68,31 +68,27 @@ public class MemberServiceImpl implements MemberService{
 
 	@Override
 	public Member authenticateUser(Member member) {
-		Member storedMember = new Member();		
-		
-		storedMember = memberRepository.findByEmail(member.getEmail());
-		
-		//password encode 이전
-		if(storedMember != null && storedMember.getPassword().equals(member.getPassword())) {
+		Member storedMember = memberRepository.findByEmailAndIsLeave(member.getEmail(), 0);
+	
+		if(storedMember != null  && passwordEncoder.matches(member.getPassword(), storedMember.getPassword())) {
 			return storedMember;
-		}
-//		if(storedMember != null  && passwordEncoder.matches(member.getPassword(), storedMember.getPassword())) {
-//			return storedMember;
-//		}
-		
+		}		
 		return null;
 	}
 
 	@Override
 	public void insertMember(JoinForm form) {
-//		form.setPassword(passwordEncoder.encode(form.getPassword()));
-		logger.debug(form.toString());
-		
+		Member member = new Member();	//mongoDB ValidatorForm <-> 객체매핑 X
+		member.setEmail(form.getEmail());
+		member.setPassword(passwordEncoder.encode(form.getPassword()));
+		member.setRegDate(LocalDate.now());
+		member.setNickname(form.getNickname());
+		member.setIsLeave(0);
+		memberRepository.save(member);
 	}
 
 	@Override
 	public void insertProfileImg(Member member, MultipartFile file) {
-
 		FileUtil fileUtil = new FileUtil();
 		member.setProfile(fileUtil.fileUpload(file));
 		

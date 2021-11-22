@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     
-   <%@ page import="java.util.Date" %>
+<%@ page import="java.util.Date" %>
 <%@ page import="java.text.SimpleDateFormat" %>
     <%
 	Date nowTime = new Date();
@@ -31,7 +31,7 @@
 					</li>
 					<li>
 						<span>그룹이름</span>
-						<input type="text" placeholder="그룹 이름을 입력하세요."name="groupName">
+						<input type="text" placeholder="그룹 이름을 입력하세요."name="groupName" maxlength="8" >
 					</li>
 					<li>
 						<span>초대하기</span>
