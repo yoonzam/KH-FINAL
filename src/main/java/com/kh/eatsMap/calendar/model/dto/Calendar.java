@@ -16,12 +16,18 @@ public class Calendar {
 	private ObjectId id;
 	private ObjectId memberId;	//회원 본인
 	private String title;
-	private Date date;
-	private int time;
+	private String date;
+	private String time;
 	
-	@GeoSpatialIndexed(type = GeoSpatialIndexType.GEO_2DSPHERE)
-	private GeoJsonPoint location;
+	private String location;
 	
-	private ObjectId[] participant;	//참가자
-
+	/*
+	 * @GeoSpatialIndexed(type = GeoSpatialIndexType.GEO_2DSPHERE) private
+	 * GeoJsonPoint location;
+	 */
+	
+	private String participant;
+	/*
+	 * private ObjectId[] participant; //참가자
+	 */
 }

@@ -26,8 +26,8 @@ import com.kh.eatsMap.member.validator.EmailForm;
 import com.kh.eatsMap.member.validator.JoinForm;
 import com.kh.eatsMap.myeats.model.dao.GroupDAO;
 import com.kh.eatsMap.myeats.model.dto.Group;
+import com.kh.eatsMap.myeats.model.dto.PageObject;
 import com.kh.eatsMap.myeats.model.repository.GroupRepository;
-import com.webjjang.util.PageObject;
 
 import lombok.RequiredArgsConstructor;
 
