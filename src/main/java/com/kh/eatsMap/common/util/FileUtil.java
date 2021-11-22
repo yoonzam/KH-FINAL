@@ -13,9 +13,9 @@ import com.kh.eatsMap.common.exception.HandlableException;
 
 public class FileUtil {
 	
-	public FileDTO fileUpload(MultipartFile mf) {
+	public Fileinfo fileUpload(MultipartFile mf) {
 		
-		FileDTO file = createFileDTO(mf);
+		Fileinfo file = createFileDTO(mf);
 		
 		try {
 			mf.transferTo(new File(getSavePath() + file.getRenameFileName()));
@@ -48,8 +48,8 @@ public class FileUtil {
 		return savePath;
 	}
 	
-	private FileDTO createFileDTO(MultipartFile mf) {
-		FileDTO fileDTO = new FileDTO();
+	private Fileinfo createFileDTO(MultipartFile mf) {
+		Fileinfo fileDTO = new Fileinfo();
 		String originFileName = mf.getOriginalFilename();
 		String renameFileName = UUID.randomUUID().toString();
 		

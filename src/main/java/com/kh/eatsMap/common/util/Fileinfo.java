@@ -8,11 +8,11 @@ import org.springframework.data.annotation.Id;
 import lombok.Data;
 
 @Data
-public class FileDTO {
+public class Fileinfo {
 	
 	@Id
-	private ObjectId flIdx;
-	private String typeIdx;
+	private ObjectId flId;
+	private String typeId;		//회원 id, review id, group id
 	private String originFileName;
 	private String renameFileName;
 	private String savePath;
