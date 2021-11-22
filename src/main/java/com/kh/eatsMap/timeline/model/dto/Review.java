@@ -21,7 +21,6 @@ public class Review {
 	
 	@GeoSpatialIndexed(type = GeoSpatialIndexType.GEO_2DSPHERE)
 	private GeoJsonPoint location;
-	
 	private int taste;			//평점
 	private int clean;
 	private int service;

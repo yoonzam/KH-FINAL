@@ -108,8 +108,12 @@ $('#btnReview').click(() => {
 	$('.location-list').click(function(e){
 		let placeIdx = e.target.dataset.placeIdx;
 		let place = searchPlaces[placeIdx];
-		
+		console.log(place);
 		$('input[name="uploadPlace"]').val(place.place_name);
+		$('input[name="resName"]').val(place.place_name);
+		$('input[name="addr"]').val(place.road_address_name);
+		$('input[name="latitude"]').val(place.y);
+		$('input[name="longitude"]').val(place.x);
 		drawSpecificMap(place);
 		placeFlag = true;
 		$('.location-list').hide();
@@ -130,6 +134,12 @@ $('#btnReview').click(() => {
 		customOverlay.setMap(map);
 	}
 	
+	$('.review-upload input:radio').click((e)=>{
+	    let label = e.target.parentNode;
+	    $('.hashtag label').removeClass('checked');
+	    label.classList.add('checked');
+	});
+	
 	$('.review-upload input:checkbox').click((e)=>{
 	    let label = e.target.parentNode;
 	    label.classList.toggle('checked');
@@ -146,10 +156,16 @@ $('#btnReview').click(() => {
 		}
 	});
 	
+	$('textarea[name="review"]').keyup(function(e){
+		let review = $(this).val();
+		if(review.length < 200) $('.textarea-count span').html(review.length);
+		else $('.textarea-count span').html(200);
+	});
+	
 });
 
 $('#uploadNextBtn').click(()=>{
-	if(placeFlag){
+	if(!placeFlag){
 		$('.upload-flag.place').html('※장소를 등록하지 않으면 다음 단계로 갈 수 없어요!');
 		return;
 	} else{
@@ -163,6 +179,25 @@ $('#uploadPrevBtn').click(()=>{
 	uploadStep --;
 	uploadStepControl();
 });
+
+$('#uploadBtn').click(()=>{
+	let form = $('#frmUpload')[0];
+	let formData = new FormData(form);
+	$.ajax({
+		type: "POST",
+		url: "/timeline/upload",
+		data: formData,
+		contentType : false,
+	    processData : false,
+	 	cache:false,
+		success: (text) => {
+			alert("성공");
+		},
+		error: (e) => {
+			alert("실패");
+		}
+	});
+})
 
 let uploadStepControl = () => {
 	if(uploadStep == 1) {
