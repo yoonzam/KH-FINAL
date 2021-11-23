@@ -255,8 +255,7 @@ footer{color:#aaa; font-size:0.8em; padding:30px; text-align:center;}
 .review-upload .location-list > li .place-name{font-weight:500;}
 .review-upload .location-list > li .road-address-name{font-size:13px; color:#aaa;}
 
-.review-upload .hashtag .select{margin-bottom:25px;}
-.review-upload .hashtag .select:last-child{margin-bottom: 0px;}
+.review-upload .hashtag .radio{margin-bottom:25px;}
 .review-upload .hashtag label{
 	display: inline-block;
 	background-color: #e7e2df;
@@ -270,7 +269,8 @@ footer{color:#aaa; font-size:0.8em; padding:30px; text-align:center;}
 }
 .review-upload .hashtag label.checked{background-color:var(--main-color); color:#fff;}
 .review-upload .hashtag label input[type="checkbox"],
-.review-upload .hashtag label input[type="radio"] {
+.review-upload .hashtag label input[type="radio"],
+.review-upload .upload-file input[type="file"] {
 	position: absolute;
 	width: 1px;
 	height: 1px;
@@ -290,6 +290,13 @@ footer{color:#aaa; font-size:0.8em; padding:30px; text-align:center;}
 .review-upload .star-review > div > input{font-weight:700; width:20px; padding:0; border:0; color:var(--red-color); margin-left:5px;}
 .review-upload textarea{display:block; margin-top:15px; width:100%; height:100px; border:1px solid #555; resize: none; padding:10px; border-radius:5px;}
 .review-upload .textarea-count{text-align:right; font-size:12px; margin-top:5px; padding:0 5px;}
+
+.review-upload .upload-file > label {display: block; padding: 15px 0; text-align:center; color: #eee; font-weight:700; background-color: #202028; border-radius:5px; cursor:pointer; transition-duration:0.5s;}
+.review-upload .upload-file > label:hover{background-color:#3d3d58;}
+.review-upload .preview-photo{display:flex; justify-content: space-evenly;}
+.review-upload .preview-photo > div{width:32%; height:166px; margin-right:2%; margin-top:10px;}
+.review-upload .preview-photo > div:last-child{margin-right:0%;}
+.review-upload .preview-photo > div img{display:block; width:100%; height:100%; object-fit:cover; border:1px solid #ddd;}
 
 .review-upload .btn-wrap{text-align: center; padding:20px; padding-top:0px;}
 .review-upload .btn-wrap > div{color:#aaa; margin-bottom:10px;}

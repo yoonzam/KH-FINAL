@@ -2,6 +2,8 @@ package com.kh.eatsMap.timeline;
 
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
+import java.util.List;
+
 import org.bson.types.ObjectId;
 import org.junit.Before;
 import org.junit.Test;
@@ -9,11 +11,13 @@ import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.geo.Distance;
 import org.springframework.data.geo.Metrics;
 import org.springframework.data.geo.Point;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.geo.GeoJsonPoint;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -60,5 +64,25 @@ public class TimelineMongoTest {
 		review.setGroup("my");
 		review.setPrivacy(0);
 		timelineRepository.save(review);
+	}
+	
+	@Test
+	public void findAllReviews() {
+		timelineRepository.findAll().forEach(e -> logger.info(e.toString()));
+	}
+	
+	@Test
+	public void findLastReview() {
+		Review review = null;
+		Query query = new Query();
+		query = query.with(Sort.by(Sort.Direction.DESC, "id"));
+		review = mongoTemplate.findOne(query, com.kh.eatsMap.timeline.model.dto.Review.class, "review");
+		logger.debug(review.toString());
+	}
+	
+	@Test
+	public void findReviewByResName() {
+		Sort sort = Sort.by("resName").descending();
+		logger.info(timelineRepository.findByResNameOrderByIdAsc("라쿠치나", sort).toString());
 	}
 }

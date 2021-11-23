@@ -108,7 +108,6 @@ $('#btnReview').click(() => {
 	$('.location-list').click(function(e){
 		let placeIdx = e.target.dataset.placeIdx;
 		let place = searchPlaces[placeIdx];
-		console.log(place);
 		$('input[name="uploadPlace"]').val(place.place_name);
 		$('input[name="resName"]').val(place.place_name);
 		$('input[name="addr"]').val(place.road_address_name);
@@ -136,7 +135,7 @@ $('#btnReview').click(() => {
 	
 	$('.review-upload input:radio').click((e)=>{
 	    let label = e.target.parentNode;
-	    $('.hashtag label').removeClass('checked');
+	    $('.hashtag .radio label').removeClass('checked');
 	    label.classList.add('checked');
 	});
 	
@@ -162,6 +161,36 @@ $('#btnReview').click(() => {
 		else $('.textarea-count span').html(200);
 	});
 	
+	$('input[name="photos"]').on('change',function(e){
+		let files = e.target.files;
+		$('.preview-photo').html('');
+		if(files.length > 3){
+			alert('사진은 최대 3개까지만 첨부하실 수 있습니다.');
+			$('.preview-photo').html('');
+			e.target.value="";
+			return;
+		}
+		for(i = 0; i < files.length; i++) {
+			let fileArr = files[i].name.split('.');
+			let fileFormat = fileArr[fileArr.length-1];
+			if(fileFormat != 'gif' && fileFormat != 'png' && fileFormat != 'jpg' && fileFormat != 'jpeg' && fileFormat != 'png'){
+				alert('사진은 jpg, jpeg, png, gif 형식만 지원합니다.');
+				$('.preview-photo').html('');
+				e.target.value="";
+				return;
+			} else {
+				let reader = new FileReader();
+				reader.onload = function(e) {
+					let div = document.createElement("div");
+					let img = document.createElement("img");
+					img.setAttribute("src", e.target.result);
+					div.appendChild(img);
+					$('.preview-photo').append(div);
+				};
+				reader.readAsDataURL(e.target.files[i]);
+			}
+		}
+	});
 });
 
 $('#uploadNextBtn').click(()=>{

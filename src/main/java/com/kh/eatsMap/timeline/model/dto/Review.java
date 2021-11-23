@@ -30,5 +30,4 @@ public class Review {
 	private String group;		//그룹이면 그룹명 save (개인이면 생략)
 	private int privacy;		//공개여부(0,1,-1)
 	private int like;
-	
 }
