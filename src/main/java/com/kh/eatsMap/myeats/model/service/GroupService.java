@@ -4,7 +4,7 @@ package com.kh.eatsMap.myeats.model.service;
 import java.util.List;
 
 import com.kh.eatsMap.myeats.model.dto.Group;
-import com.webjjang.util.PageObject;
+import com.kh.eatsMap.myeats.model.dto.PageObject;
 
 public interface GroupService {
 

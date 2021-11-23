@@ -22,6 +22,6 @@ public class Map {
 	private String revPhoto;		//map 마크 출력용 이미지
 	private int privacy; 			//공개여부
 	
-	
+
 
 }

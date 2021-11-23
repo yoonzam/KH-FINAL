@@ -3,6 +3,9 @@ package com.kh.eatsMap.timeline.controller;
 import java.net.URI;
 import java.net.URLEncoder;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.data.mongodb.core.geo.GeoJsonPoint;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
@@ -10,13 +13,25 @@ import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 
+import com.kh.eatsMap.timeline.model.dto.Review;
+import com.kh.eatsMap.timeline.model.service.TimelineService;
+
+import lombok.RequiredArgsConstructor;
+
 @Controller
+@RequiredArgsConstructor
 @RequestMapping("timeline")
 public class TimelineController {
 
+	Logger logger = LoggerFactory.getLogger(this.getClass());
+	
+	private final TimelineService timelineService;
+	
 	/* 지도 장소검색 테스트 */
 	private static final String REST_API_KEY = "8f9fcce775dd72c4999049b1967438d8";
 	private static final String API_SERVER_HOST  = "https://dapi.kakao.com";
@@ -44,5 +59,12 @@ public class TimelineController {
 		ResponseEntity<String> test = getSearchPlaceByKeyword("신림 떡볶이");
 		//System.out.println(test.);
 		return "timeline/timeline";
+	}
+	
+	@PostMapping("upload")
+	@ResponseBody
+	public void upload(Review review, double latitude, double longitude) {
+		review.setLocation(new GeoJsonPoint(latitude, longitude));
+		timelineService.insertReview(review);
 	}
 }

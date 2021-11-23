@@ -14,8 +14,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.kh.eatsMap.member.model.service.MemberService;
 import com.kh.eatsMap.myeats.model.dto.Group;
+import com.kh.eatsMap.myeats.model.dto.PageObject;
 import com.kh.eatsMap.myeats.model.service.GroupService;
-import com.webjjang.util.PageObject;
 
 @Controller
 @RequestMapping("/myeats/*")

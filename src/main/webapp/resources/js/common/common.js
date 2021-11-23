@@ -108,8 +108,12 @@ $('#btnReview').click(() => {
 	$('.location-list').click(function(e){
 		let placeIdx = e.target.dataset.placeIdx;
 		let place = searchPlaces[placeIdx];
-		
+		console.log(place);
 		$('input[name="uploadPlace"]').val(place.place_name);
+		$('input[name="resName"]').val(place.place_name);
+		$('input[name="addr"]').val(place.road_address_name);
+		$('input[name="latitude"]').val(place.y);
+		$('input[name="longitude"]').val(place.x);
 		drawSpecificMap(place);
 		placeFlag = true;
 		$('.location-list').hide();
@@ -130,6 +134,34 @@ $('#btnReview').click(() => {
 		customOverlay.setMap(map);
 	}
 	
+	$('.review-upload input:radio').click((e)=>{
+	    let label = e.target.parentNode;
+	    $('.hashtag label').removeClass('checked');
+	    label.classList.add('checked');
+	});
+	
+	$('.review-upload input:checkbox').click((e)=>{
+	    let label = e.target.parentNode;
+	    label.classList.toggle('checked');
+	});
+	
+	$('.star-review i').click(function(e){
+		let score = e.target.dataset.score;
+		let category = e.target.parentNode;
+		let inp = category.children[category.children.length-1];
+		inp.value = score;
+		for(i=1; i < category.children.length; i++){
+			if(i <= score) category.children[i].className = 'fas fa-star';
+			else category.children[i].className = 'far fa-star';
+		}
+	});
+	
+	$('textarea[name="review"]').keyup(function(e){
+		let review = $(this).val();
+		if(review.length < 200) $('.textarea-count span').html(review.length);
+		else $('.textarea-count span').html(200);
+	});
+	
 });
 
 $('#uploadNextBtn').click(()=>{
@@ -148,6 +180,25 @@ $('#uploadPrevBtn').click(()=>{
 	uploadStepControl();
 });
 
+$('#uploadBtn').click(()=>{
+	let form = $('#frmUpload')[0];
+	let formData = new FormData(form);
+	$.ajax({
+		type: "POST",
+		url: "/timeline/upload",
+		data: formData,
+		contentType : false,
+	    processData : false,
+	 	cache:false,
+		success: (text) => {
+			alert("성공");
+		},
+		error: (e) => {
+			alert("실패");
+		}
+	});
+})
+
 let uploadStepControl = () => {
 	if(uploadStep == 1) {
 		$('#uploadNextBtn').show();
@@ -161,6 +212,6 @@ let uploadStepControl = () => {
 		$('#uploadPrevBtn').show();
 	}
 	$('#uploadStep').html(uploadStep);
-	$('.review-upload > ul li').hide();
-	$('.review-upload > ul li[data-upload-step="'+uploadStep+'"]').show();
+	$('.upload-contents li').hide();
+	$('.upload-contents li[data-upload-step="'+uploadStep+'"]').show();
 }
