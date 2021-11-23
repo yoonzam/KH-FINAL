@@ -1,5 +1,9 @@
 package com.kh.eatsMap.myeats.controller;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.inject.Inject;
 
 import org.slf4j.Logger;
@@ -12,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.kh.eatsMap.member.model.dto.Member;
 import com.kh.eatsMap.member.model.service.MemberService;
 import com.kh.eatsMap.myeats.model.dto.Group;
 import com.kh.eatsMap.myeats.model.dto.PageObject;
@@ -26,9 +31,19 @@ public class MyeatsController {
 	@Inject
 	private GroupService groupService;
 	
+	@Inject
+	private MemberService memberService;
+	
 	@RequestMapping(value="/createGroup", method = RequestMethod.GET)
 	public void createGroupGet(Group group, Model model) throws Exception{
 		logger.info("createGroupGet.....");
+		
+		
+		model.addAttribute("group",memberService.findMemberByNickname("geoTest1").getNickname());
+		System.out.println(memberService.findMemberByNickname("geoTest1").toString());
+		
+		
+		
 	}
 	
 	@RequestMapping(value="/createGroup", method = RequestMethod.POST)
@@ -74,6 +89,21 @@ public class MyeatsController {
 		
 		return "redirect:/myeats/group";
 	}
+	
+	//수정처리
+		@RequestMapping(value="/groupDetailModify", method=RequestMethod.GET)
+		public void modifyGet(@RequestParam("groupIdx") String groupIdx, Model model) throws Exception{
+			logger.info("modifyGET()........");
+			model.addAttribute("groupService",groupService.read(groupIdx)); 
+		}
+		
+//		@RequestMapping(value="/groupDetailModify", method=RequestMethod.POST)
+//		public String modifyPOST(Group group, RedirectAttributes reAttr) throws Exception{
+//			logger.info("modifyPOST()........");
+//			groupService.modify(group);
+//			
+//			return "redirect:/myeats/group";
+//		}
 	
 
 

@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
     
 <%@ page import="java.util.Date" %>
 <%@ page import="java.text.SimpleDateFormat" %>
@@ -31,15 +32,23 @@
 					</li>
 					<li>
 						<span>그룹이름</span>
-						<input type="text" placeholder="그룹 이름을 입력하세요."name="groupName" maxlength="8" >
+						<input type="text" placeholder="그룹 이름을 입력하세요."name="groupName"  maxlength="8" required >
+						
 					</li>
 					<li>
 						<span>초대하기</span>
 						<div class="friend-list">
-							<input type="text" placeholder="초대할 친구의 닉네임을 입력하세요."name="memberId">
+						<c:forEach items="${group}" var="group">
+						
+							<!-- memberId는 배열값 > Group-->
+							<input type="text" placeholder="초대할 친구의 닉네임을 입력하세요."name="memberNickName[]" value="${group}">
+				      
 							<button>초대</button>
-							<span><i class="fas fa-minus-square"></i> 알파카</span>
-							<span><i class="fas fa-minus-square"></i> 퇴근시간</span>
+							<span><i class="fas fa-minus-square"></i><input type="hidden" name="memberNickName[]" value="${group}"> ${group}</span>
+							<span><i class="fas fa-minus-square"></i><input type="hidden" name="memberNickName[]" value="${group}"> ${group}</span>
+							 
+						</c:forEach>
+								
 						</div>
 					</li>
 				</ul>

@@ -22,6 +22,6 @@ public class Group {
 	private String groupImg;
 	private Date groupcreatedate; //추가된 필드:그룹생성일자
 	private ObjectId memberId;	
-
+	private String[] memberNickName;//임시추가: 아마도 Member담는 배열로 바꿀듯
 	
 }

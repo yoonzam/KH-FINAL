@@ -64,7 +64,10 @@
   text-decoration: none;
 }
 
+.pagination a:active{
+	color: red !important;
 
+}
 
 </style>
 
@@ -101,7 +104,7 @@
 						<!-- 폼태그 스타일 유지 위해 div로 display: none 줌 -->
 							 <div style="display: none;">
 							<form role="form" method="post">	<!-- delete/post로 넘김 -->
-							<c:if test="${status.last}"><input type="hidden" id="id" name="id" value="${status.current.id}" />
+							<c:if test="${status.last}"><input type="hidden" id="id" name="id" value="${grouplist.id}" />
 								 </c:if>
 							</form>
 							</div>
@@ -113,6 +116,9 @@
 				<c:if test="${status.last}"></ul></c:if>
 				</c:forEach>
 			
+      		
+      		
+			
 			<div class="btn-area">
 				<a href = "createGroup"><button type="submit" class="create-btn">그룹 만들기</button></a>
 			</div>
@@ -120,11 +126,17 @@
   		 <!-- 전체 데이터의 개수가 한 페이지를 넘기지 않으면 만들지 않는다. -->
 			<!-- paging -->
   		 <div class="page">
+  		 	
       		<ul class="pagination">
-       		 <li><pageNav:pageNav listURI="group" pageObject="${pageObject}"></pageNav:pageNav></li>
+       		 <li class="<c:out value="${pageObject.page == cnt? 'pagebtn active':'btn'}"/>"><pageNav:pageNav listURI="group" pageObject="${pageObject}" ></pageNav:pageNav></li>
+      		
       		</ul>
+      	
   		 </div>
   		 
+  		
+			
+			
       		
 		</div>
 	</div>
@@ -135,7 +147,6 @@
 <%@ include file="/WEB-INF/views/include/footer.jsp" %>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 <script>
- 	//쓸 때 풀꺼
  	
  	$(document).ready(function(){
  		var frmObj = $("form[role='form']");
@@ -156,18 +167,18 @@
  			frmObj.submit();
  		}); 
  		  
- 		  
- 		 $(".pagination li").click(function(){
- 	        var menu= $(".pagination li");
- 	        menu.removeClass("active");
- 	        $(this).addClass("active");
- 	      })
 
  		  
  		
  		
  	});
  	
+ 	
+ 	
+ 	
+ 	
+	 
+
 
 
 </script>
