@@ -18,6 +18,7 @@ import org.springframework.data.domain.Sort.TypedSort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.data.util.Streamable;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
@@ -150,7 +151,17 @@ public class GroupRepositoryTest {
 		 
 		 result.forEach(e -> logger.debug(e.toString()));
 	    }
-	 
+		//수정하기에 쓰인 update
+	 @Test
+		public void update(Group group) throws Exception{
+			Query query = new Query();
+			Update update = new Update();
+			//query.addCriteria(Criteria.where("컬럼명1").is("조건값1"));
+			query.addCriteria(Criteria.where("groupName").is("3"));
+			//추가필요 update.set("컬럼명1", "변경값1");
+			update.set("groupName", "수정테스트");
+			mongoTemplate.updateMulti(query, update, "group");
+		}
 	 
 	 
 	 

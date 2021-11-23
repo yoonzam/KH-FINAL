@@ -64,7 +64,10 @@
   text-decoration: none;
 }
 
+.pagination a:active{
+	color: red !important;
 
+}
 
 </style>
 
@@ -113,6 +116,9 @@
 				<c:if test="${status.last}"></ul></c:if>
 				</c:forEach>
 			
+      		
+      		
+			
 			<div class="btn-area">
 				<a href = "createGroup"><button type="submit" class="create-btn">그룹 만들기</button></a>
 			</div>
@@ -120,11 +126,17 @@
   		 <!-- 전체 데이터의 개수가 한 페이지를 넘기지 않으면 만들지 않는다. -->
 			<!-- paging -->
   		 <div class="page">
+  		 	
       		<ul class="pagination">
-       		 <li><pageNav:pageNav listURI="group" pageObject="${pageObject}"></pageNav:pageNav></li>
+       		 <li class="<c:out value="${pageObject.page == cnt? 'pagebtn active':'btn'}"/>"><pageNav:pageNav listURI="group" pageObject="${pageObject}" ></pageNav:pageNav></li>
+      		
       		</ul>
+      	
   		 </div>
   		 
+  		
+			
+			
       		
 		</div>
 	</div>
@@ -168,6 +180,12 @@
  		
  	});
  	
+ 	
+ 	
+ 	
+ 	
+	 
+
 
 
 </script>
