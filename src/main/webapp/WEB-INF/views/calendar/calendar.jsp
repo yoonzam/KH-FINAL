@@ -19,6 +19,7 @@
     		/* themeSystem: 'bootstrap', */
     		height: 800,
     		initialView: 'dayGridMonth',
+    		selectable: true,
     		locale: 'ko',
 	    	
     		headerToolbar: {
@@ -40,6 +41,20 @@
     	
     	calendar.render();
     });
+	 
+	 function save(){
+		 var event = calendar.getEvents();
+		 
+		 var events = new Array();
+		 for(var i=0; i < event.length; i++){
+			 var obj = new Object();
+			 
+			 obj.title = event[i]._def.title;
+			 
+			 events.push(obj);
+		 }
+	 }
+	 
 </script>
 </head>
 <body>
@@ -55,15 +70,7 @@
 <%@ include file="/WEB-INF/views/include/footer.jsp" %>
 <%@ include file="/WEB-INF/views/calendar/makeSchedule.jsp" %>
 <%@ include file="/WEB-INF/views/calendar/schedule.jsp" %>
-<script>
-	$('.btn-schedule').click(function(){
-		$('.schedule-wrap').addClass('active')
-	})
-	
-	$('.btn-yes, .btn-no').click(function(){
-		$('.schedule-wrap').removeClass('active')
-	})
-</script>
+
 
 </body>
 </html>

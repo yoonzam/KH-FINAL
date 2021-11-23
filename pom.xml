@@ -220,6 +220,13 @@
 		    <version>1.6.2</version>
 		</dependency>
 		
+		<!-- web-push -->
+		<dependency>
+		    <groupId>nl.martijndwars</groupId>
+		    <artifactId>web-push</artifactId>
+		    <version>5.1.1</version>
+		</dependency>
+		
 		<!-- 파일업로드 -->
 		<!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
 		<dependency>
@@ -241,16 +248,6 @@
 		    <version>1.14.3</version>
 		</dependency>
 		
-		<!-- pageObject -페이지 처리, 검색 -->
-		<!-- ${project.basedir} 는 프로젝트의 ROOT경로 
-		<systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/pageObject.jar</systemPath>-->
-        <dependency>
-            <groupId>com.webjjang</groupId>
-            <artifactId>pageObject</artifactId>
-            <version>2.5</version>
-            <scope>system</scope>
-            <systemPath>C:\FINAL\eatsMap\pageObject.jar</systemPath>
-        </dependency> 
 	
 		<!-- Test -->
 		<dependency>

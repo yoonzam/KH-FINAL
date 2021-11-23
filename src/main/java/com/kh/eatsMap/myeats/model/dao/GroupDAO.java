@@ -12,8 +12,8 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
 import com.kh.eatsMap.myeats.model.dto.Group;
+import com.kh.eatsMap.myeats.model.dto.PageObject;
 import com.kh.eatsMap.myeats.model.repository.GroupRepository;
-import com.webjjang.util.PageObject;
 
 @Repository
 public class GroupDAO {
