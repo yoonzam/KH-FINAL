@@ -14,6 +14,8 @@
 	<div class="container-wrap">
 		<div class="container">
 			
+			<form role = "form" action="/myeats/groupDetailModify" method="post">
+			
 			<div class="group-view">
 			<c:forEach items="${groupService}" var="groupService">
 			<form role="form" method="post">	
@@ -28,17 +30,15 @@
 					</div>
 					<div class="group-menu">
 						<input type="hidden" name="groupIdx" value="${groupService.groupIdx}" />
-						<div class="group-title"><i class="fas fa-bell"></i> ${groupService.groupName}</div>
+						<div class="group-title"><i class="fas fa-bell"></i> ${groupService.groupName}
+						<input type="text" class="form-control" name="groupName"
+								placeholder="${groupService.groupName}"	value="${groupService.groupName}"
+								maxlength="8" required >
+						
+						</div>
 						<div class="group-service">
 							<button class="main-btn">잇츠맵 바로가기</button>
-							
-						 <div style="display: none;">
-							<form role="form" method="post">	<!-- modify/post로 넘김 -->
-							<input type="hidden" id="groupIdx" name="groupIdx" value="${groupService.groupIdx}" />
-							</form>
-						</div>
-							
-							<a href="groupDetailModify?groupIdx=${groupService.groupIdx}"><button class = "modifybtn">수정</button></a>
+							<button>수정</button>
 							<button class="deletebtn">삭제</button>
 						</div>
 					</div>
@@ -50,10 +50,14 @@
 						<li><i class="fas fa-user"></i> 퇴근시간<span>(quitting-time@naver.com)</span> <a><i class="fas fa-times"></i>삭제</a></li>
 					</ul>
 				</div>
+				
+				
 				<a href = "group"><button class="btn-list">그룹 목록으로 돌아가기</button></a>
 			</c:forEach>	
 			</div>
+			</form>
 		</div>
+		
 	</div>
 </section>     
 
@@ -72,14 +76,12 @@ $(document).ready(function(){
 		frmObj.submit();
 	}); 
 	 
-	 $(".modifybtn").on("click", function(){
-			frmObj.attr("action", "/myeats/groupDetailModify");
+	//수정처리 페이지 이동
+		$("#btn_save").on("click", function(){
+			//frmObj.attr("action","/bbs/modifyPage");
 			frmObj.submit();
-		}); 
+		});
 	
-	 
-	 
-	 
 });
 </script>
 </body>

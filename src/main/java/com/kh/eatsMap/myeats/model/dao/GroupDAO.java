@@ -8,7 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 
 import com.kh.eatsMap.myeats.model.dto.Group;
@@ -46,7 +48,7 @@ public class GroupDAO {
 		//데이터를 가져와서 list에 채운다.
 		list = mongoTemplate.find(query,com.kh.eatsMap.myeats.model.dto.Group.class,"group");
 		
-		System.out.println("GroupDAO.list().list : " + list);
+		//System.out.println("GroupDAO.list().list : " + list);
 		return list;
 		
 	}
@@ -58,6 +60,17 @@ public class GroupDAO {
 		//group테이블에서 조건 없는 쿼리를 통해 모든 데이터를 꺼내와 개수를 헤아림
 		return (int)mongoTemplate.count(new Query(), "group"); 
 	}
+	
+	//수정하기에 쓰인 update
+		public void update(Group group) throws Exception{
+			Query query = new Query();
+			Update update = new Update();
+			//query.addCriteria(Criteria.where("컬럼명1").is("조건값1"));
+			query.addCriteria(Criteria.where("id").is("id"));
+			//추가필요 update.set("컬럼명1", "변경값1");
+			update.set("groupName", group.getGroupName());
+			mongoTemplate.updateMulti(query, update, "group");
+		}
 	
 	
 }

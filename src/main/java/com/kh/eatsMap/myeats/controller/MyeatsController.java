@@ -75,6 +75,21 @@ public class MyeatsController {
 		return "redirect:/myeats/group";
 	}
 	
+	//수정처리
+		@RequestMapping(value="/groupDetailModify", method=RequestMethod.GET)
+		public void modifyGet(@RequestParam("groupIdx") String groupIdx, Model model) throws Exception{
+			logger.info("modifyGET()........");
+			model.addAttribute("groupService",groupService.read(groupIdx)); 
+		}
+		
+//		@RequestMapping(value="/groupDetailModify", method=RequestMethod.POST)
+//		public String modifyPOST(Group group, RedirectAttributes reAttr) throws Exception{
+//			logger.info("modifyPOST()........");
+//			groupService.modify(group);
+//			
+//			return "redirect:/myeats/group";
+//		}
+	
 
 
 	@GetMapping("/post")

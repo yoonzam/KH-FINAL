@@ -83,6 +83,12 @@ public class GroupServiceImpl implements GroupService{
 		groupRepository.deleteById(id);
 	}
 	
+	//수정하기
+		@Override
+		public void modify(Group group) throws Exception{
+			dao.update(group);
+		}
+	
 
 
 

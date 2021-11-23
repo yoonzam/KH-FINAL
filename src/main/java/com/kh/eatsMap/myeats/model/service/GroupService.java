@@ -19,7 +19,7 @@ public interface GroupService {
 	
 	public void remove(String id);
 	
-	
+	public void modify(Group group) throws Exception;
 	
 	
 }

@@ -31,7 +31,7 @@
 					</li>
 					<li>
 						<span>그룹이름</span>
-						<input type="text" placeholder="그룹 이름을 입력하세요."name="groupName" maxlength="8" >
+						<input type="text" placeholder="그룹 이름을 입력하세요."name="groupName"  maxlength="8" required >
 					</li>
 					<li>
 						<span>초대하기</span>
