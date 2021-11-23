@@ -16,8 +16,11 @@
 			
 			<div class="group-view">
 			<c:forEach items="${groupService}" var="groupService">
+			
+			<!-- modify/post, delete/post 로 넘김-->
 			<form role="form" method="post">	
 				<input type="hidden" name="id" value="${groupService.id}" />
+				<input type="hidden" id="groupIdx" name="groupIdx" value="${groupService.groupIdx}" />
 			</form>
 			
 				<div class="group-info">
@@ -32,11 +35,7 @@
 						<div class="group-service">
 							<button class="main-btn">잇츠맵 바로가기</button>
 							
-						 <div style="display: none;">
-							<form role="form" method="post">	<!-- modify/post로 넘김 -->
-							<input type="hidden" id="groupIdx" name="groupIdx" value="${groupService.groupIdx}" />
-							</form>
-						</div>
+						 
 							
 							<a href="groupDetailModify?groupIdx=${groupService.groupIdx}"><button class = "modifybtn">수정</button></a>
 							<button class="deletebtn">삭제</button>

@@ -104,7 +104,7 @@
 						<!-- 폼태그 스타일 유지 위해 div로 display: none 줌 -->
 							 <div style="display: none;">
 							<form role="form" method="post">	<!-- delete/post로 넘김 -->
-							<c:if test="${status.last}"><input type="hidden" id="id" name="id" value="${status.current.id}" />
+							<c:if test="${status.last}"><input type="hidden" id="id" name="id" value="${grouplist.id}" />
 								 </c:if>
 							</form>
 							</div>
@@ -147,7 +147,6 @@
 <%@ include file="/WEB-INF/views/include/footer.jsp" %>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 <script>
- 	//쓸 때 풀꺼
  	
  	$(document).ready(function(){
  		var frmObj = $("form[role='form']");
@@ -168,12 +167,6 @@
  			frmObj.submit();
  		}); 
  		  
- 		  
- 		 $(".pagination li").click(function(){
- 	        var menu= $(".pagination li");
- 	        menu.removeClass("active");
- 	        $(this).addClass("active");
- 	      })
 
  		  
  		
