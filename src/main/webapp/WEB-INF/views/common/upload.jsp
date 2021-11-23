@@ -23,7 +23,7 @@
 						</li>
 						<li class="hashtag" data-upload-step="2" style="display:none;">
 							<p><strong>#카테고리</strong><br>어떤 음식을 드셨나요?</p>
-							<div class="select">
+							<div class="radio">
 								<label>#한식<input type="radio" name="category" value="cg01" /></label>
 								<label>#중식<input type="radio" name="category" value="cg02" /></label>
 								<label>#양식<input type="radio" name="category" value="cg03" /></label>
@@ -71,9 +71,12 @@
 							<textarea name="review" maxlength="200" placeholder="후기를 입력해주세요! (300자)" spellcheck="false"></textarea>
 							<div class="textarea-count"><span>0</span>/최대 200자</div>
 						</li>
-						<li class="review-content" data-upload-step="4" style="display:none;">
+						<li class="upload-file" data-upload-step="4" style="display:none;">
 							<p><strong>#이미지 등록</strong><br>이미지는 최대 3장까지 등록 가능합니다.</p>
-							<input type="file" name="photos">
+							<label for="uploadFile">이미지 선택</label>
+							<input id="uploadFile" type="file" name="photos" accept=".gif, .jpg, .jpeg, .png" multiple="multiple">
+							<div class="preview-photo">
+							</div>
 						</li>
 					</ul>
 					<div class="btn-wrap">
