@@ -45,9 +45,12 @@ $('.layer-popup .view-controller a').hover((e) => {
   }, (e)=>{
     $('.view-controller span').html('');
 });
+/* 맵 후기 버튼을 구분하기 위한 변수 */
+let reviewBtn = false;
 
 $('.dimmed').click(()=>{
     closePopup();
+    reviewBtn = false;
 });
 let closePopup = () => {
     $('.dimmed-wrap').fadeOut(200);
@@ -58,12 +61,21 @@ let uploadStep;
 let placeFlag;
 let searchPlaces;
 
-$('#btnReview').click(() => {
+/* 맵상의 후기 버튼 누를 경우 flag */
+$("#map_reviewBtn").click(function(event){
+      reviewBtn = true;		
+});
+
+
+$('#btnReview, #map_reviewBtn').click(() => {
 	//초기화
 	uploadStep = 1;
 	placeFlag = false;
 	searchPlaces = [];
 	uploadStepControl();
+	
+
+
 	
 	$('.upload-flag').html('');
 	$('#uploadPrevBtn').hide();
@@ -74,6 +86,27 @@ $('#btnReview').click(() => {
 	
 	let options = { center: new kakao.maps.LatLng(37.55317, 126.97279), level: 8 };
 	let map = new kakao.maps.Map(document.getElementById('uploadMap'), options);
+	
+	/* 맵 화면상의 후기 입력버튼을 누를 경우 카카오맵과 검색창에 미리 정보 기입*/
+	if(reviewBtn){
+		let placeInfo = markerInfo;	
+		console.dir(placeInfo);
+		$('input[name="uploadPlace"]').val(markerInfo.place_name);
+		$('input[name="resName"]').val(markerInfo.place_name);
+		$('input[name="addr"]').val(markerInfo.road_address_name);
+		$('input[name="latitude"]').val(markerInfo.y);
+		$('input[name="longitude"]').val(markerInfo.x);
+		let options = { center: new kakao.maps.LatLng(placeInfo.y, placeInfo.x), level: 5 };
+		let map = new kakao.maps.Map(document.getElementById('uploadMap'), options);
+		let content = '<div class="marker-wrap"><p><i class="fas fa-utensils color-m"></i> '+placeInfo.place_name+'</p><div></div></div>';
+		let customOverlay = new kakao.maps.CustomOverlay({
+		    position: new kakao.maps.LatLng(placeInfo.y, placeInfo.x),
+		    content: content
+		});
+		customOverlay.setMap(map);
+		placeFlag = true;
+		
+	}
 	
 	$('input[name="uploadPlace"]').keyup(function(){
 		let keyword = $(this).val();
@@ -108,12 +141,15 @@ $('#btnReview').click(() => {
 	$('.location-list').click(function(e){
 		let placeIdx = e.target.dataset.placeIdx;
 		let place = searchPlaces[placeIdx];
+		
+		console.log(typeof(place));
 		console.log(place);
 		$('input[name="uploadPlace"]').val(place.place_name);
 		$('input[name="resName"]').val(place.place_name);
 		$('input[name="addr"]').val(place.road_address_name);
 		$('input[name="latitude"]').val(place.y);
 		$('input[name="longitude"]').val(place.x);
+		
 		drawSpecificMap(place);
 		placeFlag = true;
 		$('.location-list').hide();
