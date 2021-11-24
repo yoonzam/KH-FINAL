@@ -3,6 +3,9 @@ package com.kh.eatsMap.myeats.model.dto;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.web.util.UriComponents;
+import org.springframework.web.util.UriComponentsBuilder;
+
 
 public class PageObject {
 
@@ -179,6 +182,32 @@ public class PageObject {
 		// endPage 가 총 페이지 수를 넘을 수 없다.
 		if(endPage > totalPage) endPage = totalPage;
 	}
+	
+	
+	//검색기능 추가 메서드 아래 2개: list.jsp에서 사용
+	//URI메소드
+	public String makeURI(int page){
+		UriComponents uriComponents = UriComponentsBuilder.newInstance()
+				.queryParam("page", page)
+				.queryParam("numPerPage", this.getPerPageNum())
+				.build();		
+
+		return uriComponents.toUriString();
+	}
+	//검색기능 추가
+	public String makeFind(int page){
+		UriComponents uriComponents = UriComponentsBuilder.newInstance()
+				.queryParam("page", page)
+				.queryParam("numPerPage", this.getPerPageNum())
+				//검색
+				//상속받아서 쓸 수 있으나 형변환 필요
+				.queryParam("findType", ((FindCriteria)this).getFindType())
+				.queryParam("keyword", ((FindCriteria)this).getKeyword())
+				.build();
+		
+		return uriComponents.toUriString();
+	}
+	
 
 	public String getKey() {
 		return key;
@@ -232,5 +261,10 @@ public class PageObject {
 				+ ", totalPage=" + totalPage + ", totalRow=" + totalRow + ", key=" + key + ", word=" + word
 				+ ", period=" + period + ", accepter=" + accepter + ", acceptMode=" + acceptMode + "]";
 	}
+	
+	
+	
+
+	
 
 }

@@ -285,18 +285,25 @@ footer{color:#aaa; font-size:0.8em; padding:30px; text-align:center;}
 .review-upload .star-review > div{display:flex; align-items: center; padding-top:10px;}
 .review-upload .star-review > div:last-child{padding-bottom: 10px;}
 .review-upload .star-review > div > span{width:60px; display:inline-block;}
-.review-upload .star-review > div > i{cursor:pointer;margin-right:2px; font-size:18px;}
+.review-upload .star-review > div > i{cursor:pointer;margin-right:2px; font-size:18px; color:#aaa;}
 .review-upload .star-review > div > i.fas{color:var(--red-color);}
 .review-upload .star-review > div > input{font-weight:700; width:20px; padding:0; border:0; color:var(--red-color); margin-left:5px;}
-.review-upload textarea{display:block; margin-top:15px; width:100%; height:100px; border:1px solid #555; resize: none; padding:10px; border-radius:5px;}
+.review-upload textarea{display:block; margin-top:15px; width:100%; height:100px; border:1px solid #777; resize: none; padding:10px; border-radius:5px;}
 .review-upload .textarea-count{text-align:right; font-size:12px; margin-top:5px; padding:0 5px;}
 
-.review-upload .upload-file > label {display: block; padding: 15px 0; text-align:center; color: #eee; font-weight:700; background-color: #202028; border-radius:5px; cursor:pointer; transition-duration:0.5s;}
-.review-upload .upload-file > label:hover{background-color:#3d3d58;}
-.review-upload .preview-photo{display:flex; justify-content: space-evenly;}
-.review-upload .preview-photo > div{width:32%; height:166px; margin-right:2%; margin-top:10px;}
-.review-upload .preview-photo > div:last-child{margin-right:0%;}
-.review-upload .preview-photo > div img{display:block; width:100%; height:100%; object-fit:cover; border:1px solid #ddd;}
+.review-upload .upload-box{display:flex; justify-content:space-between;}
+.review-upload .upload-box > div{width:32%; position:relative; overflow:hidden;}
+.review-upload .upload-box > div label{cursor:pointer; display: block; width:100%; height:166px; line-height:170px; text-align:center; background-color:#eee;}
+.review-upload .upload-box > div label i{font-size:30px; color:#aaa; transition-duration:0.5s;}
+.review-upload .upload-box > div label:hover i{color:#616176;}
+.review-upload .upload-box .preview-photo{display:none; position:absolute; top:0; left:0; width:100%; height:100%; border:1px solid #ddd;}
+.review-upload .upload-box .preview-photo img{object-fit:cover; width:100%; height:100%;}
+.review-upload .upload-box .preview-photo i{display:block; color:#fff; opacity:0.8; position:absolute; top:8px; right:8px; font-size:20px; cursor:pointer;}
+.review-upload .upload-box .preview-photo i:hover{opacity:1;}
+
+.review-upload .upload-group > div{padding-right:13px; border-radius:5px; border:1px solid #aaa; overflow:hidden;}
+.review-upload .upload-group > .group-box{margin-bottom:30px;}
+.review-upload .upload-group select{width:100%; padding:13px; border:none;}
 
 .review-upload .btn-wrap{text-align: center; padding:20px; padding-top:0px;}
 .review-upload .btn-wrap > div{color:#aaa; margin-bottom:10px;}
