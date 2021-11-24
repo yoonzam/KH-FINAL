@@ -19,8 +19,8 @@
 			
 			<!-- modify/post, delete/post 로 넘김-->
 			<form role="form" method="post">	
-				<input type="hidden" name="id" value="${groupService.id}" />
-				<input type="hidden" id="groupIdx" name="groupIdx" value="${groupService.groupIdx}" />
+				<input type="hidden" id="id" name="id" value="${groupService.id}" />
+				<%-- <input type="hidden" id="id" name="id" value="${groupService.Id}" /> --%>
 			</form>
 			
 				<div class="group-info">
@@ -30,14 +30,14 @@
 						</div>
 					</div>
 					<div class="group-menu">
-						<input type="hidden" name="groupIdx" value="${groupService.groupIdx}" />
+						<%-- <input type="hidden" name="groupIdx" value="${groupService.groupIdx}" /> --%>
 						<div class="group-title"><i class="fas fa-bell"></i> ${groupService.groupName}</div>
 						<div class="group-service">
 							<button class="main-btn">잇츠맵 바로가기</button>
 							
 						 
 							
-							<a href="groupDetailModify?groupIdx=${groupService.groupIdx}"><button class = "modifybtn">수정</button></a>
+							<a href="groupDetailModify?id=${groupService.id}"><button class = "modifybtn">수정</button></a>
 							<button class="deletebtn">삭제</button>
 						</div>
 					</div>

@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,7 @@ import com.kh.eatsMap.member.model.repository.MemberRepository;
 import com.kh.eatsMap.member.validator.EmailForm;
 import com.kh.eatsMap.member.validator.JoinForm;
 import com.kh.eatsMap.myeats.model.dao.GroupDAO;
+import com.kh.eatsMap.myeats.model.dto.FindCriteria;
 import com.kh.eatsMap.myeats.model.dto.Group;
 import com.kh.eatsMap.myeats.model.dto.PageObject;
 import com.kh.eatsMap.myeats.model.repository.GroupRepository;
@@ -47,39 +49,64 @@ public class GroupServiceImpl implements GroupService{
 	
 	Logger logger = LoggerFactory.getLogger(this.getClass());
 	
-	
+	//검색기능 
+	//테스트
 	@Override
-	public void write(Group group) {
-		String StringgroupIdx = Integer.toString((int)groupRepository.count()+1);
-		group.setGroupIdx(StringgroupIdx);//1부터시작에서 1씩 증가하도록
-		groupRepository.save(group);
+	public List<Member> listMember(PageObject pageObject) throws Exception{
+		pageObject.setTotalRow(dao.getTotalCountMember());
+		return dao.listMember(pageObject);
 	}
-//	@Override
-//	public List<Group> list(){
-//		return mongoTemplate.findAll(com.kh.eatsMap.myeats.model.dto.Group.class, "group");
-//		//return groupRepository.findAll();
-//		}
 	
-	//페이징
+	//검색기능
+	//실사용
+		@Override
+		public List<Member> listMemberFind(FindCriteria findCri) throws Exception{
+			return dao.listFind(findCri);
+		}
+		
+		@Override
+		public int findMemberCountData(FindCriteria findCri) throws Exception{
+			return dao.findCountData(findCri);
+		}
+		
+	
+	//페이징 및 조회/group.jsp
 	@Override
 	public List<Group> list(PageObject pageObject){
 		System.out.println("GroupServiceIp.list(pageObject : " + pageObject);
 		//GroupDAO의 전체 행의 개수를 받아서 pageObject객체의 TotalRow변수 초기화
 		pageObject.setTotalRow(dao.getTotalCount());
-		
 		return dao.list(pageObject);
 	}
-
+	
 	//groupIdx로 Group 읽어드리기
 	@Override
-	public List<Group> read(String groupIdx){
-		return groupRepository.findByGroupIdx(groupIdx);
+	public List<Group> read(ObjectId id){
+		return groupRepository.findById(id);
 	}
+	
+	//NickName으로 Member조회
+//	public List<Member> memberlistByNickName(String nickname){
+//		
+//		return
+//	};
+	
+	
+	//groupIdx제외 예정
+	@Override
+	public void write(Group group) {
+		//String StringgroupIdx = Integer.toString((int)groupRepository.count()+1);
+		//group.setGroupIdx(StringgroupIdx);//1부터시작에서 1씩 증가하도록
+		groupRepository.save(group);
+	}
+
+	
+
 	
 	//id로 Group 삭제, groupRepository사용해서 id로 받음, mongtem으로 변경해도 됨
 	@Override
 	public void remove(String id){
-		//String StringgroupIdx = Integer.toString(groupIdx);
+		//String StringgroupIdx = Integer.toString(id);
 		groupRepository.deleteById(id);
 	}
 	

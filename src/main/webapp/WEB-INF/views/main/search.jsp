@@ -20,9 +20,10 @@
 			</div-->
 			<div class="search-wrap">
 				<div class="search-area">
+				<form action="/main/search" method="post">
 					<div class="search-form">
 						<label>
-							<input type="text" placeholder="찾으시는 맛집이나 유저 이름을 입력하세요."/>
+							<input type="text" name="keyword_" placeholder="찾으시는 맛집이나 유저 이름을 입력하세요."/>
 						</label>
 						<a class="filter-btn"><i class="fas fa-filter">검색필터</i></a>
 						<button type="submit"><i class="fas fa-search"></i></button>
@@ -35,31 +36,32 @@
 							</li>
 							<li>
 								<span>종류</span>
-								<label class="checked">#한식<input type="checkbox" value="" checked/></label>
-								<label class="checked">#중식<input type="checkbox" value="" checked/></label>
-								<label class="checked">#양식<input type="checkbox" value="" checked/></label>
-								<label class="checked">#일식<input type="checkbox" value="" checked/></label>
-								<label class="checked">#카페,디저트<input type="checkbox" value="" checked/></label>
-								<label class="checked">#술집<input type="checkbox" value="" checked/></label>
+								<label class="checked">#한식<input type="checkbox" name="category_" value="cg01" checked value="cg01" checked/></label>
+								<label class="checked">#중식<input type="checkbox" name="category_" value="cg02" checked/></label>
+								<label class="checked">#양식<input type="checkbox" name="category_" value="cg03" checked/></label>
+								<label class="checked">#일식<input type="checkbox" name="category_" value="cg04" checked/></label>
+								<label class="checked">#카페,디저트<input type="checkbox" name="category_" value="cg04" checked/></label>
+								<label class="checked">#술집<input type="checkbox" name="category_" value="cg05" checked/></label>
 							</li>
 							<li>
 								<span>분위기</span>
-								<label class="checked">#친근함<input type="checkbox" value="" checked/></label>
-								<label class="checked">#고급짐<input type="checkbox" value="" checked/></label>
-								<label class="checked">#가족<input type="checkbox" value="" checked/></label>
-								<label class="checked">#데이트<input type="checkbox" value="" checked/></label>
-								<label class="checked">#혼밥<input type="checkbox" value="" checked/></label>
+								<label class="checked">#친근함<input type="checkbox" name="hashtag_" value="md01" checked/></label>
+								<label class="checked">#고급짐<input type="checkbox" name="hashtag_" value="md02" checked/></label>
+								<label class="checked">#가족<input type="checkbox" name="hashtag_" value="md03" checked/></label>
+								<label class="checked">#데이트<input type="checkbox" name="hashtag_" value="md04" checked/></label>
+								<label class="checked">#혼밥<input type="checkbox" name="hashtag_" value="md05" checked/></label>
 							</li>
 							<li>
 								<span>가격대</span>
-								<label class="checked">#가성비<input type="checkbox" value="" checked/></label>
-								<label class="checked">#가심비<input type="checkbox" value="" checked/></label>
-								<label class="checked">#1~2만원대<input type="checkbox" value="" checked/></label>
-								<label class="checked">#2~3만원대<input type="checkbox" value="" checked/></label>
-								<label class="checked">#3만원 이상<input type="checkbox" value="" checked/></label>
+								<label class="checked">#가성비<input type="checkbox" name="hashtag_" value="pr01" checked/></label>
+								<label class="checked">#가심비<input type="checkbox" name="hashtag_" value="pr02" checked/></label>
+								<label class="checked">#1~2만원대<input type="checkbox" name="hashtag_" value="pr03" checked/></label>
+								<label class="checked">#2~3만원대<input type="checkbox" name="hashtag_" value="pr04" checked/></label>
+								<label class="checked">#3만원 이상<input type="checkbox" name="hashtag_" value="pr05" checked/></label>
 							</li>
 						</ul>
 					</div>
+					</form>
 				</div>
 			</div>
 			<div class="timeline-wrap">
@@ -68,7 +70,7 @@
 					<li>
 						<div class="eats-list">
 							<div class="thum">
-								<img src="/resources/img/upload/01.jpg">
+								<img src="${photo}">
 							</div>
 							<div class="info">
 								<div class="eats-location">서울 영등포구</div>
