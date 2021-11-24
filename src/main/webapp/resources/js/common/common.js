@@ -66,16 +66,12 @@ $("#map_reviewBtn").click(function(event){
       reviewBtn = true;		
 });
 
-
 $('#btnReview, #map_reviewBtn').click(() => {
 	//초기화
 	uploadStep = 1;
 	placeFlag = false;
 	searchPlaces = [];
 	uploadStepControl();
-	
-
-
 	
 	$('.upload-flag').html('');
 	$('#uploadPrevBtn').hide();
@@ -89,6 +85,9 @@ $('#btnReview, #map_reviewBtn').click(() => {
 	$('.star-review i').attr('class','far fa-star');
 	$('#pop-review-form textarea').val('');
 	$('.preview-photo').css('display','none');
+	$('#pop-review-form select[name="group"]').val('').prop("selected", true);
+	$('#pop-review-form select[name="privacy"]').val('0').prop("selected", true);
+	$('#pop-review-form select[name="privacy"]').attr('disabled',false);
 	$('#pop-review-form').fadeIn(200);
 	
 	let options = { center: new kakao.maps.LatLng(37.55317, 126.97279), level: 8 };
@@ -112,7 +111,6 @@ $('#btnReview, #map_reviewBtn').click(() => {
 		});
 		customOverlay.setMap(map);
 		placeFlag = true;
-		
 	}
 	
 	$('input[name="uploadPlace"]').keyup(function(){
@@ -224,6 +222,16 @@ $('#btnReview, #map_reviewBtn').click(() => {
 				div.style.display = 'block';
 			};
 			reader.readAsDataURL(file);
+		}
+	});
+	
+	//그룹
+	$('#pop-review-form select[name="group"]').on('change',function(e){
+		if(e.target.value != ""){
+			$('#pop-review-form select[name="privacy"]').prop('disabled',true);
+			$('#pop-review-form select[name="privacy"]').val('0').prop("selected", true);
+		} else{
+			$('#pop-review-form select[name="privacy"]').prop('disabled',false);
 		}
 	});
 	

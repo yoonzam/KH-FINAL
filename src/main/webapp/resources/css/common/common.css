@@ -302,7 +302,7 @@ footer{color:#aaa; font-size:0.8em; padding:30px; text-align:center;}
 .review-upload .upload-box .preview-photo i:hover{opacity:1;}
 
 .review-upload .upload-group > div{padding-right:13px; border-radius:5px; border:1px solid #aaa; overflow:hidden;}
-.review-upload .upload-group > .group-box{margin-bottom:30px;}
+.review-upload .upload-group > .group-box{margin-bottom:20px;}
 .review-upload .upload-group select{width:100%; padding:13px; border:none;}
 
 .review-upload .btn-wrap{text-align: center; padding:20px; padding-top:0px;}
