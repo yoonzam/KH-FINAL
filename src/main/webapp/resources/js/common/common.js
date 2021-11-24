@@ -182,7 +182,11 @@ $('#btnReview, #map_reviewBtn').click(() => {
 	
 	$('.review-upload input:checkbox').click((e)=>{
 	    let label = e.target.parentNode;
-	    label.classList.toggle('checked');
+	    if(label.className == 'checked') {
+			label.classList.remove('checked');
+		} else{
+			label.classList.add('checked');
+		}
 	});
 	
 	$('.star-review i').click(function(e){
@@ -287,7 +291,7 @@ $('#uploadBtn').click(()=>{
 	 	cache:false,
 		success: () => {
 			alert("성공");
-			window.reload();
+			location.reload();
 		},
 		error: (e) => {
 			alert("실패");
