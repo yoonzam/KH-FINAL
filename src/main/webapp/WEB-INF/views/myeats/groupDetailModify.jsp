@@ -14,14 +14,14 @@
 	<div class="container-wrap">
 		<div class="container">
 			
-			<form role = "form" action="/myeats/groupDetailModify" method="post">
+			
 			
 			<div class="group-view">
 			<c:forEach items="${groupService}" var="groupService">
 			<form role="form" method="post">	
-				<input type="hidden" name="id" value="${groupService.id}" />
+				<input type="hidden" id = "id" name="id" value="${groupService.id}" />
 			</form>
-			
+				<form role = "form" action="/myeats/groupDetailModify" method="post">	
 				<div class="group-info">
 					<div class="group-profile">
 						<div class="group-img">
@@ -29,7 +29,7 @@
 						</div>
 					</div>
 					<div class="group-menu">
-						<input type="hidden" name="groupIdx" value="${groupService.groupIdx}" />
+						<%-- <input type="hidden" name="groupIdx" value="${groupService.groupIdx}" /> --%>
 						<div class="group-title"><i class="fas fa-bell"></i> ${groupService.groupName}
 						<input type="text" class="form-control" name="groupName"
 								placeholder="${groupService.groupName}"	value="${groupService.groupName}"
@@ -43,6 +43,7 @@
 						</div>
 					</div>
 				</div>
+				</form>
 				<div class="group-member">
 					<h4>함께하는 잇친 리스트</h4>
 					<ul>
@@ -55,7 +56,7 @@
 				<a href = "group"><button class="btn-list">그룹 목록으로 돌아가기</button></a>
 			</c:forEach>	
 			</div>
-			</form>
+			
 		</div>
 		
 	</div>
