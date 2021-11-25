@@ -79,18 +79,19 @@
 							class="search-btn">검색</a>
 					</div>
 					<div class="select-bar">
-						<select name="category" class="select">
-							<option disabled="disabled" selected="selected">🎈잇츠맵카테고리</option>
-							<option>니캉내캉</option>
-							<option>잇친맵</option>
-							<option>소셜맵</option>
-						</select> <select name="friends" class="select">
+						<select id="friendList" name="friends" class="select" style="display: none;">
 							<option disabled selected>🍟잇친이들의 맛집</option>
 							<option>이지원</option>
 							<option>김지원</option>
 							<option>박지원</option>
 							<option>최지원</option>
 						</select>
+						<select name="category" class="select" onchange="changeLangSelect()" id="checkCategory">
+							<option disabled="disabled" selected="selected">🎈잇츠맵카테고리</option>
+							<option value="group">니캉내캉</option>
+							<option value="follower">잇친맵</option>
+							<option value="social">소셜맵</option>
+						</select> 
 					</div>
 				</div>
 			</div>
@@ -241,6 +242,7 @@
 		document.querySelector('#search').addEventListener('click', (e) => {
 		    let keyword = document.querySelector('.keyword').value;
 			searchMap(keyword);
+			searchKeyword(keyword);
 			document.querySelector(".popup-wrap").style.display = 'none';
 		});
 		
@@ -248,9 +250,27 @@
 		    if (e.keyCode === 13) {
 		    	let keyword = document.querySelector('.keyword').value;
 				searchMap(keyword);
+				searchKeyword(keyword);
 				document.querySelector(".popup-wrap").style.display = 'none';
 		  }  
 		});
+		
+		/*비동기로 백으로 값보내기 */
+		let searchKeyword = (keyword) =>{
+			fetch("/map/search?keyword=" + keyword)
+			  .then(response => {
+				  if(response.ok){	//통신 성공시
+					  return response.text();
+				  }else{
+					  throw new Error(response.status);
+				  }
+			  }).then(text => {	//promise객체의 text
+				  alert("성공");
+			  }).catch(error => {
+				  alert("실패");
+			  });
+		}
+		
 		
 		/* 맵에 표시된 가게의 json정보를 담는 변수 */
 		let markerInfo;
@@ -382,6 +402,15 @@
 		    yAnchor: 1 
 		});
 		
+		/* 니캉내캉 선택 후 나타나는 group 친구창 */
+		let changeLangSelect = () => {
+			let check = document.getElementById("checkCategory");
+			if ('group' == check.options[check.selectedIndex].value) {	
+				document.querySelector('#friendList').style.display = "";
+			}else{
+				document.querySelector('#friendList').style.display = "none";
+			}
+		}
 		
 		
 		
