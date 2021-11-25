@@ -31,29 +31,31 @@
 	    		custom:{
 	    			text: '일정 만들기',
 	    			click: function(){
-	    				/* alert('clicked schedule btn'); */
-	    				/* $('#pop-schedule-form').addClass('open'); */
 	    				$('#pop-schedule-form').css({'display': 'flex'});
 	    			}
 	    		}
-    		}
+    		},
+	    	events: [
+/*  	    		{title: '치킨먹는날',start: '2021-11-25',end: '2021-11-26'},
+	    		{title: '카페',start: '2021-11-27'},
+	    		{title: '삼겹살',start: '2021-11-27'} */
+	    		
+	    		<%-- <%=request.getAttribute("schedule")%> --%>
+	    		
+	    		/* <c:forEach items="${schedule}" var="schedule"  varStatus="status">
+	    			{title: '<c:out value="${schedule.title}"/>',
+	    			start: '<c:out value="${schedule.date}"/>'}
+	    		</c:forEach> */
+	
+	    		
+	    	],
+	    	eventColor: '#ffa54f',
+	    	/* textColor: '#fff' */
 	 }); 
     	
     	calendar.render();
     });
 	 
-	 function save(){
-		 var event = calendar.getEvents();
-		 
-		 var events = new Array();
-		 for(var i=0; i < event.length; i++){
-			 var obj = new Object();
-			 
-			 obj.title = event[i]._def.title;
-			 
-			 events.push(obj);
-		 }
-	 }
 	 
 </script>
 </head>
