@@ -65,12 +65,19 @@ public class MemberRepositoryTest {
     	member.setNickname("jkl");
     	member.setPassword("1234");
     	member.setIsLeave(0);
-    	member.setRegDate(LocalDate.now());
+    	member.setRegDate();
     	repository.save(member);
     	
     	//mongoTemplate.save(member);
     }
     
+    @Test
+    public void regDateTest() {
+    	Member member = new Member();
+    	member.setRegDate();
+    	
+    	logger.debug("regDate구하기 : " + member.getRegDate());
+    }
     
     @Test
     public void findAllMembers() {
@@ -196,7 +203,7 @@ public class MemberRepositoryTest {
     	member.setNickname("kim");
     	member.setPassword("1234");
     	member.setIsLeave(0);
-    	member.setRegDate(LocalDate.now());
+    	member.setRegDate();
     	
     	repository.delete(member);
     }
