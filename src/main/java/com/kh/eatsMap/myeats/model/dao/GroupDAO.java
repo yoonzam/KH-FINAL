@@ -44,7 +44,7 @@ public class GroupDAO {
 			query = query.with(Sort.by(Sort.Direction.DESC,"id"));
 			query.skip((pageObject.getPage()-1) * pageObject.getPerPageNum());
 			query.limit((int)pageObject.getPerPageNum());
-			//query.addCriteria(Criteria.where("nickname").regex(tagName));
+			query.addCriteria(Criteria.where("nickname").regex(tagName));
 			
 			list = mongoTemplate.find(query,com.kh.eatsMap.member.model.dto.Member.class,"member");
 			
@@ -70,7 +70,7 @@ public class GroupDAO {
 			query = query.with(Sort.by(Sort.Direction.DESC,"id"));
 			query.skip((findCri.getPage()-1) * findCri.getPerPageNum());
 			query.limit((int)findCri.getPerPageNum());
-			query.addCriteria(Criteria.where("nickname").regex(tagName));
+			//query.addCriteria(Criteria.where("nickname").regex(tagName));
 			
 			list = mongoTemplate.find(query,com.kh.eatsMap.member.model.dto.Member.class,"member");
 			

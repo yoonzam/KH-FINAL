@@ -70,6 +70,7 @@
 <section>
 	<div class="container-wrap">
 		<div class="container">
+			<form role="form" method="post">
 			<select name="findType" style="display: none;">
 				<option  value="S" 
 					<c:out value="${fCri.findType == 'S'? 'selected' : ''}"/>>닉네임
@@ -83,13 +84,14 @@
 			<c:if test="${status.first}"><ul id="myUL"></c:if>
 			<c:choose>
 				<c:when test="true">
-				<li>
-			  <li><a href="#"><strong>${memberlist.nickname}</strong></a></li>
+				<form role="form" method="post" action=createGroup>
+			  <li><a href="invite?page=1&numPerPage=10&findType=S&keyword=${memberlist.nickname}"><input type="hidden" name="keyword" value="${fCri.keyword}"><strong>${memberlist.nickname}</strong></a></li>
+			  	</form>
 			  	</c:when>
 				</c:choose> 
 			<c:if test="${status.last}"></ul></c:if>
 			</c:forEach>
-			
+			</form>
 				<!-- paging -->
 	  		 	<div class="page">
 	      			<ul class="pagination">

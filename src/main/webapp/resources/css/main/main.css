@@ -1,7 +1,6 @@
 @charset "UTF-8";
 .main-visual{
 	height:347px;
-	background:url(../img/main/main.png) no-repeat center;
 	background-size:cover;
 	position:relative;
 	text-align:center;

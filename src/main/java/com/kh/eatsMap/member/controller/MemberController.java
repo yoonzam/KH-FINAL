@@ -53,6 +53,9 @@ public class MemberController {
 		this.emailFormValidator = emailFormValidator;
 		this.modifyFormValidator = modifyFormValidator;
 	}
+	
+	
+	
 
 	//요청파라미터 값들을 바인드해줌
 	@InitBinder(value = "joinForm")	//jsp form태그 modelAttribute value와 바인딩
@@ -253,6 +256,12 @@ public class MemberController {
 	
 	//파이어베이스
 	@GetMapping("push-test")
-	public void pushTest() {}
+	public String pushTest() {
+		return "/push-test";
+	}
+	@GetMapping("sw.js")
+	public String serviceWorker() {
+		return "/sw.js";
+	}
 
 }

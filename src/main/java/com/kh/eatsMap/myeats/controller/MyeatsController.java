@@ -56,6 +56,15 @@ public class MyeatsController {
 	}
 	
 	
+	@RequestMapping(value="/invite", method=RequestMethod.POST)
+	public String invitePost(@RequestParam("keyword") String keyword, Model model)throws Exception{ 
+		
+		
+		System.out.println(keyword);
+		
+		return "redirect:/myeats/createGroup";
+	}
+	
 	
 	
 	
