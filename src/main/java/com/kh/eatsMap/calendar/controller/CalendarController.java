@@ -1,9 +1,14 @@
 package com.kh.eatsMap.calendar.controller;
 
+import java.util.List;
+import java.util.Map;
+
+import org.jose4j.json.internal.json_simple.JSONArray;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,7 +27,14 @@ public class CalendarController {
 	Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	@GetMapping("/")
-	public String calendar() {
+	public String calendar(Model model) {
+		List<Calendar> scheduleList = calendarService.selectAllSchedule();
+		model.addAttribute("schedule", scheduleList);
+		
+		JSONArray jsonArray = new JSONArray();
+		model.addAttribute("jsonList",scheduleList);
+		
+		scheduleList.forEach(e -> logger.info(e.toString()));
 		return "calendar/calendar";
 	}
 	
@@ -34,4 +46,12 @@ public class CalendarController {
 		
 		return "redirect:/calendar/";
 	}
+	
+	/*
+	 * @GetMapping("schedule") public void scheduleDetail(String id, Model model) {
+	 * Map<String,Object> commandMap = CalendarService.selectScheduleById(id);
+	 * model.addAttribute("datas",commandMap);
+	 * 
+	 * }
+	 */
 }
