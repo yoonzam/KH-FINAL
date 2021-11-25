@@ -3,6 +3,7 @@ package com.kh.eatsMap.calendar.controller;
 import java.util.List;
 import java.util.Map;
 
+import org.jose4j.json.internal.json_simple.JSONArray;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,10 @@ public class CalendarController {
 	public String calendar(Model model) {
 		List<Calendar> scheduleList = calendarService.selectAllSchedule();
 		model.addAttribute("schedule", scheduleList);
+		
+		JSONArray jsonArray = new JSONArray();
+		model.addAttribute("jsonList",scheduleList);
+		
 		scheduleList.forEach(e -> logger.info(e.toString()));
 		return "calendar/calendar";
 	}
