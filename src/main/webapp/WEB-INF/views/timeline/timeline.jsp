@@ -72,11 +72,7 @@
 								<div class="info">
 									<div class="eats-location">
 										<c:set var="addr" value="${fn:split(reviews.addr,' ')}" />
-										<c:forEach var="addr" items="${addr}" varStatus="status">
-										     <c:if test="${status.count == 1}">${addr}</c:if>
-										     <c:if test="${status.count == 2}">${addr}</c:if>
-										</c:forEach>
-										&nbsp;&#62;&nbsp;${reviews.category}
+										${addr[0]} ${addr[1]}&nbsp;&#62;&nbsp;${reviews.category}
 									</div>
 									<div class="eats-name">${reviews.resName} <i onclick="clickLike();" class="eats-like far fa-heart"></i></div>
 									<div class="eats-tag">
