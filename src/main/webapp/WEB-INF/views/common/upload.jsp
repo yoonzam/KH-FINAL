@@ -36,7 +36,7 @@
 							<p><strong>#해시태그</strong><br>음식점을 표현할 수 있는 태그를 모두 선택해주세요!<span class="upload-flag checkbox"></span></p>
 							<div class="select">
 								<label>#친근함<input type="checkbox" name="hashtag" value="md01" /></label>
-								<label>#고급짐<input type="checkbox" name="hashtag" value="md02" /></label>
+								<label>#고급진<input type="checkbox" name="hashtag" value="md02" /></label>
 								<label>#가족<input type="checkbox" name="hashtag" value="md03" /></label>
 								<label>#데이트<input type="checkbox" name="hashtag" value="md04" /></label>
 								<label>#혼밥<input type="checkbox" name="hashtag" value="md05" /></label>
