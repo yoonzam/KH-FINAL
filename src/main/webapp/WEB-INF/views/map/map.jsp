@@ -243,6 +243,7 @@
 		    let keyword = document.querySelector('.keyword').value;
 			searchMap(keyword);
 			searchKeyword(keyword);
+
 			document.querySelector(".popup-wrap").style.display = 'none';
 		});
 		
@@ -251,10 +252,12 @@
 		    	let keyword = document.querySelector('.keyword').value;
 				searchMap(keyword);
 				searchKeyword(keyword);
+
 				document.querySelector(".popup-wrap").style.display = 'none';
 		  }  
 		});
 		
+
 		/*비동기로 백으로 값보내기 */
 		let searchKeyword = (keyword) =>{
 			fetch("/map/search?keyword=" + keyword)
