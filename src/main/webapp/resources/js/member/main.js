@@ -159,12 +159,13 @@ function updateBtn() {
     return;
   }
 
-  if (isSubscribed) {	//알림 허용 상태
-    pushButton.textContent = '알림 거부';
+  if (isSubscribed) {	//구독
+    pushButton.textContent = '구독중';
     document.querySelector('.bell-list').style.display ='block';
     
-  } else {	//알림 거부 상태
-    pushButton.textContent = '알림 받기';
+  } else {	//미구독
+    pushButton.textContent = '구독하기';
+    document.querySelector('.bell-list').style.display ='none';
   }
   pushButton.disabled = false;
 }

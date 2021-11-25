@@ -257,6 +257,13 @@ public class MemberController {
 	//파이어베이스
 	@GetMapping("push-test")
 	public String pushTest() {
+		
+		String path = "C:/FINAL/eatsMap/src/main/webapp/servic-account-file.json";
+		/*
+		 * String MESSAGING_SCOPE = "https"
+		 */
+		
+		
 		return "/push-test";
 	}
 	@GetMapping("sw.js")
