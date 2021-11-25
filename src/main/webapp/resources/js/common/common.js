@@ -45,9 +45,12 @@ $('.layer-popup .view-controller a').hover((e) => {
   }, (e)=>{
     $('.view-controller span').html('');
 });
+/* 맵 후기 버튼을 구분하기 위한 변수 */
+let reviewBtn = false;
 
 $('.dimmed').click(()=>{
     closePopup();
+    reviewBtn = false;
 });
 let closePopup = () => {
     $('.dimmed-wrap').fadeOut(200);
@@ -58,7 +61,12 @@ let uploadStep;
 let placeFlag;
 let searchPlaces;
 
-$('#btnReview').click(() => {
+/* 맵상의 후기 버튼 누를 경우 flag */
+$("#map_reviewBtn").click(function(event){
+      reviewBtn = true;		
+});
+
+$('#btnReview, #map_reviewBtn').click(() => {
 	//초기화
 	uploadStep = 1;
 	placeFlag = false;
@@ -69,11 +77,41 @@ $('#btnReview').click(() => {
 	$('#uploadPrevBtn').hide();
 	$('#uploadNextBtn').show();
 	$('#uploadBtn').hide();
-	$('input[name="uploadPlace"]').val('');
+	$('#pop-review-form input:text').val('');
+	$('#pop-review-form input:file').val('');
+	$('#pop-review-form input:radio').prop('checked', false);
+	$('#pop-review-form input:checkbox').prop('checked', false);
+	$('.hashtag label').removeClass('checked');
+	$('.star-review i').attr('class','far fa-star');
+	$('#pop-review-form textarea').val('');
+	$('.preview-photo').css('display','none');
+	$('#pop-review-form select[name="group"]').val('').prop("selected", true);
+	$('#pop-review-form select[name="privacy"]').val('0').prop("selected", true);
+	$('#pop-review-form select[name="privacy"]').attr('disabled',false);
 	$('#pop-review-form').fadeIn(200);
 	
 	let options = { center: new kakao.maps.LatLng(37.55317, 126.97279), level: 8 };
 	let map = new kakao.maps.Map(document.getElementById('uploadMap'), options);
+	
+	/* 맵 화면상의 후기 입력버튼을 누를 경우 카카오맵과 검색창에 미리 정보 기입*/
+	if(reviewBtn){
+		let placeInfo = markerInfo;	
+		console.dir(placeInfo);
+		$('input[name="uploadPlace"]').val(markerInfo.place_name);
+		$('input[name="resName"]').val(markerInfo.place_name);
+		$('input[name="addr"]').val(markerInfo.road_address_name);
+		$('input[name="latitude"]').val(markerInfo.y);
+		$('input[name="longitude"]').val(markerInfo.x);
+		let options = { center: new kakao.maps.LatLng(placeInfo.y, placeInfo.x), level: 5 };
+		let map = new kakao.maps.Map(document.getElementById('uploadMap'), options);
+		let content = '<div class="marker-wrap"><p><i class="fas fa-utensils color-m"></i> '+placeInfo.place_name+'</p><div></div></div>';
+		let customOverlay = new kakao.maps.CustomOverlay({
+		    position: new kakao.maps.LatLng(placeInfo.y, placeInfo.x),
+		    content: content
+		});
+		customOverlay.setMap(map);
+		placeFlag = true;
+	}
 	
 	$('input[name="uploadPlace"]').keyup(function(){
 		let keyword = $(this).val();
@@ -108,12 +146,12 @@ $('#btnReview').click(() => {
 	$('.location-list').click(function(e){
 		let placeIdx = e.target.dataset.placeIdx;
 		let place = searchPlaces[placeIdx];
-		console.log(place);
 		$('input[name="uploadPlace"]').val(place.place_name);
 		$('input[name="resName"]').val(place.place_name);
 		$('input[name="addr"]').val(place.road_address_name);
 		$('input[name="latitude"]').val(place.y);
 		$('input[name="longitude"]').val(place.x);
+		
 		drawSpecificMap(place);
 		placeFlag = true;
 		$('.location-list').hide();
@@ -136,13 +174,17 @@ $('#btnReview').click(() => {
 	
 	$('.review-upload input:radio').click((e)=>{
 	    let label = e.target.parentNode;
-	    $('.hashtag label').removeClass('checked');
+	    $('.hashtag .radio label').removeClass('checked');
 	    label.classList.add('checked');
 	});
 	
 	$('.review-upload input:checkbox').click((e)=>{
 	    let label = e.target.parentNode;
-	    label.classList.toggle('checked');
+	    if(label.className == 'checked') {
+			label.classList.remove('checked');
+		} else{
+			label.classList.add('checked');
+		}
 	});
 	
 	$('.star-review i').click(function(e){
@@ -162,15 +204,80 @@ $('#btnReview').click(() => {
 		else $('.textarea-count span').html(200);
 	});
 	
+	//파일
+	$('#pop-review-form input:file').on('change',function(e){
+		let file = e.target.files[0];
+		let fileArr = file.name.split('.');
+		let fileFormat = fileArr[fileArr.length-1];
+		if(fileFormat != 'gif' && fileFormat != 'png' && fileFormat != 'jpg' && fileFormat != 'jpeg' && fileFormat != 'png'){
+			alert('사진은 jpg, jpeg, png, gif 형식만 지원합니다.');
+			e.target.value='';
+			return;
+		} else {
+			let reader = new FileReader();
+			reader.onload = function(rslt) {
+				let div = e.target.parentNode.children[2];
+				let img = div.children[0];
+				img.setAttribute("src", rslt.target.result);
+				div.style.display = 'block';
+			};
+			reader.readAsDataURL(file);
+		}
+	});
+	
+	//그룹
+	$('#pop-review-form select[name="group"]').on('change',function(e){
+		if(e.target.value != ""){
+			$('#pop-review-form select[name="privacy"]').prop('disabled',true);
+			$('#pop-review-form select[name="privacy"]').val('0').prop("selected", true);
+		} else{
+			$('#pop-review-form select[name="privacy"]').prop('disabled',false);
+		}
+	});
+	
+	$('.fa-times-circle').click((e)=>{
+		let div = e.target.parentNode;
+		div.style.display = 'none';
+		div.parentNode.children[1].value='';
+	})
+	
+	
 });
 
+let deletePhoto = (e) => {
+	let div = e.parentNode;
+	div.innerHTML = '';
+	div.classList.remove('preview-photo');
+	console.log(div);
+}
+
 $('#uploadNextBtn').click(()=>{
-	if(!placeFlag){
-		$('.upload-flag.place').html('※장소를 등록하지 않으면 다음 단계로 갈 수 없어요!');
-		return;
-	} else{
-		$('.upload-flag.place').html('');
+	if(uploadStep == 1){
+		if(!placeFlag) {
+			$('.upload-flag.place').html('※장소를 등록하지 않으면 다음 단계로 갈 수 없어요!');
+			return;
+		}
+	} else if(uploadStep == 2){
+		if($('#pop-review-form input:radio:checked').length == 0) {
+			$('.upload-flag.radio').html('※카테고리는 필수입니다!');
+			return;
+		}
+		if($('#pop-review-form input:checkbox:checked').length == 0) {
+			$('.upload-flag.checkbox').html('※해시태그는 필수입니다!');
+			return;
+		}
+	} else if(uploadStep == 3){
+		if(!$('#pop-review-form input[name=taste]').val() || !$('#pop-review-form input[name=clean]').val() || !$('#pop-review-form input[name=service]').val()) {
+			$('.upload-flag.review').html('※별점은 필수입니다!');
+			return;
+		}
+	} else if(uploadStep == 4){
+		if(!$('#photo1').val() && !$('#photo2').val() && !$('#photo3').val()) {
+			$('.upload-flag.photo').html('※1장 이상의 사진은 필수입니다!');
+			return;
+		}
 	}
+	$('.upload-flag').html('');
 	uploadStep ++;
 	uploadStepControl();			
 });
@@ -190,8 +297,9 @@ $('#uploadBtn').click(()=>{
 		contentType : false,
 	    processData : false,
 	 	cache:false,
-		success: (text) => {
+		success: () => {
 			alert("성공");
+			location.reload();
 		},
 		error: (e) => {
 			alert("실패");

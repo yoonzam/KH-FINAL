@@ -205,7 +205,7 @@
 						<span class="rest-content" id="road-address"></span>
 					</div>
 					<div class="wrap-btn">
-						<span class="btn">후기등록</span>
+						<span class="btn" id="map_reviewBtn">후기등록</span>
 					</div>
 				</div>
 
@@ -219,7 +219,7 @@
 	
 	/* 유진 추가내용 */
 	document.querySelector('.btn').addEventListener('click',() => {
-		document.querySelector('.dimmed-wrap').style.display='flex';
+		document.querySelector('#pop-review-form').style.display='flex';
 	})
 	
 		let clickLock = (e) =>{
@@ -241,14 +241,20 @@
 		document.querySelector('#search').addEventListener('click', (e) => {
 		    let keyword = document.querySelector('.keyword').value;
 			searchMap(keyword);
+			document.querySelector(".popup-wrap").style.display = 'none';
 		});
 		
 		document.querySelector('.keyword').addEventListener('keyup', (e)=> {
 		    if (e.keyCode === 13) {
 		    	let keyword = document.querySelector('.keyword').value;
 				searchMap(keyword);
+				document.querySelector(".popup-wrap").style.display = 'none';
 		  }  
 		});
+		
+		/* 맵에 표시된 가게의 json정보를 담는 변수 */
+		let markerInfo;
+		
 		
 		let searchMap = (keyword) =>{
 			
@@ -310,7 +316,8 @@
 						.then(response => response.json())
 						.then(json => {
 						// 받은 json으로 기능 구현
-						
+						console.dir(json.documents[0]);
+						markerInfo = json.documents[0];
 						//음식점 이름, 주소 텍스트로 변환 
 						let placeName = json.documents[0].place_name;
 						let roadAddress = json.documents[0].road_address_name;
@@ -334,7 +341,7 @@
 			}else{
 				reviewShow.style.display = "none";
 			}
-			alert('마커를 클릭했습니다!');
+			
 			
 		}
 		

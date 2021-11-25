@@ -12,7 +12,7 @@ public class Fileinfo {
 	
 	@Id
 	private ObjectId flId;
-	private String typeId;		//회원 id, review id, group id
+	private ObjectId typeId;		//회원 id, review id, group id
 	private String originFileName;
 	private String renameFileName;
 	private String savePath;

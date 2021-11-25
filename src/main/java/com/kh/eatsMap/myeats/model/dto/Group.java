@@ -16,12 +16,15 @@ public class Group {
 	
 	@Id
 	private ObjectId id;
-	private String groupIdx; //int에서 String변경 (매개변수로 받을 때 불편), 사용중
+	//private String groupIdx; //int에서 String변경 (매개변수로 받을 때 불편), 사용중
 	private String groupName;
 	private ObjectId mapId;
 	private String groupImg;
 	private Date groupcreatedate; //추가된 필드:그룹생성일자
-	private ObjectId memberId;	
+	private ObjectId memberId;
+	private String[] memberNickName;//임시추가: 아마도 Member담는 배열로 바꿀듯
+	
+	private Group[] groupMembers;
 
 	
 }

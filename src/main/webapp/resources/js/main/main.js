@@ -1,14 +1,49 @@
 $(document).ready(()=>{
+/*	
+	    //내위치
+    navigator.geolocation.getCurrentPosition(function(position) {
+    let longitude = position.coords.longitude;	//경도
+    let latitude = position.coords.latitude;	//위도
+	alert("현재 위치는 : " + longitude + ", "+ latitude);
+ 
+
+	let obj = {longitude_: longitude, latitude_: latitude}
+	
+	setLocation(obj);
+
+	}, function (position){
+		alert("위치를 불러오지 못하였습니다.")} );
+	*/
+	
     resizeImg();
     resizeImg2();
+    
+
 });
+/*
+
+function setLocation(obj){
+
+	$.ajax({
+	    url: "/main/",
+	    method: "get",
+	    type: "json",
+	    data: obj,
+	    success: function(data) {
+				alert("위치값 전송 성공");
+				close();
+		    },
+		error: alert("위치값 전송 실패")
+		})    
+};
+	
 
 $(window).resize(() => {
     resizeImg();
     resizeImg2();
 });
 
-
+*/
 
 $('.eats-list').hover((e) => {
     e.currentTarget.children[0].children[0].style.transform='scale(1.1)';

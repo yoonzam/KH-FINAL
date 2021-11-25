@@ -2,6 +2,7 @@ package com.kh.eatsMap.timeline.controller;
 
 import java.net.URI;
 import java.net.URLEncoder;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,8 +17,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.kh.eatsMap.member.model.dto.Member;
 import com.kh.eatsMap.timeline.model.dto.Review;
 import com.kh.eatsMap.timeline.model.service.TimelineService;
 
@@ -63,8 +67,10 @@ public class TimelineController {
 	
 	@PostMapping("upload")
 	@ResponseBody
-	public void upload(Review review, double latitude, double longitude) {
+	public void upload(Review review, double latitude, double longitude, List<MultipartFile> photos, @SessionAttribute("authentication") Member member) {
 		review.setLocation(new GeoJsonPoint(latitude, longitude));
-		timelineService.insertReview(review);
+		review.setMemberId(member.getId());
+		if(review.getGroup().equals("")) review.setGroup(null);
+		timelineService.insertReview(review, photos);
 	}
 }

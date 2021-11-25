@@ -9,12 +9,8 @@
  type="java.lang.String" %>
 
 <% /** PageNation을 위한 사용자 JSP 태그  *
-	 * 작성자 웹짱 이영환 강사 
-	 * 작성일 2021.03.30
-	 * 버전 3.0
-	 
 	 * 사용방법 :<pageObject:pageNav listURI="호출 List URL"
-	 			pageObject= "웹짱 페이지 객체" query="댓글 페이지, 검색등 뒤에 붙이는 쿼리" />
+	 			pageObject= "페이지 객체" query="댓글 페이지, 검색등 뒤에 붙이는 쿼리" />
    */ %>
 
 <% request.setAttribute("noLinkColor", "#999"); %>

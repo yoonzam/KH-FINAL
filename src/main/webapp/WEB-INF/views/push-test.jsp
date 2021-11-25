@@ -15,11 +15,61 @@
 <!-- 화살표 아이콘 -->
 <link rel="stylesheet" href="http://cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
 
-
+<!-- firebase v8 -->
+<script defer src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script defer src="https://www.gstatic.com/firebasejs/8.10.0/firebase-analytics.js"></script>
+<script defer src="https://www.gstatic.com/firebasejs/8.10.0/firebase-messaging.js"></script>
 
 </head>
 <body>
-	<%@ include file="/WEB-INF/views/include/header.jsp"%>
+<div class="wrap">
+	<header>
+		<div class="header pc">
+			<h1><img src="/resources/img/common/logo_ver1.png"></h1>
+			<ul class="gnb">
+				<li onclick="location.href='/map/'">잇츠맵</li>
+				<li onclick="location.href='/calendar/'">잇츠캘린더</li>
+				<li onclick="location.href='/timeline/'">타임라인</li>
+				<li onclick="location.href='/myeats/group'">마이잇츠</li>
+			</ul>
+			<div class="util">
+				<div onclick="location.href='/member/logout'" class="btn-logout">로그아웃</div>
+				<div class="btn-bell new"><i class="fas fa-bell"> 2</i></div>
+				<!--div class="btn-bell"><i class="far fa-bell"></i></div-->
+				<div class="bell-list" style="display: none;">
+					<div class="bell-list-title">알림목록</div>
+					<ul>
+						<li>누군가 회원님과 잇친을 맺었어요!</li>
+						<li>새로운 후기를 올려주세요!</li>
+					</ul>
+				</div>
+				<div id="btnReview" class="btn-review">후기등록</div>
+			</div>
+		</div>
+		<div class="header m">
+			<div class="flex-wrap">
+				<h1><img src="/resources/img/common/logo_ver1.png"></h1>
+				<div class="util">
+					<div class="btn-logout">로그아웃</div>
+					<button disabled class="btn-bell new"><i class="fas fa-bell"> 2</i></button>
+					<div class="bell-list" style="display: none;">
+						<div class="bell-list-title">알림목록</div>
+						<ul>
+							<li>누군가 회원님과 잇친을 맺었어요!</li>
+							<li>새로운 후기를 올려주세요!</li>
+						</ul>
+					</div>
+					<div id="btnReview" class="btn-review">후기등록</div>
+				</div>
+			</div>
+			<ul class="gnb">
+				<li>잇츠맵</li>
+				<li>잇츠캘린더</li>
+				<li>타임라인</li>
+				<li>마이잇츠</li>
+			</ul>
+		</div>
+	</header>
 	<section>
 		<div class="section">
 			<div class="main-visual">
@@ -262,19 +312,21 @@
 
 
 <%@ include file="/WEB-INF/views/include/footer.jsp"%>
+<script type="text/javascript" src="/resources/js/member/main.js"></script>
+
+
 <script type="module">
-  // Import the functions you need from the SDKs you need
+
+  //Firebase 초기화
+
   import { initializeApp } from "https://www.gstatic.com/firebasejs/9.5.0/firebase-app.js";
-  import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.5.0/firebase-analytics.js";
-  
-  //클라우드 메시징
-  import { } from "https://www.gstatic.com/firebasejs/9.5.0/firebase-messaging.js"
+  import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.5.0/firebase-analytics.js";  
+  import { } from "https://www.gstatic.com/firebasejs/9.5.0/firebase-messaging.js";
 
   // TODO: Add SDKs for Firebase products that you want to use
   // https://firebase.google.com/docs/web/setup#available-libraries
 
   // Your web app's Firebase configuration
-  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
   const firebaseConfig = {
     apiKey: "AIzaSyCNuQD68Jw_abElCM3B0XK-n4fNY-H7oJ0",
     authDomain: "final-332911.firebaseapp.com",
