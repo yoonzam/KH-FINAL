@@ -13,6 +13,7 @@ public interface ReviewRepository extends MongoRepository<Review, String>{
 
 	
 	List<Review> findReviewByLike(String memberid, int i);
+
 	
 	
 	

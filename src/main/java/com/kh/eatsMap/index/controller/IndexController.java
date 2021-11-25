@@ -36,7 +36,7 @@ public class IndexController {
 	public String index(
 			@SessionAttribute("authentication") Member member
 //			,String longitude_ ,String latitude_
-////			,Model model
+//			,Model model
 			) throws Exception {
 //
 //		
@@ -114,32 +114,29 @@ public class IndexController {
 		
 		String keyword = keyword_ == null ? "" : keyword_;
 		
-		String[] category = null;
+		
+		String[] category = new String[0];
 		if(category_ != null) {
+			category = new String[category_.length];		
 			for (int i = 0; i < category_.length; i++) {
-				category = new String[category_.length];
 				category[i] = category_[i];
-//				logger.debug(category[i]);
-			}
-		}else {
-			category = new String[0];
+//					logger.debug(category[i]);
+			}	
 		}
 		
-		
-		String[] hashtag = null;
+
+		String[] hashtag = new String[0];
 		if(hashtag_ != null) {
+			hashtag = new String[hashtag_.length];		
 			for (int i = 0; i < hashtag_.length; i++) {
-				hashtag = new String[hashtag_.length];
 				hashtag[i] = hashtag_[i];
-//				logger.debug(hashtag[i]);
-			}
-		}else {
-			hashtag = new String[0];
-		}	
+//					logger.debug(hashtag[i]);
+			}	
+		}
 
 		//검색 결과 요청
 		List<Review> searchReviewList = indexService.searchReview(keyword, category, hashtag);
-		
+
 		for (int i = 0; i < searchReviewList.size(); i++) {
 			logger.debug(searchReviewList.get(i).getResName());
 		}

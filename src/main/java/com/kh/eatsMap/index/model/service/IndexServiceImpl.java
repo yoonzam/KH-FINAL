@@ -163,7 +163,7 @@ public class IndexServiceImpl implements IndexService{
 		List<Review> searchHashtag= new ArrayList<Review>();
 		if(hashtag.length != 0) {
 			for (int i = 0; i < hashtag.length; i++) {
-				searchHashtag = reviewRepository.findReviewByCategoryLike(hashtag[i]);
+				searchHashtag = reviewRepository.findReviewByHashtagLike(hashtag[i]);
 			}
 		}
 		

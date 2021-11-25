@@ -9,4 +9,4 @@ public interface IndexRepository extends MongoRepository<Member, String>{
 	Member findMemberById(String memberId);
 
 	
-}
+	}
