@@ -83,29 +83,29 @@
 				<li><a href="detail">맛찜리스트</a></li>
 				<li><a href="/member/modifyForm">회원정보 수정</a></li>
 			</ul>
-				<c:forEach items="${list}" var="grouplist" varStatus="status"  begin="0"  >
+				<c:forEach items="${groups}" var="groups" varStatus="status"  begin="0"  >
 				<c:if test="${status.first}"><ul class="group-wrap"></c:if>
 				<c:choose>
 					<c:when test="true">
 					<li>
 						<div class="group">
-							<div class="group-img"><img src="/resources/img/upload/02.jpg"></div>
+							<div class="group-img"><img src="${!empty groups.thumUrl ? groups.thumUrl : '/resources/img/common/upload-logo.png'}"></div>
 								<p class="group-info">
-									<strong>${grouplist.groupName}</strong><br>
+									<strong>${groups.groupName}</strong><br>
 									<i class="fas fa-user"></i> 5&nbsp;&nbsp;<i class="fas fa-feather"></i>
-									<fmt:formatDate pattern="yyyy/MM/dd" value="${grouplist.groupcreatedate}"/>
+									<fmt:formatDate pattern="yyyy/MM/dd" value="${groups.groupcreatedate}"/>
 								</p>
 						</div>
 						<div class="controller">
-							<a href="groupDetail?id=${grouplist.id}" class="group-menu">그룹관리</a>
-							<a href="groupDetail?id=${grouplist.id}">수정</a>
+							<a href="groupDetail?id=${groups.id}" class="group-menu">그룹관리</a>
+							<a href="groupDetail?id=${groups.id}">수정</a>
 							
 							<!-- 폼태그 스타일 유지 위해 div로 display: none 줌 -->
 							<div style="display: none;">
 								<!--js에서 delete/post로 넘김 -->
 								<form role="form" method="post">
 								<c:if test="${status.last}">  <!-- 추후 삭제해야하는 기능 -->
-									<input type="hidden" id="id" name="id" value="${grouplist.id}" />
+									<input type="hidden" id="id" name="id" value="${groups.id}" />
 								</c:if>
 								</form>
 							</div>

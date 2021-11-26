@@ -14,8 +14,6 @@
 <%@ include file="/WEB-INF/views/include/header.jsp" %>
 	<section>
 		<div class="section">
-			<!--div class="main-visual">
-			</div-->
 			<div class="search-wrap">
 				<div class="search-area">
 					<div class="search-form">
@@ -64,7 +62,7 @@
 				<h2><i class="fas fa-utensils color-m"></i> 실시간 <span class="color-m">잇친 PICK</span> 맛집을 소개합니다!</h2>
 				<ul class="timeline-brd">
 					<c:forEach items="${reviews}" var="reviews">
-						<li>
+						<li onclick="viewTimeline('${reviews.id}')">
 							<div class="eats-list">
 								<div class="thum">
 									<img src="${!empty reviews.thumUrl ? reviews.thumUrl : '/resources/img/common/upload-logo.png'}">
@@ -90,10 +88,110 @@
 					</c:forEach>
 				</ul>
 			</div>
-
 		</div>
 	</section>
+	<script>
+		let photoReviewCnt;
+		let viewTimeline = (id) => {
+			$.ajax({
+				type: 'GET',
+				url: '/timeline/detail',
+				data:{ id:id },
+				dataType: 'json',
+				success: (data) => {
+					photoReviewCnt = 0;
+					$('#pop-review-detail .slide-img').css('transform','translateX(0px)');
+					
+					//photo
+					let html = '';
+					for (var i = 0; i < data.files.length; i++) html += '<li><img src="'+data.files[i]+'"></li>';
+					$('#pop-review-detail .slide-img').html(html);
+					html = '';
+					for (var i = 0; i < data.files.length; i++) html += '<div class="dot" data-num="'+i+'"></div>';
+					$('#pop-review-detail .dot-btn').html(html);
+					$('#pop-review-detail .dot-btn > div:first-child').addClass('selected');
+					
+					//photoBtn
+					if(data.files.length > 1) {
+						$('#pop-review-detail .slide-btn').html(
+							'<i onclick="prevPhoto('+data.files.length+');" class="fas fa-arrow-circle-left"></i>'+
+							'<i onclick="nextPhoto('+data.files.length+');" class="fas fa-arrow-circle-right"></i>');
+					} else{
+						$('#pop-review-detail .slide-btn').html('');
+					}
+					
+					//writer
+					$('#pop-review-detail .writer').html('<a>'+data.review.memberNick+'</a><a onclick="follow(\''+data.memberId+'\')" class="follow">잇친맺기</a>');
+					
+					//score
+					html = '<p>맛</p>';
+					for (var i = 0; i < 5; i++) {
+						if(i < data.review.taste) html += '<i class="fas fa-star">';
+						else html += '<i class="far fa-star"></i>';
+					}
+					$('#pop-review-detail .score > div:first-child').html(html);
+					html = '<p>청결</p>';
+					for (var i = 0; i < 5; i++) {
+						if(i < data.review.clean) html += '<i class="fas fa-star">';
+						else html += '<i class="far fa-star"></i>';
+					}
+					$('#pop-review-detail .score > div:nth-child(2)').html(html);
+					html = '<p>서비스</p>';
+					for (var i = 0; i < 5; i++) {
+						if(i < data.review.service) html += '<i class="fas fa-star">';
+						else html += '<i class="far fa-star"></i>';
+					}
+					$('#pop-review-detail .score > div:last-child').html(html);
+					
+					//hashtag
+					html = '';
+					for (var i = 0; i < data.review.hashtag.length; i++) html += '<span>#'+data.review.hashtag[i]+'</span>';
+					$('#pop-review-detail .review > .tag').html(html);
+					
+					//review
+					$('#pop-review-detail .review > p').html(data.review.review);
+					
+					//resInfo
+					$('#pop-review-detail .info > .title').html('<i class="fas fa-home"></i> '+data.review.resName+'('+data.review.category+')');
+					$('#pop-review-detail .info > .location').html(data.review.addr);
+					
+					//controllerBtn
+					$('#pop-review-detail .pop-btn-edit').attr('onclick','editReview(\''+data.reviewId+'\');');
+					$('#pop-review-detail .pop-btn-delete').attr('onclick','deleteReview(\''+data.reviewId+'\');');
 
+					$('#pop-review-detail').fadeIn(200);
+					resizeSlideImgHeight();
+				},
+				error: function (e) {
+					alert('에러발생');
+				}
+			});
+		}
+		
+		let nextPhoto = (length) => {
+			if(photoReviewCnt == length-1) return;
+			if(photoReviewCnt == length-2) $('#pop-review-detail .slide-btn i.fa-arrow-circle-right').hide();
+			photoReviewCnt++;
+			movePhoto();
+			$('#pop-review-detail .slide-btn i.fa-arrow-circle-left').show();
+		}
+		
+		let prevPhoto = (length) => {
+			if(photoReviewCnt == 0) return;
+			if(photoReviewCnt == 1) $('#pop-review-detail .slide-btn i.fa-arrow-circle-left').hide();
+			photoReviewCnt--;
+			movePhoto();
+			$('#pop-review-detail .slide-btn i.fa-arrow-circle-right').show();
+		}
+		
+		let movePhoto = () => {
+			$('#pop-review-detail .dot-btn > div').removeClass('selected');
+			$('#pop-review-detail .dot-btn > div[data-num="'+photoReviewCnt+'"]').addClass('selected');
+			let slideWidth = $('#pop-review-detail .slide-img img').width();
+			$('#pop-review-detail .slide-img').css('transform','translateX('+(-slideWidth*photoReviewCnt)+'px)');
+		}
+		
+	</script>
 <%@ include file="/WEB-INF/views/include/footer.jsp" %>
 </body>
 </html>

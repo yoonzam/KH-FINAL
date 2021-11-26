@@ -45,13 +45,16 @@ background-color: var(--red-color);
 		<div class="container">
 			<h3><i class="fas fa-users-cog"></i> 새로운 그룹 만들기</h3>
 			
-			<form method="post">
+			<form id="frmUpload" action="/myeats/createGroup" method="post" enctype="multipart/form-data">
 			<input type="hidden" name="groupcreatedate" value="<%= sf.format(nowTime) %>">
 			<div class="group-form">
 				<ul>
 					<li>
 						<span>프로필</span>
-						<input type="file">
+						<input id="photo1" type="file"name="photos" accept=".gif, .jpg, .jpeg, .png">
+						<div class="preview-photo photo1">
+						 
+						</div>
 					</li>
 					<li>
 						<span>그룹이름</span>

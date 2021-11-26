@@ -20,6 +20,7 @@ public class Review {
 	@Id
 	private ObjectId id;
 	private ObjectId memberId;		//작성자
+	private String memberNick;		//작성자 닉네임
 	private String resName;			//식당명
 	private String addr;			//주소
 	private String thumUrl;			//썸네일URL

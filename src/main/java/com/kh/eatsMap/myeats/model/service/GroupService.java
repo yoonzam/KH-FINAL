@@ -4,11 +4,13 @@ package com.kh.eatsMap.myeats.model.service;
 import java.util.List;
 
 import org.bson.types.ObjectId;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.kh.eatsMap.member.model.dto.Member;
 import com.kh.eatsMap.myeats.model.dto.FindCriteria;
 import com.kh.eatsMap.myeats.model.dto.Group;
 import com.kh.eatsMap.myeats.model.dto.PageObject;
+import com.kh.eatsMap.timeline.model.dto.Review;
 
 public interface GroupService {
 
@@ -28,8 +30,10 @@ public interface GroupService {
 	//groupIdx제외 예정
 	public List<Group> read(ObjectId id);
 
-	
-	public void write(Group group);
+	//파일 없을때 write
+	//public void write(Group group);
+	//파일 업로드 및 write
+	void write(Group group, List<MultipartFile> photos, Member member);
 	
 	public void remove(String id);
 	
