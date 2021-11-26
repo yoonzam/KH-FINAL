@@ -253,5 +253,12 @@ public class MemberRepositoryTest {
     	reviewRepository.findAll().forEach(e -> logger.debug(e.toString()));
     }
 
+    @Test
+    public void test() {
+    	reviewRepository.findAll().forEach(e -> {
+    		logger.debug(e.getId().toString());
+    	});
+    	
+    }
     
 }

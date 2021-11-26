@@ -24,6 +24,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.kh.eatsMap.common.code.ErrorCode;
 import com.kh.eatsMap.common.exception.HandlableException;
+import com.kh.eatsMap.common.fcm.MainActivity;
 import com.kh.eatsMap.common.validator.ValidatorResult;
 import com.kh.eatsMap.member.model.dto.Member;
 import com.kh.eatsMap.member.model.service.MemberService;
@@ -256,19 +257,6 @@ public class MemberController {
 	
 	//파이어베이스
 	@GetMapping("push-test")
-	public String pushTest() {
-		
-		String path = "C:/FINAL/eatsMap/src/main/webapp/servic-account-file.json";
-		/*
-		 * String MESSAGING_SCOPE = "https"
-		 */
-		
-		
-		return "/push-test";
-	}
-	@GetMapping("sw.js")
-	public String serviceWorker() {
-		return "/sw.js";
-	}
+	public void pushTest() {}
 
 }
