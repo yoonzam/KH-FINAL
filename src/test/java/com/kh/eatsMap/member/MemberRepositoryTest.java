@@ -31,6 +31,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.context.WebApplicationContext;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.kh.eatsMap.index.model.repository.ReviewRepository;
 import com.kh.eatsMap.member.model.dto.Member;
 import com.kh.eatsMap.member.model.repository.MemberRepository;
 import com.kh.eatsMap.timeline.model.dto.Review;
@@ -43,6 +44,9 @@ public class MemberRepositoryTest {
 	
     @Autowired 
     private MemberRepository repository;
+    
+    @Autowired
+    private ReviewRepository reviewRepository;
     
     @Autowired
     private MongoTemplate mongoTemplate;
@@ -65,12 +69,19 @@ public class MemberRepositoryTest {
     	member.setNickname("jkl");
     	member.setPassword("1234");
     	member.setIsLeave(0);
-    	member.setRegDate(LocalDate.now());
+    	member.setRegDate();
     	repository.save(member);
     	
     	//mongoTemplate.save(member);
     }
     
+    @Test
+    public void regDateTest() {
+    	Member member = new Member();
+    	member.setRegDate();
+    	
+    	logger.debug("regDate구하기 : " + member.getRegDate());
+    }
     
     @Test
     public void findAllMembers() {
@@ -196,7 +207,7 @@ public class MemberRepositoryTest {
     	member.setNickname("kim");
     	member.setPassword("1234");
     	member.setIsLeave(0);
-    	member.setRegDate(LocalDate.now());
+    	member.setRegDate();
     	
     	repository.delete(member);
     }
@@ -237,6 +248,10 @@ public class MemberRepositoryTest {
     	logger.debug(repository.findByEmailAndIsLeave("qleen513@gmail.com", 1).toString());
     }
     
+    @Test
+    public void findReview() {
+    	reviewRepository.findAll().forEach(e -> logger.debug(e.toString()));
+    }
 
     
 }

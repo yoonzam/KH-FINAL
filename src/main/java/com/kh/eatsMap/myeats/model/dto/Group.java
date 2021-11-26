@@ -25,6 +25,8 @@ public class Group {
 	private String[] memberNickName;//임시추가: 아마도 Member담는 배열로 바꿀듯
 	
 	private Group[] groupMembers;
+	
+	private String thumUrl;			//썸네일URL(추가됨, erd추가예정)
 
 	
 }

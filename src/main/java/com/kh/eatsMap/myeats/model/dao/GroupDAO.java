@@ -33,32 +33,8 @@ public class GroupDAO {
 	 @Autowired
 	 private static Member member;
 	 
-	 	//검색기능 
-		//테스트
-		public List<Member> listMember(PageObject pageObject) {
-			System.out.println("GroupDAO.listMember()");
-			List<Member> list = null;
-			String tagName = "잇츠";
-			
-			Query query = new Query();
-			query = query.with(Sort.by(Sort.Direction.DESC,"id"));
-			query.skip((pageObject.getPage()-1) * pageObject.getPerPageNum());
-			query.limit((int)pageObject.getPerPageNum());
-			query.addCriteria(Criteria.where("nickname").regex(tagName));
-			
-			list = mongoTemplate.find(query,com.kh.eatsMap.member.model.dto.Member.class,"member");
-			
-			//System.out.println("GroupDAO.list().list : " + list);
-			return list;
-		}
-		//테스트
-		public Integer getTotalCountMember() {
-			System.out.println("GroupDAO.getTotalCountMember()");
-			return (int)mongoTemplate.count(new Query(), "member"); 
-		}
 		
 		//검색기능
-		//실사용
 		public List<Member> listFind(FindCriteria findCri) throws Exception{
 			System.out.println("GroupDAO.listFind()");
 			List<Member> list = null;
@@ -77,17 +53,24 @@ public class GroupDAO {
 			return list;
 		}
 		//검색기능
-		//실사용
 		public int findCountData(FindCriteria findCri) throws Exception{
 			System.out.println("GroupDAO.findCountData()");
 			return (int)mongoTemplate.count(new Query(), "member"); 
 		}
 		
+		//닉네임 리스트 멤버
+		public List<Member> listMemberFindByNickName(String nickname) throws Exception{
+			System.out.println("GroupDAO.listMemberFindByNickName()");
+			List<Member> list = null;
+			
+			Query query = new Query();
+			query = query.addCriteria(Criteria.where("nickname").is(nickname));
+			
+			list = mongoTemplate.find(query,com.kh.eatsMap.member.model.dto.Member.class,"member");
+			
+			return list;
+		}
 		
-		
-		
-		
-	 
 	 
 	
 	//페이징 및 조회/group.jsp
@@ -123,10 +106,6 @@ public class GroupDAO {
 		return (int)mongoTemplate.count(new Query(), "group"); 
 	}
 	
-	//멤버 조회
-//	public List<Member> findByNickName(String nickname) {
-//		
-//	}
 	
 	
 	//수정하기에 쓰인 update(미완)

@@ -1,6 +1,9 @@
 package com.kh.eatsMap.member.model.dto;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZoneId;
 
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
@@ -23,7 +26,7 @@ public class Member {
 	private String nickname;
 	private String password;
 	private String email;
-	private LocalDate regDate;
+	private LocalDateTime regDate;
 	private int isLeave;
 	private String profile;
 	@GeoSpatialIndexed(type = GeoSpatialIndexType.GEO_2DSPHERE)
@@ -38,5 +41,8 @@ public class Member {
 		}	
 	}
 
-	
+	public void setRegDate() {
+		this.regDate = LocalDateTime.of(LocalDate.now(),LocalTime.now(ZoneId.of("Asia/Seoul"))).plusHours(9);	//mongoDB 특성상 불가피
+	}
+
 }

@@ -1,6 +1,7 @@
 package com.kh.eatsMap.myeats.model.service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -21,6 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.kh.eatsMap.common.code.Config;
 import com.kh.eatsMap.common.mail.MailSender;
 import com.kh.eatsMap.common.util.FileUtil;
+import com.kh.eatsMap.common.util.Fileinfo;
 import com.kh.eatsMap.member.model.dto.Member;
 import com.kh.eatsMap.member.model.repository.MemberRepository;
 import com.kh.eatsMap.member.validator.EmailForm;
@@ -30,6 +32,8 @@ import com.kh.eatsMap.myeats.model.dto.FindCriteria;
 import com.kh.eatsMap.myeats.model.dto.Group;
 import com.kh.eatsMap.myeats.model.dto.PageObject;
 import com.kh.eatsMap.myeats.model.repository.GroupRepository;
+import com.kh.eatsMap.timeline.model.repository.FileRepository;
+import com.kh.eatsMap.timeline.model.repository.TimelineRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -41,6 +45,9 @@ public class GroupServiceImpl implements GroupService{
 	private final MailSender mailSender;
 	private final GroupRepository groupRepository;
 	
+	private final TimelineRepository timelineRepository;
+	private final FileRepository fileRepository;
+	
 	 @Autowired
 	 private MongoTemplate mongoTemplate;
 	
@@ -49,16 +56,8 @@ public class GroupServiceImpl implements GroupService{
 	
 	Logger logger = LoggerFactory.getLogger(this.getClass());
 	
-	//검색기능 
-	//테스트
-	@Override
-	public List<Member> listMember(PageObject pageObject) throws Exception{
-		pageObject.setTotalRow(dao.getTotalCountMember());
-		return dao.listMember(pageObject);
-	}
 	
 	//검색기능
-	//실사용
 		@Override
 		public List<Member> listMemberFind(FindCriteria findCri) throws Exception{
 			return dao.listFind(findCri);
@@ -68,6 +67,14 @@ public class GroupServiceImpl implements GroupService{
 		public int findMemberCountData(FindCriteria findCri) throws Exception{
 			return dao.findCountData(findCri);
 		}
+		
+		
+	//닉네임으로 멤버 리스트 부르기
+		@Override
+		public List<Member> listMemberFindByNickName(String nickname) throws Exception{
+			return dao.listMemberFindByNickName(nickname);
+		}
+		
 		
 	
 	//페이징 및 조회/group.jsp
@@ -85,19 +92,28 @@ public class GroupServiceImpl implements GroupService{
 		return groupRepository.findById(id);
 	}
 	
-	//NickName으로 Member조회
-//	public List<Member> memberlistByNickName(String nickname){
-//		
-//		return
-//	};
 	
 	
-	//groupIdx제외 예정
+	//파일 업로드 및 write
 	@Override
-	public void write(Group group) {
-		//String StringgroupIdx = Integer.toString((int)groupRepository.count()+1);
-		//group.setGroupIdx(StringgroupIdx);//1부터시작에서 1씩 증가하도록
+	public void write(Group group, List<MultipartFile> photos, Member member) {
+		
+		group.setMemberId(member.getId());
 		groupRepository.save(group);
+		
+		FileUtil fileUtil = new FileUtil();
+		for (MultipartFile photo : photos) {
+			if(!photo.isEmpty()) {
+				Fileinfo fileInfo = fileUtil.fileUpload(photo);
+				fileInfo.setTypeId(group.getId());
+				fileRepository.save(fileInfo);
+			}
+		}
+	}
+	//파일 업로드
+	@Override
+	public List<Fileinfo> findFiles(ObjectId id) {
+		return fileRepository.findByTypeId(id);
 	}
 
 	

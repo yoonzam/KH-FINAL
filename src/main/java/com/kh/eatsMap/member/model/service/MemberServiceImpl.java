@@ -81,9 +81,10 @@ public class MemberServiceImpl implements MemberService{
 		Member member = new Member();	//mongoDB ValidatorForm <-> 객체매핑 X
 		member.setEmail(form.getEmail());
 		member.setPassword(passwordEncoder.encode(form.getPassword()));
-		member.setRegDate(LocalDate.now());
+		member.setRegDate();
 		member.setNickname(form.getNickname());
 		member.setIsLeave(0);
+		logger.debug(member.toString());
 		memberRepository.save(member);
 	}
 

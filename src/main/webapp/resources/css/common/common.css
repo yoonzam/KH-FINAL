@@ -77,9 +77,10 @@ footer{color:#aaa; font-size:0.8em; padding:30px; text-align:center;}
 	position: relative;
 	overflow: hidden;
 }
-.layer-popup .content.view .slide-img li{
-	align-items: center;
-	position: absolute;
+.layer-popup .content.view .slide-img{
+	width:300%;
+	display:flex;
+	transition-duration:0.5s;
 }
 .layer-popup .content.view .slide-img img{
 	width:100%;
@@ -99,6 +100,7 @@ footer{color:#aaa; font-size:0.8em; padding:30px; text-align:center;}
 	background-color:rgba(255, 255, 255, 0.5);
 	display:inline-block;
 	border-radius: 5px;
+	margin:0 5px;
 }
 .layer-popup .content.view .dot-btn .dot.selected{
 	background-color:rgba(255, 255, 255, 1);
@@ -116,6 +118,9 @@ footer{color:#aaa; font-size:0.8em; padding:30px; text-align:center;}
 	cursor:pointer;
 	opacity: 0.5;
 	transition-duration: 0.5s;
+}
+.layer-popup .content.view .slide-btn i.fa-arrow-circle-left{
+	display:none;
 }
 .layer-popup .content.view .slide-btn i.fa-arrow-circle-right{
 	float: right;
@@ -189,16 +194,10 @@ footer{color:#aaa; font-size:0.8em; padding:30px; text-align:center;}
 	width:60px;
 	font-weight: 700;
 }
-.layer-popup .content.view .info-wrap .score i{
-	color:#aaa;
-}
-.layer-popup .content.view .info-wrap .score i.fas{
-	color:#f15050;
-}
-.layer-popup .content.view .info-wrap .review{
-	line-height: 1.5;
-	
-}
+.layer-popup .content.view .info-wrap .score i{color:#aaa;}
+.layer-popup .content.view .info-wrap .score i.fas{color:#f15050;}
+.layer-popup .content.view .info-wrap .review{line-height: 1.5;}
+.layer-popup .content.view .info-wrap .review p{white-space: pre-line;}
 .layer-popup .content.view .info-wrap .review .tag span{
 	display: inline-block;
 	font-size:14px;

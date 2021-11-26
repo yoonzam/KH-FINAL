@@ -17,6 +17,7 @@
 
 <!-- firebase v8 -->
 <script defer src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script defer src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
 <script defer src="https://www.gstatic.com/firebasejs/8.10.0/firebase-analytics.js"></script>
 <script defer src="https://www.gstatic.com/firebasejs/8.10.0/firebase-messaging.js"></script>
 
@@ -312,34 +313,17 @@
 
 
 <%@ include file="/WEB-INF/views/include/footer.jsp"%>
+  <script type="module">
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.5.0/firebase-app.js'
+
+    // If you enabled Analytics in your project, add the Firebase SDK for Google Analytics
+    import { analytics } from 'https://www.gstatic.com/firebasejs/9.5.0/firebase-analytics.js'
+
+    // Add Firebase products that you want to use
+    import { auth } from 'https://www.gstatic.com/firebasejs/9.5.0/firebase-auth.js'
+    import { firestore } from 'https://www.gstatic.com/firebasejs/9.5.0/firebase-firestore.js'
+  </script>
 <script type="text/javascript" src="/resources/js/member/main.js"></script>
-
-
-<script type="module">
-
-  //Firebase 초기화
-
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.5.0/firebase-app.js";
-  import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.5.0/firebase-analytics.js";  
-  import { } from "https://www.gstatic.com/firebasejs/9.5.0/firebase-messaging.js";
-
-  // TODO: Add SDKs for Firebase products that you want to use
-  // https://firebase.google.com/docs/web/setup#available-libraries
-
-  // Your web app's Firebase configuration
-  const firebaseConfig = {
-    apiKey: "AIzaSyCNuQD68Jw_abElCM3B0XK-n4fNY-H7oJ0",
-    authDomain: "final-332911.firebaseapp.com",
-    projectId: "final-332911",
-    storageBucket: "final-332911.appspot.com",
-    messagingSenderId: "197983811902",
-    appId: "1:197983811902:web:0bc80429719a225823d46f",
-    measurementId: "G-MGDN4W8XFL"
-  };
-
-  // Initialize Firebase
-  const app = initializeApp(firebaseConfig);
-  const analytics = getAnalytics(app);
-</script>
+<script type="text/javascript" src="/resources/firebase-messaging-sw.js"></script>
 </body>
 </html>

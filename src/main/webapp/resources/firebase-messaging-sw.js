@@ -41,23 +41,17 @@ messaging.onBackgroundMessage(function(payload) {
 
 
 
-
-
-
-
-
-
-
-
 /* 토큰 액세스 */
 
 // Get registration token. Initially this makes a network call, once retrieved
 // subsequent calls to getToken will return from cache.
 //const messaging = getMessaging();
-/*
-getToken(messaging, { vapidKey: 'BDaUhaUUutwgMI44dAQhkANJgRcgHHWWlEI05fvaQswJf5RmJrupDaTIiSGM1h9xxeaZcR13_lzGKZpTi07ahCs' }
+
+messaging.getToken(messaging, { vapidKey: 'BDaUhaUUutwgMI44dAQhkANJgRcgHHWWlEI05fvaQswJf5RmJrupDaTIiSGM1h9xxeaZcR13_lzGKZpTi07ahCs' }
 ).then((currentToken) => {
   if (currentToken) {
+	console.log('유진토큰 : ' + currentToken);
+	
     // Send the token to your server and update the UI if necessary
     // ...
   } else {
@@ -70,4 +64,3 @@ getToken(messaging, { vapidKey: 'BDaUhaUUutwgMI44dAQhkANJgRcgHHWWlEI05fvaQswJf5R
   // ...
 });
 
-*/

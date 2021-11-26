@@ -17,101 +17,31 @@
 				<li><a href="group">그룹관리</a></li>
 				<li><a href="post">작성글관리</a></li>
 				<li class="selected">맛찜리스트</li>
-				<li>회원정보 수정</li>
+				<li><a href="/member/modifyForm">회원정보 수정</a></li>
 			</ul>
 			<div class="section">
 				<div class="detail-wrap">
 					<h2><i class="fas fa-utensils color-m"></i> 내가 <span class="color-m">찜한 </span> 맛집!</h2>
-					<ul class="detail-brd">
+					<c:forEach items="${allReviews}" var="allReviews" varStatus="status"  begin="0"  >
+						<c:if test="${status.first}"><ul class="detail-brd"></c:if>
+						<c:choose>
+						<c:when test="true">
 						<li>
 							<div class="eats-list">
 								<div class="thum thum2">
 									<img src="/resources/img/upload/01.jpg">
 									<div class="info2">
-										<div class="eats-location">나의 스시 아루히 <i onclick="clickLike();" class="eats-like far fa-heart"></i></div>
+										<div class="eats-location">${allReviews.resName}<i onclick="clickLike();" class="eats-like far fa-heart"></i></div>
 										<div class="eats-score"><i class="fas fa-star"></i>5.0</div>
 									</div>
 								</div>
 							</div>
 						</li>
-						<li>
-							<div class="eats-list">
-								<div class="thum thum2">
-									<img src="/resources/img/upload/02.jpg">
-									<div class="info2">
-										<div class="eats-location">나의 스시 아루히 <i onclick="clickLike();" class="eats-like far fa-heart"></i></div>
-										<div class="eats-score"><i class="fas fa-star"></i>5.0</div>
-									</div>
-								</div>
-							</div>
-						</li>
-						<li>
-							<div class="eats-list">
-								<div class="thum thum2">
-									<img src="/resources/img/upload/03.jpg">
-									<div class="info2">
-										<div class="eats-location">나의 스시 아루히 <i onclick="clickLike();" class="eats-like far fa-heart"></i></div>
-										<div class="eats-score"><i class="fas fa-star"></i>5.0</div>
-									</div>
-								</div>
-							</div>
-						</li>
-						<li>
-							<div class="eats-list">
-								<div class="thum thum2">
-									<img src="/resources/img/upload/04.jpg">
-									<div class="info2">
-										<div class="eats-location">나의 스시 아루히 <i onclick="clickLike();" class="eats-like far fa-heart"></i></div>
-										<div class="eats-score"><i class="fas fa-star"></i>5.0</div>
-									</div>
-								</div>
-							</div>
-						</li>
-						<li>
-							<div class="eats-list">
-								<div class="thum thum2">
-									<img src="/resources/img/upload/01.jpg">
-									<div class="info2">
-										<div class="eats-location">나의 스시 아루히 <i onclick="clickLike();" class="eats-like far fa-heart"></i></div>
-										<div class="eats-score"><i class="fas fa-star"></i>5.0</div>
-									</div>
-								</div>
-							</div>
-						</li>
-						<li>
-							<div class="eats-list">
-								<div class="thum thum2">
-									<img src="/resources/img/upload/02.jpg">
-									<div class="info2">
-										<div class="eats-location">나의 스시 아루히 <i onclick="clickLike();" class="eats-like far fa-heart"></i></div>
-										<div class="eats-score"><i class="fas fa-star"></i>5.0</div>
-									</div>
-								</div>
-							</div>
-						</li>
-						<li>
-							<div class="eats-list">
-								<div class="thum thum2">
-									<img src="/resources/img/upload/03.jpg">
-									<div class="info2">
-										<div class="eats-location">나의 스시 아루히 <i onclick="clickLike();" class="eats-like far fa-heart"></i></div>
-										<div class="eats-score"><i class="fas fa-star"></i>5.0</div>
-									</div>
-								</div>
-							</div>
-						</li>
-						<li>
-							<div class="eats-list">
-								<div class="thum thum2">
-									<img src="/resources/img/upload/04.jpg">
-									<div class="info2">
-										<div class="eats-location">나의 스시 아루히 <i onclick="clickLike();" class="eats-like far fa-heart"></i></div>
-										<div class="eats-score"><i class="fas fa-star"></i>5.0</div>
-									</div>
-								</div>
-							</div>
-						</li>
-					</ul>
+						
+						</c:when>
+						</c:choose> 
+						<c:if test="${status.last}"></ul></c:if>
+						</c:forEach>
 				</div><!-- detail-wrap -->
 			</div><!-- section -->
 		</div><!-- container -->

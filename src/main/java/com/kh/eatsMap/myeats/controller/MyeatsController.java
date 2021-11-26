@@ -2,28 +2,44 @@ package com.kh.eatsMap.myeats.controller;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
 
 import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.kh.eatsMap.common.util.Fileinfo;
 import com.kh.eatsMap.member.model.dto.Member;
 import com.kh.eatsMap.member.model.service.MemberService;
 import com.kh.eatsMap.myeats.model.dto.FindCriteria;
 import com.kh.eatsMap.myeats.model.dto.Group;
 import com.kh.eatsMap.myeats.model.dto.PageObject;
 import com.kh.eatsMap.myeats.model.service.GroupService;
+import com.kh.eatsMap.timeline.model.dto.Review;
+import com.kh.eatsMap.timeline.model.service.TimelineService;
+
 
 @Controller
 @RequestMapping("/myeats/*")
@@ -37,11 +53,13 @@ public class MyeatsController {
 	@Inject
 	private MemberService memberService;
 	
+	@Inject
+	private TimelineService timelineService;
+	
 	
 	@RequestMapping(value="/invite", method=RequestMethod.GET)
 	public void list(@ModelAttribute("fCri") FindCriteria fCri, Model model) throws Exception{
 		logger.info(fCri.toString());
-//		model.addAttribute("list", groupService.listMember(fCri));
 		model.addAttribute("list", groupService.listMemberFind(fCri));
 		
 		
@@ -55,25 +73,44 @@ public class MyeatsController {
 		model.addAttribute("pageObject", pageObject);		
 	}
 	
-	
+	//test
 	@RequestMapping(value="/invite", method=RequestMethod.POST)
-	public String invitePost(@RequestParam("keyword") String keyword, Model model)throws Exception{ 
+	public String invitePost(HttpServletRequest request, Model model,RedirectAttributes rttr)throws Exception{ 
 		
+		String keyword = request.getParameter("keyword");
+		//http://localhost:7979/myeats/createGroup
+		 rttr.addFlashAttribute("keyword", keyword);
+		//http://localhost:7979/myeats/invite?page=1&numPerPage=10&findType=S&keyword=%EB%8C%95%EB%8C%95%EC%9D%B4
+		//http://localhost:7979/myeats/createGroup?keyword=알파카%2C알파카%2C알파카
 		
-		System.out.println(keyword);
-		
-		return "redirect:/myeats/createGroup";
+		return  "redirect:/myeats/createGroup";
 	}
 	
 	
 	
 	
+	
 	//페이징 및 조회/group.jsp
+//	@RequestMapping(value="/group", method=RequestMethod.GET)
+//	public void groupGet(Model model, PageObject pageObject) throws Exception{
+//		logger.info("groupGet.............");
+//		
+//		
+//		model.addAttribute("list", groupService.list(pageObject));
+//		model.addAttribute("pageObject", pageObject);
+//	}
+	
 	@RequestMapping(value="/group", method=RequestMethod.GET)
 	public void groupGet(Model model, PageObject pageObject) throws Exception{
 		logger.info("groupGet.............");
+		List<Group> groups = groupService.list(pageObject);
+		for (Group group : groups) {
+			List<Fileinfo> files = groupService.findFiles(group.getId());
+			if(files.size() > 0) group.setThumUrl(files.get(0).getDownloadURL());
+		}
+		model.addAttribute("groups", groups);
 		
-		model.addAttribute("list", groupService.list(pageObject));
+		//model.addAttribute("list", groupService.list(pageObject));
 		model.addAttribute("pageObject", pageObject);
 	}
 	
@@ -86,13 +123,15 @@ public class MyeatsController {
 		System.out.println(memberService.findMemberByNickname("geoTest1").toString());
 	}
 	
+
+	
 	//그룹생성 처리/createGroup.jsp
 	@RequestMapping(value="/createGroup", method = RequestMethod.POST)
-	public String writePost(Group group, RedirectAttributes reAttr, PageObject pageObject) throws Exception{
+	public String writePost(Group group, RedirectAttributes reAttr, PageObject pageObject,List<MultipartFile> photos, Member member) throws Exception{
 		logger.info("writePost....");
 		logger.info(group.toString());
 		
-		groupService.write(group);
+		groupService.write(group,photos,member);
 		reAttr.addFlashAttribute("list", groupService.list(pageObject));
 		reAttr.addFlashAttribute("result", "success");
 		
@@ -133,13 +172,24 @@ public class MyeatsController {
 	
 
 
-	@GetMapping("/post")
-	public String postView() {
-		return "myeats/post";
-	}
-	@GetMapping("/detail")
-	public String detailView() {
+		@RequestMapping(value="/post", method=RequestMethod.GET)
+		public String postList(Model model) {
+			logger.info("postGET()........");
+			model.addAttribute("allReviews",timelineService.findAllReviews()); 
+			return "myeats/post";
+		}
+		
+		@RequestMapping(value="/detail", method=RequestMethod.GET)	
+		public String detailList(Model model) {
+			logger.info("detaiGET()........");
+			model.addAttribute("allReviews",timelineService.findAllReviews()); 
 		return "myeats/detail";
 	}
+		
 	
+	
+
+
+
 }
+
