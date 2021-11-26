@@ -40,15 +40,15 @@
 					</li>
 					<li>
 						<span>초대하기</span>
-						<div class="friend-list">
+						<div class="friend-list"> 
 							<c:forEach items="${group}" var="group">
 							<!-- memberId는 배열값 > Group-->
 							<input type="text" placeholder="초대할 친구의 닉네임을 입력하세요."name="memberNickName[]"
-							 value="${group}">
+							 value="<%=request.getAttribute("keyword")%>">
 							
 							<a href="invite"><button type="button">초대</button></a>
-							<span><i class="fas fa-minus-square"></i><input type="hidden" name="memberNickName[]" value="<%request.getParameter("keyword");%>"><%request.getParameter("keyword");%></span>
-							<span><i class="fas fa-minus-square"></i><input type="hidden" name="memberNickName[]" value="${group}"> ${group}</span>
+							<span><a href="invite"><i class="fas fa-minus-square"></i></a><input type="hidden" name="memberNickName[]" value="<%=request.getAttribute("keyword")%>"><%=request.getAttribute("keyword")%></span>
+							<span><a href="invite"><i class="fas fa-minus-square"></i></a><input type="hidden" name="memberNickName[]" value="<%=request.getAttribute("keyword")%>"><%=request.getAttribute("keyword")%></span>
 							</c:forEach>
 						</div>
 					</li>

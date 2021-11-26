@@ -45,8 +45,8 @@
 				<div class="group-member">
 					<h4>함께하는 잇친 리스트</h4>
 					<ul>
-						<li><i class="fas fa-user"></i> 알파카<span>(alpaca@naver.com)</span> <a><i class="fas fa-times"></i>삭제</a></li>
-						<li><i class="fas fa-user"></i> 퇴근시간<span>(quitting-time@naver.com)</span> <a><i class="fas fa-times"></i>삭제</a></li>
+						<li><i class="fas fa-user"></i> ${groupService.memberNickName[0]}<span>(alpaca@naver.com)</span> <a><i class="fas fa-times"></i>삭제</a></li>
+						<li><i class="fas fa-user"></i> ${groupService.memberNickName[1]}<span>(quitting-time@naver.com)</span> <a><i class="fas fa-times"></i>삭제</a></li>
 					</ul>
 				</div>
 				<a href = "group"><button class="btn-list">그룹 목록으로 돌아가기</button></a>
