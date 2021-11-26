@@ -17,14 +17,13 @@ import org.springframework.data.geo.Metrics;
 import org.springframework.data.mongodb.core.geo.GeoJsonPoint;
 import org.springframework.stereotype.Service;
 
+import com.kh.eatsMap.common.util.Fileinfo;
 import com.kh.eatsMap.index.model.repository.FollowRepository;
+import com.kh.eatsMap.index.model.repository.IndexFileRepository;
 import com.kh.eatsMap.index.model.repository.IndexRepository;
 import com.kh.eatsMap.index.model.repository.ReviewRepository;
-import com.kh.eatsMap.map.model.dto.Map;
-import com.kh.eatsMap.map.model.repository.MapRepository;
 import com.kh.eatsMap.member.model.dto.Follow;
 import com.kh.eatsMap.member.model.dto.Member;
-
 import com.kh.eatsMap.timeline.model.dto.Review;
 
 import lombok.RequiredArgsConstructor;
@@ -39,107 +38,78 @@ public class IndexServiceImpl implements IndexService{
 	@Autowired
 	private final FollowRepository followRepository;
 	
-
 	@Autowired
 	private final ReviewRepository reviewRepository;
+	
+	@Autowired
+	private final IndexFileRepository fileRepository;
 	
 	Logger logger = LoggerFactory.getLogger(this.getClass());
 
 //
-//
-//	//member 테이블에 location 추가 
 //	@Override
-//	public void updateLocation(String memberId, GeoJsonPoint location) {
-//		Member member = indexRepository.findMemberById(memberId);
-//		member.setLocation(location);
-//	}
+//	public List<Review> findReviewByHashtag(Member member) {
 //
-//	
-//	
-//	
-//////////////////////////////////////////////////////////////////////////	
-//	
-////	--hashtag픽(잇친아님) 
-////	세션에서 현재 접속한 멤버의 id값 받아옴 
-////	멤버의 like컬럼값이 1인 리뷰중(=내가 찜한 리뷰중) 높은 빈도의 hashtag 2개 선별
-////	그 2개의 hashtag가 포함된 모든 리뷰 출력
-//	
-//	@Override
-//	public List<Review> findReviewByHashtag(String memberid) {
-////		멤버의 like컬럼값이 1인 리뷰중(=내가 찜한 리뷰중)
-//		List<Review> likedList = reviewRepository.findReviewByLike(memberid, 1);
+//		//내가 좋아요 한 리뷰 리스트 
+//		List<Review> likedList = reviewRepository.findReviewByLike(1);
 //
-////		높은 빈도의 hashtag 2개 선별		
-//
+//		//그 리스트 중 높은 빈도의 hashtag 2개 선별		
+//		reviewRepository.
+//		
+//		
+//		
 //		
 //		return null;
 //	}
-//
-//	
-//	
+
+
 	
 	
+	//멤버테이블에 로케이션값 저장 
+	@Override
+	public void updateLocation(Member member, GeoJsonPoint location) {
+		member.setLocation(location);
+		indexRepository.save(member);
+	}
+
+
 	
 	
 ////////////////////////////////////////////////////////////////////////////////////////////////	
-	
-	
-	
-	
-	
-//위치반경에 따른 잇친픽 리뷰리스트 출력 	
+//	
+//	
+//	//위치반경에 따른 잇친픽 리뷰리스트 출력 	
 //	@Override
-//	public List<Review> locationList(String memberid, GeoJsonPoint location) throws Exception {
+//	public List<Review> localReview(Member member) {
 //
-//		// 내가 팔로우한 사람의 follow테이블 고유키 
-//		List<Follow> followList = followRepository.findFollowByMemberId(memberid);
 //		
-//		// 내가 팔로우한 사람의 memberId (followingId) 리스트 : followingList
-//		List<String> followingIdList = new LinkedList<String>();
-//		
-//		String followingId;
-//		String reviewMemberId;
-//		
-//		for (Follow follow : followList) {
-//			followingId = follow.getFollowingId().toString();
-//			followingIdList.add(followingId);	//내가 팔로우한 사람의 memberId모음 
-//		}
-//		
-
-		
-		
-		
-
-		//내 위치 반경 5키로미터 내 식당리뷰
+//		//내 반경 5키로 미터 이내의 모든 식당 리뷰 조회
 //		List<Review> locationReviewList = 
-//				reviewRepository.findByLocationNear(location, new Distance(0.05, Metrics.KILOMETERS)); //에러발생 
+//				reviewRepository.findByLocationNear(member.getLocation(), new Distance(5, Metrics.KILOMETERS));
+//		
+//		// 내가 팔로우한 사람
+//		List<Follow> followList = followRepository.findFollowByMemberId(member.getId().toString());
+//		
+//		//교집합 합칠 리스트 
+//		List<Review> locationFollowReviewList = new ArrayList<Review>(); 
+//		
+//		for (int i = 0; i < locationReviewList.size(); i++) {
+//			for (int j = 0; j < followList.size(); j++) {
+//				String locationMemberId = locationReviewList.get(i).getMemberId().toString();
+//				String followMemberId = followList.get(j).getFollowingId().toString();
 //				
-//
-//		List<String> locationReviewIdList = new LinkedList<String>();
-//		
-//		for (Review review : locationReviewList) {
-//			reviewMemberId = review.getMemberId().toString();
-//			locationReviewIdList.add(reviewMemberId);	//내가 팔로우한 사람의 memberId모음 
-//		}
-//		
-//		List<Review> locationFollowingReviewList = new LinkedList<Review>();
-//		
-//		
-//		for (int i = 0; i < followingIdList.size(); i++) {
-//			for (int j = 0; j < locationReviewIdList.size() ; j++) {	
-//				followingId = followingIdList.get(i);
-//				reviewMemberId = locationReviewIdList.get(j);	////내가 follow하는 사람의 ObjectId List들
-//				
-//				if( followingId.equals(reviewMemberId) ) {//일치여부 확인후
-//					locationFollowingReviewList.add(i, Review);
-//				}
+//				if(locationMemberId.equals(followMemberId)) {
+//					locationFollowReviewList.add(locationReviewList.get(i));
 //			}
-//		}
-//
-//		return null;
+//		}	
+//	}
+//		
+//		
+//		return locationFollowReviewList;
 //	}
 //	
-	
+//	
+
 	
 	
 	
@@ -154,14 +124,14 @@ public class IndexServiceImpl implements IndexService{
 		}
 		
 		List<Review> searchCategory = new ArrayList<Review>();
-		if(category.length != 0) {
+		if(category.length > 0) {
 			for (int i = 0; i < category.length; i++) {
 				searchCategory = reviewRepository.findReviewByCategoryLike(category[i]);
 			}
 		}
 		
 		List<Review> searchHashtag= new ArrayList<Review>();
-		if(hashtag.length != 0) {
+		if(hashtag.length > 0) {
 			for (int i = 0; i < hashtag.length; i++) {
 				searchHashtag = reviewRepository.findReviewByHashtagLike(hashtag[i]);
 			}
@@ -181,12 +151,12 @@ public class IndexServiceImpl implements IndexService{
 	}
 
 
+	//파일 
+	@Override
+	public List<Fileinfo> findFiles(Object id) {
+		// TODO Auto-generated method stub
+		return fileRepository.findByTypeId(id);
+	}
 
-
-
-
-
-	
 
 }
-

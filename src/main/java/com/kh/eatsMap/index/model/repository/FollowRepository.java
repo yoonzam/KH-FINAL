@@ -8,8 +8,9 @@ import org.springframework.data.mongodb.repository.Query;
 import com.kh.eatsMap.member.model.dto.Follow;
 
 public interface FollowRepository extends MongoRepository<Follow, String> {
-
-	@Query("{ 'member_id' : ?0 }")						
-	List<Follow> findFollowByMemberId(String memberid) throws Exception;
 	
+	@Query("{ 'member_id' : ?0 }")		
+	List<Follow> findFollowByMemberId(String memberid);
+
+
 }

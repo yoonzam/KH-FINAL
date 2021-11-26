@@ -1,7 +1,10 @@
 package com.kh.eatsMap.index.controller;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,9 +16,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
+import com.kh.eatsMap.common.util.Fileinfo;
 import com.kh.eatsMap.index.model.service.IndexService;
 import com.kh.eatsMap.member.model.dto.Member;
 import com.kh.eatsMap.timeline.model.dto.Review;
+
 
 @Controller
 @RequestMapping("main")
@@ -35,58 +40,46 @@ public class IndexController {
 	@GetMapping("/")
 	public String index(
 			@SessionAttribute("authentication") Member member
-//			,String longitude_ ,String latitude_
-//			,Model model
+			,String longitude_ ,String latitude_
+			,Model model
 			) throws Exception {
-//
-//		
-//		String memberId = member.getId().toString();	
-//		
-//		if(longitude_ != null && latitude_ != null) {
-//			
-//			double longitude = Double.parseDouble(longitude_);
-//			double latitude = Double.parseDouble(latitude_);
-//			
-//			//GeoJsonPoint : (경도, 위도) 
-//			GeoJsonPoint location = new GeoJsonPoint(longitude, latitude);		
-//		
-//			//member 테이블에 location 추가 
-//			indexService.updateLocation(memberId, location);
-//		
+
+		
+		
+		if(longitude_ != null && latitude_ != null) {
+			
+			double longitude = Double.parseDouble(longitude_);
+			double latitude = Double.parseDouble(latitude_);
+			
+			//GeoJsonPoint : (경도, 위도) 
+			GeoJsonPoint location = new GeoJsonPoint(longitude, latitude);		
+		
+
+			//member 테이블에 location 추가 
+			indexService.updateLocation(member, location);
 //			logger.debug(member.getLocation().toString());
 //			
-////			
-////		if(member.getLocation() != null) {
-////
-////			//위치기반 잇친픽 출력 
-////			
-////			
-////			
-////		}
-//			
+//			if(member.getLocation() != null) {	
+//				
+//				//*위치기반 잇친픽 출력 
+//				List<Review> locationFollowReviewList = indexService.localReview(member);	
+//				model.addAttribute("locationFollowReviewList","locationFollowReviewList");
+//			}
+//
 //
 ////		hashtag픽(잇친아님) 
-////		세션에서 현재 접속한 멤버의 id값 받아옴 
 ////		멤버의 like컬럼값이 1인 리뷰중(=내가 찜한 리뷰중) 높은 빈도의 hashtag 2개 선별
 ////		그 2개의 hashtag가 포함된 모든 리뷰 출력
 //
-//
-//		List<Review> hashTagRecomendList = indexService.findReviewByHashtag(memberId);
-//
-////		model.addAttribute(hashTagList);
-//			
-/////////////////////////////////////////////////////////////////////////////////////////////////		
-//		
-//		//2. 위치기반 잇친픽 리뷰리스트 출력 
-//		
-//		
-//
-//			
-//
-//		}
+//		List<Review> hashTagRecomendList = indexService.findReviewByHashtag(member);
 //
 //		
+		
+		
+		
+//		model.addAttribute(hashTagList);
 
+		}
 		return "main/main";
 	}
 
@@ -109,7 +102,7 @@ public class IndexController {
 							String keyword_ 
 							,String[] category_ 
 							,String[] hashtag_ 
-//							,Model model
+							,Model model
 							) {
 		
 		String keyword = keyword_ == null ? "" : keyword_;
@@ -135,13 +128,23 @@ public class IndexController {
 		}
 
 		//검색 결과 요청
-		List<Review> searchReviewList = indexService.searchReview(keyword, category, hashtag);
+		List<Review> searchedReviewList = indexService.searchReview(keyword, category, hashtag);	//searchReviewList : 항목들로 서치된 리뷰데이터  
 
-		for (int i = 0; i < searchReviewList.size(); i++) {
-			logger.debug(searchReviewList.get(i).getResName());
-		}
+		if(searchedReviewList.size() > 0) {
+			for (Review review : searchedReviewList) {
+				List<Fileinfo> files = indexService.findFiles(review.getId());
+				review.setThumUrl(files.get(0).getDownloadURL());
+			}
 		
-//		model.addAttribute(searchReviewList);
+			for (int i = 0; i < searchedReviewList.size(); i++) {
+				logger.debug(searchedReviewList.get(i).getResName());
+				logger.debug(searchedReviewList.get(i).getThumUrl());
+			}
+
+
+			model.addAttribute("searchedReviewList", searchedReviewList);	
+
+		}
 
 		return "redirect:/main/search";
 	}

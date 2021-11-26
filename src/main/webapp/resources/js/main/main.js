@@ -1,5 +1,5 @@
 $(document).ready(()=>{
-/*	
+
 	    //내위치
     navigator.geolocation.getCurrentPosition(function(position) {
     let longitude = position.coords.longitude;	//경도
@@ -13,14 +13,14 @@ $(document).ready(()=>{
 
 	}, function (position){
 		alert("위치를 불러오지 못하였습니다.")} );
-	*/
+
 	
     resizeImg();
     resizeImg2();
     
 
 });
-/*
+
 
 function setLocation(obj){
 
@@ -33,7 +33,7 @@ function setLocation(obj){
 				alert("위치값 전송 성공");
 				close();
 		    },
-		error: alert("위치값 전송 실패")
+		error: console.log("위치값 전송 실패")
 		})    
 };
 	
@@ -43,7 +43,7 @@ $(window).resize(() => {
     resizeImg2();
 });
 
-*/
+
 
 $('.eats-list').hover((e) => {
     e.currentTarget.children[0].children[0].style.transform='scale(1.1)';
