@@ -51,96 +51,28 @@
             <div class="section">
 				<div class="detail-wrap">
 					<h2><i class="fas fa-utensils color-m"></i> 게시글 <span class="color-m">관리하기 </span> </h2>
-					<ul class="detail-brd">
+					
+						<c:forEach items="${allReviews}" var="allReviews" varStatus="status"  begin="0"  >
+						<c:if test="${status.first}"><ul class="detail-brd"></c:if>
+						<c:choose>
+						<c:when test="true">
 						<li>
 							<div class="eats-list">
 								<div class="thum thum2">
 									<img src="/resources/img/upload/01.jpg">
 									<div class="info2">
-										<div class="eats-location">나의 스시 아루히 <i onclick="clickLike();" class="eats-like far fa-heart"></i></div>
+										<div class="eats-location">${allReviews.resName}<i onclick="clickLike();" class="eats-like far fa-heart"></i></div>
 										<div class="eats-score"><i class="fas fa-star"></i>5.0</div>
 									</div>
 								</div>
 							</div>
 						</li>
-						<li>
-							<div class="eats-list">
-								<div class="thum thum2">
-									<img src="/resources/img/upload/02.jpg">
-									<div class="info2">
-										<div class="eats-location">나의 스시 아루히 <i onclick="clickLike();" class="eats-like far fa-heart"></i></div>
-										<div class="eats-score"><i class="fas fa-star"></i>5.0</div>
-									</div>
-								</div>
-							</div>
-						</li>
-						<li>
-							<div class="eats-list">
-								<div class="thum thum2">
-									<img src="/resources/img/upload/03.jpg">
-									<div class="info2">
-										<div class="eats-location">나의 스시 아루히 <i onclick="clickLike();" class="eats-like far fa-heart"></i></div>
-										<div class="eats-score"><i class="fas fa-star"></i>5.0</div>
-									</div>
-								</div>
-							</div>
-						</li>
-						<li>
-							<div class="eats-list">
-								<div class="thum thum2">
-									<img src="/resources/img/upload/04.jpg">
-									<div class="info2">
-										<div class="eats-location">나의 스시 아루히 <i onclick="clickLike();" class="eats-like far fa-heart"></i></div>
-										<div class="eats-score"><i class="fas fa-star"></i>5.0</div>
-									</div>
-								</div>
-							</div>
-						</li>
-						<li>
-							<div class="eats-list">
-								<div class="thum thum2">
-									<img src="/resources/img/upload/01.jpg">
-									<div class="info2">
-										<div class="eats-location">나의 스시 아루히 <i onclick="clickLike();" class="eats-like far fa-heart"></i></div>
-										<div class="eats-score"><i class="fas fa-star"></i>5.0</div>
-									</div>
-								</div>
-							</div>
-						</li>
-						<li>
-							<div class="eats-list">
-								<div class="thum thum2">
-									<img src="/resources/img/upload/02.jpg">
-									<div class="info2">
-										<div class="eats-location">나의 스시 아루히 <i onclick="clickLike();" class="eats-like far fa-heart"></i></div>
-										<div class="eats-score"><i class="fas fa-star"></i>5.0</div>
-									</div>
-								</div>
-							</div>
-						</li>
-						<li>
-							<div class="eats-list">
-								<div class="thum thum2">
-									<img src="/resources/img/upload/03.jpg">
-									<div class="info2">
-										<div class="eats-location">나의 스시 아루히 <i onclick="clickLike();" class="eats-like far fa-heart"></i></div>
-										<div class="eats-score"><i class="fas fa-star"></i>5.0</div>
-									</div>
-								</div>
-							</div>
-						</li>
-						<li>
-							<div class="eats-list">
-								<div class="thum thum2">
-									<img src="/resources/img/upload/04.jpg">
-									<div class="info2">
-										<div class="eats-location">나의 스시 아루히 <i onclick="clickLike();" class="eats-like far fa-heart"></i></div>
-										<div class="eats-score"><i class="fas fa-star"></i>5.0</div>
-									</div>
-								</div>
-							</div>
-						</li>
-					</ul>
+						
+						</c:when>
+						</c:choose> 
+						<c:if test="${status.last}"></ul></c:if>
+						</c:forEach>
+				
 				</div><!-- detail-wrap -->
 		</div><!-- section -->
 		
