@@ -110,6 +110,11 @@ public class GroupServiceImpl implements GroupService{
 			}
 		}
 	}
+	//파일 업로드
+	@Override
+	public List<Fileinfo> findFiles(ObjectId id) {
+		return fileRepository.findByTypeId(id);
+	}
 
 	
 

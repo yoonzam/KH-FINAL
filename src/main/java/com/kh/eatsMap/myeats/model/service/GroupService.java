@@ -6,6 +6,7 @@ import java.util.List;
 import org.bson.types.ObjectId;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.kh.eatsMap.common.util.Fileinfo;
 import com.kh.eatsMap.member.model.dto.Member;
 import com.kh.eatsMap.myeats.model.dto.FindCriteria;
 import com.kh.eatsMap.myeats.model.dto.Group;
@@ -34,10 +35,14 @@ public interface GroupService {
 	//public void write(Group group);
 	//파일 업로드 및 write
 	void write(Group group, List<MultipartFile> photos, Member member);
+	//파일 업로드
+	List<Fileinfo> findFiles(ObjectId id);
 	
 	public void remove(String id);
 	
 	public void modify(Group group) throws Exception;
+	
+	
 	
 	
 }
