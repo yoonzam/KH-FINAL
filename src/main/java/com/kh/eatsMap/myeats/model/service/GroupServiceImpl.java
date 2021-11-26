@@ -49,16 +49,8 @@ public class GroupServiceImpl implements GroupService{
 	
 	Logger logger = LoggerFactory.getLogger(this.getClass());
 	
-	//검색기능 
-	//테스트
-	@Override
-	public List<Member> listMember(PageObject pageObject) throws Exception{
-		pageObject.setTotalRow(dao.getTotalCountMember());
-		return dao.listMember(pageObject);
-	}
 	
 	//검색기능
-	//실사용
 		@Override
 		public List<Member> listMemberFind(FindCriteria findCri) throws Exception{
 			return dao.listFind(findCri);
@@ -68,6 +60,14 @@ public class GroupServiceImpl implements GroupService{
 		public int findMemberCountData(FindCriteria findCri) throws Exception{
 			return dao.findCountData(findCri);
 		}
+		
+		
+	//닉네임으로 멤버 리스트 부르기
+		@Override
+		public List<Member> listMemberFindByNickName(String nickname) throws Exception{
+			return dao.listMemberFindByNickName(nickname);
+		}
+		
 		
 	
 	//페이징 및 조회/group.jsp
@@ -85,11 +85,6 @@ public class GroupServiceImpl implements GroupService{
 		return groupRepository.findById(id);
 	}
 	
-	//NickName으로 Member조회
-//	public List<Member> memberlistByNickName(String nickname){
-//		
-//		return
-//	};
 	
 	
 	//groupIdx제외 예정

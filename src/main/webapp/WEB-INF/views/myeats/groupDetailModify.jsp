@@ -30,7 +30,7 @@
 					</div>
 					<div class="group-menu">
 						<%-- <input type="hidden" name="groupIdx" value="${groupService.groupIdx}" /> --%>
-						<div class="group-title"><i class="fas fa-bell"></i> ${groupService.groupName}
+						<div class="group-title"><i class="fas fa-bell"></i>
 						<input type="text" class="form-control" name="groupName"
 								placeholder="${groupService.groupName}"	value="${groupService.groupName}"
 								maxlength="8" required >
