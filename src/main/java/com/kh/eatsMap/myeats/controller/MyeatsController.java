@@ -105,8 +105,8 @@ public class MyeatsController {
 		logger.info("groupGet.............");
 		List<Group> groups = groupService.list(pageObject);
 		for (Group group : groups) {
-			//List<Fileinfo> files = timelineService.findFiles(group.getId());
-			//if(files.size() > 0) group.setThumUrl(files.get(0).getDownloadURL());
+			List<Fileinfo> files = groupService.findFiles(group.getId());
+			if(files.size() > 0) group.setThumUrl(files.get(0).getDownloadURL());
 		}
 		model.addAttribute("groups", groups);
 		
