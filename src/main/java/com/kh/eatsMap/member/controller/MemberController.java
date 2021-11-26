@@ -1,5 +1,6 @@
 package com.kh.eatsMap.member.controller;
 
+import java.util.Map;
 import java.util.UUID;
 
 import javax.servlet.http.HttpSession;
@@ -19,14 +20,16 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.kh.eatsMap.common.code.ErrorCode;
 import com.kh.eatsMap.common.exception.HandlableException;
-import com.kh.eatsMap.common.fcm.MainActivity;
 import com.kh.eatsMap.common.validator.ValidatorResult;
 import com.kh.eatsMap.member.model.dto.Member;
+import com.kh.eatsMap.member.model.dto.Notice;
+import com.kh.eatsMap.member.model.repository.NoticeRepository;
 import com.kh.eatsMap.member.model.service.MemberService;
 import com.kh.eatsMap.member.validator.EmailForm;
 import com.kh.eatsMap.member.validator.EmailFormValidator;
@@ -35,27 +38,19 @@ import com.kh.eatsMap.member.validator.JoinFormValidator;
 import com.kh.eatsMap.member.validator.ModifyForm;
 import com.kh.eatsMap.member.validator.ModifyFormValidator;
 
+import lombok.RequiredArgsConstructor;
+
 @Controller
+@RequiredArgsConstructor
 @RequestMapping("member")
 public class MemberController {
 	
 	Logger logger = LoggerFactory.getLogger(this.getClass());
 	
-	private MemberService memberService;
-	private JoinFormValidator joinFormValidator;
-	private EmailFormValidator emailFormValidator;
-	private ModifyFormValidator modifyFormValidator;
-	
-	public MemberController(MemberService memberService, JoinFormValidator joinFormValidator,
-			EmailFormValidator emailFormValidator, ModifyFormValidator modifyFormValidator) {
-		super();
-		this.memberService = memberService;
-		this.joinFormValidator = joinFormValidator;
-		this.emailFormValidator = emailFormValidator;
-		this.modifyFormValidator = modifyFormValidator;
-	}
-	
-	
+	private final MemberService memberService;
+	private final JoinFormValidator joinFormValidator;
+	private final EmailFormValidator emailFormValidator;
+	private final ModifyFormValidator modifyFormValidator;
 	
 
 	//요청파라미터 값들을 바인드해줌
@@ -79,7 +74,10 @@ public class MemberController {
 	@PostMapping("login")
 	public String loginImpl(Member member, HttpSession session
 							,RedirectAttributes redirectAttr) {
-		Member certifiedUser = memberService.authenticateUser(member);
+		
+		Map<String, Object> memberAndNotice = memberService.authenticateUser(member);
+		Notice notice = (Notice) memberAndNotice.get("notice");
+		Member certifiedUser = (Member) memberAndNotice.get("member");
 		
 		if(certifiedUser == null) {
 			redirectAttr.addFlashAttribute("message", "아이디나 비밀번호가 틀렸습니다.");
@@ -87,6 +85,12 @@ public class MemberController {
 		}
 		
 		session.setAttribute("authentication", certifiedUser);
+		session.setAttribute("notice", notice );
+		session.setAttribute("noticeCnt", memberAndNotice.get("noticeCnt"));
+		
+		logger.debug(notice.toString());
+		logger.debug(memberAndNotice.get("noticeCnt").toString());
+		
 		return "redirect:/main/";
 	}
 	
@@ -253,6 +257,21 @@ public class MemberController {
 		memberService.isLeaveMember(member);
 		
 		return "redirect:/member/login";
+	}
+	
+	@GetMapping("removeNotice")
+	@ResponseBody
+	public void removeNotice(String id, @SessionAttribute("authentication") Member member
+							, @SessionAttribute("notice") Notice notice, @SessionAttribute("noticeCnt") int cnt, HttpSession session) {
+
+		memberService.updateNotice(id, notice);
+		cnt -= 1;
+		
+		if(cnt == 0) {
+			session.removeAttribute("notice");
+			session.removeAttribute("noticeCnt");
+		}
+		session.setAttribute("noticeCnt", cnt);
 	}
 	
 	//파이어베이스
