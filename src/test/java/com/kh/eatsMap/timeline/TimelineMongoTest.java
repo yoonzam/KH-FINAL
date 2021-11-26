@@ -48,7 +48,7 @@ public class TimelineMongoTest {
 		this.mockMvc = webAppContextSetup(context).build();
 	}
 	
-	@Test
+	@Test //리뷰 저장
 	public void saveRevies() {
 		Review review = new Review();
 		review.setMemberId(new ObjectId("6194d4e8b1271f6645746389"));
@@ -66,12 +66,12 @@ public class TimelineMongoTest {
 		timelineRepository.save(review);
 	}
 	
-	@Test
+	@Test //모든 리뷰 찾기
 	public void findAllReviews() {
-		timelineRepository.findAll().forEach(e -> logger.info(e.toString()));
+		timelineRepository.findAll(Sort.by(Sort.Direction.DESC, "regDate")).forEach(e -> logger.info(e.toString()));
 	}
 	
-	@Test
+	@Test //마지막 리뷰 찾기
 	public void findLastReview() {
 		Review review = null;
 		Query query = new Query();
@@ -80,9 +80,14 @@ public class TimelineMongoTest {
 		logger.debug(review.toString());
 	}
 	
-	@Test
+	@Test //식당명으로 리뷰 찾기 (내림차순)
 	public void findReviewByResName() {
 		Sort sort = Sort.by("resName").descending();
 		logger.info(timelineRepository.findByResNameOrderByIdAsc("라쿠치나", sort).toString());
+	}
+	
+	@Test //ID로 리뷰 찾기
+	public void findReviewById() {
+		logger.info(timelineRepository.findById("619f850835d7987fdb82f441").toString());
 	}
 }
