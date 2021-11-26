@@ -2,9 +2,6 @@ package com.kh.eatsMap.timeline.model.service;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
-
-import org.bson.types.ObjectId;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.kh.eatsMap.member.model.dto.Member;

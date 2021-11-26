@@ -14,8 +14,6 @@
 <%@ include file="/WEB-INF/views/include/header.jsp" %>
 	<section>
 		<div class="section">
-			<!--div class="main-visual">
-			</div-->
 			<div class="search-wrap">
 				<div class="search-area">
 					<div class="search-form">
@@ -90,7 +88,6 @@
 					</c:forEach>
 				</ul>
 			</div>
-
 		</div>
 	</section>
 	<script>
@@ -114,7 +111,7 @@
 					$('#pop-review-detail .dot-btn').html(html);
 					$('#pop-review-detail .dot-btn > div:first-child').addClass('selected');
 					
-					//btn
+					//photoBtn
 					if(data.files.length > 1) {
 						$('#pop-review-detail .slide-btn').html(
 							'<i onclick="prevPhoto('+data.files.length+');" class="fas fa-arrow-circle-left"></i>'+
@@ -124,7 +121,7 @@
 					}
 					
 					//writer
-					$('#pop-review-detail .writer').html('<a>'+data.review.memberNick+'</a><a onclick="follow(\''+data.review.memberId.toString()+'\')" class="follow">잇친맺기</a>');
+					$('#pop-review-detail .writer').html('<a>'+data.review.memberNick+'</a><a onclick="follow(\''+data.memberId+'\')" class="follow">잇친맺기</a>');
 					
 					//score
 					html = '<p>맛</p>';
@@ -155,9 +152,13 @@
 					$('#pop-review-detail .review > p').html(data.review.review);
 					
 					//resInfo
-					$('#pop-review-detail .info > .title').html('<i class="fas fa-home"></i>'+data.review.resName);
+					$('#pop-review-detail .info > .title').html('<i class="fas fa-home"></i> '+data.review.resName+'('+data.review.category+')');
 					$('#pop-review-detail .info > .location').html(data.review.addr);
 					
+					//controllerBtn
+					$('#pop-review-detail .pop-btn-edit').attr('onclick','editReview(\''+data.reviewId+'\');');
+					$('#pop-review-detail .pop-btn-delete').attr('onclick','deleteReview(\''+data.reviewId+'\');');
+
 					$('#pop-review-detail').fadeIn(200);
 					resizeSlideImgHeight();
 				},

@@ -56,9 +56,7 @@ public class TimelineServiceImpl implements TimelineService{
 	public List<Review> findAllReviews() {
 		List<Review> reviews = timelineRepository.findAll(Sort.by(Sort.Direction.DESC, "regDate"));
 		for (Review review : reviews) {
-			review.setCategory(getCategoryName(review.getCategory()));
-			review.setHashtag(getHashtagName(review.getHashtag()));
-			
+			System.out.println(review.toString());
 			List<Fileinfo> files = fileRepository.findByTypeId(review.getId());
 			if(files.size() > 0) review.setThumUrl(files.get(0).getDownloadURL());
 		}
@@ -73,12 +71,15 @@ public class TimelineServiceImpl implements TimelineService{
 		Optional<Review> findReview = timelineRepository.findById(id);
 		if(findReview.isPresent()) {
 			Review review = findReview.get();
-			review.setCategory(getCategoryName(review.getCategory()));
-			review.setHashtag(getHashtagName(review.getHashtag()));
 			review.setMemberId(new ObjectId(review.getMemberId().toString()));
 
 			review.setMemberNick(memberRepository.findById(review.getMemberId().toString()).get().getNickname());
+			System.out.println(review.toString());
 			map.put("review", review);
+			
+			//objectId
+			map.put("reviewId", review.getId().toString());
+			map.put("memberId", review.getMemberId().toString());
 		}
 		
 		//file
@@ -88,6 +89,9 @@ public class TimelineServiceImpl implements TimelineService{
 			files.add(fileinfo.getDownloadURL());
 		}
 		map.put("files", files);
+		
+		
+		
 		
 		return map;
 	}
