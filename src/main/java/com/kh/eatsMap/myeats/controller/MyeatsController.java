@@ -2,28 +2,37 @@ package com.kh.eatsMap.myeats.controller;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
 
 import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kh.eatsMap.member.model.dto.Member;
 import com.kh.eatsMap.member.model.service.MemberService;
 import com.kh.eatsMap.myeats.model.dto.FindCriteria;
 import com.kh.eatsMap.myeats.model.dto.Group;
 import com.kh.eatsMap.myeats.model.dto.PageObject;
 import com.kh.eatsMap.myeats.model.service.GroupService;
+
 
 @Controller
 @RequestMapping("/myeats/*")
@@ -41,7 +50,6 @@ public class MyeatsController {
 	@RequestMapping(value="/invite", method=RequestMethod.GET)
 	public void list(@ModelAttribute("fCri") FindCriteria fCri, Model model) throws Exception{
 		logger.info(fCri.toString());
-//		model.addAttribute("list", groupService.listMember(fCri));
 		model.addAttribute("list", groupService.listMemberFind(fCri));
 		
 		
@@ -55,15 +63,19 @@ public class MyeatsController {
 		model.addAttribute("pageObject", pageObject);		
 	}
 	
-	
+	//test
 	@RequestMapping(value="/invite", method=RequestMethod.POST)
-	public String invitePost(@RequestParam("keyword") String keyword, Model model)throws Exception{ 
+	public String invitePost(HttpServletRequest request, Model model,RedirectAttributes rttr)throws Exception{ 
 		
+		String keyword = request.getParameter("keyword");
+		//http://localhost:7979/myeats/createGroup
+		 rttr.addFlashAttribute("keyword", keyword);
+		//http://localhost:7979/myeats/invite?page=1&numPerPage=10&findType=S&keyword=%EB%8C%95%EB%8C%95%EC%9D%B4
+		//http://localhost:7979/myeats/createGroup?keyword=알파카%2C알파카%2C알파카
 		
-		System.out.println(keyword);
-		
-		return "redirect:/myeats/createGroup";
+		return  "redirect:/myeats/createGroup";
 	}
+	
 	
 	
 	

@@ -169,6 +169,19 @@ public class GroupRepositoryTest {
 //			System.out.println("GroupDAO.getTotalCountMember()");
 //			return (int)mongoTemplate.count(new Query(), "group"); 
 //		}
+	//닉네임 리스트 멤버
+		 @Test
+				public void listMemberFindByNickName(){
+					System.out.println("GroupDAO.listMemberFindByNickName()");
+					List<Member> list = null;
+					
+					Query query = new Query();
+					query = query.addCriteria(Criteria.where("nickname").is("잇츠잇츠"));
+					
+					list = mongoTemplate.find(query,com.kh.eatsMap.member.model.dto.Member.class,"member");
+					
+					list.forEach(e -> logger.debug(e.toString()));
+				}
 	 
 	 
 	 

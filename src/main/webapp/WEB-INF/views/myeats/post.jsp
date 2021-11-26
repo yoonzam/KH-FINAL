@@ -21,7 +21,7 @@
 				<li><a href="group">그룹관리</a></li>
 				<li class="selected">작성글관리</li>
 				<li><a href="detail">맛찜리스트</a></li>
-				<li>회원정보 수정</li>
+				<li><a href="/member/modifyForm">회원정보 수정</a></li>
 			</ul>
 		    <div class="profile">
 				<div class="wrap-profile-img">
@@ -44,9 +44,13 @@
 					</div>
 				</div><!-- wrap-profile-info -->
 			</div>
+			<div class="btn-wrap">
+				<a class="btn-edit-profile">잇친 맺기</a>
+			</div> 
+			
             <div class="section">
 				<div class="detail-wrap">
-					<h2><i class="fas fa-utensils color-m"></i> 내가 <span class="color-m">찜한 </span> 맛집!</h2>
+					<h2><i class="fas fa-utensils color-m"></i> 게시글 <span class="color-m">관리하기 </span> </h2>
 					<ul class="detail-brd">
 						<li>
 							<div class="eats-list">

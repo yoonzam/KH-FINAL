@@ -81,7 +81,7 @@
 				<li class="selected">그룹관리</li>
 				<li><a href="post">작성글관리</a></li>
 				<li><a href="detail">맛찜리스트</a></li>
-				<li>회원정보 수정</li>
+				<li><a href="/member/modifyForm">회원정보 수정</a></li>
 			</ul>
 				<c:forEach items="${list}" var="grouplist" varStatus="status"  begin="0"  >
 				<c:if test="${status.first}"><ul class="group-wrap"></c:if>

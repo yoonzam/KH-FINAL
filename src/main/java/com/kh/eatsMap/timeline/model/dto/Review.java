@@ -1,12 +1,16 @@
 package com.kh.eatsMap.timeline.model.dto;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.geo.GeoJsonPoint;
 import org.springframework.data.mongodb.core.index.GeoSpatialIndexType;
 import org.springframework.data.mongodb.core.index.GeoSpatialIndexed;
+
+import com.kh.eatsMap.common.code.Category;
+import com.kh.eatsMap.common.code.HashCode;
 
 import lombok.Data;
 
@@ -34,4 +38,47 @@ public class Review {
 	private String group;			//그룹명 (내피드는 생략)
 	private int privacy;			//공개여부(0,1,-1)
 	private int like;
+	
+	
+	@Override
+	public String toString() {
+		
+		switch (category) {
+		case "cg01": category = Category.CG01.desc(); break;
+		case "cg02": category = Category.CG02.desc(); break;
+		case "cg03": category = Category.CG03.desc(); break;
+		case "cg04": category = Category.CG04.desc(); break;
+		case "cg05": category = Category.CG05.desc(); break;
+		case "cg06": category = Category.CG06.desc(); break;
+		case "cg07": category = Category.CG07.desc(); break;
+		case "cg08": category = Category.CG08.desc(); break;
+		default:
+			break;
+		}
+		
+		for (int i = 0; i < hashtag.length; i++) {
+			switch (hashtag[i]) {
+			case "md01": hashtag[i] = HashCode.MD01.desc(); break;
+			case "md02": hashtag[i] = HashCode.MD02.desc(); break;
+			case "md03": hashtag[i] = HashCode.MD03.desc(); break;
+			case "md04": hashtag[i] = HashCode.MD04.desc(); break;
+			case "md05": hashtag[i] = HashCode.MD05.desc(); break;
+			case "md06": hashtag[i] = HashCode.MD06.desc(); break;
+			case "pr01": hashtag[i] = HashCode.PR01.desc(); break;
+			case "pr02": hashtag[i] = HashCode.PR02.desc(); break;
+			case "pr03": hashtag[i] = HashCode.PR03.desc(); break;
+			case "pr04": hashtag[i] = HashCode.PR04.desc(); break;
+			case "pr05": hashtag[i] = HashCode.PR05.desc(); break;
+			default:
+				break;
+			}			
+		}
+
+		return "Review [id=" + id + ", memberId=" + memberId + ", resName=" + resName + ", thumUrl=" + thumUrl
+				+ ", addr=" + addr + ", review=" + review + ", regDate=" + regDate + ", location=" + location
+				+ ", taste=" + taste + ", clean=" + clean + ", service=" + service + ", category=" + category
+				+ ", hashtag=" + Arrays.toString(hashtag) + ", group=" + group + ", privacy=" + privacy + ", like="
+				+ like + "]";
+	}
+	
 }
