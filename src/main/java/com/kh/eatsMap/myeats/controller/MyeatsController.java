@@ -32,6 +32,7 @@ import com.kh.eatsMap.myeats.model.dto.FindCriteria;
 import com.kh.eatsMap.myeats.model.dto.Group;
 import com.kh.eatsMap.myeats.model.dto.PageObject;
 import com.kh.eatsMap.myeats.model.service.GroupService;
+import com.kh.eatsMap.timeline.model.service.TimelineService;
 
 
 @Controller
@@ -45,6 +46,9 @@ public class MyeatsController {
 	
 	@Inject
 	private MemberService memberService;
+	
+	@Inject
+	private TimelineService timelineService;
 	
 	
 	@RequestMapping(value="/invite", method=RequestMethod.GET)
@@ -145,13 +149,23 @@ public class MyeatsController {
 	
 
 
-	@GetMapping("/post")
-	public String postView() {
-		return "myeats/post";
-	}
-	@GetMapping("/detail")
-	public String detailView() {
+		@RequestMapping(value="/post", method=RequestMethod.GET)
+		public String postList(Model model) {
+			logger.info("postGET()........");
+			model.addAttribute("allReviews",timelineService.findAllReviews()); 
+			return "myeats/post";
+		}
+		
+		@RequestMapping(value="/detail", method=RequestMethod.GET)	
+		public String detailList(Model model) {
+			logger.info("detaiGET()........");
+			model.addAttribute("allReviews",timelineService.findAllReviews()); 
 		return "myeats/detail";
 	}
 	
+	
+
+
+
 }
+
