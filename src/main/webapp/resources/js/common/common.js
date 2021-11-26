@@ -73,6 +73,9 @@ $('#btnReview, #map_reviewBtn').click(() => {
 	searchPlaces = [];
 	uploadStepControl();
 	
+
+
+	
 	$('.upload-flag').html('');
 	$('#uploadPrevBtn').hide();
 	$('#uploadNextBtn').show();

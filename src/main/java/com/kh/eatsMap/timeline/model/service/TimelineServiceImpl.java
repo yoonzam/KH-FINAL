@@ -1,15 +1,19 @@
 package com.kh.eatsMap.timeline.model.service;
 
+import java.time.LocalDateTime;
 import java.util.Iterator;
 import java.util.List;
 
 import org.bson.types.ObjectId;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.mongodb.core.geo.GeoJsonPoint;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.kh.eatsMap.common.util.FileUtil;
 import com.kh.eatsMap.common.util.Fileinfo;
+import com.kh.eatsMap.member.model.dto.Member;
 import com.kh.eatsMap.timeline.model.dto.Review;
 import com.kh.eatsMap.timeline.model.repository.FileRepository;
 import com.kh.eatsMap.timeline.model.repository.TimelineRepository;
@@ -24,7 +28,12 @@ public class TimelineServiceImpl implements TimelineService{
 	private final FileRepository fileRepository;
 
 	@Override
-	public void insertReview(Review review, List<MultipartFile> photos) {
+	public void insertReview(Review review, double latitude, double longitude, List<MultipartFile> photos, Member member) {
+		review.setLocation(new GeoJsonPoint(latitude, longitude));
+		review.setMemberId(member.getId());
+		review.setRegDate(LocalDateTime.now().plusHours(9));
+		if(review.getGroup().equals("")) review.setGroup(null);
+		
 		review = timelineRepository.save(review);
 		
 		FileUtil fileUtil = new FileUtil();
@@ -67,7 +76,6 @@ public class TimelineServiceImpl implements TimelineService{
 	}
 	
 	private String[] getHashtagName(String[] hashtag) {
-		String tag = "";
 		for (int i = 0; i < hashtag.length; i++) {
 			switch (hashtag[i].toLowerCase()) {
 				case "md01" : hashtag[i] = "친근함"; break;

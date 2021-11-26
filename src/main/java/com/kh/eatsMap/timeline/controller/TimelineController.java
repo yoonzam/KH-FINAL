@@ -76,10 +76,6 @@ public class TimelineController {
 	@PostMapping("upload")
 	@ResponseBody
 	public void upload(Review review, double latitude, double longitude, List<MultipartFile> photos, @SessionAttribute("authentication") Member member) {
-		review.setLocation(new GeoJsonPoint(latitude, longitude));
-		review.setMemberId(member.getId());
-		review.setRegDate(LocalDateTime.now().plusHours(9));
-		if(review.getGroup().equals("")) review.setGroup(null);
-		timelineService.insertReview(review, photos);
+		timelineService.insertReview(review, latitude, longitude, photos, member);
 	}
 }
