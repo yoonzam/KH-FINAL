@@ -15,6 +15,26 @@
 <head>
 <%@ include file="/WEB-INF/views/include/head.jsp" %>
 <link rel="stylesheet" type="text/css" href="/resources/css/myeats/myeats.css" />
+
+<style type="text/css">
+
+/* css 상태 보고 추후에 이동 예정 */
+ #addValue{
+	width:200px;
+	}
+#addButton{
+background-color: var(--red-color);
+    
+    width: 60px;
+    cursor: pointer;
+    border-radius: 5px;
+    padding: 14px 0px;
+    transition-duration: 0.5s;
+    color: #fff;
+    border: none;	
+}
+</style>
+	
 </head>
 
 <body>
@@ -47,11 +67,11 @@
 							 value="<%=request.getAttribute("keyword")%>">
 							
 							
-							<input type='button' value='추가' onclick='addList()' style="width: 50px; background-color: orange;" />
+							<input id="addButton" type='button' value='추가' onclick='addList()' />
 							<a href="invite"><button type="button">초대</button></a>
 							
 							
-							<span><a href="invite"><i class="fas fa-minus-square"></i></a><input type="hidden" name="memberNickName[]" value="<%=request.getAttribute("keyword")%>"><ul id='fruits'></ul></span>
+							<span><i class="fas fa-minus-square" onclick='removeItem()'></i><input type="hidden" name="memberNickName[]" value="<%=request.getAttribute("keyword")%>"><ul id='fruits'></ul></span>
 							<%-- <span><a href="invite"><i class="fas fa-minus-square"></i></a><input type="hidden" name="memberNickName[]" value="<%=request.getAttribute("keyword")%>"><%=request.getAttribute("keyword")%></span> --%>
 							
 							<%-- </c:forEach> --%>
@@ -90,6 +110,23 @@ function addList()  {
 	  document
 	    .getElementById('fruits')
 	    .appendChild(li);
+	}
+	
+	
+function removeItem()  {
+	  
+	  // 1. <ul> element 선택
+	  const ul = document
+	    .getElementById('fruits');
+	  
+	  // 2. <li> 목록 선택
+	  const items = ul.getElementsByTagName('li');
+	  
+	  // 3. <li> 목록 중 첫번째 item 삭제
+	  if(items.length > 0)  {
+	    items[0].remove();
+	  }
+	  
 	}
 </script> 
 
