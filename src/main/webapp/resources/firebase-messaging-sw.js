@@ -24,7 +24,7 @@ const firebaseConfig = {
 };
 
 firebase.initializeApp(firebaseConfig);
-const messaging = firebase.messaging(firebaseApp);
+const messaging = firebase.messaging();
 
 
 /* 토큰 액세스 */
@@ -48,15 +48,28 @@ messaging.getToken(messaging, { vapidKey: 'BDaUhaUUutwgMI44dAQhkANJgRcgHHWWlEI05
   // ...
 });
 
+messaging.onMessage(function(payload) {
+  console.log('[firebase-messaging-sw.js] Received background message ', payload);
+  // Customize notification here
+  const notificationTitle = '[on]잇츠맵에서 알립니다!!';
+  const notificationOptions = {
+    body: '방문일정 D-DAY가 하루 남았어요',
+    icon: '/resources/img/member/user.png',
+	onclick: "location.href='http://localhost:9090/calendar/'"    
+  };
+
+  self.registration.showNotification(notificationTitle, notificationOptions);
+});
 
 /* https://firebase.google.com/docs/cloud-messaging/concept-options */
 messaging.onBackgroundMessage(function(payload) {
   console.log('[firebase-messaging-sw.js] Received background message ', payload);
   // Customize notification here
-  const notificationTitle = '잇츠맵에서 알립니다!!';
+  const notificationTitle = '[BACK]잇츠맵에서 알립니다!!';
   const notificationOptions = {
-    body: '방문일정 D-DAY가 하루 남았어요',
-    icon: '/resources/img/member/user.png'
+    body: '잇츠맵에 새로운 알림이 도착했어요! 지금바로 확인해보세요~',
+    icon: '/resources/img/member/alarm.png',
+    onclick: "location.href='http://localhost:9090/calendar/'"    
   };
 
   self.registration.showNotification(notificationTitle, notificationOptions);

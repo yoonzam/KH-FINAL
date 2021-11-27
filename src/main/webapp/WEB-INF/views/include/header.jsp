@@ -11,7 +11,7 @@
 <div class="wrap">
 	<header>
 		<div class="header pc">
-			<a href="/main/"><h1><img src="/resources/img/common/logo_ver1.png"></h1></a>
+			<h1 onclick="location.href='/main/'"><img src="/resources/img/common/logo_ver1.png"></h1>
 			<ul class="gnb">
 				<li onclick="location.href='/map/'">잇츠맵</li>
 				<li onclick="location.href='/calendar/'">잇츠캘린더</li>
@@ -20,13 +20,15 @@
 			</ul>
 			<div class="util">
 				<div onclick="location.href='/member/logout'" class="btn-logout">로그아웃</div>
-				<div class="btn-bell new"><i class="fas fa-bell"><c:if test="${not empty noticeCnt}"> ${noticeCnt}</c:if></i></div>
-				<!--div class="btn-bell"><i class="far fa-bell"></i></div-->
-				<c:if test="${not empty notice }">
-					<div class="bell-list" style="display: none;">
+				<div class="btn-bell new">
+					<i class="fas fa-bell"><c:if test="${noticeCnt != 0}"> ${noticeCnt}</c:if></i>
+				</div>
+
+				<c:if test="${noticeCnt != 0}">
+					<div class="bell-list">
 						<div class="bell-list-title">알림목록</div>
-							<ul>
-							<c:if test="${notice.calendarNotice == 1 }">
+							<ul class="noticeDiv">
+							<c:if test="${notice.calendarNotice == 1}">
 								<li class="notice" id="dday">맛집 일정이 하루 남았어요!</li>
 							</c:if>
 							<c:if test="${notice.followNotice == 1 }">
@@ -49,8 +51,8 @@
 				<h1><img src="/resources/img/common/logo_ver1.png"></h1>
 				<div class="util">
 					<div class="btn-logout">로그아웃</div>
-					<div class="btn-bell new"><i class="fas fa-bell"><c:if test="${not empty noticeCnt}"> ${noticeCnt}</c:if></i></div>
-					<c:if test="${not empty notice }">
+					<div class="btn-bell new"><i class="fas fa-bell"><c:if test="${noticeCnt != 0}"> ${noticeCnt}</c:if></i></div>
+					<c:if test="${noticeCnt != 0}">
 						<div class="bell-list" style="display: none;">
 							<div class="bell-list-title">알림목록</div>
 								<ul>
@@ -82,7 +84,12 @@
 		</div>
 	</header>
 	
+
 	<script type="text/javascript">
+	
+	window.addEventListener('DOMContentLoaded', (event) => {
+		document.querySelector('.bell-list').style.display = 'none';
+	});
 	
 	document.querySelector('.btn-bell.new').addEventListener('mouseover', () => {
 		document.querySelector('.bell-list').style.display = 'block';
@@ -96,15 +103,16 @@
 			.then(response => {
 				  if(response.ok){	//통신 성공시
 					switch (li.target.id) {
-					case 'dday':location.href='/calendar/'	break;
-					case 'calendar':location.href='/calendar/'	break;
-					case 'follow':location.href='/myeats/post'	break;
-					case 'group':location.href='/myeats/group' break;}
+					case 'dday':location.href='/calendar/';	break;
+					case 'calendar':location.href='/calendar/';	break;
+					case 'follow':location.href='/myeats/post';	break;
+					case 'group':location.href='/myeats/group'; break;}
 				  }else{
 					  throw new Error(response.status);
 				  }
 			})
 		})	
 	})
+	
 	
 	</script>

@@ -76,7 +76,7 @@ public class MemberServiceImpl implements MemberService{
 	
 		if(storedMember != null  && passwordEncoder.matches(member.getPassword(), storedMember.getPassword())) {
 			Notice notice = noticeRepository.findByMemberId(storedMember.getId());
-			int noticeCnt = notice.getCalendarNotice() + notice.getGroupNotice() + notice.getParticipantNotice();
+			int noticeCnt = notice.getCalendarNotice() + notice.getGroupNotice() + notice.getParticipantNotice() + notice.getFollowNotice();
 			
 			return Map.of("noticeCnt", noticeCnt, "notice", notice, "member",storedMember);
 		}		

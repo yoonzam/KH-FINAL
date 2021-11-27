@@ -35,11 +35,10 @@
               "icon": "https://cdn.ksilbo.co.kr/news/photo/202106/902252_501806_3356.png"
             }
           },
-          "token": "d_5janCHZ2NDPNTu078wfy:APA91bEzwq9gxsZDVHvV4PR4ngwqCdtn2parjGiMUgMqerCHaGoOyY0AA-2yK8_jbhUicWmo9Mpiwq7ogzhrLccC4fSehhcz9FbWl5v9VM29Et_MWN2wLXTSeb_m7_ToruIgAXnGLZqj"
+          "token": clientToken
         }
       }
-    })
-        .then(function(response) {
+    }).then(function(response) {
                 // Handle the results here (response.result has the parsed body).
                 console.log("Response", response);
               },

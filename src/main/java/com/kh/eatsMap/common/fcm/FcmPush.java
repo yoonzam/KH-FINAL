@@ -11,9 +11,9 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.FirebaseMessagingException;
 import com.google.firebase.messaging.Message;
 
-public class MainActivity {
+public class FcmPush {
 	
-	public MainActivity() {
+	public FcmPush() {
 		// TODO Auto-generated constructor stub
 	}
 	

@@ -31,7 +31,7 @@ header{width: 100%; position: fixed; background-color: #fff; z-index: 100; borde
 .btn-bell.new{background-color: #f15050; transition-duration:0.5s;}
 .btn-bell.new:hover{background-color: #ff7171;}
 .btn-bell i{color:#fff;}
-.bell-list{position:absolute; top:60px; right:10px; width:260px; border:1px solid #ccc; background-color:#fff; box-shadow: 0px 5px 5px  rgba(0, 0, 0, 0.3);}
+.bell-list{position:absolute; top:60px; right:10px; width:260px; border:1px solid #ccc; background-color:#fff; box-shadow: 0px 5px 5px  rgba(0, 0, 0, 0.3); display: none;}
 .bell-list .bell-list-title{cursor:initial; padding:12px; color:#fa8633; font-weight: 700; text-align:center; border-bottom:1px solid #aaa;}
 .bell-list ul li{ font-size:14px; padding:12px; border-bottom:1px solid #eee;}
 .bell-list ul li:hover{ background-color:#eee;}

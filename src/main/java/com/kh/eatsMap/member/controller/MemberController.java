@@ -274,6 +274,12 @@ public class MemberController {
 		session.setAttribute("noticeCnt", cnt);
 	}
 	
+	@GetMapping("saveToken/{clientToken}")
+	public void saveToken(@PathVariable String clientToken, @SessionAttribute("authentication") Member member) {
+		member.setToken(clientToken);
+		memberService.saveMember(member);
+	}
+	
 	//파이어베이스
 	@GetMapping("push-test")
 	public void pushTest() {}

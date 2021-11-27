@@ -32,6 +32,7 @@ public class Member {
 	private String profile;
 	@GeoSpatialIndexed(type = GeoSpatialIndexType.GEO_2DSPHERE)
 	private GeoJsonPoint location;
+	private String token;
 
 	public void setProfile(Fileinfo file) {	
 		if(file.getSavePath() == null) {
@@ -44,6 +45,13 @@ public class Member {
 
 	public void setRegDate() {
 		this.regDate = LocalDateTime.of(LocalDate.now(),LocalTime.now(ZoneId.of("Asia/Seoul"))).plusHours(9);	//mongoDB 특성상 불가피
+	}
+
+	@Override
+	public String toString() {
+		return "Member [id=" + id + ", kakaoId=" + kakaoId + ", nickname=" + nickname + ", password=" + password
+				+ ", email=" + email + ", regDate=" + regDate + ", isLeave=" + isLeave + ", profile=" + profile
+				+ ", location=" + location + "]";
 	}
 
 }

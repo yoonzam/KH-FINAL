@@ -300,7 +300,7 @@ public class MemberRepositoryTest {
     @Test
     public void noticeTest() {
     	
-    	Member member = repository.findByNickname("댕댕이");
+    	Member member = repository.findByNickname("유진");
     	Notice notice = new Notice();
     	notice.setMemberId(member.getId());
     	notice.setCalendarNotice(1);

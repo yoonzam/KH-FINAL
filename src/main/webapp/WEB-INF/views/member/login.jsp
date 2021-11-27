@@ -32,7 +32,7 @@
          <input type="password" name="password" id="password" placeholder="비밀번호를 입력해주세요">
 
          
-         <button>로그인</button>
+         <button onclick="execute()">로그인</button>
          <a onclick="kakaoLogin()" class="btn-kakao">
          	<img src="/resources/img/common/kakao-logo.png">
          	<span>카카오 로그인</span>
