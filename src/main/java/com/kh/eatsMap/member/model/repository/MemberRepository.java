@@ -2,6 +2,7 @@ package com.kh.eatsMap.member.model.repository;
 import java.util.List;
 import java.util.stream.Stream;
 
+import org.bson.types.ObjectId;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -62,6 +63,8 @@ public interface MemberRepository extends MongoRepository<Member, String>{	//Rep
 	Member findByKakaoId(String kakaoId);
 
 	Member findByNickname(String nickname);
+
+	Member findById(ObjectId memberId);
 
 
 }

@@ -26,7 +26,7 @@
 				<div class="group-info">
 					<div class="group-profile">
 						<div class="group-img">
-							<img src="/resources/img/upload/01.jpg">
+							<img src="${!empty reviews.thumUrl ? reviews.thumUrl : '/resources/img/common/upload-logo.png'}">
 						</div>
 					</div>
 					<div class="group-menu">

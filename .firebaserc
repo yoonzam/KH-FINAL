@@ -1,5 +1,7 @@
 {
   "projects": {
-    "default": "final-332911"
-  }
+    "default": "final-332911",
+    "final": "final-332911"
+  },
+  "targets": {}
 }

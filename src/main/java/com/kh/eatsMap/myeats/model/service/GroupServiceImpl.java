@@ -1,6 +1,7 @@
 package com.kh.eatsMap.myeats.model.service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -21,6 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.kh.eatsMap.common.code.Config;
 import com.kh.eatsMap.common.mail.MailSender;
 import com.kh.eatsMap.common.util.FileUtil;
+import com.kh.eatsMap.common.util.Fileinfo;
 import com.kh.eatsMap.member.model.dto.Member;
 import com.kh.eatsMap.member.model.repository.MemberRepository;
 import com.kh.eatsMap.member.validator.EmailForm;
@@ -30,6 +32,8 @@ import com.kh.eatsMap.myeats.model.dto.FindCriteria;
 import com.kh.eatsMap.myeats.model.dto.Group;
 import com.kh.eatsMap.myeats.model.dto.PageObject;
 import com.kh.eatsMap.myeats.model.repository.GroupRepository;
+import com.kh.eatsMap.timeline.model.repository.FileRepository;
+import com.kh.eatsMap.timeline.model.repository.TimelineRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -40,6 +44,9 @@ public class GroupServiceImpl implements GroupService{
 	private final RestTemplate template;
 	private final MailSender mailSender;
 	private final GroupRepository groupRepository;
+	
+	private final TimelineRepository timelineRepository;
+	private final FileRepository fileRepository;
 	
 	 @Autowired
 	 private MongoTemplate mongoTemplate;
@@ -87,12 +94,26 @@ public class GroupServiceImpl implements GroupService{
 	
 	
 	
-	//groupIdx제외 예정
+	//파일 업로드 및 write
 	@Override
-	public void write(Group group) {
-		//String StringgroupIdx = Integer.toString((int)groupRepository.count()+1);
-		//group.setGroupIdx(StringgroupIdx);//1부터시작에서 1씩 증가하도록
+	public void write(Group group, List<MultipartFile> photos, Member member) {
+		
+		group.setMemberId(member.getId());
 		groupRepository.save(group);
+		
+		FileUtil fileUtil = new FileUtil();
+		for (MultipartFile photo : photos) {
+			if(!photo.isEmpty()) {
+				Fileinfo fileInfo = fileUtil.fileUpload(photo);
+				fileInfo.setTypeId(group.getId());
+				fileRepository.save(fileInfo);
+			}
+		}
+	}
+	//파일 업로드
+	@Override
+	public List<Fileinfo> findFiles(ObjectId id) {
+		return fileRepository.findByTypeId(id);
 	}
 
 	

@@ -14,6 +14,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.kh.eatsMap.common.util.Fileinfo;
 
+import lombok.Builder.Default;
 import lombok.Data;
 
 @Data
