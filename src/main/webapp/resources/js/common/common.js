@@ -1,33 +1,39 @@
+/* 공통 JS */
+let getSectionMargin = () =>  $('section').css('padding-top',$('header').height());
+let resizeSlideImgHeight = () => {
+    let slideImgWidth = $('.layer-popup .slide-img-wrap').width();
+    $('.layer-popup .slide-img').height(slideImgWidth);
+    $('.layer-popup .slide-img li').width(slideImgWidth);
+    $('.layer-popup .slide-img li').height(slideImgWidth);
+    $('.layer-popup .info-wrap').height(slideImgWidth);
+    $('.layer-popup .slide-btn').css('margin-top',(slideImgWidth/2-18)+'px');
+}
 $(document).ready(()=>{
     getSectionMargin();
     resizeSlideImgHeight();
 });
-
 $(window).resize(() => {
     getSectionMargin();
     resizeSlideImgHeight();
 });
 
-$('.gnb li').hover((e)=> {
-    e.target.style.color='#fa8633';
-    e.target.style.transitionDuration='0.2s';
-  }, (e)=>{
-    e.target.style.color='#333';
+/** 후기 **/
+let uploadStep;
+let placeFlag;
+let searchPlaces;
+let photoCount;
+let reviewBtn = false;	//맵Flag
+let editFlag = false;	//리뷰수정Flag
+
+/* 팝업 제어 */
+let closePopup = () => $('.dimmed-wrap').fadeOut(200);
+$('.dimmed').click(()=>{
+    closePopup();
+    reviewBtn = false;	//맵Flag
+    editFlag = false;	//리뷰수정Flag
 });
 
-let getSectionMargin = () => {
-    $('section').css('padding-top',$('header').height());
-}
-
-let resizeSlideImgHeight = () => {
-    let slideImgWidth = $('.layer-popup .slide-img-wrap').width();
-    $('.layer-popup .slide-img').height(slideImgWidth);
-    $('.layer-popup .slide-img li').height(slideImgWidth);
-    $('.layer-popup .info-wrap').height(slideImgWidth);
-    $('.layer-popup .slide-btn').css('margin-top',(slideImgWidth/2-18)+'px');
-}
-
-/* popup btn */
+/* 후기 디테일 버튼 이름 표시 */
 $('.layer-popup .view-controller a').hover((e) => {
     $('.view-controller span').html('');
     let className = e.currentTarget.getAttribute('class');
@@ -45,41 +51,39 @@ $('.layer-popup .view-controller a').hover((e) => {
   }, (e)=>{
     $('.view-controller span').html('');
 });
-/* 맵 후기 버튼을 구분하기 위한 변수 */
-let reviewBtn = false;
 
-$('.dimmed').click(()=>{
-    closePopup();
-    reviewBtn = false;
-});
-let closePopup = () => {
-    $('.dimmed-wrap').fadeOut(200);
+/* 지도 그리기 */
+let drawMap = (latitude, longitude, resName) => {
+	let options = { center: new kakao.maps.LatLng(latitude, longitude), level: 5 };
+	let map = new kakao.maps.Map(document.getElementById('uploadMap'), options);
+	let content = '<div class="marker-wrap"><p><i class="fas fa-utensils color-m"></i> '+resName+'</p><div></div></div>';
+	let customOverlay = new kakao.maps.CustomOverlay({
+	    position: new kakao.maps.LatLng(latitude, longitude),
+	    content: content
+	});
+	customOverlay.setMap(map);
+	placeFlag = true;
 }
 
-/* 후기등록 */
-let uploadStep;
-let placeFlag;
-let searchPlaces;
-
-/* 맵상의 후기 버튼 누를 경우 flag */
-$("#map_reviewBtn").click(function(event){
-      reviewBtn = true;		
+/* 맵 페이지에서 후기등록 버튼 클릭 이벤트 */
+$("#map_reviewBtn").click(function(){
+	reviewBtn = true;
+	uploadReview();
 });
 
-$('#btnReview, #map_reviewBtn').click(() => {
-	//초기화
+let uploadReview = (reviewId) => {
+//	초기화
 	uploadStep = 1;
+	photoCount = 0;
 	placeFlag = false;
 	searchPlaces = [];
 	uploadStepControl();
-	
-
-
 	
 	$('.upload-flag').html('');
 	$('#uploadPrevBtn').hide();
 	$('#uploadNextBtn').show();
 	$('#uploadBtn').hide();
+	$('#uploadBtn').attr('onclick','uploadConfirm();');
 	$('#pop-review-form input:text').val('');
 	$('#pop-review-form input:file').val('');
 	$('#pop-review-form input:radio').prop('checked', false);
@@ -96,54 +100,119 @@ $('#btnReview, #map_reviewBtn').click(() => {
 	let options = { center: new kakao.maps.LatLng(37.55317, 126.97279), level: 8 };
 	let map = new kakao.maps.Map(document.getElementById('uploadMap'), options);
 	
-	/* 맵 화면상의 후기 입력버튼을 누를 경우 카카오맵과 검색창에 미리 정보 기입*/
+//	맵에서 등록시 기존 데이터 입력
 	if(reviewBtn){
-		let placeInfo = markerInfo;	
-		console.dir(placeInfo);
+		let placeInfo = markerInfo;
 		$('input[name="uploadPlace"]').val(markerInfo.place_name);
 		$('input[name="resName"]').val(markerInfo.place_name);
 		$('input[name="addr"]').val(markerInfo.road_address_name);
 		$('input[name="latitude"]').val(markerInfo.y);
 		$('input[name="longitude"]').val(markerInfo.x);
-		let options = { center: new kakao.maps.LatLng(placeInfo.y, placeInfo.x), level: 5 };
-		let map = new kakao.maps.Map(document.getElementById('uploadMap'), options);
-		let content = '<div class="marker-wrap"><p><i class="fas fa-utensils color-m"></i> '+placeInfo.place_name+'</p><div></div></div>';
-		let customOverlay = new kakao.maps.CustomOverlay({
-		    position: new kakao.maps.LatLng(placeInfo.y, placeInfo.x),
-		    content: content
-		});
-		customOverlay.setMap(map);
-		placeFlag = true;
+		drawMap(placeInfo.y, placeInfo.x, placeInfo.place_name); //맵 그리기
 	}
 	
+//	수정시 기존 데이터 입력
+	if(editFlag){
+		$.ajax({
+			type: 'GET',
+			url: '/timeline/edit',
+			data:{ id:reviewId },
+			dataType: 'json',
+			success: (data) => {
+				$('#uploadBtn').attr('onclick','uploadConfirm("'+reviewId+'")');
+				
+				//장소
+				$('input[name="uploadPlace"]').val(data.review.resName);
+				$('input[name="resName"]').val(data.review.resName);
+				$('input[name="addr"]').val(data.review.addr);
+				$('input[name="latitude"]').val(data.review.location.y);
+				$('input[name="longitude"]').val(data.review.location.x);
+				drawMap(data.review.location.y, data.review.location.x, data.review.resName); //맵 그리기
+				
+				//카테고리
+				let inpRadio = $('.review-upload input:radio');
+				for ( var i=0; i<inpRadio.length; i++ ) {
+					let label = inpRadio[i].parentNode;
+					if(label.innerText == '#'+data.review.category) {
+						label.className += 'checked';
+						inpRadio[i].checked = true;
+					}
+				}
+				
+				//해시태그
+				let inpCheckbox = $('.review-upload input:checkbox');
+				for ( var i=0; i<inpCheckbox.length; i++ ) {
+					let label = inpCheckbox[i].parentNode;
+					for ( var j=0; j<data.review.hashtag.length; j++ ) {
+						if(label.innerText == '#'+data.review.hashtag[j]) {
+							label.className += 'checked';
+							inpCheckbox[i].checked = true;
+						}
+					}
+				}
+				
+				//리뷰
+				let starTaste = $('.star-review div')[0].children;
+				let inpTaste = starTaste[starTaste.length-1];
+				inpTaste.value = data.review.taste;
+				for(var i = 1; i < starTaste.length-1; i ++) if(i <= data.review.taste) starTaste[i].className = 'fas fa-star';
+				let starClean = $('.star-review div')[1].children;
+				let inpClean = starClean[starClean.length-1];
+				inpClean.value = data.review.clean;
+				for(var i = 1; i < starClean.length-1; i ++) if(i <= data.review.clean) starClean[i].className = 'fas fa-star';
+				let starService = $('.star-review div')[2].children;
+				let inpService = starService[starService.length-1];
+				inpService.value = data.review.service;
+				for(var i = 1; i < starService.length-1; i ++) if(i <= data.review.service) starService[i].className = 'fas fa-star';
+				$('textarea[name="review"]').val(data.review.review);
+				
+				//사진
+				let prevBox = $('#pop-review-form .upload-box > div');
+				for(i = 0; i < data.files.length; i++) {
+					let img = prevBox[i].children[2].children[0];					
+					img.setAttribute("src", data.files[i]);
+					$("#hdPhotos"+(i+1)).val(data.files[i]);
+					prevBox[i].children[2].style.display = 'block';
+					photoCount++;
+				}
+				
+				//그룹&공개범위
+				if(data.review.group == null) {
+					//$('#pop-review-form select[name="privacy"]').val("'+data.review.privacy+'").prop("selected", true);
+				} else {
+					//$('#pop-review-form select[name="group"]').val("'+data.review.group+'").prop("selected", true);
+					//$('#pop-review-form select[name="privacy"]').prop('disabled',true);
+				}
+			},
+			error: function (e) {
+				alert('에러발생');
+			}
+		});
+	}
+	
+//	등록 시작
 	$('input[name="uploadPlace"]').keyup(function(){
 		let keyword = $(this).val();
 		if(!keyword) {
 			$('.location-list').html('');
 			return;
 		}
-		
-		// 장소 검색 객체 생성
+		//장소검색 객체 생성
 		let ps = new kakao.maps.services.Places();
-		// 키워드로 장소 검색
+		//키워드로 장소 검색
 		ps.keywordSearch(keyword, (data, status) => {
 			if (status === kakao.maps.services.Status.OK) {
-				$('.location-list').html(displayPlaces(data));
+				searchPlaces = data;
+				let html = '';
+				for ( var i=0; i<data.length; i++ ) {
+					if(data[i].category_group_code == 'FD6' || data[i].category_group_code == 'CE7' )
+						html += '<li data-place-idx="'+i+'"><span class="place-name">'+data[i].place_name+'</span> <span class="road-address-name">'+data[i].road_address_name+'</span></li>';
+				}
+				$('.location-list').html(html);
 				$('.location-list').show();
 			}
 		}); 
 	});
-	
-	//검색리스트 출력
-	let displayPlaces = (places) => {
-		searchPlaces = places;
-		html = '';
-		for ( var i=0; i<places.length; i++ ) {
-			if(places[i].category_group_code == 'FD6' || places[i].category_group_code == 'CE7' )
-				html += '<li data-place-idx="'+i+'"><span class="place-name">'+places[i].place_name+'</span> <span class="road-address-name">'+places[i].road_address_name+'</span></li>';
-		}
-		return html;
-	}
 	
 	//검색리스트 클릭시 지도에 표시
 	$('.location-list').click(function(e){
@@ -155,32 +224,16 @@ $('#btnReview, #map_reviewBtn').click(() => {
 		$('input[name="latitude"]').val(place.y);
 		$('input[name="longitude"]').val(place.x);
 		
-		drawSpecificMap(place);
-		placeFlag = true;
+		drawMap(place.y, place.x, place.place_name); //맵 그리기
 		$('.location-list').hide();
 	})
 	
-	//검색한 음식점 맵에 표시
-	let drawSpecificMap = (place) => {
-		let latitude = place.y;
-		let longitude = place.x;
-		let options = { center: new kakao.maps.LatLng(latitude, longitude), level: 5 };
-		let map = new kakao.maps.Map(document.getElementById('uploadMap'), options);
-		let content = '<div class="marker-wrap"><p><i class="fas fa-utensils color-m"></i> '+place.place_name+'</p><div></div></div>';
-		
-		let customOverlay = new kakao.maps.CustomOverlay({
-		    position: new kakao.maps.LatLng(place.y, place.x),
-		    content: content
-		});
-		customOverlay.setMap(map);
-	}
-	
+	//카테고리&해시태그
 	$('.review-upload input:radio').click((e)=>{
 	    let label = e.target.parentNode;
 	    $('.hashtag .radio label').removeClass('checked');
 	    label.classList.add('checked');
 	});
-	
 	$('.review-upload input:checkbox').click((e)=>{
 	    let label = e.target.parentNode;
 	    if(label.className == 'checked') {
@@ -190,6 +243,7 @@ $('#btnReview, #map_reviewBtn').click(() => {
 		}
 	});
 	
+	//별점&리뷰
 	$('.star-review i').click(function(e){
 		let score = e.target.dataset.score;
 		let category = e.target.parentNode;
@@ -200,14 +254,13 @@ $('#btnReview, #map_reviewBtn').click(() => {
 			else category.children[i].className = 'far fa-star';
 		}
 	});
-	
 	$('textarea[name="review"]').keyup(function(e){
 		let review = $(this).val();
 		if(review.length < 200) $('.textarea-count span').html(review.length);
 		else $('.textarea-count span').html(200);
 	});
 	
-	//파일
+	//사진등록
 	$('#pop-review-form input:file').on('change',function(e){
 		let file = e.target.files[0];
 		let fileArr = file.name.split('.');
@@ -225,10 +278,20 @@ $('#btnReview, #map_reviewBtn').click(() => {
 				div.style.display = 'block';
 			};
 			reader.readAsDataURL(file);
+			photoCount++;
 		}
 	});
 	
-	//그룹
+	//사진삭제
+	$('.fa-times-circle').click((e)=>{
+		let div = e.target.parentNode;
+		div.style.display = 'none';
+		div.parentNode.children[1].value='';
+		div.children[2].value += '_d';
+		photoCount--;
+	});
+	
+	//그룹&공개범위
 	$('#pop-review-form select[name="group"]').on('change',function(e){
 		if(e.target.value != ""){
 			$('#pop-review-form select[name="privacy"]').prop('disabled',true);
@@ -237,23 +300,9 @@ $('#btnReview, #map_reviewBtn').click(() => {
 			$('#pop-review-form select[name="privacy"]').prop('disabled',false);
 		}
 	});
-	
-	$('.fa-times-circle').click((e)=>{
-		let div = e.target.parentNode;
-		div.style.display = 'none';
-		div.parentNode.children[1].value='';
-	})
-	
-	
-});
+};
 
-let deletePhoto = (e) => {
-	let div = e.parentNode;
-	div.innerHTML = '';
-	div.classList.remove('preview-photo');
-	console.log(div);
-}
-
+/* 리뷰 버튼 제어 */
 $('#uploadNextBtn').click(()=>{
 	if(uploadStep == 1){
 		if(!placeFlag) {
@@ -275,40 +324,20 @@ $('#uploadNextBtn').click(()=>{
 			return;
 		}
 	} else if(uploadStep == 4){
-		if(!$('#photo1').val() && !$('#photo2').val() && !$('#photo3').val()) {
+		if(photoCount < 1) {
 			$('.upload-flag.photo').html('※1장 이상의 사진은 필수입니다!');
 			return;
 		}
 	}
 	$('.upload-flag').html('');
-	uploadStep ++;
+	uploadStep++;
 	uploadStepControl();			
 });
 
 $('#uploadPrevBtn').click(()=>{
-	uploadStep --;
+	uploadStep--;
 	uploadStepControl();
 });
-
-$('#uploadBtn').click(()=>{
-	let form = $('#frmUpload')[0];
-	let formData = new FormData(form);
-	$.ajax({
-		type: "POST",
-		url: "/timeline/upload",
-		data: formData,
-		contentType : false,
-	    processData : false,
-	 	cache:false,
-		success: () => {
-			alert("성공");
-			location.reload();
-		},
-		error: (e) => {
-			alert("실패");
-		}
-	});
-})
 
 let uploadStepControl = () => {
 	if(uploadStep == 1) {
@@ -325,4 +354,44 @@ let uploadStepControl = () => {
 	$('#uploadStep').html(uploadStep);
 	$('.upload-contents li').hide();
 	$('.upload-contents li[data-upload-step="'+uploadStep+'"]').show();
+}
+
+/* 리뷰 업로드 */
+let uploadConfirm = (reviewId) => {
+	let form = $('#frmUpload')[0];
+	let formData = new FormData(form);
+	formData.append("reviewId",reviewId); //수정시 ID 필요
+	if(editFlag){
+		$.ajax({
+			type: "POST",
+			url: "/timeline/edit",
+			data: formData,
+			contentType : false,
+	    	processData : false,
+		 	cache:false,
+			success: () => {
+				alert("성공");
+				location.reload();
+			},
+			error: (e) => {
+				alert("실패");
+			}
+		});
+	} else{
+		$.ajax({
+			type: "POST",
+			url: "/timeline/upload",
+			data: formData,
+			contentType : false,
+	    	processData : false,
+		 	cache:false,
+			success: () => {
+				alert("성공");
+				location.reload();
+			},
+			error: (e) => {
+				alert("실패");
+			}
+		});
+	}
 }

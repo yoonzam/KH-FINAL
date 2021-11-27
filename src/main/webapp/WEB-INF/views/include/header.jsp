@@ -28,7 +28,7 @@
 						<li>새로운 후기를 올려주세요!</li>
 					</ul>
 				</div>
-				<div id="btnReview" class="btn-review">후기등록</div>
+				<div onclick="uploadReview();" id="btnReview" class="btn-review">후기등록</div>
 			</div>
 		</div>
 		<div class="header m">

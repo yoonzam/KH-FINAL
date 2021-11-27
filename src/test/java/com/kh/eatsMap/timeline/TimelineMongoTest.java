@@ -2,7 +2,7 @@ package com.kh.eatsMap.timeline;
 
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
-import java.util.List;
+import java.text.SimpleDateFormat;
 
 import org.bson.types.ObjectId;
 import org.junit.Before;
@@ -12,9 +12,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.geo.Distance;
-import org.springframework.data.geo.Metrics;
-import org.springframework.data.geo.Point;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.geo.GeoJsonPoint;
 import org.springframework.data.mongodb.core.query.Query;
@@ -24,7 +21,9 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.context.WebApplicationContext;
 
+import com.kh.eatsMap.common.util.Fileinfo;
 import com.kh.eatsMap.timeline.model.dto.Review;
+import com.kh.eatsMap.timeline.model.repository.FileRepository;
 import com.kh.eatsMap.timeline.model.repository.TimelineRepository;
 
 @WebAppConfiguration
@@ -34,6 +33,9 @@ public class TimelineMongoTest {
 	
 	@Autowired
 	TimelineRepository timelineRepository;
+	
+	@Autowired
+	FileRepository fileRepository;
 	
 	@Autowired
 	private MongoTemplate mongoTemplate;
@@ -71,13 +73,17 @@ public class TimelineMongoTest {
 		timelineRepository.findAll(Sort.by(Sort.Direction.DESC, "regDate")).forEach(e -> logger.info(e.toString()));
 	}
 	
+	@Test //모든 리뷰 찾기 (아이디로 정렬)
+	public void findAllSortId() {
+		logger.info(timelineRepository.findAll(Sort.by("id").descending()).toString());
+	}
+	
 	@Test //마지막 리뷰 찾기
 	public void findLastReview() {
-		Review review = null;
 		Query query = new Query();
 		query = query.with(Sort.by(Sort.Direction.DESC, "id"));
-		review = mongoTemplate.findOne(query, com.kh.eatsMap.timeline.model.dto.Review.class, "review");
-		logger.debug(review.toString());
+		Review review = mongoTemplate.findOne(query, com.kh.eatsMap.timeline.model.dto.Review.class, "review");
+		logger.info(review.toString());
 	}
 	
 	@Test //식당명으로 리뷰 찾기 (내림차순)
@@ -90,4 +96,13 @@ public class TimelineMongoTest {
 	public void findReviewById() {
 		logger.info(timelineRepository.findById("619f850835d7987fdb82f441").toString());
 	}
+	
+	@Test //ObjectId TimeStamp로 시간 구하기
+	public void getDateByTimeStamp() {	
+		ObjectId objectId = new ObjectId("61a0b2e2bb1acf3c5c30b70e");
+		long timeStamp = objectId.getTimestamp();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd E요일, a hh:mm:ss");
+		System.out.println(sdf.format(timeStamp*1000));
+	}
+
 }

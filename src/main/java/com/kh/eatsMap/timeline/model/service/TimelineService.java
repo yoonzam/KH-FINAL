@@ -15,4 +15,9 @@ public interface TimelineService {
 
 	Map<String, Object> findReviewById(String id);
 
+	void editReview(Review review, String reviewId, Member member, String latitude, String longitude,
+			List<MultipartFile> photos, List<String> hdPhotos);
+
+	void deleteReview(String reviewId, Member member);
+
 }
