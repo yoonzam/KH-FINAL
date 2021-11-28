@@ -68,36 +68,39 @@
 				</div>
 			</div>
 			<div class="timeline-wrap">
-				<h2><i class="fas fa-search color-m"></i> <span class="color-m">영등포 술집</span> 검색결과</h2>
+				<h2><i class="fas fa-search color-m"></i> <span class="color-m">영등포 술집</span> 검색결과"</h2>
 				<ul class="timeline-brd">
-					<c:forEach items="${searchedReviewList}" var="reviews">
-						<li>
-							<div class="eats-list">
-								<div class="thum">
-									<img src="${!empty reviews.thumUrl ? reviews.thumUrl : '/resources/img/common/upload-logo.png'}">
+				
+				<c:forEach items="${searchedReviewList}" var="reviews">
+					
+					<li>
+						<div class="eats-list">
+							<div class="thum">
+								<img src="${!empty reviews.thumUrl ? reviews.thumUrl : '/resources/img/common/upload-logo.png'}">
+							</div>
+							<div class="info">
+								<div class="eats-location">
+									<c:set var="addr" value="${fn:split(reviews.addr,' ')}" />
+									${addr[0]} ${addr[1]}&nbsp;&#62;&nbsp;${reviews.category}
 								</div>
-								<div class="info">
-									<div class="eats-location">
-										<c:set var="addr" value="${fn:split(reviews.addr,' ')}" />
-										${addr[0]} ${addr[1]}&nbsp;&#62;&nbsp;${reviews.category}
-									</div>
-									<div class="eats-name">${reviews.resName} <i onclick="clickLike();" class="eats-like far fa-heart"></i></div>
-									<div class="eats-tag">
-										<c:forEach items="${reviews.hashtag}" var="hashtag">
-											<span>&#35;${hashtag}</span>
-										</c:forEach>
-									</div>
-									<div class="eats-score">
-										<i class="fas fa-star"></i>
-										<fmt:formatNumber value="${(reviews.taste+reviews.clean+reviews.service)/3}" pattern=".0"/>
-									</div>
+								<div class="eats-name">${reviews.resName} <i onclick="clickLike();" class="eats-like far fa-heart"></i></div>
+								<div class="eats-tag">
+									<c:forEach items="${reviews.hashtag}" var="hashtag">
+										<span>&#35;${hashtag}</span>
+									</c:forEach>
+								</div>
+								<div class="eats-score"><i class="fas fa-star"></i>
+									<fmt:formatNumber value="${(reviews.taste+reviews.clean+reviews.service)/3}" pattern=".0"/>
 								</div>
 							</div>
-						</li>
+						</div>
+					</li>
+					
 					</c:forEach>
+					
 				</ul>
 			</div>
-
+			
 			
 			<!-- paging -->
 			<div class="container">

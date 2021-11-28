@@ -58,8 +58,8 @@ public class IndexMongoTest {
 	
 	@Test
 	public void searchKeywordTest() {
-		List<Review> searchKeyword = reviewRepository.findReviewByResNameLike("페더");
-		searchKeyword.forEach(e -> logger.debug(e.getResName()));
+		List<Review> searchKeyword = reviewRepository.findReviewByResNameContaining("그슬");
+		searchKeyword.forEach(e -> logger.debug("여기를보세요!!!!!!!!!!!!!!"+e.getResName()));
 	}
 	
 	@Test
@@ -73,4 +73,24 @@ public class IndexMongoTest {
 		List<Review> findCategory = reviewRepository.findReviewByCategoryLike("cg");
 		findCategory.forEach(e -> logger.debug(e.getResName()));
 	}
+	
+
+	//좋아요 한 리뷰찾기 
+	@Test
+	public void findReviewByLike() {
+		List<Review> findLike = reviewRepository.findReviewByLike(1);
+		findLike.forEach(e -> logger.debug(e.getResName()));
+	}
+	
+//	@Test
+//	public void findFirstByIdOrderByCategoryDesc() {
+//		Review findcate = reviewRepository.findFirstByIdOrderByCategoryDesc(new ObjectId("619f7d9494b88f684d44195d"));
+//		logger.debug(findcate.getResName());
+//	}
+	
+	
+	
+	
+	
+	
 }

@@ -1,12 +1,15 @@
 package com.kh.eatsMap.index.model.service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.bson.types.ObjectId;
 import org.slf4j.Logger;
@@ -14,6 +17,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.geo.Distance;
 import org.springframework.data.geo.Metrics;
+import org.springframework.data.geo.Point;
 import org.springframework.data.mongodb.core.geo.GeoJsonPoint;
 import org.springframework.stereotype.Service;
 
@@ -46,21 +50,30 @@ public class IndexServiceImpl implements IndexService{
 	
 	Logger logger = LoggerFactory.getLogger(this.getClass());
 
+	
+	
+
+
+	@Override
+	public List<Review> findReviewByHashtag(Member member) {
+
+		//내가 좋아요 한 리뷰 리스트 
+		List<Review> likeList = reviewRepository.findReviewByLike(1);
 //
-//	@Override
-//	public List<Review> findReviewByHashtag(Member member) {
-//
-//		//내가 좋아요 한 리뷰 리스트 
-//		List<Review> likedList = reviewRepository.findReviewByLike(1);
-//
-//		//그 리스트 중 높은 빈도의 hashtag 2개 선별		
-//		reviewRepository.
-//		
-//		
-//		
-//		
-//		return null;
-//	}
+//		if(likeList != null) {
+//			Review maxCategory = new Review();
+//			for (int i = 0; i < likeList.size(); i++) {
+//				maxCategory = reviewRepository.findFirstByIdOrderByCategoryDesc(likeList.get(i).getId());
+//			}
+//		}
+		
+
+
+		
+		
+		
+		return null;
+	}
 
 
 	
@@ -75,40 +88,45 @@ public class IndexServiceImpl implements IndexService{
 
 	
 	
-////////////////////////////////////////////////////////////////////////////////////////////////	
-//	
-//	
-//	//위치반경에 따른 잇친픽 리뷰리스트 출력 	
-//	@Override
-//	public List<Review> localReview(Member member) {
-//
-//		
-//		//내 반경 5키로 미터 이내의 모든 식당 리뷰 조회
-//		List<Review> locationReviewList = 
-//				reviewRepository.findByLocationNear(member.getLocation(), new Distance(5, Metrics.KILOMETERS));
-//		
-//		// 내가 팔로우한 사람
-//		List<Follow> followList = followRepository.findFollowByMemberId(member.getId().toString());
-//		
-//		//교집합 합칠 리스트 
-//		List<Review> locationFollowReviewList = new ArrayList<Review>(); 
-//		
-//		for (int i = 0; i < locationReviewList.size(); i++) {
-//			for (int j = 0; j < followList.size(); j++) {
-//				String locationMemberId = locationReviewList.get(i).getMemberId().toString();
-//				String followMemberId = followList.get(j).getFollowingId().toString();
-//				
-//				if(locationMemberId.equals(followMemberId)) {
-//					locationFollowReviewList.add(locationReviewList.get(i));
-//			}
-//		}	
-//	}
-//		
-//		
-//		return locationFollowReviewList;
-//	}
-//	
-//	
+	
+//////////////////////////////////////////////////////////////////////////////////////////////	
+	
+	
+	//위치반경에 따른 잇친픽 리뷰리스트 출력 	
+	@Override
+	public List<Review> localReview(Member member) {
+
+		
+		//내 반경 5키로 미터 이내의 모든 식당 리뷰 조회
+		List<Review> locationReviewList = 
+				reviewRepository.findByLocationNear(
+//						member.getLocation(), new Distance(5, Metrics.KILOMETERS));
+						new Point(127.0956659043071, 37.546965436775125), new Distance(5, Metrics.KILOMETERS));
+		
+		// 내가 팔로우한 사람
+		List<Follow> followList = followRepository.findFollowByMemberId(member.getId());
+		
+		//교집합 합칠 리스트 
+		List<Review> locationFollowReviewList = new ArrayList<Review>(); 
+		
+		for (int i = 0; i < locationReviewList.size(); i++) {
+			for (int j = 0; j < followList.size(); j++) {
+				String locationMemberId = locationReviewList.get(i).getMemberId().toString();
+				String followMemberId = followList.get(j).getFollowingId().toString();
+				
+				if(locationMemberId.equals(followMemberId)) {
+					locationFollowReviewList.add(locationReviewList.get(i));
+					
+				System.out.println(locationReviewList.get(i).getAddr());
+			}
+		}	
+	}
+		
+		
+		return locationFollowReviewList;
+	}
+	
+	
 
 	
 	
@@ -120,7 +138,7 @@ public class IndexServiceImpl implements IndexService{
 		
 		List<Review> searchKeyword = new ArrayList<Review>();
 		if(!keyword.equals("")) {
-			searchKeyword = reviewRepository.findReviewByResNameLike(keyword);
+			searchKeyword = reviewRepository.findReviewByResNameContaining(keyword);
 		}
 		
 		List<Review> searchCategory = new ArrayList<Review>();
@@ -157,6 +175,9 @@ public class IndexServiceImpl implements IndexService{
 		// TODO Auto-generated method stub
 		return fileRepository.findByTypeId(id);
 	}
+
+
+
 
 
 }
