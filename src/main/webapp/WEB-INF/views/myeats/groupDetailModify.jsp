@@ -28,21 +28,27 @@
 			
 			
 			<div class="group-view">
-			<c:forEach items="${groupService}" var="groupService">
-			<form role = "form" action="/myeats/groupDetailModify" method="post">	
-				<input type="hidden" id = "id" name="id" value="${groupService.id}" />
+			<c:forEach items="${groups}" var="groups">
+			<form role = "form" action="/myeats/groupDetailModify" method="post" enctype="multipart/form-data">	
+				<input type="hidden" id = "id" name="id" value="${groups.id}" />
 				
 				<div class="group-info">
 					<div class="group-profile">
 						<div class="group-img">
-							<img src="${!empty groupService.thumUrl ? groupService.thumUrl : '/resources/img/common/upload-logo.png'}" name="thumUrl"
-							value="${groupService.thumUrl}">
+							<img src="${!empty groups.thumUrl ? groups.thumUrl : '/resources/img/common/upload-logo.png'}" name="thumUrl"
+							value="${groups.thumUrl}">
+							<!-- <li>
+							<span>프로필</span>
+							<input id="photo1" type="file"name="photos" accept=".gif, .jpg, .jpeg, .png">
+							<div class="preview-photo photo1">
+							</div>
+							</li> -->
 						</div>
 					</div>
 					<div class="group-menu">
 						<div class="group-title"><i class="fas fa-bell"></i>
 						<input type="text" class="form-control" name="groupName"
-								placeholder="${groupService.groupName}"	value="${groupService.groupName}"
+								placeholder="${groups.groupName}"	value="${groups.groupName}"
 								maxlength="8" required >
 						
 						</div>
@@ -57,8 +63,8 @@
 				<div class="group-member">
 					<h4>함께하는 잇친 리스트</h4>
 					<ul>
-						<li><i class="fas fa-user"></i> ${groupService.memberNickName[0]}<span>(alpaca@naver.com)</span> <a><i class="fas fa-times"></i>삭제</a></li>
-						<li><i class="fas fa-user"></i> ${groupService.memberNickName[1]}<span>(quitting-time@naver.com)</span> <a><i class="fas fa-times"></i>삭제</a></li>
+						<li><i class="fas fa-user"></i> ${groups.memberNickName[0]}<span>(alpaca@naver.com)</span> <a><i class="fas fa-times"></i>삭제</a></li>
+						<li><i class="fas fa-user"></i> ${groups.memberNickName[1]}<span>(quitting-time@naver.com)</span> <a><i class="fas fa-times"></i>삭제</a></li>
 					</ul>
 				</div>
 				</form>

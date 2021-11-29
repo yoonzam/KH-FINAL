@@ -103,11 +103,11 @@ public class MyeatsController {
 	
 	//그룹생성 폼/createGroup.jsp
 	@RequestMapping(value="/createGroup", method = RequestMethod.GET)
-	public void createGroupGet(Group group, Model model) throws Exception{
+	public void createGroupGet(Group group, Model model, String memberNickName) throws Exception{
 		logger.info("createGroupGet.....");
 		
-		model.addAttribute("group",memberService.findMemberByNickname("geoTest1").getNickname());
-		System.out.println(memberService.findMemberByNickname("geoTest1").toString());
+		model.addAttribute("group",memberService.findMemberByNickname("알파카").getNickname());
+		//System.out.println(memberService.findMemberByNickname("geoTest1").toString());
 	}
 	
 
@@ -128,8 +128,15 @@ public class MyeatsController {
 	//그룹상세보기 폼/groupDetail.jsp
 	@RequestMapping(value="/groupDetail", method=RequestMethod.GET)
 	public void groupDetailGet(@RequestParam("id") ObjectId id, Model model) throws Exception{
+		List<Group> groups = groupService.read(id);
+		for (Group group : groups) {
+			List<Fileinfo> files = groupService.findFiles(group.getId());
+			if(files.size() > 0) group.setThumUrl(files.get(0).getDownloadURL());
+		}
+		model.addAttribute("groups", groups);
 		
-		model.addAttribute("groupService",groupService.read(id)); 
+		
+		
 	}
 	
 	@RequestMapping(value="/delete", method=RequestMethod.POST)
@@ -146,14 +153,20 @@ public class MyeatsController {
 	@RequestMapping(value="/groupDetailModify", method=RequestMethod.GET)
 	public void modifyGet(@RequestParam("id") ObjectId id, Model model) throws Exception{
 		logger.info("modifyGET()........");
-		model.addAttribute("groupService",groupService.read(id)); 
+		
+		List<Group> groups = groupService.read(id);
+		for (Group group : groups) {
+			List<Fileinfo> files = groupService.findFiles(group.getId());
+			if(files.size() > 0) group.setThumUrl(files.get(0).getDownloadURL());
+		}
+		model.addAttribute("groups", groups);
 		
 	}
 	//수정처리
 	@RequestMapping(value="/groupDetailModify", method=RequestMethod.POST)
-	public String modifyPOST(Group group) throws Exception{
+	public String modifyPOST(Group group,List<MultipartFile> photos, Member member) throws Exception{
 		logger.info("modifyPOST()........");
-		groupService.modify(group);
+		groupService.modify(group,photos,member);
 		
 		
 		return "redirect:/myeats/groupDetail?id="+group.getId();
