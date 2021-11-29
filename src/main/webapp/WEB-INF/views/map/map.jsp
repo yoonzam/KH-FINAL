@@ -7,7 +7,7 @@
 <link rel="stylesheet" type="text/css"
 	href="/resources/css/timeline/timeline.css" />
 <script type="text/javascript"
-	src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=5bdae166c6881cf42916fd1d25349e6e&libraries=services,clusterer,drawing"></script>
+	src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=478e845e80d3b693f2a53821b0866272&libraries=services,clusterer,drawing"></script>
 <link rel="stylesheet" type="text/css" href="/resources/css/map/map.css" />
 <style type="text/css">
 .popup {
@@ -179,11 +179,16 @@
 				  console.dir(json);
 				  console.dir(json[0].id);
 				  
-				  let returnDiv = takeReview(json[0].id,json[0].resName,json[0].hashtag);
+				 	
+			/* 	 json.forEach(e->{
+					 
+				 }) 
+				  */
+				 /*  let returnDiv = takeReview(json[0].id,json[0].resName,json[0].hashtag);
 				  var $div = $(reviewContent);
-					$('.map-review').append($div);
+				  $('.map-review').append($div); */
 				  
-				  asdasd = json;
+				  
 				  
 			  }).catch(error => {
 				  alert("실패");
