@@ -89,7 +89,7 @@ public class TimelineMongoTest {
 	@Test //식당명으로 리뷰 찾기 (내림차순)
 	public void findReviewByResName() {
 		Sort sort = Sort.by("resName").descending();
-		logger.info(timelineRepository.findByResNameOrderByIdAsc("라쿠치나", sort).toString());
+		logger.info(timelineRepository.findByResNameOrderByIdAsc("알마또", sort).toString());
 	}
 	
 	@Test //ID로 리뷰 찾기
