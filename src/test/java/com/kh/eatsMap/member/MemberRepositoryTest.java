@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
+import org.bson.types.ObjectId;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,6 +26,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.TypedSort;
+import org.springframework.data.geo.Distance;
+import org.springframework.data.geo.Metrics;
+import org.springframework.data.geo.Point;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.util.Streamable;
@@ -41,6 +45,7 @@ import com.kh.eatsMap.calendar.model.repository.CalendarRepository;
 import com.kh.eatsMap.index.model.repository.ReviewRepository;
 import com.kh.eatsMap.member.model.dto.Member;
 import com.kh.eatsMap.member.model.dto.Notice;
+import com.kh.eatsMap.member.model.repository.FollowingRepository;
 import com.kh.eatsMap.member.model.repository.MemberRepository;
 import com.kh.eatsMap.member.model.repository.NoticeRepository;
 import com.kh.eatsMap.timeline.model.dto.Review;
@@ -60,6 +65,8 @@ public class MemberRepositoryTest {
 	private CalendarRepository calendarRepository;
     @Autowired
     private NoticeRepository noticeRepository;
+    @Autowired
+    private FollowingRepository followingRepository;
     @Autowired
     private MongoTemplate mongoTemplate;
     
@@ -331,6 +338,14 @@ public class MemberRepositoryTest {
     	.andExpect(status().isOk())
     	.andDo(print());
     }
-
+    
+    @Test
+    public void followTest() throws Exception {
+    	Member member = repository.findByNickname("잇츠잇츠");
+    	mockMvc.perform(get("/member/follow/619e26bba6d62426e2e2aaf0"))
+    	.andDo(print());
+    			
+    	
+    }
     
 }
