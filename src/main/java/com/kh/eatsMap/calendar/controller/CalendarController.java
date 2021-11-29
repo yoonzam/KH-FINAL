@@ -46,9 +46,7 @@ public class CalendarController {
 	@ResponseBody
 	public List<Calendar> getSchedule() {
 		List<Calendar> scheduleList = calendarService.selectAllSchedule();
-//		JsonObject obj = new JsonObject();
-//		obj.addProperty("schedules", scheduleList.toString());
-//		new Gson().toJson(obj);
+
 		return scheduleList;
 	}
 	
@@ -60,14 +58,7 @@ public class CalendarController {
 		
 		return "redirect:/calendar/";
 	}
-	
-	/*
-	 * @GetMapping("schedule") public void scheduleDetail(String id, Model model) {
-	 * Map<String,Object> commandMap = CalendarService.selectScheduleById(id);
-	 * model.addAttribute("datas",commandMap);
-	 * 
-	 * }
-	 */
+
 	
 	
 }
