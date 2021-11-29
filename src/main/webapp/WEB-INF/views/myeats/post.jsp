@@ -44,9 +44,9 @@
 					</div>
 				</div><!-- wrap-profile-info -->
 			</div>
-			<div class="btn-wrap">
+		<!-- 	<div class="btn-wrap">
 				<a class="btn-edit-profile">잇친 맺기</a>
-			</div> 
+			</div>  -->
 			
             <div class="section">
 				<div class="detail-wrap">

@@ -35,7 +35,7 @@
 				<div class="group-info">
 					<div class="group-profile">
 						<div class="group-img">
-							<img src="${!empty reviews.thumUrl ? reviews.thumUrl : '/resources/img/common/upload-logo.png'}" name="thumUrl"
+							<img src="${!empty groupService.thumUrl ? groupService.thumUrl : '/resources/img/common/upload-logo.png'}" name="thumUrl"
 							value="${groupService.thumUrl}">
 						</div>
 					</div>
