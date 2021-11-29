@@ -1,5 +1,6 @@
 package com.kh.eatsMap.calendar.model.service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,21 +31,26 @@ public class CalendarServiceImpl implements CalendarService{
 
 
 	@Override
-	public Map<String, Object> selectAllSchedule(Member member) {
-		Map<String, Object> map = new HashMap<String, Object>();
+	public List<HashMap<String, Object>> selectAllSchedule(Member member) {
+		List<HashMap<String, Object>> map = new ArrayList<>();
+		
 		List<Calendar> calendars = calendarRepository.findByMemberId(member.getId());
-		calendars.forEach(e -> {
-			
-		});
+		for (Calendar calendar : calendars) {
+			HashMap<String, Object> hashmap = new HashMap<>();
+			hashmap.put("calendar", calendar);
+			hashmap.put("calendarId", calendar.getId().toString());
+			map.add(hashmap);
+		}
 		return map;
 	}
 
 
 	@Override
-	public Calendar detailSchedule(ObjectId id) {
-		return calendarRepository.findById(id);
+	public Calendar detailSchedule(String id) {
+		Calendar calendar = calendarRepository.findById(id).get();
+		return calendar;
 	}
-	 
+
 	
 	/*
 	 * public Map<String, Object> selectScheduleById(String id){

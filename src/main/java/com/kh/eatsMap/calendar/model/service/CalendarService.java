@@ -1,5 +1,6 @@
 package com.kh.eatsMap.calendar.model.service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -12,9 +13,9 @@ public interface CalendarService {
 
 	void makeSchedule(Calendar calendar);
 
-	Map<String, Object> selectAllSchedule(Member member);
+	List<HashMap<String, Object>> selectAllSchedule(Member member);
 
-	Calendar detailSchedule(ObjectId objectId);
+	Calendar detailSchedule(String id);
 
 
 	

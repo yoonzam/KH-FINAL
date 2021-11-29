@@ -64,9 +64,9 @@
     		 			success: function(datas){
     		 				for (var i = 0; i < datas.length; i++) {
     		 					let obj = {
-    		 						'id' : datas[i].id,
-    		 						'title' : datas[i].title,
-    		 						'start' : datas[i].date
+    		 						'id' : datas[i].calendarId,
+    		 						'title' : datas[i].calendar.title,
+    		 						'start' : datas[i].calendar.date
     		 					}
     		 					schedules.push(obj);
     		 				}
@@ -78,20 +78,17 @@
     		}],
     		
     		eventClick: function(info){
-    			console.dir(info.event.id);
-    			alert('event' + info.event.title);
     			$.ajax({
 		 			url : '/calendar/detail',
 		 			data:{'id': info.event.id},
 		 			dataType: 'json',
 		 			success: (data) => {
-		 				console.dir(data.title);
 		 			
-		 				$('#title').text(data.title);
-		 				$('#date').text(data.date);
-		 				$('#time').text(data.time);
-		 				$('#place').text(data.resName);
-		 				$('#member').text(data.participant);
+		 				$('#detail-title').text(data.title);
+		 				$('#detail-date').text(data.date);
+		 				$('#detail-time').text(data.time);
+		 				$('#detail-place').text(data.resName);
+		 				$('#detail-participant').text(data.participant);
 		 			}
     			})
 		 			

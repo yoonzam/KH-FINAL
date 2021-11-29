@@ -2,6 +2,7 @@ package com.kh.eatsMap.calendar.controller;
 
 import java.net.URI;
 import java.net.URLEncoder;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -47,9 +48,8 @@ public class CalendarController {
 	
 	@GetMapping("getSchedule")
 	@ResponseBody
-	public Map<String,Object> getSchedule(@SessionAttribute("authentication") Member member) {
-		Map<String,Object> scheduleList = calendarService.selectAllSchedule(member);
-		return scheduleList;
+	public List<HashMap<String, Object>> getSchedule(@SessionAttribute("authentication") Member member) {
+		return calendarService.selectAllSchedule(member);
 	}
 	
 	@PostMapping("upload")
@@ -63,9 +63,9 @@ public class CalendarController {
 	
 	@GetMapping("detail")
 	@ResponseBody
-	public Calendar detail(@RequestBody Calendar calendar){
-		logger.debug("id : " + calendar.toString());
-		Calendar calendarDetail = calendarService.detailSchedule(calendar.getId());
+	public Calendar detail(String id){
+		logger.debug("calendarId : " + id);
+		Calendar calendarDetail = calendarService.detailSchedule(id);
 		logger.debug(calendarDetail.toString());
 		return calendarDetail;
 	}
