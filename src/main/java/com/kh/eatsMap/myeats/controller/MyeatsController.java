@@ -85,20 +85,7 @@ public class MyeatsController {
 		
 		return  "redirect:/myeats/createGroup";
 	}
-	
-	
-	
-	
-	
-	//페이징 및 조회/group.jsp
-//	@RequestMapping(value="/group", method=RequestMethod.GET)
-//	public void groupGet(Model model, PageObject pageObject) throws Exception{
-//		logger.info("groupGet.............");
-//		
-//		
-//		model.addAttribute("list", groupService.list(pageObject));
-//		model.addAttribute("pageObject", pageObject);
-//	}
+
 	
 	@RequestMapping(value="/group", method=RequestMethod.GET)
 	public void groupGet(Model model, PageObject pageObject) throws Exception{
