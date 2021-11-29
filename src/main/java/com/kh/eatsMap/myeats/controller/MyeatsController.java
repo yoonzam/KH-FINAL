@@ -31,11 +31,11 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kh.eatsMap.common.util.Fileinfo;
+import com.kh.eatsMap.common.util.FindCriteria;
+import com.kh.eatsMap.common.util.PageObject;
 import com.kh.eatsMap.member.model.dto.Member;
 import com.kh.eatsMap.member.model.service.MemberService;
-import com.kh.eatsMap.myeats.model.dto.FindCriteria;
 import com.kh.eatsMap.myeats.model.dto.Group;
-import com.kh.eatsMap.myeats.model.dto.PageObject;
 import com.kh.eatsMap.myeats.model.service.GroupService;
 import com.kh.eatsMap.timeline.model.dto.Review;
 import com.kh.eatsMap.timeline.model.service.TimelineService;
@@ -142,20 +142,22 @@ public class MyeatsController {
 		return "redirect:/myeats/group";
 	}
 	
-	//수정처리
-		@RequestMapping(value="/groupDetailModify", method=RequestMethod.GET)
-		public void modifyGet(@RequestParam("id") ObjectId id, Model model) throws Exception{
-			logger.info("modifyGET()........");
-			model.addAttribute("groupService",groupService.read(id)); 
-		}
+	//수정조회
+	@RequestMapping(value="/groupDetailModify", method=RequestMethod.GET)
+	public void modifyGet(@RequestParam("id") ObjectId id, Model model) throws Exception{
+		logger.info("modifyGET()........");
+		model.addAttribute("groupService",groupService.read(id)); 
 		
-//		@RequestMapping(value="/groupDetailModify", method=RequestMethod.POST)
-//		public String modifyPOST(Group group, RedirectAttributes reAttr) throws Exception{
-//			logger.info("modifyPOST()........");
-//			groupService.modify(group);
-//			
-//			return "redirect:/myeats/group";
-//		}
+	}
+	//수정처리
+	@RequestMapping(value="/groupDetailModify", method=RequestMethod.POST)
+	public String modifyPOST(Group group) throws Exception{
+		logger.info("modifyPOST()........");
+		groupService.modify(group);
+		
+		
+		return "redirect:/myeats/groupDetail?id="+group.getId();
+	}
 	
 
 

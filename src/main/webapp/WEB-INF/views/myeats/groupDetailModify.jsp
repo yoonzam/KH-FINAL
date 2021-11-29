@@ -7,6 +7,17 @@
 <head>
 <%@ include file="/WEB-INF/views/include/head.jsp" %>
 <link rel="stylesheet" type="text/css" href="/resources/css/myeats/myeats.css" />
+<style type="text/css">
+
+/* css 상태 보고 추후에 이동 예정 */
+.form-control{
+    width: 83.5%;
+    padding: 13px;
+    border-radius: 5px;
+    border: 1px solid #aaa;
+}
+</style>
+
 </head>
 <body>
 <%@ include file="/WEB-INF/views/include/header.jsp" %>
@@ -18,14 +29,14 @@
 			
 			<div class="group-view">
 			<c:forEach items="${groupService}" var="groupService">
-			<form role="form" method="post">	
+			<form role = "form" action="/myeats/groupDetailModify" method="post">	
 				<input type="hidden" id = "id" name="id" value="${groupService.id}" />
-			</form>
-				<form role = "form" action="/myeats/groupDetailModify" method="post">	
+				
 				<div class="group-info">
 					<div class="group-profile">
 						<div class="group-img">
-							<img src="/resources/img/upload/01.jpg">
+							<img src="${!empty groupService.thumUrl ? groupService.thumUrl : '/resources/img/common/upload-logo.png'}" name="thumUrl"
+							value="${groupService.thumUrl}">
 						</div>
 					</div>
 					<div class="group-menu">
@@ -37,20 +48,20 @@
 						</div>
 						<div class="group-service">
 							<button class="main-btn">잇츠맵 바로가기</button>
-							<button>수정</button>
-							<button class="deletebtn">삭제</button>
+							<button class="complete-btn">완료</button>
+							<button class="delete-btn">삭제</button>
 						</div>
 					</div>
 				</div>
-				</form>
+				
 				<div class="group-member">
 					<h4>함께하는 잇친 리스트</h4>
 					<ul>
-						<li><i class="fas fa-user"></i> 알파카<span>(alpaca@naver.com)</span> <a><i class="fas fa-times"></i>삭제</a></li>
-						<li><i class="fas fa-user"></i> 퇴근시간<span>(quitting-time@naver.com)</span> <a><i class="fas fa-times"></i>삭제</a></li>
+						<li><i class="fas fa-user"></i> ${groupService.memberNickName[0]}<span>(alpaca@naver.com)</span> <a><i class="fas fa-times"></i>삭제</a></li>
+						<li><i class="fas fa-user"></i> ${groupService.memberNickName[1]}<span>(quitting-time@naver.com)</span> <a><i class="fas fa-times"></i>삭제</a></li>
 					</ul>
 				</div>
-				
+				</form>
 				
 				<a href = "group"><button class="btn-list">그룹 목록으로 돌아가기</button></a>
 			</c:forEach>	
@@ -71,15 +82,16 @@ $(document).ready(function(){
 	console.log("group.jsp지정된 폼태그..");
 	
 	
-	 $(".deletebtn").on("click", function(){
+	 $(".delete-btn").on("click", function(){
 		frmObj.attr("action", "/myeats/delete");
 		frmObj.submit();
 	}); 
 	 
 	//수정처리 페이지 이동
-		$("#btn_save").on("click", function(){
-			//frmObj.attr("action","/bbs/modifyPage");
-			frmObj.submit();
+		$(".complete-btn").on("click", function(){
+		frmObj.attr("action", "/myeats/groupDetailModify");
+		formObj.attr("method", "post");
+		frmObj.submit();
 		});
 	
 });

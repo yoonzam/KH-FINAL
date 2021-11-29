@@ -22,7 +22,7 @@ public class Group {
 	private String groupImg;
 	private Date groupcreatedate; 
 	private ObjectId memberId;
-	private String[] memberNickName;//임시추가: 아마도 Member담는 배열로 바꿀듯
+	private String[] memberNickName;
 	private String thumUrl;			//썸네일URL
 
 	

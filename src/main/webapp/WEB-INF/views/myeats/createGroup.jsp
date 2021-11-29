@@ -127,6 +127,8 @@ function removeItem()  {
 	  }
 	  
 	}
+	
+
 </script> 
 
 <%@ include file="/WEB-INF/views/include/footer.jsp" %>

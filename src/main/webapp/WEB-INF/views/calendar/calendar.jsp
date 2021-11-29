@@ -74,13 +74,22 @@
     		     	})	
     			},
     			color : '#ffa54f'
-    		}]
+    		}],
+    		
+    		eventClick: function(){
+    			$('#pop-schedule-detail').show();
+    		}
 	    		
 	 	}); 
     	calendar.render();
     });
 	
-	 
+	 /* $('.fc-event-title-container').click(function(){
+			$('#pop-schedule-detail').show();
+		}) */
+	
+		
+		
 </script>
 </body>
 </html>
