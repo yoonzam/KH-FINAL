@@ -108,15 +108,16 @@ public class GroupDAO {
 	
 	
 	
-	//수정하기에 쓰인 update(미완)
+	//수정하기에 쓰인 update
 		public void update(Group group) throws Exception{
 			Query query = new Query();
 			Update update = new Update();
 			//query.addCriteria(Criteria.where("컬럼명1").is("조건값1"));
-			query.addCriteria(Criteria.where("id").is("id"));
+			query.addCriteria(Criteria.where("id").is(group.getId()));
 			//추가필요 update.set("컬럼명1", "변경값1");
 			update.set("groupName", group.getGroupName());
-			mongoTemplate.updateMulti(query, update, "group");
+			update.set("thumUrl", group.getThumUrl());
+			mongoTemplate.updateFirst(query, update, Group.class);
 		}
 	
 	
