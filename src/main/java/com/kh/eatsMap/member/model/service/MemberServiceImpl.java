@@ -100,6 +100,7 @@ public class MemberServiceImpl implements MemberService{
 		notice.setGroupNotice(0);
 		notice.setParticipantNotice(0);
 		notice.setFollowNotice(0);
+		noticeRepository.save(notice);
 	}
 
 	@Override

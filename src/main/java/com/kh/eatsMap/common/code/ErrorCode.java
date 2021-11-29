@@ -8,7 +8,7 @@ public enum ErrorCode {
 	HTTP_CONNECT_ERROR("HTTP 통신 중 에러가 발생하였습니다."),
 	AUTHENTICATION_FAILED_ERROR("유효하지 않은 인증입니다."),
 	UNAUTHORIZED_PAGE("접근 권한이 없는 페이지 입니다."),
-	REDIRECT_LOGIN_PAGE("","/member/login"),
+	REDIRECT_LOGIN_PAGE("로그인이 필요합니다.","/member/login"),
 	FAILED_FILE_UPLOAD_ERROR("파일업로드에 실패했습니다.");
 	
 	public final String MESSAGE;

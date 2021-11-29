@@ -300,11 +300,11 @@ public class MemberRepositoryTest {
     @Test
     public void noticeTest() {
     	
-    	Member member = repository.findByNickname("유진");
+    	Member member = repository.findByNickname("지원");
     	Notice notice = new Notice();
     	notice.setMemberId(member.getId());
-    	notice.setCalendarNotice(1);
-    	notice.setGroupNotice(1);
+    	notice.setCalendarNotice(0);
+    	notice.setGroupNotice(0);
     	notice.setParticipantNotice(0);
     	notice.setFollowNotice(0);
     	noticeRepository.save(notice);
@@ -319,7 +319,7 @@ public class MemberRepositoryTest {
     
     @Test
     public void removeNotice() throws Exception {
-    	Member member = repository.findByNickname("잇츠잇츠");
+    	Member member = repository.findByNickname("jkl");
     	Notice notice = new Notice();
     	notice.setMemberId(member.getId());
     	notice.setCalendarNotice(1);
