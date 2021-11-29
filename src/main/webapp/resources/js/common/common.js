@@ -78,10 +78,7 @@ let uploadReview = (reviewId) => {
 	placeFlag = false;
 	searchPlaces = [];
 	uploadStepControl();
-	
 
-
-	
 	$('.upload-flag').html('');
 	$('#uploadPrevBtn').hide();
 	$('#uploadNextBtn').show();

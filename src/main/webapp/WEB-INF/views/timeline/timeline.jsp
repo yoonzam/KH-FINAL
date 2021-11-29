@@ -120,7 +120,7 @@
 					}
 					
 					//작성자
-					$('#pop-review-detail .writer').html('<a>'+data.review.memberNick+'</a><a onclick="follow(\''+data.memberId+'\')" class="follow">잇친맺기</a>');
+					$('#pop-review-detail .writer').html('<a href="member/follow/'+data.memberId+'">'+data.review.memberNick+'</a><a onclick="follow(\''+data.memberId+'\')" class="follow">잇친맺기</a>');
 					
 					//별점
 					html = '<p>맛</p>';
@@ -201,8 +201,8 @@
 		let deleteReview = (reviewId) => {
 			$('#pop-review-detail').hide();
 			$.ajax({
-				type: "POST",
-				url: "${contextPath}/timeline/delete?id="+reviewId,
+				type: 'POST',
+				url: '${contextPath}/timeline/delete?id='+reviewId,
 				contentType: false,
 				processData: false,
 			 	cache:false,
@@ -215,6 +215,57 @@
 				}
 			});
 		}
+		
+		//페이징
+		let timelinePageCnt = 0;
+		document.addEventListener('scroll', function() {
+		    if((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
+		    	$.ajax({
+					type: 'POST',
+					url: '${contextPath}/timeline/?page='+(timelinePageCnt+1),
+					contentType: false,
+					processData: false,
+				 	cache:false,
+					success: (data) => {
+						if(data.length == 0) return;
+						timelinePageCnt++;
+						let html = '';
+						console.log(data[0]);
+						console.log(data[1]);
+						console.log(data[2]);
+						console.log(data[3]);
+						for(i = 0; i < data.length; i++) {
+				    		html += '<li onclick="viewTimeline(\'' + data[i].reviewId + '\')">'
+				    			  + '	<div class="eats-list">'
+				    			  + '		<div class="thum">'
+				    			  + '			<img src="'+ data[i].review.thumUrl +'">'
+				    			  + '		</div>'
+				    			  + '		<div class="info">'
+				    			  + '			<div class="eats-location">'
+				    			  + 				data[i].review.addr.split(' ')[0] + data[i].review.addr.split(' ')[1]
+				    			  + 				' > ' + data[i].review.category
+				    			  + '</div>'
+				    			  + '			<div class="eats-name">' + data[i].review.resName + ' <i onclick="clickLike();" class="eats-like far fa-heart"></i></div>'
+				    			  + '			<div class="eats-tag">';
+			    		 	for(j = 0; j < data[i].review.hashtag.length; j++) {
+			    		 		html += '				<span>#' + data[i].review.hashtag[j] + '</span>';
+			    		 	}
+				    		html += '			</div>'
+				    			  + '		<div class="eats-score">'
+				    			  + '			<i class="fas fa-star"></i>' + ((data[i].review.taste+data[i].review.clean+data[i].review.service)/3).toFixed(1)
+				    			  + '		</div>'
+				    			  + '	</div>'
+				    			  + '</li>';
+				    	} //for-end
+						$('.timeline-brd').append(html);
+						resizeImg();
+					},
+					error: (e) => {
+						alert("실패");
+					}
+				});
+		    }
+		});
 		
 	</script>
 <%@ include file="/WEB-INF/views/include/footer.jsp" %>

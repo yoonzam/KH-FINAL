@@ -5,9 +5,7 @@ import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
-import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
@@ -26,8 +24,8 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.kh.eatsMap.member.model.dto.Member;
+import com.kh.eatsMap.myeats.model.dto.PageObject;
 import com.kh.eatsMap.timeline.model.dto.Review;
 import com.kh.eatsMap.timeline.model.service.TimelineService;
 
@@ -66,9 +64,17 @@ public class TimelineController {
     
 	@GetMapping("/")
 	public String timeline(Model model) {
-		List<Review> reviews = timelineService.findAllReviews();
+		PageObject pageObject = new PageObject(1, 4);
+		List<Review> reviews = timelineService.findAllReviews(pageObject);
 		model.addAttribute("reviews", reviews);
 		return "timeline/timeline";
+	}
+	
+	@PostMapping("/")
+	@ResponseBody
+	public List<HashMap<String, Object>> timelinePaging(Model model, int page) {
+		PageObject pageObject = new PageObject(page, 4);
+		return timelineService.findReviewsForPaging(pageObject);
 	}
 	
 	@PostMapping("upload")

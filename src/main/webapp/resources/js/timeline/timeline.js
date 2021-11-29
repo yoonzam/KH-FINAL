@@ -14,13 +14,6 @@ let resizeImg = () => {
     });
 }
 
-$('.eats-list').hover((e) => {
-    e.currentTarget.children[0].children[0].style.transform='scale(1.1)';
-    e.currentTarget.children[0].children[0].style.transitionDuration='0.5s';
-  }, (e)=>{
-    e.currentTarget.children[0].children[0].style.transform='scale(1)';
-});
-
 $('.filter-btn').click(()=>{
     if($('.filter-menu').css('display')=='none'){
         $('.filter-menu').show();
