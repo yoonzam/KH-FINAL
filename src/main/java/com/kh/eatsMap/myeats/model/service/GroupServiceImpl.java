@@ -117,9 +117,7 @@ public class GroupServiceImpl implements GroupService{
 	}
 
 	
-
-	
-	//id로 Group 삭제, groupRepository사용해서 id로 받음, mongtem으로 변경해도 됨
+	//id로 Group 삭제, groupRepository사용해서 id로 받음
 	@Override
 	public void remove(String id){
 		//String StringgroupIdx = Integer.toString(id);
