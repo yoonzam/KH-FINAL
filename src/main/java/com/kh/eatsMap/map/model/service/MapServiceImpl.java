@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import com.kh.eatsMap.map.model.dto.Map;
 import com.kh.eatsMap.map.model.repository.MapRepository;
 import com.kh.eatsMap.timeline.model.dto.Review;
 import com.kh.eatsMap.timeline.model.repository.TimelineRepository;
@@ -17,7 +16,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class MapServiceImpl implements MapService{
 
-
+	
+	@Autowired
 	private final MapRepository mapRepository;
 	
 	@Autowired
