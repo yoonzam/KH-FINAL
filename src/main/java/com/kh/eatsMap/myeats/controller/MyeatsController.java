@@ -142,20 +142,22 @@ public class MyeatsController {
 		return "redirect:/myeats/group";
 	}
 	
-	//수정처리
-		@RequestMapping(value="/groupDetailModify", method=RequestMethod.GET)
-		public void modifyGet(@RequestParam("id") ObjectId id, Model model) throws Exception{
-			logger.info("modifyGET()........");
-			model.addAttribute("groupService",groupService.read(id)); 
-		}
+	//수정조회
+	@RequestMapping(value="/groupDetailModify", method=RequestMethod.GET)
+	public void modifyGet(@RequestParam("id") ObjectId id, Model model) throws Exception{
+		logger.info("modifyGET()........");
+		model.addAttribute("groupService",groupService.read(id)); 
 		
-//		@RequestMapping(value="/groupDetailModify", method=RequestMethod.POST)
-//		public String modifyPOST(Group group, RedirectAttributes reAttr) throws Exception{
-//			logger.info("modifyPOST()........");
-//			groupService.modify(group);
-//			
-//			return "redirect:/myeats/group";
-//		}
+	}
+	//수정처리
+	@RequestMapping(value="/groupDetailModify", method=RequestMethod.POST)
+	public String modifyPOST(Group group) throws Exception{
+		logger.info("modifyPOST()........");
+		groupService.modify(group);
+		
+		
+		return "redirect:/myeats/groupDetail?id="+group.getId();
+	}
 	
 
 
