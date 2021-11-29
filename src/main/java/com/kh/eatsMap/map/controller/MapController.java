@@ -3,6 +3,7 @@ package com.kh.eatsMap.map.controller;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,7 +19,7 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("map")
 @RequiredArgsConstructor
 public class MapController {
-	
+
 
 	private final MapService mapService;
 
@@ -32,26 +33,17 @@ public class MapController {
 	@GetMapping("search")
 	public List<Review> searchReview(String keyword) {
 		System.out.println(keyword);
-		
+
 		 
 
 		System.out.println("출력 되는중? "+keyword);
 
-		
+
 		  List<Review> reviewList = mapService.reviewList();
 		  
 		  System.out.println(reviewList.toString());
 		 
-		
-		/*
-		 * List<Review> reviewList = new ArrayList<Review>();
-		 * 
-		 * Review review1 = new Review(); Review review2 = new Review();
-		 * 
-		 * review1.setResName(keyword); review2.setResName("라쿠치나");
-		 * reviewList.add(review1); reviewList.add(review2);
-		 */
-		
+
 		return reviewList;
 	}
 

@@ -7,7 +7,7 @@
 <link rel="stylesheet" type="text/css"
 	href="/resources/css/timeline/timeline.css" />
 <script type="text/javascript"
-	src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=5bdae166c6881cf42916fd1d25349e6e&libraries=services,clusterer,drawing"></script>
+	src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=478e845e80d3b693f2a53821b0866272&libraries=services,clusterer,drawing"></script>
 <link rel="stylesheet" type="text/css" href="/resources/css/map/map.css" />
 <style type="text/css">
 .popup {
@@ -17,7 +17,6 @@
 	display: flex;
 	justify-content: center;
 }
-
 .popup-wrap {
 	display: flex;
 	justify-content: center;
@@ -28,7 +27,6 @@
 	padding-left: 20px;
 	box-shadow: 2px 2px 4px rgb(0 0 0/ 30%);
 }
-
 .rest-info {
 	padding: 20px 0;
 	flex:6;
@@ -36,8 +34,6 @@
     flex-direction: column;
     justify-content: space-around;
 }
-
-
 .rest-title {
 	font-weight: 700;
 	font-size: 20px;
@@ -153,14 +149,12 @@
 			level : 3
 		//지도의 레벨(확대, 축소 정도)
 		};
-
 		var map = new kakao.maps.Map(container, options); //지도 생성 및 객체 리턴
 		
 		document.querySelector('#search').addEventListener('click', (e) => {
 		    let keyword = document.querySelector('.keyword').value;
 			searchMap(keyword);
 			searchKeyword(keyword);
-
 			document.querySelector(".popup-wrap").style.display = 'none';
 		});
 		
@@ -169,27 +163,38 @@
 		    	let keyword = document.querySelector('.keyword').value;
 				searchMap(keyword);
 				searchKeyword(keyword);
-
 				document.querySelector(".popup-wrap").style.display = 'none';
 		  }  
 		});
-		
-
 		/*비동기로 백으로 값보내기 */
 		let searchKeyword = (keyword) =>{
 			fetch("/map/search?keyword=" + keyword)
 			  .then(response => {
 				  if(response.ok){	//통신 성공시
-					  return response.text();
+					  return response.json();
 				  }else{
 					  throw new Error(response.status);
 				  }
-			  }).then(text => {	//promise객체의 text
-				  alert("성공");
+			  }).then(json => {	//promise객체의 json
+				  console.dir(json);
+				  console.dir(json[0].id);
+				  
+				 	
+			/* 	 json.forEach(e->{
+					 
+				 }) 
+				  */
+				 /*  let returnDiv = takeReview(json[0].id,json[0].resName,json[0].hashtag);
+				  var $div = $(reviewContent);
+				  $('.map-review').append($div); */
+				  
+				  
+				  
 			  }).catch(error => {
 				  alert("실패");
 			  });
 		}
+		
 		//review div 받아온 리뷰에 맞게 수정하는 함수
 		let takeReview = (address,name,tag) =>{
 			let tags ='';
@@ -223,33 +228,9 @@
 		var $div = $(reviewContent);
 		$('.map-review').append($div); */
 		
-		/*비동기로 백으로 값보내기 */
-		let searchKeyword = (keyword) =>{
-			fetch("/map/search?keyword=" + keyword)
-			  .then(response => {
-				  if(response.ok){	//통신 성공시
-					  return response.json();
-				  }else{
-					  throw new Error(response.status);
-				  }
-			  }).then(json => {	//promise객체의 json
-				  console.dir(json);
-				  console.dir(json[0].id);
-				  
-				  let returnDiv = takeReview(json[0].id,json[0].resName,json[0].hashtag);
-				  var $div = $(reviewContent);
-					$('.map-review').append($div);
-				  
-				  asdasd = json;
-				  
-			  }).catch(error => {
-				  alert("실패");
-			  });
-		}
+
 		
-		
-		
->>>>>>> refs/heads/dev
+
 		
 		
 		/* 맵에 표시된 가게의 json정보를 담는 변수 */
@@ -260,28 +241,22 @@
 			
 			// 장소 검색 객체를 생성합니다
 			var ps = new kakao.maps.services.Places(); 
-
 			// 키워드로 장소를 검색합니다
 			ps.keywordSearch(keyword, placesSearchCB); 
-
 			// 키워드 검색 완료 시 호출되는 콜백함수 입니다
 			function placesSearchCB (data, status, pagination) {
 			    if (status === kakao.maps.services.Status.OK) {
-
 			        // 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해
 			        // LatLngBounds 객체에 좌표를 추가합니다
 			        var bounds = new kakao.maps.LatLngBounds();
-
 			        for (var i=0; i<data.length; i++) {
 			            displayMarker(data[i]);    
 			            bounds.extend(new kakao.maps.LatLng(data[i].y, data[i].x));
 			        }       
-
 			        // 검색된 장소 위치를 기준으로 지도 범위를 재설정합니다
 			        map.setBounds(bounds);
 			    } 
 			}
-
 			// 지도에 마커를 표시하는 함수입니다
 			function displayMarker(place) {
 			    
@@ -292,7 +267,6 @@
 			    });
 			    
 			    
-
 			    // 마커에 클릭이벤트를 등록합니다
 			    kakao.maps.event.addListener(marker, 'click', function() {
 			    	
