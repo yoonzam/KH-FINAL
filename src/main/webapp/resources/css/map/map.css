@@ -128,7 +128,7 @@ select option {
 }
 
 .img-box {
-	width: 50%;
+	width: 45%;
 	height: 100%;
 	margin-right: 10px;
 }
@@ -157,7 +157,17 @@ select option {
 	margin-bottom: 10px;
 }
 
+.title-wrap{
+	display: flex;
+	justify-content: space-between;
+}
+.icons{
+	margin-top: 11px;
+	margin-right: 4px;
+}
+
 .info {
+	width: 55%;
 	margin-left: 10px;
 }
 
