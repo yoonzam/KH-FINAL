@@ -31,12 +31,13 @@ header{width: 100%; position: fixed; background-color: #fff; z-index: 100; borde
 .btn-bell.new{background-color: #f15050; transition-duration:0.5s;}
 .btn-bell.new:hover{background-color: #ff7171;}
 .btn-bell i{color:#fff;}
-.bell-list{position:absolute; top:60px; right:10px; width:260px; border:1px solid #ccc; background-color:#fff; box-shadow: 0px 5px 5px  rgba(0, 0, 0, 0.3);}
+.bell-list{position:absolute; top:60px; right:10px; width:260px; border:1px solid #ccc; background-color:#fff; box-shadow: 0px 5px 5px  rgba(0, 0, 0, 0.3); display: none;}
 .bell-list .bell-list-title{cursor:initial; padding:12px; color:#fa8633; font-weight: 700; text-align:center; border-bottom:1px solid #aaa;}
 .bell-list ul li{ font-size:14px; padding:12px; border-bottom:1px solid #eee;}
 .bell-list ul li:hover{ background-color:#eee;}
 .btn-logout{font-size:15px;}
-.gnb li{display: inline-block; cursor:pointer; color:#333; font-size:20px; padding:6px 15px; font-weight: 700;}
+.gnb li{display: inline-block; cursor:pointer; color:#333; font-size:20px; padding:6px 15px; font-weight: 700; transition-duration:0.3s;}
+.gnb li:hover{color:#fa8633;}
 .util.m{display:none;}
 
 /* header-member */
@@ -197,7 +198,7 @@ footer{color:#aaa; font-size:0.8em; padding:30px; text-align:center;}
 .layer-popup .content.view .info-wrap .score i{color:#aaa;}
 .layer-popup .content.view .info-wrap .score i.fas{color:#f15050;}
 .layer-popup .content.view .info-wrap .review{line-height: 1.5;}
-.layer-popup .content.view .info-wrap .review p{white-space: pre-line;}
+.layer-popup .content.view .info-wrap .review p{white-space: pre-line; line-height:1.7;}
 .layer-popup .content.view .info-wrap .review .tag span{
 	display: inline-block;
 	font-size:14px;
@@ -287,7 +288,7 @@ footer{color:#aaa; font-size:0.8em; padding:30px; text-align:center;}
 .review-upload .star-review > div > i{cursor:pointer;margin-right:2px; font-size:18px; color:#aaa;}
 .review-upload .star-review > div > i.fas{color:var(--red-color);}
 .review-upload .star-review > div > input{font-weight:700; width:20px; padding:0; border:0; color:var(--red-color); margin-left:5px;}
-.review-upload textarea{display:block; margin-top:15px; width:100%; height:100px; border:1px solid #777; resize: none; padding:10px; border-radius:5px;}
+.review-upload textarea{display:block; margin-top:15px; width:100%; height:100px; border:1px solid #777; resize: none; padding:10px; border-radius:5px; line-height:1.5;}
 .review-upload .textarea-count{text-align:right; font-size:12px; margin-top:5px; padding:0 5px;}
 
 .review-upload .upload-box{display:flex; justify-content:space-between;}

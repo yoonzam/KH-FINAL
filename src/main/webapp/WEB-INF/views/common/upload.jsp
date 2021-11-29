@@ -30,7 +30,7 @@
 								<label>#일식<input type="radio" name="category" value="cg04" /></label>
 								<label>#아시아<input type="radio" name="category" value="cg05" /></label>
 								<label>#분식<input type="radio" name="category" value="cg06" /></label>
-								<label>#카페,디저트<input type="radio" name="category" value="cg07" /></label>
+								<label>#카페/디저트<input type="radio" name="category" value="cg07" /></label>
 								<label>#술집<input type="radio" name="category" value="cg08" /></label>
 							</div>
 							<p><strong>#해시태그</strong><br>음식점을 표현할 수 있는 태그를 모두 선택해주세요!<span class="upload-flag checkbox"></span></p>
@@ -79,6 +79,7 @@
 									<input id="photo1" type="file" name="photos" accept=".gif, .jpg, .jpeg, .png">
 									<div class="preview-photo photo1">
 									 	<img><i class="fas fa-times-circle"></i>
+									 	<input type="hidden" id="hdPhotos1" name="hdPhotos" value="empty">
 									</div>
 								</div>
 								<div>
@@ -86,6 +87,7 @@
 									<input id="photo2" type="file" name="photos" accept=".gif, .jpg, .jpeg, .png">
 									<div class="preview-photo photo2">
 										<img><i class="fas fa-times-circle"></i>
+										<input type="hidden" id="hdPhotos2" name="hdPhotos" value="empty">
 									</div>
 								</div>
 								<div>
@@ -93,6 +95,7 @@
 									<input id="photo3" type="file" name="photos" accept=".gif, .jpg, .jpeg, .png">
 									<div class="preview-photo photo3">
 										<img><i class="fas fa-times-circle"></i>
+										<input type="hidden" id="hdPhotos3" name="hdPhotos" value="empty">
 									</div>
 								</div>
 							</div>

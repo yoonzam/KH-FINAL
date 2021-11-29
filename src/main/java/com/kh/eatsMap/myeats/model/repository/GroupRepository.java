@@ -10,12 +10,7 @@ import com.kh.eatsMap.myeats.model.dto.Group;
 
 public interface GroupRepository extends MongoRepository<Group, String>{	
 	
-	//groupIdx제외 예정
 	List<Group> findById(ObjectId Id);
-
-
-//	@Query("{ 'nickname' : { '$regex' : ?0 }}")
-//    List<Member> findAllByMembers(String regex);
 
 
 

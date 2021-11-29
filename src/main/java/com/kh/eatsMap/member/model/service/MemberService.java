@@ -1,8 +1,11 @@
 package com.kh.eatsMap.member.model.service;
 
+import java.util.Map;
+
 import org.springframework.web.multipart.MultipartFile;
 
 import com.kh.eatsMap.member.model.dto.Member;
+import com.kh.eatsMap.member.model.dto.Notice;
 import com.kh.eatsMap.member.validator.EmailForm;
 import com.kh.eatsMap.member.validator.JoinForm;
 import com.kh.eatsMap.member.validator.ModifyForm;
@@ -13,7 +16,7 @@ public interface MemberService {
 
 	void sendTmpPassword(EmailForm form, String tmpPassword);
 
-	Member authenticateUser(Member member);
+	Map<String, Object> authenticateUser(Member member);
 
 	void insertMember(JoinForm persistUser);
 
@@ -31,5 +34,7 @@ public interface MemberService {
 	void updateMemberProfile(Member member, ModifyForm modifyForm);
 
 	void isLeaveMember(Member member);
+
+	void updateNotice(String id, Notice notice);
 
 }

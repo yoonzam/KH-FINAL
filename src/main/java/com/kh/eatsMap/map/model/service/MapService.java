@@ -7,6 +7,10 @@ import com.kh.eatsMap.timeline.model.dto.Review;
 
 public interface MapService {
 
-	List<Review> reviewList(String keyword);
+
+	List<Review> reviewList();
+
+
+
 
 }

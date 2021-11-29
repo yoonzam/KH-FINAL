@@ -1,11 +1,16 @@
 package com.kh.eatsMap.member;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
@@ -31,9 +36,13 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.context.WebApplicationContext;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.kh.eatsMap.calendar.model.dto.Calendar;
+import com.kh.eatsMap.calendar.model.repository.CalendarRepository;
 import com.kh.eatsMap.index.model.repository.ReviewRepository;
 import com.kh.eatsMap.member.model.dto.Member;
+import com.kh.eatsMap.member.model.dto.Notice;
 import com.kh.eatsMap.member.model.repository.MemberRepository;
+import com.kh.eatsMap.member.model.repository.NoticeRepository;
 import com.kh.eatsMap.timeline.model.dto.Review;
 
 
@@ -47,7 +56,10 @@ public class MemberRepositoryTest {
     
     @Autowired
     private ReviewRepository reviewRepository;
-    
+    @Autowired
+	private CalendarRepository calendarRepository;
+    @Autowired
+    private NoticeRepository noticeRepository;
     @Autowired
     private MongoTemplate mongoTemplate;
     
@@ -251,6 +263,73 @@ public class MemberRepositoryTest {
     @Test
     public void findReview() {
     	reviewRepository.findAll().forEach(e -> logger.debug(e.toString()));
+    }
+
+    @Test
+    public void test() {
+    	reviewRepository.findAll().forEach(e -> {
+    		logger.debug(e.getId().toString());
+    	});
+    	
+    }
+    
+    @Test
+	public void pushAboutSchedule() {
+    	
+    	List<Date> dates = new ArrayList<Date>();
+		calendarRepository.findAll().forEach(e -> {
+			try {
+				SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+				Date date = format.parse(e.getDate().toString());
+				//Date now = format.parse(new Date().toString());
+				
+				//현재시간보다 이후면서, 
+				if(date.after(new Date()) && (date.getTime() - new Date().getTime()) / 3600000 < 24) {
+					dates.add(date);
+					logger.debug(e.toString());
+				}
+				
+			} catch (ParseException e1) {
+				e1.printStackTrace();
+			}
+		});
+		
+		logger.debug(dates.toString());
+	}
+    
+    @Test
+    public void noticeTest() {
+    	
+    	Member member = repository.findByNickname("지원");
+    	Notice notice = new Notice();
+    	notice.setMemberId(member.getId());
+    	notice.setCalendarNotice(0);
+    	notice.setGroupNotice(0);
+    	notice.setParticipantNotice(0);
+    	notice.setFollowNotice(0);
+    	noticeRepository.save(notice);
+    
+    }
+    
+    @Test
+    public void findNotice() {
+    	Member member = repository.findByNickname("잇츠잇츠");
+    	logger.debug(noticeRepository.findByMemberId(member.getId()).toString());
+    }
+    
+    @Test
+    public void removeNotice() throws Exception {
+    	Member member = repository.findByNickname("jkl");
+    	Notice notice = new Notice();
+    	notice.setMemberId(member.getId());
+    	notice.setCalendarNotice(1);
+    	notice.setGroupNotice(0);
+    	notice.setParticipantNotice(0);
+    	
+    	mockMvc.perform(get("/member/removeNotice")
+    			.param("id", "dday"))
+    	.andExpect(status().isOk())
+    	.andDo(print());
     }
 
     

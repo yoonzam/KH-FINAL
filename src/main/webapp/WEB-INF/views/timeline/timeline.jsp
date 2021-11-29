@@ -92,17 +92,16 @@
 	</section>
 	<script>
 		let photoReviewCnt;
-		let viewTimeline = (id) => {
+		let viewTimeline = (reviewId) => {
 			$.ajax({
 				type: 'GET',
 				url: '/timeline/detail',
-				data:{ id:id },
+				data:{ id:reviewId },
 				dataType: 'json',
 				success: (data) => {
 					photoReviewCnt = 0;
 					$('#pop-review-detail .slide-img').css('transform','translateX(0px)');
-					
-					//photo
+					//사진
 					let html = '';
 					for (var i = 0; i < data.files.length; i++) html += '<li><img src="'+data.files[i]+'"></li>';
 					$('#pop-review-detail .slide-img').html(html);
@@ -111,7 +110,7 @@
 					$('#pop-review-detail .dot-btn').html(html);
 					$('#pop-review-detail .dot-btn > div:first-child').addClass('selected');
 					
-					//photoBtn
+					//사진 슬라이드 버튼
 					if(data.files.length > 1) {
 						$('#pop-review-detail .slide-btn').html(
 							'<i onclick="prevPhoto('+data.files.length+');" class="fas fa-arrow-circle-left"></i>'+
@@ -120,10 +119,10 @@
 						$('#pop-review-detail .slide-btn').html('');
 					}
 					
-					//writer
+					//작성자
 					$('#pop-review-detail .writer').html('<a>'+data.review.memberNick+'</a><a onclick="follow(\''+data.memberId+'\')" class="follow">잇친맺기</a>');
 					
-					//score
+					//별점
 					html = '<p>맛</p>';
 					for (var i = 0; i < 5; i++) {
 						if(i < data.review.taste) html += '<i class="fas fa-star">';
@@ -143,21 +142,21 @@
 					}
 					$('#pop-review-detail .score > div:last-child').html(html);
 					
-					//hashtag
+					//해시태그
 					html = '';
 					for (var i = 0; i < data.review.hashtag.length; i++) html += '<span>#'+data.review.hashtag[i]+'</span>';
 					$('#pop-review-detail .review > .tag').html(html);
 					
-					//review
+					//리뷰
 					$('#pop-review-detail .review > p').html(data.review.review);
 					
-					//resInfo
-					$('#pop-review-detail .info > .title').html('<i class="fas fa-home"></i> '+data.review.resName+'('+data.review.category+')');
+					//음식점정보&카테고리
+					$('#pop-review-detail .info > .title').html('<i class="fas fa-home"></i> '+data.review.resName+' ('+data.review.category+')');
 					$('#pop-review-detail .info > .location').html(data.review.addr);
 					
-					//controllerBtn
-					$('#pop-review-detail .pop-btn-edit').attr('onclick','editReview(\''+data.reviewId+'\');');
-					$('#pop-review-detail .pop-btn-delete').attr('onclick','deleteReview(\''+data.reviewId+'\');');
+					//세부버튼
+					$('#pop-review-detail .pop-btn-edit').attr('onclick','editReview(\''+reviewId+'\');');
+					$('#pop-review-detail .pop-btn-delete').attr('onclick','deleteReview(\''+reviewId+'\');');
 
 					$('#pop-review-detail').fadeIn(200);
 					resizeSlideImgHeight();
@@ -166,6 +165,14 @@
 					alert('에러발생');
 				}
 			});
+		}
+		
+		//사진 슬라이드
+		let movePhoto = () => {
+			$('#pop-review-detail .dot-btn > div').removeClass('selected');
+			$('#pop-review-detail .dot-btn > div[data-num="'+photoReviewCnt+'"]').addClass('selected');
+			let slideWidth = $('#pop-review-detail .slide-img img').width();
+			$('#pop-review-detail .slide-img').css('transform','translateX('+(-slideWidth*photoReviewCnt)+'px)');
 		}
 		
 		let nextPhoto = (length) => {
@@ -184,11 +191,29 @@
 			$('#pop-review-detail .slide-btn i.fa-arrow-circle-right').show();
 		}
 		
-		let movePhoto = () => {
-			$('#pop-review-detail .dot-btn > div').removeClass('selected');
-			$('#pop-review-detail .dot-btn > div[data-num="'+photoReviewCnt+'"]').addClass('selected');
-			let slideWidth = $('#pop-review-detail .slide-img img').width();
-			$('#pop-review-detail .slide-img').css('transform','translateX('+(-slideWidth*photoReviewCnt)+'px)');
+		//리뷰수정&삭제
+		let editReview = (reviewId) => {
+			$('#pop-review-detail').hide();
+			editFlag = true;
+			uploadReview(reviewId);
+		}
+		
+		let deleteReview = (reviewId) => {
+			$('#pop-review-detail').hide();
+			$.ajax({
+				type: "POST",
+				url: "${contextPath}/timeline/delete?id="+reviewId,
+				contentType: false,
+				processData: false,
+			 	cache:false,
+				success: () => {
+					alert("성공");
+					location.reload();
+				},
+				error: (e) => {
+					alert("실패");
+				}
+			});
 		}
 		
 	</script>

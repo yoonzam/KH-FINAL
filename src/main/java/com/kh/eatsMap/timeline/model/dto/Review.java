@@ -25,7 +25,6 @@ public class Review {
 	private String addr;			//주소
 	private String thumUrl;			//썸네일URL
 	private String review;			//리뷰내용
-	private LocalDateTime regDate;	//작성일
 	
 	@GeoSpatialIndexed(type = GeoSpatialIndexType.GEO_2DSPHERE)
 	private GeoJsonPoint location;
@@ -38,7 +37,6 @@ public class Review {
 	private String group;			//그룹명 (내피드는 생략)
 	private int privacy;			//공개여부(0,1,-1)
 	private int like;
-	
 	
 	@Override
 	public String toString() {
@@ -74,8 +72,8 @@ public class Review {
 			}			
 		}
 
-		return "Review [id=" + id + ", memberId=" + memberId + ", resName=" + resName + ", thumUrl=" + thumUrl
-				+ ", addr=" + addr + ", review=" + review + ", regDate=" + regDate + ", location=" + location
+		return "Review [id=" + id + ", memberId=" + memberId + ", memberNick=" + memberNick + ", resName=" + resName
+				+ ", addr=" + addr + ", thumUrl=" + thumUrl + ", review=" + review + ", location=" + location
 				+ ", taste=" + taste + ", clean=" + clean + ", service=" + service + ", category=" + category
 				+ ", hashtag=" + Arrays.toString(hashtag) + ", group=" + group + ", privacy=" + privacy + ", like="
 				+ like + "]";

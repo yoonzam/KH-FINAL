@@ -19,17 +19,17 @@ public class AuthInterceptor implements HandlerInterceptor {
 		
 		if(uriArr.length != 0) {
 			switch (uriArr[1]) {
-//				case "main":
-//					if(request.getSession().getAttribute("authentication") == null) {
-//						throw new HandlableException(ErrorCode.AUTHENTICATION_FAILED_ERROR);
-//					}
-//					break;
+				case "main":
+					if(request.getSession().getAttribute("authentication") == null) {
+						throw new HandlableException(ErrorCode.REDIRECT_LOGIN_PAGE);
+					}
+					break;
 				case "member":
 					memberAuthorize(request, response, uriArr);
 					break;
 //				case "timeline":
 //					if(request.getSession().getAttribute("authentication") == null) {
-//						throw new HandlableException(ErrorCode.AUTHENTICATION_FAILED_ERROR);
+//						throw new HandlableException(ErrorCode.REDIRECT_LOGIN_PAGE);
 //					}
 //					break;
 				default:
@@ -45,12 +45,12 @@ public class AuthInterceptor implements HandlerInterceptor {
 		switch (uriArr[2]) {
 		case "edit-profile":
 			if(httpRequest.getSession().getAttribute("authentication") == null) {
-				throw new HandlableException(ErrorCode.AUTHENTICATION_FAILED_ERROR);
+				throw new HandlableException(ErrorCode.REDIRECT_LOGIN_PAGE);
 			}
 			break;
 		case "quit":
 			if(httpRequest.getSession().getAttribute("authentication") == null) {
-				throw new HandlableException(ErrorCode.AUTHENTICATION_FAILED_ERROR);
+				throw new HandlableException(ErrorCode.REDIRECT_LOGIN_PAGE);
 			}
 			break;
 		default:

@@ -16,5 +16,8 @@
 <!-- kakaomap -->
 <script type="text/javascript"
 	src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=5bdae166c6881cf42916fd1d25349e6e&libraries=services,clusterer,drawing"></script>
-	
 <script defer type="text/javascript" src="/resources/js/common/common.js"></script>
+<!-- firebase -->
+<script src="https://apis.google.com/js/api.js"></script>
+<script defer src="/resources/js/member/push-messaging.js"></script>
+		
