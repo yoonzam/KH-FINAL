@@ -26,6 +26,7 @@
 }
 .edit-profile-form{
   width: 70%;
+  margin: auto;
 }
 input, .btn-cancel, button{
   width: 100%;

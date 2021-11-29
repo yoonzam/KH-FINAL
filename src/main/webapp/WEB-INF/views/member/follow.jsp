@@ -111,6 +111,8 @@
 
 document.querySelector('.btn-follow').addEventListener('click', e => {
 	
+	//execute();
+	
 	let data = {followingId : `${member.id}`};
 	let header = new Headers();
 	header.append('Content-Type', 'application/json;charset=UTF-8 ')

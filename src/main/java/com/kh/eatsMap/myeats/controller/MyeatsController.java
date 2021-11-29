@@ -42,7 +42,7 @@ import com.kh.eatsMap.timeline.model.service.TimelineService;
 
 
 @Controller
-@RequestMapping("/myeats/*")
+@RequestMapping("myeats")
 public class MyeatsController {
 
 	private static final Logger logger = LoggerFactory.getLogger(MyeatsController.class);
@@ -174,21 +174,25 @@ public class MyeatsController {
 	
 
 
-		@RequestMapping(value="/post", method=RequestMethod.GET)
-		public String postList(Model model) {
-			logger.info("postGET()........");
-			model.addAttribute("allReviews",timelineService.findAllReviews()); 
-			return "myeats/post";
-		}
-		
-		@RequestMapping(value="/detail", method=RequestMethod.GET)	
-		public String detailList(Model model) {
-			logger.info("detaiGET()........");
-			model.addAttribute("allReviews",timelineService.findAllReviews()); 
+//	@RequestMapping(value="/post", method=RequestMethod.GET)
+//	public String postList(Model model) {
+//		logger.info("postGET()........");
+//		model.addAttribute("allReviews",timelineService.findAllReviews()); 
+//		return "myeats/post";
+//	}
+	
+	@RequestMapping(value="/detail", method=RequestMethod.GET)	
+	public String detailList(Model model) {
+		logger.info("detaiGET()........");
+		model.addAttribute("allReviews",timelineService.findAllReviews()); 
 		return "myeats/detail";
 	}
 		
-	
+	//유진 11/30
+	@GetMapping("post")
+	public void group(@SessionAttribute("authentication") Member member,Model model) {
+		model.addAllAttributes(memberService.findMemberAndReviewByMemberId(member.getId()));
+	}
 	
 
 

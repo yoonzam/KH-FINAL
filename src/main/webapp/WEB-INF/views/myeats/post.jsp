@@ -1,7 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     
-    <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="pageNav" tagdir="/WEB-INF/tags" %>
 <!DOCTYPE html>
 <html>
@@ -18,60 +20,65 @@
 	<div class="container-wrap">
 		<div class="container">
 			<ul class="myeats-tab">
-				<li><a href="group">그룹관리</a></li>
+				<li><a href="/myeats/group">그룹관리</a></li>
 				<li class="selected">작성글관리</li>
-				<li><a href="detail">맛찜리스트</a></li>
-				<li><a href="/member/modifyForm">회원정보 수정</a></li>
+				<li><a href="/myeats/detail">맛찜리스트</a></li>
+				<li><a href="/member/edit-profile">회원정보 수정</a></li>
 			</ul>
 		    <div class="profile">
 				<div class="wrap-profile-img">
 					<div class="profile-img">
-						<img src="/resources/img/upload/02.jpg">
+						<c:if test="${empty member.profile }">
+							<img src="/resources/img/member/user.png">
+						</c:if>
+						<c:if test="${not empty member.profile }">
+							<img src="http://localhost:9090/file/${member.profile}">
+						</c:if>
 					</div>
 				</div><!-- wrap-profile-img -->
 	            <div class="wrap-profile-info">
 					<div class="postCnt">
 						<h3 class="postCnt-txt">게시물</h3>
-						<span class="cnt">11</span>
+						<span class="cnt">${fn:length(reviews)}</span>
 					</div>
 					<div class="followCnt">
 						<h3 class="postCnt-txt">내 잇친</h3>
-						<span class="cnt">111</span>
+						<span class="cnt">${followCnt}</span>
 					</div>
 					<div class="followingCnt">
 						<h3 class="postCnt-txt">나를 추가한 잇친</h3>
-						<span class="cnt">101</span>
+						<span class="cnt">${followerCnt }</span>
 					</div>
 				</div><!-- wrap-profile-info -->
 			</div>
-		<!-- 	<div class="btn-wrap">
-				<a class="btn-edit-profile">잇친 맺기</a>
-			</div>  -->
-			
+
             <div class="section">
 				<div class="detail-wrap">
 					<h2><i class="fas fa-utensils color-m"></i> 게시글 <span class="color-m">관리하기 </span> </h2>
 					
-						<c:forEach items="${allReviews}" var="allReviews" varStatus="status"  begin="0"  >
-						<c:if test="${status.first}"><ul class="detail-brd"></c:if>
-						<c:choose>
-						<c:when test="true">
-						<li>
-							<div class="eats-list">
-								<div class="thum thum2">
-									<img src="/resources/img/upload/01.jpg">
-									<div class="info2">
-										<div class="eats-location">${allReviews.resName}<i onclick="clickLike();" class="eats-like far fa-heart"></i></div>
-										<div class="eats-score"><i class="fas fa-star"></i>5.0</div>
+						<c:if test="${empty reviews }">
+							<h4 class="empty-review" style="padding: 40px; text-align:center; border: 1px solid #ddd; width: 928px; margin: auto;">게시물이 존재하지 않습니다.</h4>
+						</c:if>
+						<c:if test="${not empty reviews }">
+						<ul class="detail-brd">
+							<c:forEach items="${reviews}" var="review">
+							<li>
+								<div class="eats-list">
+									<div class="thum thum2">
+										<img src="${ not empty review.thumUrl ? review.thumUrl : '/resources/img/common/upload-logo.png'}">
+										<div class="info2">
+											<div class="eats-location">${review.resName}<i onclick="clickLike();" class="eats-like far fa-heart"></i></div>
+											<div class="eats-score">
+												<i class="fas fa-star"></i>
+												<fmt:formatNumber value="${(review.taste+review.clean+review.service)/3}" pattern=".0"/>
+											</div>
+										</div>
 									</div>
 								</div>
-							</div>
-						</li>
-						
-						</c:when>
-						</c:choose> 
-						<c:if test="${status.last}"></ul></c:if>
-						</c:forEach>
+							</li>
+							</c:forEach>
+						</ul>						
+						</c:if>
 				
 				</div><!-- detail-wrap -->
 		</div><!-- section -->

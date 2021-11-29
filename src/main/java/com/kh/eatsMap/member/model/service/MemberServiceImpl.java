@@ -116,13 +116,6 @@ public class MemberServiceImpl implements MemberService{
 		noticeRepository.save(notice);
 	}
 
-	@Override
-	public void insertProfileImg(Member member, MultipartFile file) {
-		FileUtil fileUtil = new FileUtil();
-		member.setProfile(fileUtil.fileUpload(file));
-		
-		memberRepository.save(member);
-	}
 
 	@Override
 	public void updatePassword(String email, String tmpPassword) {
@@ -147,10 +140,20 @@ public class MemberServiceImpl implements MemberService{
 	}
 
 	@Override
-	public void updateMemberProfile(Member member, ModifyForm form) {
+	public void updateMemberProfile(Member member, ModifyForm form, MultipartFile photo) {
 		member.setNickname(form.getNickname());
-		member.setPassword(form.getPassword());
+		member.setPassword(passwordEncoder.encode(form.getPassword()));
 		
+		if(!photo.isEmpty()) {
+			FileUtil fileUtil = new FileUtil();
+			Fileinfo fileInfo = fileUtil.fileUpload(photo);
+			fileInfo.setTypeId(memberRepository.findById(member.getId()).getId());
+			fileRepository.save(fileInfo);
+			
+			logger.debug(fileInfo.toString());
+			
+			member.setProfile(fileInfo);
+		}
 		memberRepository.save(member);
 	}
 
@@ -161,7 +164,18 @@ public class MemberServiceImpl implements MemberService{
 	}
 
 	@Override
-	public void updateNotice(String id, Notice notice) {
+	public void updateNotice(String noticeId, Notice notice) {
+		switch (noticeId) {
+		case "dday": notice.setCalendarNotice(1); break;
+		case "calendar": notice.setParticipantNotice(1); break;
+		case "follow": notice.setFollowNotice(1); break;
+		case "group": notice.setGroupNotice(1); break;	}	
+		
+		noticeRepository.save(notice);
+	}		
+	
+	@Override
+	public void updateNoticeForDel(String id, Notice notice) {
 		switch (id) {
 		case "dday": notice.setCalendarNotice(0); break;
 		case "calendar": notice.setParticipantNotice(0); break;
@@ -211,5 +225,12 @@ public class MemberServiceImpl implements MemberService{
 			.ifPresent(e -> followerRepository.delete(e));
 			
 	}
+
+	@Override
+	public Notice findNotice(ObjectId followingId) {
+		return noticeRepository.findByMemberId(followingId);
+	}
+
+
 
 }
