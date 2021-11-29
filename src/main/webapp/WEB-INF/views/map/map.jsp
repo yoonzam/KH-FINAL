@@ -61,6 +61,10 @@
 .btn:hover{
 	background-color:#ffa54f;
 }
+
+
+
+
 </style>
 </head>
 <body>
@@ -97,10 +101,11 @@
 							<img class="image-thumbnail" src="/resources/img/upload/01.jpg">
 						</div>
 						<div class="info">
-							<div class="eats-name">
-								스시 아루히 &emsp;&emsp;&emsp;<i onclick="clickLock(this);"
-									class="fas fa-unlock"></i>
+							<div class="title-wrap">
+								<div class="eats-name">스시 아루히</div>
+								<div class="icons"><i onclick="clickLock(this);"class="fas fa-unlock"></i></div>
 							</div>
+							
 							<div class="eats-location">서울 영등포구</div>
 							<div class="eats-tag">
 								<span>#가성비</span> <span>#친근함</span> <span>#1~2만원대</span>
@@ -177,13 +182,19 @@
 				  }
 			  }).then(json => {	//promise객체의 json
 				  console.dir(json);
-				  console.dir(json[0].id);
 				  
+				  for (var i = 0; i < json.length; i++) {
+					  let returnDiv = takeReview(json[i].addr,json[i].resName,json[i].hashtag);
+						 var $div = $(returnDiv);
+						 $('.map-review').append($div);
+				}
 				 	
-			/* 	 json.forEach(e->{
-					 
-				 }) 
-				  */
+				/* reviewList.forEach(e->{
+					 let returnDiv = takeReview(json[0].id,json[0].resName,json[0].hashtag);
+					 var $div = $(reviewContent);
+					 $('.map-review').append($div);
+				 });   */
+				  
 				 /*  let returnDiv = takeReview(json[0].id,json[0].resName,json[0].hashtag);
 				  var $div = $(reviewContent);
 				  $('.map-review').append($div); */
@@ -197,25 +208,38 @@
 		
 		//review div 받아온 리뷰에 맞게 수정하는 함수
 		let takeReview = (address,name,tag) =>{
-			let tags ='';
-			tag.forEach(e=>{
-				tags 
-			})
-			let reviewContent = `<div class="review_wrap">
-					<div class="img-box">
-					<img class="image-thumbnail" src="/resources/img/upload/01.jpg">
-				</div>
-				<div class="info">
-					<div class="eats-name">
-						${name} &emsp;&emsp;&emsp;<i onclick="clickLock(this);"
-							class="fas fa-unlock"></i>
-					</div>
-					<div class="eats-location">${address}</div>
-					<div class="eats-tag">
-						${tag}
-					</div>
-				</div>
-			</div>`;
+			
+			
+			let tags = '';
+			for (var i = 0; i < tag.length; i++) {
+				tags += '<span>#'+tag[i]+'</span>';
+			}
+			
+			
+			
+			console.dir(tags);
+			
+			let addr = address;
+			let na = name;
+			let t = tag;
+			//문자열 자르기
+			let splitAddr = address.split(' ');
+			let splitName = name.split(' ');
+			
+			let reviewContent = 
+				'<div class="review_wrap">'
+				+'<div class="img-box">'
+				+'<img class="image-thumbnail" src="/resources/img/upload/01.jpg">'
+				+'</div>'
+				+'<div class="info">'
+				+'<div class="title-wrap">'
+				+'<div class="eats-name">'+splitName[0]+'</div>'	
+				+'<div class="icons"><i onclick="clickLock(this);"class="fas fa-unlock"></i></div>'		
+				+'</div>'
+				+'<div class="eats-location">'+ splitAddr[0] + ' ' +splitAddr[1] +'</div>'
+				+'<div class="eats-tag">'+ tags +'</div>'	
+				+'</div>';
+				
 		
 			return reviewContent;
 		
