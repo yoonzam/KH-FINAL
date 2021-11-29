@@ -1,13 +1,18 @@
 package com.kh.eatsMap.calendar.model.service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
+import org.apache.commons.collections.map.HashedMap;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.kh.eatsMap.calendar.model.dto.Calendar;
 import com.kh.eatsMap.calendar.model.repository.CalendarRepository;
+import com.kh.eatsMap.member.model.dto.Member;
 
 import lombok.RequiredArgsConstructor;
 
@@ -25,8 +30,19 @@ public class CalendarServiceImpl implements CalendarService{
 
 
 	@Override
-	public List<Calendar> selectAllSchedule() {
-		return calendarRepository.findAll();
+	public Map<String, Object> selectAllSchedule(Member member) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		List<Calendar> calendars = calendarRepository.findByMemberId(member.getId());
+		calendars.forEach(e -> {
+			
+		});
+		return map;
+	}
+
+
+	@Override
+	public Calendar detailSchedule(ObjectId id) {
+		return calendarRepository.findById(id);
 	}
 	 
 	

@@ -5,10 +5,12 @@ import java.net.URLEncoder;
 import java.util.List;
 import java.util.Map;
 
+import org.bson.types.ObjectId;
 import org.jose4j.json.internal.json_simple.JSONArray;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.geo.GeoJsonPoint;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
@@ -18,6 +20,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
@@ -44,21 +47,26 @@ public class CalendarController {
 	
 	@GetMapping("getSchedule")
 	@ResponseBody
-	public List<Calendar> getSchedule() {
-		List<Calendar> scheduleList = calendarService.selectAllSchedule();
-
+	public Map<String,Object> getSchedule(@SessionAttribute("authentication") Member member) {
+		Map<String,Object> scheduleList = calendarService.selectAllSchedule(member);
 		return scheduleList;
 	}
 	
 	@PostMapping("upload")
-	public String makeSchedule(Calendar calendar, @SessionAttribute("authentication") Member member){
+	public String makeSchedule(Calendar calendar,double latitude, double longitude, @SessionAttribute("authentication") Member member){
+		calendar.setLocation(new GeoJsonPoint(longitude, latitude));
 		calendar.setMemberId(member.getId());
-		logger.debug(calendar.toString());
 		calendarService.makeSchedule(calendar);
 		
 		return "redirect:/calendar/";
 	}
-
 	
-	
+	@GetMapping("detail")
+	@ResponseBody
+	public Calendar detail(@RequestBody Calendar calendar){
+		logger.debug("id : " + calendar.toString());
+		Calendar calendarDetail = calendarService.detailSchedule(calendar.getId());
+		logger.debug(calendarDetail.toString());
+		return calendarDetail;
+	}
 }

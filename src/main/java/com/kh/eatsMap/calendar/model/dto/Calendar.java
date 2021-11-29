@@ -22,12 +22,10 @@ public class Calendar {
 	private String date;
 	private String time;
 	
-	private String location;
+	private String resName;
 	
-	/*
-	 * @GeoSpatialIndexed(type = GeoSpatialIndexType.GEO_2DSPHERE) private
-	 * GeoJsonPoint location;
-	 */
+	@GeoSpatialIndexed(type = GeoSpatialIndexType.GEO_2DSPHERE) private
+	GeoJsonPoint location;
 	
 	private String participant;
 	/*
