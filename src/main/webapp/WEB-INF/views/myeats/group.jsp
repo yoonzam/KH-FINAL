@@ -3,6 +3,8 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib prefix="pageNav" tagdir="/WEB-INF/tags" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+
 
 <!DOCTYPE html>
 <html>
@@ -92,7 +94,7 @@
 							<div class="group-img"><img src="${!empty groups.thumUrl ? groups.thumUrl : '/resources/img/common/upload-logo.png'}"></div>
 								<p class="group-info">
 									<strong>${groups.groupName}</strong><br>
-									<i class="fas fa-user"></i> 5&nbsp;&nbsp;<i class="fas fa-feather"></i>
+									<i class="fas fa-user"></i> ${fn:length(groups.memberNickName) }    &nbsp;&nbsp;<i class="fas fa-feather"></i>
 									<fmt:formatDate pattern="yyyy/MM/dd" value="${groups.groupcreatedate}"/>
 								</p>
 						</div>

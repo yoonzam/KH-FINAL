@@ -1,10 +1,12 @@
 package com.kh.eatsMap.member.controller;
 
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
 import javax.servlet.http.HttpSession;
 
+import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -27,6 +29,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.kh.eatsMap.common.code.ErrorCode;
 import com.kh.eatsMap.common.exception.HandlableException;
 import com.kh.eatsMap.common.validator.ValidatorResult;
+import com.kh.eatsMap.member.model.dto.Follow;
 import com.kh.eatsMap.member.model.dto.Member;
 import com.kh.eatsMap.member.model.dto.Notice;
 import com.kh.eatsMap.member.model.repository.NoticeRepository;
@@ -37,6 +40,8 @@ import com.kh.eatsMap.member.validator.JoinForm;
 import com.kh.eatsMap.member.validator.JoinFormValidator;
 import com.kh.eatsMap.member.validator.ModifyForm;
 import com.kh.eatsMap.member.validator.ModifyFormValidator;
+import com.kh.eatsMap.timeline.model.dto.Review;
+import com.kh.eatsMap.timeline.model.service.TimelineService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -276,8 +281,40 @@ public class MemberController {
 	
 	@GetMapping("saveToken/{clientToken}")
 	public void saveToken(@PathVariable String clientToken, @SessionAttribute("authentication") Member member) {
+		logger.debug("token받아오기 : " + clientToken);
 		member.setToken(clientToken);
 		memberService.saveMember(member);
+	}
+	
+	//follow-feed
+	@GetMapping("follow/{memberId}")
+	public String follow(@PathVariable ObjectId memberId, @SessionAttribute("authentication") Member member
+						,Model model) {
+		
+		if(member.getId() == memberId) {
+			return "redirect:/myeats/post";
+		}
+		Follow follow = memberService.findFollowByMemberId(memberId, member.getId());
+		Map<String,Object> commandMap = memberService.findMemberAndReviewByMemberId(memberId);
+
+		model.addAllAttributes(commandMap)
+			.addAttribute("follow",follow); 
+		
+		return "member/follow";
+	}
+	
+	//follow
+	@PostMapping("follow")
+	@ResponseBody
+	public void followImpl(@RequestBody Follow followUser, @SessionAttribute("authentication") Member member) {
+		logger.debug("팔로우 할 id : " + followUser.toString());
+		memberService.followMember( member.getId(), followUser);
+	}
+	
+	@PostMapping("follow-cancel")
+	@ResponseBody
+	public void followCancel(@RequestBody Follow followUser, @SessionAttribute("authentication") Member member) {
+		memberService.followCancel(member.getId(), followUser);
 	}
 	
 	//파이어베이스

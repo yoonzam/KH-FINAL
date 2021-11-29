@@ -1,4 +1,4 @@
-package com.kh.eatsMap.myeats.model.dto;
+package com.kh.eatsMap.common.util;
 
 
 import javax.servlet.http.HttpServletRequest;

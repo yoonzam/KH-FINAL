@@ -24,6 +24,7 @@ import org.springframework.data.domain.Sort.TypedSort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.data.util.Streamable;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
@@ -126,7 +127,7 @@ public class RepositoryTest {
 		
 		@Test
 		public void findMemberss() {
-			List<Member> result = null;
+			 List<Member> result = null;
 			//잇츠를 포함하는
 			String tagName = "잇츠";
 
@@ -142,5 +143,13 @@ public class RepositoryTest {
 		//매개변수가 있는 메서드 테스트시 에러남 initialization
 
    
+		@Test
+		public void update(){
+			Query query = new Query();
+			Update update = new Update();
+			query.addCriteria(Criteria.where("id").is("619cb6eb7e8be86c3929698e"));
+			update.set("groupName", "ee");
+			mongoTemplate.updateFirst(query, update, Group.class);
+		}
     
 }

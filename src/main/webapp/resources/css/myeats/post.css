@@ -45,23 +45,32 @@
   margin-bottom: 60px;
   position: relative;
 }
-.btn-edit-profile{
+.btn-follow, .btn-follow-cancel{
   position: absolute;
   text-align: center;
   width: 100%;
   padding: 10px;
-  background-color: var(--main-color);
   border-radius:5px;
-  color: #fff;
   transition-duration:0.5s;
   cursor: pointer;
   font-weight: 700;
   font-size: 17px;
 }
-.btn-edit-profile:hover{
+.btn-follow{
+	background-color: var(--main-color);
+	color: #fff;
+}
+.btn-follow:hover{
   background-color:var(--hover-color);
 }
 
+.btn-follow-cancel{
+	background-color: #ddd;
+	color: #666;
+}
+.btn-follow-cancel:hover{
+	background-color: #eee;
+}
 .timeline-brd li{
 	width:33.3%;
 	padding:15px;

@@ -143,6 +143,8 @@
     border-top: none;
     background-color: #fff;
     display: none;
+    width: 300px;
+    margin-left: 175px;
 }
 
 .schedule-list .locationList>li {

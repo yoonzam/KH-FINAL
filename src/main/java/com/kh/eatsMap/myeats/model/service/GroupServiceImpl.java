@@ -23,14 +23,14 @@ import com.kh.eatsMap.common.code.Config;
 import com.kh.eatsMap.common.mail.MailSender;
 import com.kh.eatsMap.common.util.FileUtil;
 import com.kh.eatsMap.common.util.Fileinfo;
+import com.kh.eatsMap.common.util.FindCriteria;
+import com.kh.eatsMap.common.util.PageObject;
 import com.kh.eatsMap.member.model.dto.Member;
 import com.kh.eatsMap.member.model.repository.MemberRepository;
 import com.kh.eatsMap.member.validator.EmailForm;
 import com.kh.eatsMap.member.validator.JoinForm;
 import com.kh.eatsMap.myeats.model.dao.GroupDAO;
-import com.kh.eatsMap.myeats.model.dto.FindCriteria;
 import com.kh.eatsMap.myeats.model.dto.Group;
-import com.kh.eatsMap.myeats.model.dto.PageObject;
 import com.kh.eatsMap.myeats.model.repository.GroupRepository;
 import com.kh.eatsMap.timeline.model.repository.FileRepository;
 import com.kh.eatsMap.timeline.model.repository.TimelineRepository;
@@ -126,8 +126,8 @@ public class GroupServiceImpl implements GroupService{
 	
 	//수정하기
 		@Override
-		public void modify(Group group) throws Exception{
-			dao.update(group);
+		public void modify(Group group,List<MultipartFile> photos, Member member) throws Exception{
+			dao.update(group,photos,member);
 		}
 	
 

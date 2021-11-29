@@ -12,17 +12,24 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.kh.eatsMap.common.util.FileUtil;
+import com.kh.eatsMap.common.util.Fileinfo;
+import com.kh.eatsMap.common.util.FindCriteria;
+import com.kh.eatsMap.common.util.PageObject;
 import com.kh.eatsMap.member.model.dto.Member;
-import com.kh.eatsMap.myeats.model.dto.FindCriteria;
 import com.kh.eatsMap.myeats.model.dto.Group;
-import com.kh.eatsMap.myeats.model.dto.PageObject;
 import com.kh.eatsMap.myeats.model.repository.GroupRepository;
+import com.kh.eatsMap.timeline.model.repository.FileRepository;
+import com.kh.eatsMap.timeline.model.repository.TimelineRepository;
 
 @Repository
 public class GroupDAO {
 	
 	private static GroupRepository groupRepository;
+	private static TimelineRepository timelineRepository;
+	private static FileRepository fileRepository;
 	
 	 @Autowired
 	 private MongoTemplate mongoTemplate;
@@ -108,15 +115,30 @@ public class GroupDAO {
 	
 	
 	
-	//수정하기에 쓰인 update(미완)
-		public void update(Group group) throws Exception{
+	//수정하기에 쓰인 update
+		public void update(Group group,List<MultipartFile> photos, Member member ) throws Exception{
+			
+			group.setMemberId(member.getId());
+			
 			Query query = new Query();
 			Update update = new Update();
 			//query.addCriteria(Criteria.where("컬럼명1").is("조건값1"));
-			query.addCriteria(Criteria.where("id").is("id"));
+			query.addCriteria(Criteria.where("id").is(group.getId()));
 			//추가필요 update.set("컬럼명1", "변경값1");
 			update.set("groupName", group.getGroupName());
-			mongoTemplate.updateMulti(query, update, "group");
+			
+			
+			
+//			FileUtil fileUtil = new FileUtil();
+//			for (MultipartFile photo : photos) {
+//				if(!photo.isEmpty()) {
+//					Fileinfo fileInfo = fileUtil.fileUpload(photo);
+//					fileInfo.setTypeId(group.getId());
+//					fileRepository.save(fileInfo);
+//				}
+//			}
+			update.set("thumUrl", group.getThumUrl());
+			mongoTemplate.updateFirst(query, update, Group.class);
 		}
 	
 	

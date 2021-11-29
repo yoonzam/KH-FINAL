@@ -88,14 +88,12 @@ $('.filter-menu input:checkbox').click((e)=>{
 	$('.locationList').click(function(e){
 		let placeIdx = e.target.dataset.placeIdx;
 		let place = searchPlaces[placeIdx];
-		$('input[name="uploadPlace"]').val(place.place_name);
-		$('input[name="resName"]').val(place.place_name);
-		$('input[name="addr"]').val(place.road_address_name);
-		$('input[name="latitude"]').val(place.y);
-		$('input[name="longitude"]').val(place.x);
+		$('input[name="location"]').val(place.place_name);
 		
-		drawSpecificMap(place);
-		placeFlag = true;
 		$('.locationList').hide();
 	})
+
+
+	
+
 

@@ -1,4 +1,4 @@
-package com.kh.eatsMap.myeats.model.dto;
+package com.kh.eatsMap.common.util;
 
 public class FindCriteria extends PageObject{
 	//extends PageCriteria상속받은 이유: page,perPageNum를 그대로 유지하기 위해서

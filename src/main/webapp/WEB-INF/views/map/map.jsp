@@ -148,13 +148,15 @@
 				e.className = "fas fa-unlock";
 			}
 		}
-		var container = document.getElementById('map'); //지도를 담을 영역의 DOM 레퍼런스
-		var options = { //지도를 생성할 때 필요한 기본 옵션
+		
+		  var container = document.getElementById('map'); //지도를 담을 영역의 DOM 레퍼런스
+		  var options = { //지도를 생성할 때 필요한 기본 옵션
 			center : new kakao.maps.LatLng(37.54699, 127.09598), //지도의 중심좌표.
 			level : 3
 		//지도의 레벨(확대, 축소 정도)
 		};
 		var map = new kakao.maps.Map(container, options); //지도 생성 및 객체 리턴
+		
 		
 		document.querySelector('#search').addEventListener('click', (e) => {
 		    let keyword = document.querySelector('.keyword').value;
@@ -171,8 +173,11 @@
 				document.querySelector(".popup-wrap").style.display = 'none';
 		  }  
 		});
+		
 		/*비동기로 백으로 값보내기 */
 		let searchKeyword = (keyword) =>{
+			let parent = document.querySelector('.map-review');
+			removeAllChildNodes(parent);
 			fetch("/map/search?keyword=" + keyword)
 			  .then(response => {
 				  if(response.ok){	//통신 성공시
@@ -181,30 +186,101 @@
 					  throw new Error(response.status);
 				  }
 			  }).then(json => {	//promise객체의 json
-				  console.dir(json);
+				console.dir(json);
+			  	//마크 찍어주기
+				markerCreate(json,keyword);
 				  
-				  for (var i = 0; i < json.length; i++) {
+				for (var i = 0; i < json.length; i++) {
 					  let returnDiv = takeReview(json[i].addr,json[i].resName,json[i].hashtag);
 						 var $div = $(returnDiv);
 						 $('.map-review').append($div);
 				}
-				 	
-				/* reviewList.forEach(e->{
-					 let returnDiv = takeReview(json[0].id,json[0].resName,json[0].hashtag);
-					 var $div = $(reviewContent);
-					 $('.map-review').append($div);
-				 });   */
-				  
-				 /*  let returnDiv = takeReview(json[0].id,json[0].resName,json[0].hashtag);
-				  var $div = $(reviewContent);
-				  $('.map-review').append($div); */
-				  
-				  
-				  
+					  
 			  }).catch(error => {
 				  alert("실패");
 			  });
 		}
+		//이전 검색 삭제
+		function removeAllChildNodes(parent) {
+		    while (parent.firstChild) {
+		        parent.removeChild(parent.firstChild);
+		    }
+		}
+		
+		//리뷰검색 마크 생성
+		let markerCreate = (reviews,keyword) =>{
+			var positions = [];
+			
+			
+			for (var i = 0; i < reviews.length; i++) {
+				let mark = {
+				        title: reviews[i].resName, 
+				        latlng: new kakao.maps.LatLng(reviews[i].location.coordinates[1], reviews[i].location.coordinates[0])
+				 }
+				positions.push(mark);
+			}
+			
+			console.dir(positions);
+
+			// 마커 이미지의 이미지 주소입니다
+			var imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png"; 
+			positions.forEach(function(position, idx) {
+				 // 마커 이미지의 이미지 크기 입니다
+			    var imageSize = new kakao.maps.Size(24, 35); 
+			    
+			    // 마커 이미지를 생성합니다    
+			    var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize); 
+			    console.dir("마커 생성중");
+			    // 마커를 생성합니다
+			   var marker = new kakao.maps.Marker({
+			        map: map, // 마커를 표시할 지도
+			        position: position.latlng, // 마커를 표시할 위치
+			        title : position.title, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
+			        image : markerImage // 마커 이미지
+			        
+			    });	
+			   kakao.maps.event.addListener(marker, 'click', function(){
+				   let reviewShow = document.querySelector(".popup-wrap");
+					if (reviewShow.style.display == "none") {
+						reviewShow.style.display = "";
+					}else{
+						reviewShow.style.display = "none";
+					}
+					alert('마커를 클릭했습니다!');
+					
+					//박스 정보 출력
+					restInfo(marker,keyword);
+			   });
+			});
+			
+			
+		}
+		
+		let restInfo = (marker,keyword) =>{
+			console.dir(marker.getPosition().getLat());
+			fetch('https://dapi.kakao.com/v2/local/search/keyword.json?y='+ marker.getPosition().getLat() +'&x='+ marker.getPosition().getLng() +'&radius=1&query=' +keyword, {
+				  headers: {
+				    Authorization: `KakaoAK de36fa19e556a7179bb149f25fa41a95` 
+				  }
+				})
+				.then(response => response.json())
+				.then(json => {
+				// 받은 json으로 기능 구현
+				console.dir(json.documents[0]);
+				markerInfo = json.documents[0];
+				//음식점 이름, 주소 텍스트로 변환 
+				let placeName = json.documents[0].place_name;
+				let roadAddress = json.documents[0].road_address_name;
+				
+				//팝업창에 내용 기입
+				document.querySelector('#place-name').innerHTML = placeName;
+				document.querySelector('#road-address').innerHTML = roadAddress;
+				
+				
+			});
+		}
+		
+		
 		
 		//review div 받아온 리뷰에 맞게 수정하는 함수
 		let takeReview = (address,name,tag) =>{
@@ -214,9 +290,7 @@
 			for (var i = 0; i < tag.length; i++) {
 				tags += '<span>#'+tag[i]+'</span>';
 			}
-			
-			
-			
+				
 			console.dir(tags);
 			
 			let addr = address;
@@ -239,28 +313,13 @@
 				+'<div class="eats-location">'+ splitAddr[0] + ' ' +splitAddr[1] +'</div>'
 				+'<div class="eats-tag">'+ tags +'</div>'	
 				+'</div>';
-				
-		
+			
 			return reviewContent;
-		
 		}
 	
-		
-		/* console.dir(reviewContent);
-		//dom으로 영역 밑에 붙여보기
-		//document.querySelector('.map-review').appendChild(reviewContent);
-		var $div = $(reviewContent);
-		$('.map-review').append($div); */
-		
-
-		
-
-		
-		
 		/* 맵에 표시된 가게의 json정보를 담는 변수 */
 		let markerInfo;
-		
-		
+				
 		let searchMap = (keyword) =>{
 			
 			// 장소 검색 객체를 생성합니다
@@ -289,12 +348,9 @@
 			        map: map,
 			        position: new kakao.maps.LatLng(place.y, place.x) 
 			    });
-			    
-			    
 			    // 마커에 클릭이벤트를 등록합니다
 			    kakao.maps.event.addListener(marker, 'click', function() {
-			    	
-			    	
+			    				    	
 			    	let reviewShow = document.querySelector(".popup-wrap");
 					if (reviewShow.style.display == "none") {
 						reviewShow.style.display = "";
@@ -303,33 +359,52 @@
 					}
 					alert('마커를 클릭했습니다!');
 			    		
-					
+					restInfo(marker,keyword);
 					//https://dapi.kakao.com/v2/local/search/keyword.json?y=37.514322572335935&x=127.06283102249932&radius=20000&query=카카오프렌즈
 					
-					fetch('https://dapi.kakao.com/v2/local/search/keyword.json?y='+ marker.getPosition().getLat() +'&x='+ marker.getPosition().getLng() +'&radius=1&query=' +keyword, {
-						  headers: {
-						    Authorization: `KakaoAK de36fa19e556a7179bb149f25fa41a95` 
-						  }
-						})
-						.then(response => response.json())
-						.then(json => {
-						// 받은 json으로 기능 구현
-						console.dir(json.documents[0]);
-						markerInfo = json.documents[0];
-						//음식점 이름, 주소 텍스트로 변환 
-						let placeName = json.documents[0].place_name;
-						let roadAddress = json.documents[0].road_address_name;
-						
-						//팝업창에 내용 기입
-						document.querySelector('#place-name').innerHTML = placeName;
-						document.querySelector('#road-address').innerHTML = roadAddress;
-						
-						
-					});
+					
 				    
 				});
 			}
-			
+		}
+		
+		let markerClickEvent = (marker) =>{
+			 // 마커에 클릭이벤트를 등록합니다
+		    kakao.maps.event.addListener(marker, 'click', function() {
+		    				    	
+		    	let reviewShow = document.querySelector(".popup-wrap");
+				if (reviewShow.style.display == "none") {
+					reviewShow.style.display = "";
+				}else{
+					reviewShow.style.display = "none";
+				}
+				alert('마커를 클릭했습니다!');
+		    		
+				
+				//https://dapi.kakao.com/v2/local/search/keyword.json?y=37.514322572335935&x=127.06283102249932&radius=20000&query=카카오프렌즈
+				
+				fetch('https://dapi.kakao.com/v2/local/search/keyword.json?y='+ marker.getPosition().getLat() +'&x='+ marker.getPosition().getLng() +'&radius=1&query=' +keyword, {
+					  headers: {
+					    Authorization: `KakaoAK de36fa19e556a7179bb149f25fa41a95` 
+					  }
+					})
+					.then(response => response.json())
+					.then(json => {
+					// 받은 json으로 기능 구현
+					console.dir(json.documents[0]);
+					markerInfo = json.documents[0];
+					//음식점 이름, 주소 텍스트로 변환 
+					let placeName = json.documents[0].place_name;
+					let roadAddress = json.documents[0].road_address_name;
+					
+					//팝업창에 내용 기입
+					document.querySelector('#place-name').innerHTML = placeName;
+					document.querySelector('#road-address').innerHTML = roadAddress;
+					
+					
+				});
+			    
+			});
 		}
 		
 		let shwoBox = () =>{
@@ -343,6 +418,8 @@
 			
 		}
 		
+		
+	
 		
 		/* 커스텀 마커 생성 */
 		var imageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_red.png', // 마커이미지의 주소입니다    
@@ -393,6 +470,7 @@
 		
 		
 	</script>
+	<script type="text/javascript" src="/resources/js/map/Geolocation.js"></script>
 
 </body>
 </html>
