@@ -83,6 +83,6 @@ public class TimelineMongoTest {
 	@Test
 	public void findReviewByResName() {
 		Sort sort = Sort.by("resName").descending();
-		logger.info(timelineRepository.findByResNameOrderByIdAsc("라쿠치나", sort).toString());
+		logger.info(timelineRepository.findByResNameOrderByIdAsc("알마또", sort).toString());
 	}
 }

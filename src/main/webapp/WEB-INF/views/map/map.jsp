@@ -97,104 +97,21 @@
 			</div>
 			<div class="map-review">
 				<div class="review_wrap">
-					<div class="img-box">
-						<img class="image-thumbnail" src="/resources/img/upload/01.jpg">
-					</div>
-					<div class="info">
-						<div class="eats-name">
-							스시 아루히 &emsp;&emsp;&emsp;<i onclick="clickLock(this);"
-								class="fas fa-lock"></i>
+						<div class="img-box">
+							<img class="image-thumbnail" src="/resources/img/upload/01.jpg">
 						</div>
-						<div class="eats-location">서울 영등포구</div>
-						<div class="eats-tag">
-							<span>#가성비</span> <span>#친근함</span> <span>#1~2만원대</span>
+						<div class="info">
+							<div class="eats-name">
+								스시 아루히 &emsp;&emsp;&emsp;<i onclick="clickLock(this);"
+									class="fas fa-unlock"></i>
+							</div>
+							<div class="eats-location">서울 영등포구</div>
+							<div class="eats-tag">
+								<span>#가성비</span> <span>#친근함</span> <span>#1~2만원대</span>
+							</div>
 						</div>
-					</div>
-				</div>
-
-				<div class="review_wrap">
-					<div class="img-box">
-						<img class="image-thumbnail" src="/resources/img/upload/01.jpg">
-					</div>
-					<div class="info">
-						<div class="eats-name">
-
-
-							스시 아루히 &emsp;&emsp;&emsp;<i onclick="clickLock(this);"
-								class="fas fa-unlock"></i>
-						</div>
-						<div class="eats-location">서울 영등포구</div>
-						<div class="eats-tag">
-							<span>#가성비</span> <span>#친근함</span> <span>#1~2만원대</span>
-						</div>
-					</div>
-				</div>
-				<div class="review_wrap">
-					<div class="img-box">
-						<img class="image-thumbnail" src="/resources/img/upload/01.jpg">
-					</div>
-					<div class="info">
-						<div class="eats-name">
-
-
-							스시 아루히 &emsp;&emsp;&emsp;<i onclick="clickLock(this);"
-								class="fas fa-unlock"></i>
-						</div>
-						<div class="eats-location">서울 영등포구</div>
-						<div class="eats-tag">
-							<span>#가성비</span> <span>#친근함</span> <span>#1~2만원대</span>
-						</div>
-					</div>
-				</div>
-				<div class="review_wrap">
-					<div class="img-box">
-						<img class="image-thumbnail" src="/resources/img/upload/01.jpg">
-					</div>
-					<div class="info">
-						<div class="eats-name">
-
-
-							스시 아루히 &emsp;&emsp;&emsp;<i onclick="clickLock(this);"
-								class="fas fa-unlock"></i>
-						</div>
-						<div class="eats-location">서울 영등포구</div>
-						<div class="eats-tag">
-							<span>#가성비</span> <span>#친근함</span> <span>#1~2만원대</span>
-						</div>
-					</div>
-				</div>
-				<div class="review_wrap">
-					<div class="img-box">
-						<img class="image-thumbnail" src="/resources/img/upload/01.jpg">
-					</div>
-					<div class="info">
-						<div class="eats-name">
-
-
-							스시 아루히 &emsp;&emsp;&emsp;<i onclick="clickLock(this);"
-								class="fas fa-unlock"></i>
-						</div>
-						<div class="eats-location">서울 영등포구</div>
-						<div class="eats-tag">
-							<span>#가성비</span> <span>#친근함</span> <span>#1~2만원대</span>
-						</div>
-					</div>
-				</div>
-				<div class="review_wrap">
-					<div class="img-box">
-						<img class="image-thumbnail" src="/resources/img/upload/01.jpg">
-					</div>
-					<div class="info">
-						<div class="eats-name">
-							스시 아루히 &emsp;&emsp;&emsp;<i onclick="clickLock(this);"
-								class="fas fa-unlock"></i>
-						</div>
-						<div class="eats-location">서울 영등포구</div>
-						<div class="eats-tag">
-							<span>#가성비</span> <span>#친근함</span> <span>#1~2만원대</span>
-						</div>
-					</div>
-				</div>
+				</div>	
+				
 			</div>
 			<div class="eatsMap">
 				<div id="map"></div>
@@ -252,27 +169,70 @@
 		    	let keyword = document.querySelector('.keyword').value;
 				searchMap(keyword);
 				searchKeyword(keyword);
-
+				
 				document.querySelector(".popup-wrap").style.display = 'none';
 		  }  
 		});
 		
-
+		//review div 받아온 리뷰에 맞게 수정하는 함수
+		let takeReview = (address,name,tag) =>{
+			let tags ='';
+			tag.forEach(e=>{
+				tags 
+			})
+			let reviewContent = `<div class="review_wrap">
+					<div class="img-box">
+					<img class="image-thumbnail" src="/resources/img/upload/01.jpg">
+				</div>
+				<div class="info">
+					<div class="eats-name">
+						${name} &emsp;&emsp;&emsp;<i onclick="clickLock(this);"
+							class="fas fa-unlock"></i>
+					</div>
+					<div class="eats-location">${address}</div>
+					<div class="eats-tag">
+						${tag}
+					</div>
+				</div>
+			</div>`;
+		
+			return reviewContent;
+		
+		}
+	
+		
+		/* console.dir(reviewContent);
+		//dom으로 영역 밑에 붙여보기
+		//document.querySelector('.map-review').appendChild(reviewContent);
+		var $div = $(reviewContent);
+		$('.map-review').append($div); */
+		
 		/*비동기로 백으로 값보내기 */
 		let searchKeyword = (keyword) =>{
 			fetch("/map/search?keyword=" + keyword)
 			  .then(response => {
 				  if(response.ok){	//통신 성공시
-					  return response.text();
+					  return response.json();
 				  }else{
 					  throw new Error(response.status);
 				  }
-			  }).then(text => {	//promise객체의 text
-				  alert("성공");
+			  }).then(json => {	//promise객체의 json
+				  console.dir(json);
+				  console.dir(json[0].id);
+				  
+				  let returnDiv = takeReview(json[0].id,json[0].resName,json[0].hashtag);
+				  var $div = $(reviewContent);
+					$('.map-review').append($div);
+				  
+				  asdasd = json;
+				  
 			  }).catch(error => {
 				  alert("실패");
 			  });
 		}
+		
+		
+		
 		
 		
 		/* 맵에 표시된 가게의 json정보를 담는 변수 */
