@@ -92,7 +92,7 @@ public class TimelineServiceImpl implements TimelineService{
 	@Override
 	public void editReview(Review review, String reviewId, Member member, String latitude, String longitude,
 			List<MultipartFile> photos, List<String> hdPhotos) {
-		//수정자와 작성자가 다르면 예외처리
+		//수정자와 작성자가 다르면 예외 처리
 		Review storedReview = timelineRepository.findById(reviewId).get();
 		if(!storedReview.getMemberId().toString().equals(member.getId().toString())) throw new HandlableException(ErrorCode.AUTHENTICATION_FAILED_ERROR);
 
@@ -121,7 +121,7 @@ public class TimelineServiceImpl implements TimelineService{
 
 	@Override
 	public void deleteReview(String reviewId, Member member) {
-		//수정자와 작성자가 다르면 예외처리
+		//수정자와 작성자가 다르면 예외 처리
 		Review storedReview = timelineRepository.findById(reviewId).get();
 		if(!storedReview.getMemberId().toString().equals(member.getId().toString())) throw new HandlableException(ErrorCode.AUTHENTICATION_FAILED_ERROR);
 		
