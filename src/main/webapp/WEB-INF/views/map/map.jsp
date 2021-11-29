@@ -180,12 +180,20 @@
 			fetch("/map/search?keyword=" + keyword)
 			  .then(response => {
 				  if(response.ok){	//통신 성공시
-					  return response.text();
+					  return response.json();
 				  }else{
 					  throw new Error(response.status);
 				  }
-			  }).then(text => {	//promise객체의 text
-				  alert("성공");
+			  }).then(json => {	//promise객체의 json
+				  console.dir(json);
+				  console.dir(json[0].id);
+				  
+				  let returnDiv = takeReview(json[0].id,json[0].resName,json[0].hashtag);
+				  var $div = $(reviewContent);
+					$('.map-review').append($div);
+				  
+				  asdasd = json;
+				  
 			  }).catch(error => {
 				  alert("실패");
 			  });
@@ -223,34 +231,10 @@
 		var $div = $(reviewContent);
 		$('.map-review').append($div); */
 		
-		/*비동기로 백으로 값보내기 */
-		let searchKeyword = (keyword) =>{
-			fetch("/map/search?keyword=" + keyword)
-			  .then(response => {
-				  if(response.ok){	//통신 성공시
-					  return response.json();
-				  }else{
-					  throw new Error(response.status);
-				  }
-			  }).then(json => {	//promise객체의 json
-				  console.dir(json);
-				  console.dir(json[0].id);
-				  
-				  let returnDiv = takeReview(json[0].id,json[0].resName,json[0].hashtag);
-				  var $div = $(reviewContent);
-					$('.map-review').append($div);
-				  
-				  asdasd = json;
-				  
-			  }).catch(error => {
-				  alert("실패");
-			  });
-		}
+
 		
 		
-		
->>>>>>> refs/heads/dev
-		
+			
 		
 		/* 맵에 표시된 가게의 json정보를 담는 변수 */
 		let markerInfo;
