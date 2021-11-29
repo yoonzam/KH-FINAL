@@ -1,9 +1,7 @@
 package com.kh.eatsMap.timeline.model.service;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -12,9 +10,10 @@ import org.bson.types.ObjectId;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.geo.GeoJsonPoint;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.kh.eatsMap.common.code.ErrorCode;
+import com.kh.eatsMap.common.exception.HandlableException;
 import com.kh.eatsMap.common.util.FileUtil;
 import com.kh.eatsMap.common.util.Fileinfo;
 import com.kh.eatsMap.member.model.dto.Member;
@@ -35,12 +34,11 @@ public class TimelineServiceImpl implements TimelineService{
 
 	@Override
 	public void insertReview(Review review, double latitude, double longitude, List<MultipartFile> photos, Member member) {
-		review.setLocation(new GeoJsonPoint(latitude, longitude));
+		review.setLocation(new GeoJsonPoint(longitude, latitude));
 		review.setMemberId(member.getId());
-		review.setRegDate(LocalDateTime.now().plusHours(9));
 		if(review.getGroup().equals("")) review.setGroup(null);
 		
-		review = timelineRepository.save(review);
+		review = timelineRepository.insert(review);
 		
 		FileUtil fileUtil = new FileUtil();
 		for (MultipartFile photo : photos) {
@@ -54,11 +52,11 @@ public class TimelineServiceImpl implements TimelineService{
 
 	@Override
 	public List<Review> findAllReviews() {
-		List<Review> reviews = timelineRepository.findAll(Sort.by(Sort.Direction.DESC, "regDate"));
+		List<Review> reviews = timelineRepository.findAll(Sort.by(Sort.Direction.DESC, "id"));
 		for (Review review : reviews) {
-			System.out.println(review.toString());
 			List<Fileinfo> files = fileRepository.findByTypeId(review.getId());
 			if(files.size() > 0) review.setThumUrl(files.get(0).getDownloadURL());
+			review.toString();
 		}
 		return reviews;
 	}
@@ -72,9 +70,8 @@ public class TimelineServiceImpl implements TimelineService{
 		if(findReview.isPresent()) {
 			Review review = findReview.get();
 			review.setMemberId(new ObjectId(review.getMemberId().toString()));
-
 			review.setMemberNick(memberRepository.findById(review.getMemberId().toString()).get().getNickname());
-			System.out.println(review.toString());
+			review.toString();
 			map.put("review", review);
 			
 			//objectId
@@ -89,45 +86,46 @@ public class TimelineServiceImpl implements TimelineService{
 			files.add(fileinfo.getDownloadURL());
 		}
 		map.put("files", files);
-		
-		
-		
-		
 		return map;
 	}
 	
-	private String getCategoryName(String category) {
-		switch (category.toLowerCase()) {
-			case "cg01" : return "한식";
-			case "cg02" : return "중식";
-			case "cg03" : return "양식";
-			case "cg04" : return "일식";
-			case "cg05" : return "아시아";
-			case "cg06" : return "분식";
-			case "cg07" : return "카페/디저트";
-			case "cg08" : return "술집";
-			default: return "기타";
+	@Override
+	public void editReview(Review review, String reviewId, Member member, String latitude, String longitude,
+			List<MultipartFile> photos, List<String> hdPhotos) {
+		//수정자와 작성자가 다르면 예외처리
+		Review storedReview = timelineRepository.findById(reviewId).get();
+		if(!storedReview.getMemberId().toString().equals(member.getId().toString())) throw new HandlableException(ErrorCode.AUTHENTICATION_FAILED_ERROR);
+
+		review.setId(new ObjectId(reviewId));
+		review.setMemberId(member.getId());
+		review.setLocation(new GeoJsonPoint(Double.parseDouble(longitude), Double.parseDouble(latitude)));
+		if(review.getGroup().equals("")) review.setGroup(null);
+		
+		//hdPhotos 중에서 _d가 붙은 파일만 삭제
+		for (String hdPhoto : hdPhotos) {
+			boolean flag = (hdPhoto.substring(hdPhoto.length()-2, hdPhoto.length())).equals("_d");
+			if(flag) fileRepository.deleteBySavePathAndRenameFileName(hdPhoto.substring(6, 17), hdPhoto.substring(17, hdPhoto.length()-2));
 		}
-	}
-	
-	private String[] getHashtagName(String[] hashtag) {
-		for (int i = 0; i < hashtag.length; i++) {
-			switch (hashtag[i].toLowerCase()) {
-				case "md01" : hashtag[i] = "친근함"; break;
-				case "md02" : hashtag[i] = "고급짐"; break;
-				case "md03" : hashtag[i] = "가족"; break;
-				case "md04" : hashtag[i] = "데이트"; break;
-				case "md05" : hashtag[i] = "혼밥"; break;
-				case "md06" : hashtag[i] = "회식"; break;
-				case "pr01" : hashtag[i] = "가성비"; break;
-				case "pr02" : hashtag[i] = "가심비"; break;
-				case "pr03" : hashtag[i] = "1~2만원대"; break;
-				case "pr04" : hashtag[i] = "2~3만원대"; break;
-				case "pr05" : hashtag[i] = "3만원 이상"; break;
-				default: hashtag[i] = ""; break;
+		
+		timelineRepository.save(review);
+		
+		FileUtil fileUtil = new FileUtil();
+		for (MultipartFile photo : photos) {
+			if(!photo.isEmpty()) {
+				Fileinfo fileInfo = fileUtil.fileUpload(photo);
+				fileInfo.setTypeId(review.getId());
+				fileRepository.save(fileInfo);
 			}
 		}
-		return hashtag;
 	}
 
+	@Override
+	public void deleteReview(String reviewId, Member member) {
+		//수정자와 작성자가 다르면 예외처리
+		Review storedReview = timelineRepository.findById(reviewId).get();
+		if(!storedReview.getMemberId().toString().equals(member.getId().toString())) throw new HandlableException(ErrorCode.AUTHENTICATION_FAILED_ERROR);
+		
+		timelineRepository.deleteById(reviewId);
+		fileRepository.deleteByTypeId(new ObjectId(reviewId));
+	}
 }

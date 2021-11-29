@@ -1,6 +1,7 @@
 package com.kh.eatsMap.member.model.service;
 
 import java.time.LocalDate;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,7 +18,9 @@ import com.kh.eatsMap.common.code.Config;
 import com.kh.eatsMap.common.mail.MailSender;
 import com.kh.eatsMap.common.util.FileUtil;
 import com.kh.eatsMap.member.model.dto.Member;
+import com.kh.eatsMap.member.model.dto.Notice;
 import com.kh.eatsMap.member.model.repository.MemberRepository;
+import com.kh.eatsMap.member.model.repository.NoticeRepository;
 import com.kh.eatsMap.member.validator.EmailForm;
 import com.kh.eatsMap.member.validator.JoinForm;
 import com.kh.eatsMap.member.validator.ModifyForm;
@@ -32,6 +35,7 @@ public class MemberServiceImpl implements MemberService{
 	private final MailSender mailSender;
 	private final MemberRepository memberRepository;
 	private final PasswordEncoder passwordEncoder;
+	private final NoticeRepository noticeRepository;
 	
 	Logger logger = LoggerFactory.getLogger(this.getClass());
 	
@@ -67,11 +71,14 @@ public class MemberServiceImpl implements MemberService{
 	}
 
 	@Override
-	public Member authenticateUser(Member member) {
+	public Map<String,Object> authenticateUser(Member member) {
 		Member storedMember = memberRepository.findByEmailAndIsLeave(member.getEmail(), 0);
 	
 		if(storedMember != null  && passwordEncoder.matches(member.getPassword(), storedMember.getPassword())) {
-			return storedMember;
+			Notice notice = noticeRepository.findByMemberId(storedMember.getId());
+			int noticeCnt = notice.getCalendarNotice() + notice.getGroupNotice() + notice.getParticipantNotice() + notice.getFollowNotice();
+			
+			return Map.of("noticeCnt", noticeCnt, "notice", notice, "member",storedMember);
 		}		
 		return null;
 	}
@@ -84,8 +91,15 @@ public class MemberServiceImpl implements MemberService{
 		member.setRegDate();
 		member.setNickname(form.getNickname());
 		member.setIsLeave(0);
-		logger.debug(member.toString());
 		memberRepository.save(member);
+
+		Notice notice = new Notice();
+		Member joinUser = memberRepository.findById(member.getId());
+		notice.setMemberId(joinUser.getId());
+		notice.setCalendarNotice(0);
+		notice.setGroupNotice(0);
+		notice.setParticipantNotice(0);
+		notice.setFollowNotice(0);
 	}
 
 	@Override
@@ -130,6 +144,17 @@ public class MemberServiceImpl implements MemberService{
 	public void isLeaveMember(Member member) {
 		member.setIsLeave(1);
 		memberRepository.save(member);
+	}
+
+	@Override
+	public void updateNotice(String id, Notice notice) {
+		switch (id) {
+		case "dday": notice.setCalendarNotice(0); break;
+		case "calendar": notice.setParticipantNotice(0); break;
+		case "follow": notice.setFollowNotice(0); break;
+		case "group": notice.setGroupNotice(0); break;	}	
+		
+		noticeRepository.save(notice);
 	}
 
 

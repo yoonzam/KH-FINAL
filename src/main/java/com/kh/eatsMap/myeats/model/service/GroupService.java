@@ -16,9 +16,7 @@ import com.kh.eatsMap.timeline.model.dto.Review;
 public interface GroupService {
 
 	//회원 검색
-	//실사용
 	public List<Member> listMemberFind(FindCriteria findCri) throws Exception;
-	//실사용
 	public int findMemberCountData(FindCriteria findCri) throws Exception;
 	
 	//닉네임으로 부르기
@@ -31,10 +29,9 @@ public interface GroupService {
 	//groupIdx제외 예정
 	public List<Group> read(ObjectId id);
 
-	//파일 없을때 write
-	//public void write(Group group);
 	//파일 업로드 및 write
 	void write(Group group, List<MultipartFile> photos, Member member);
+	
 	//파일 업로드
 	List<Fileinfo> findFiles(ObjectId id);
 	

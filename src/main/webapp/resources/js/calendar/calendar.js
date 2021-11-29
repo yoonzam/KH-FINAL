@@ -52,3 +52,50 @@ $('.filter-menu input:checkbox').click((e)=>{
     let label = e.currentTarget.parentNode;
     label.classList.toggle('checked');
 });
+
+
+
+		// 캘린더 일정 만들기 - 장소 검색
+		$('input[name="location"]').keyup(function(){
+		let keyword = $(this).val();
+		if(!keyword) {
+			$('.locationList').html('');
+			return;
+		}
+		
+		// 장소 검색 객체 생성
+		let ps = new kakao.maps.services.Places();
+		// 키워드로 장소 검색
+		ps.keywordSearch(keyword, (data, status) => {
+			if (status === kakao.maps.services.Status.OK) {
+				$('.locationList').html(displayPlaces(data));
+				$('.locationList').show();
+			}
+		}); 
+	});
+	
+	//검색리스트 출력
+	let displayPlaces = (places) => {
+		searchPlaces = places;
+		html = '';
+		for ( var i=0; i<places.length; i++ ) {
+			if(places[i].category_group_code == 'FD6' || places[i].category_group_code == 'CE7' )
+				html += '<li data-place-idx="'+i+'"><span class="place-name">'+places[i].place_name+'</span> <span class="road-address-name">'+places[i].road_address_name+'</span></li>';
+		}
+		return html;
+	}
+	
+	$('.locationList').click(function(e){
+		let placeIdx = e.target.dataset.placeIdx;
+		let place = searchPlaces[placeIdx];
+		$('input[name="uploadPlace"]').val(place.place_name);
+		$('input[name="resName"]').val(place.place_name);
+		$('input[name="addr"]').val(place.road_address_name);
+		$('input[name="latitude"]').val(place.y);
+		$('input[name="longitude"]').val(place.x);
+		
+		drawSpecificMap(place);
+		placeFlag = true;
+		$('.locationList').hide();
+	})
+

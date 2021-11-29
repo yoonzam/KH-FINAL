@@ -64,8 +64,6 @@ background-color: var(--red-color);
 					<li>
 						<span>초대하기</span>
 						<div class="friend-list"> 
-							<%-- <c:forEach items="${group}" var="group"> --%>
-							<!-- memberId는 배열값 > Group-->
 							<input type="text"  id='addValue' placeholder="초대할 친구의 닉네임을 입력하세요."name="memberNickName[]"
 							 value="<%=request.getAttribute("keyword")%>">
 							
@@ -74,10 +72,8 @@ background-color: var(--red-color);
 							<a href="invite"><button type="button">초대</button></a>
 							
 							
-							<span><i class="fas fa-minus-square" onclick='removeItem()'></i><input type="hidden" name="memberNickName[]" value="<%=request.getAttribute("keyword")%>"><ul id='fruits'></ul></span>
-							<%-- <span><a href="invite"><i class="fas fa-minus-square"></i></a><input type="hidden" name="memberNickName[]" value="<%=request.getAttribute("keyword")%>"><%=request.getAttribute("keyword")%></span> --%>
+							<span><i class="fas fa-minus-square" onclick='removeItem()'></i><input type="hidden" name="memberNickName[]" value="<%=request.getAttribute("keyword")%>"><ul id='nickNames'></ul></span>
 							
-							<%-- </c:forEach> --%>
 						</div>
 					</li>
 				</ul>
@@ -111,7 +107,7 @@ function addList()  {
 	  
 	  // 3. 생성된 li를 ul에 추가
 	  document
-	    .getElementById('fruits')
+	    .getElementById('nickNames')
 	    .appendChild(li);
 	}
 	
@@ -120,7 +116,7 @@ function removeItem()  {
 	  
 	  // 1. <ul> element 선택
 	  const ul = document
-	    .getElementById('fruits');
+	    .getElementById('nickNames');
 	  
 	  // 2. <li> 목록 선택
 	  const items = ul.getElementsByTagName('li');

@@ -80,7 +80,26 @@ public class TimelineController {
 	@GetMapping("detail")
 	@ResponseBody
 	public Map<String, Object> detail(String id) {
-		Map<String, Object> review = timelineService.findReviewById(id);
-		return review;
+		return timelineService.findReviewById(id);
+	}
+	
+	@GetMapping("edit")
+	@ResponseBody
+	public Map<String, Object> edit(String id) {
+		return timelineService.findReviewById(id);
+	}
+	
+	@PostMapping("edit")
+	@ResponseBody
+	public void editRevice(
+			Review review, String reviewId, List<MultipartFile> photos, String latitude, String longitude, @RequestParam(value="hdPhotos") List<String> hdPhotos,
+			@SessionAttribute("authentication") Member member) {
+		timelineService.editReview(review, reviewId, member, latitude, longitude, photos, hdPhotos);
+	}
+	
+	@PostMapping("delete")
+	@ResponseBody
+	public void deleteRevice(@RequestParam(value = "id") String id, @SessionAttribute("authentication") Member member) {
+		timelineService.deleteReview(id, member);
 	}
 }
