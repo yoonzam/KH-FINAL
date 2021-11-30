@@ -50,6 +50,8 @@ public interface MemberService {
 
 	Notice findNotice(ObjectId followingId);
 
+	Member findMemberById(ObjectId followingId);
+
 	
 
 }
