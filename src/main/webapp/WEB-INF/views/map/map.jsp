@@ -482,7 +482,7 @@
 		
 	</script>
 	<script type="text/javascript" src="/resources/js/map/Geolocation.js"></script>
-	<script type="text/javascript" src="/resources/js/map/map.js"></script>
+
 
 </body>
 </html>
