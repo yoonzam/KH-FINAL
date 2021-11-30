@@ -1,6 +1,5 @@
 package com.kh.eatsMap.member.controller;
 
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -9,7 +8,6 @@ import javax.servlet.http.HttpSession;
 import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -24,7 +22,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
-import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -35,7 +32,6 @@ import com.kh.eatsMap.firebase.PushMessaging;
 import com.kh.eatsMap.member.model.dto.Follow;
 import com.kh.eatsMap.member.model.dto.Member;
 import com.kh.eatsMap.member.model.dto.Notice;
-import com.kh.eatsMap.member.model.repository.NoticeRepository;
 import com.kh.eatsMap.member.model.service.MemberService;
 import com.kh.eatsMap.member.validator.EmailForm;
 import com.kh.eatsMap.member.validator.EmailFormValidator;
@@ -43,8 +39,6 @@ import com.kh.eatsMap.member.validator.JoinForm;
 import com.kh.eatsMap.member.validator.JoinFormValidator;
 import com.kh.eatsMap.member.validator.ModifyForm;
 import com.kh.eatsMap.member.validator.ModifyFormValidator;
-import com.kh.eatsMap.timeline.model.dto.Review;
-import com.kh.eatsMap.timeline.model.service.TimelineService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -316,6 +310,12 @@ public class MemberController {
 	public void followCancel(@RequestBody Follow followUser, @SessionAttribute("authentication") Member member) {
 		memberService.followCancel(member.getId(), followUser);
 		memberService.updateNoticeForDel("follow", memberService.findNotice(followUser.getFollowingId()));
+	}
+	
+	@GetMapping("post")
+	public String post(@SessionAttribute("authentication") Member member) {
+		
+		return "myeats/post";
 	}
 	
 	//파이어베이스
