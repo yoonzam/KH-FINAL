@@ -52,14 +52,14 @@ public class IndexMongoTest {
     
 	@Test
 	public void geoTest() {
-		reviewRepository.findReviewByLocationNear(new Point(127.0956659043071, 37.546965436775125),
-				new Distance(0.2, Metrics.KILOMETERS)).forEach(e -> log.info(e.toString()));
+		List<Review> findReviewByLocationNear = reviewRepository.findByLocationNear(new Point(126.8989355, 37.4064155), new Distance(50, Metrics.KILOMETERS));
+		findReviewByLocationNear.forEach(e -> logger.debug(e.getResName()));
 	}
 	
 	@Test
 	public void searchKeywordTest() {
-		List<Review> searchKeyword = reviewRepository.findReviewByResNameLike("마뇨");
-		searchKeyword.forEach(e -> logger.debug(e.getResName()));
+		List<Review> searchKeyword = reviewRepository.findReviewByResNameContaining("그슬");
+		searchKeyword.forEach(e -> logger.debug("여기를보세요!!!!!!!!!!!!!!"+e.getResName()));
 	}
 	
 	@Test
@@ -70,7 +70,27 @@ public class IndexMongoTest {
 	
 	@Test
 	public void findCategoryTest() {
-		List<Review> findCategory = reviewRepository.findReviewByCategoryLike("cg");
-		findCategory.forEach(e -> logger.debug(e.getResName()));
+		List<Review> findCategory = reviewRepository.findReviewByCategoryLike(new String[] {"cg04"});
+		findCategory.forEach(e -> logger.debug("여기를보세요!!!!!!!!!!!!!!"+e.getResName()));
 	}
+	
+
+	//좋아요 한 리뷰찾기 
+	@Test
+	public void findReviewByLike() {
+		List<Review> findLike = reviewRepository.findReviewByLike(1);
+		findLike.forEach(e -> logger.debug(e.getResName()));
+	}
+	
+//	@Test
+//	public void findFirstByIdOrderByCategoryDesc() {
+//		Review findcate = reviewRepository.findFirstByIdOrderByCategoryDesc(new ObjectId("619f7d9494b88f684d44195d"));
+//		logger.debug(findcate.getResName());
+//	}
+	
+	
+	
+	
+	
+	
 }

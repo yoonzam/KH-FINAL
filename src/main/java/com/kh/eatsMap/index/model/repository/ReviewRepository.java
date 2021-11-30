@@ -2,29 +2,37 @@ package com.kh.eatsMap.index.model.repository;
 
 import java.util.List;
 
+import org.bson.types.ObjectId;
 import org.springframework.data.geo.Distance;
 import org.springframework.data.geo.Point;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 
+import com.kh.eatsMap.member.model.dto.Follow;
 import com.kh.eatsMap.timeline.model.dto.Review;
 
 public interface ReviewRepository extends MongoRepository<Review, String>{
 
 	
-	List<Review> findReviewByLike(String memberid, int i);
-	
-	
-	
-	//리뷰 검색 
-	List<Review> findReviewByCategoryLike(String string);
-	
-	List<Review> findReviewByHashtagLike(String string);
 
-	List<Review> findReviewByLocationNear(Point location, Distance distance);
+	//리뷰 검색 
+	List<Review> findReviewByResNameContaining(String keyword);
 	
-	@Query("{ 'resName' : ?0 }")	//정규식 문제있음
-	List<Review> findReviewByResNameLike(String keyword);
+	List<Review> findReviewByCategoryLike(String[] category);
+	
+	List<Review> findReviewByHashtagLike(String[] hashtag);
+
+	//위치
+	List<Review> findByLocationNear(Point location, Distance distance);
+
+	//해시
+	List<Review> findReviewByLike(int like);
+
+	
+//	Review findFirstByIdOrderByCategoryDesc(ObjectId id);
+
+//	@Query(value = "{category : ?0}", count = true)
+//	Integer findReviewCountByCategory;
 
 
 }
