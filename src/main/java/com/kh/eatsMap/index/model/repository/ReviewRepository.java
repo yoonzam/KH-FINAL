@@ -28,6 +28,8 @@ public interface ReviewRepository extends MongoRepository<Review, String>{
 	//해시
 	List<Review> findReviewByLike(int like);
 
+	List<Review> findByMemberId(ObjectId id);
+
 	
 //	Review findFirstByIdOrderByCategoryDesc(ObjectId id);
 
