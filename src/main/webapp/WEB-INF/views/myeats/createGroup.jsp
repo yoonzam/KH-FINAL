@@ -76,7 +76,7 @@ background-color: var(--red-color);
 						<div class="friend-list"> 
 							<%-- <input type="text"  id='addValue' placeholder="초대할 친구의 닉네임을 입력하세요."
 							 value="<%=request.getAttribute("keyword")%>"> --%>
-							<select id = "select" name="pets" id="pet-select">
+							<select id="invited-select">
 							</select>
 							
 							
@@ -150,9 +150,9 @@ $("#inviteButton").click(function(){
         success:function(data){ 
       	let html = '';
       	for (var i = 0; i < data.length; i++)
-			html += '<option name="memberNickName[]" value='+data[i].nickname+'selected="selected">'+data[i].nickname +'</option>';
+			html += '<option value='+data[i].nickname+'>'+data[i].nickname +'</option>';
 			
-			$('#select').html(html);
+			$('#invited-select').html(html);
         },   
         error:function(e){  
             alert(e.responseText);  
@@ -160,31 +160,18 @@ $("#inviteButton").click(function(){
     });  
 });  
 function addList()  {
-	  // 1. 추가할 값을 input창에서 읽어온다
-	  const addValue 
-	    = document.getElementById('pet-select').value;
+	
+		const addValue = $("#invited-select").val();
+		console.log(addValue);
+	 	const li = document.createElement("li");
 	  
-	  // 2. 추가할 li element 생성
-	  // 2-1. 추가할 li element 생성
-	  const li = document.createElement("li");
+		li.setAttribute('id',addValue);
+		li.setAttribute("name", "memberNickName[]");
+		li.setAttribute("value", addValue);
 	  
-	  // 2-2. li에 id 속성 추가 
-	 li.setAttribute('id',addValue);
-	  //li.setAttribute('name',memberNickName); 
+		const textNode = document.createTextNode(addValue);
+		li.appendChild(textNode);
 	  
-	/*   $(li).attr(
-			  {
-			    "id": addValue, 
-			    "name": memberNickName[]
-			  });
-	   */
-	  // 2-3. li에 text node 추가 
-	  const textNode = document.createTextNode(addValue);
-	  li.appendChild(textNode);
-	  
-
-	  
-	  // 3. 생성된 li를 ul에 추가
 	  document
 	    .getElementById('nickNames')
 	    .appendChild(li);
@@ -193,14 +180,11 @@ function addList()  {
 	
 function removeItem()  {
 	  
-	  // 1. <ul> element 선택
 	  const ul = document
 	    .getElementById('nickNames');
 	  
-	  // 2. <li> 목록 선택
 	  const items = ul.getElementsByTagName('li');
 	  
-	  // 3. <li> 목록 중 첫번째 item 삭제
 	  if(items.length > 0)  {
 	    items[0].remove();
 	  }
