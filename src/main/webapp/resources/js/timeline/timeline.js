@@ -45,7 +45,7 @@ document.addEventListener('scroll', function() {
     if((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
     	$.ajax({
 			type: 'POST',
-			url: '${contextPath}/timeline/?page='+(timelinePageCnt+1),
+			url: '/timeline/?page='+(timelinePageCnt+1),
 			dataType: 'json',
 			contentType: false,
 			processData: false,

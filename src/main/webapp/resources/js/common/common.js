@@ -545,7 +545,7 @@ let deleteReview = (reviewId) => {
 let likeReview = (reviewId) => {
 	$.ajax({
 		type: 'POST',
-		url: '${contextPath}/timeline/like',
+		url: '/timeline/like',
 		data:{ revId:reviewId },
 	 	cache:false,
 		success: () => {
@@ -562,7 +562,7 @@ let likeReview = (reviewId) => {
 let unlikeReview = (reviewId) => {
 	$.ajax({
 		type: 'POST',
-		url: '${contextPath}/timeline/unlike',
+		url: '/timeline/unlike',
 		data:{ revId:reviewId },
 	 	cache:false,
 		success: () => {
@@ -580,7 +580,7 @@ let unlikeReview = (reviewId) => {
 let follow = (followingId) => {
 	$.ajax({
 		type: 'POST',
-		url: '${contextPath}/member/follow',
+		url: '/member/follow',
 		data: JSON.stringify({ followingId:followingId }),
 		contentType: 'application/json',
 		cache: false,
@@ -596,7 +596,7 @@ let follow = (followingId) => {
 let unfollow = (followingId) => {
 	$.ajax({
 		type: 'POST',
-		url: '${contextPath}/member/follow-cancel',
+		url: '/member/follow-cancel',
 		data: JSON.stringify({ followingId:followingId }),
 		contentType: 'application/json',
 	 	cache:false,
