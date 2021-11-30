@@ -1,7 +1,9 @@
 package com.kh.eatsMap.member.model.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.bson.types.ObjectId;
 import org.slf4j.Logger;
@@ -31,6 +33,8 @@ import com.kh.eatsMap.member.model.repository.NoticeRepository;
 import com.kh.eatsMap.member.validator.EmailForm;
 import com.kh.eatsMap.member.validator.JoinForm;
 import com.kh.eatsMap.member.validator.ModifyForm;
+import com.kh.eatsMap.myeats.model.dto.Like;
+import com.kh.eatsMap.myeats.model.repository.LikeRepository;
 import com.kh.eatsMap.timeline.model.dto.Review;
 import com.kh.eatsMap.timeline.model.repository.FileRepository;
 
@@ -49,6 +53,7 @@ public class MemberServiceImpl implements MemberService{
 	private final FileRepository fileRepository;
 	private final MemberReviewRepository reviewRepository;
 	private final FollowerRepository followerRepository;
+	private final LikeRepository likeRepository;
 	
 	Logger logger = LoggerFactory.getLogger(this.getClass());
 	
@@ -191,9 +196,9 @@ public class MemberServiceImpl implements MemberService{
 	}
 
 	@Override
-	public Map<String,Object> findMemberAndReviewByMemberId(ObjectId memberId) {
+	public Map<String,Object> findMemberAndReviewByMemberId(String memberId) {
 		
-		Member member = memberRepository.findById(memberId);
+		Member member = memberRepository.findById(memberId).orElse(new Member());
 		long followCnt = followingRepository.countByMemberId(memberId);
 		long followerCnt = followerRepository.countByMemberId(memberId);
 		
@@ -206,7 +211,7 @@ public class MemberServiceImpl implements MemberService{
 	}
 
 	@Override
-	public Follow findFollowByMemberId(ObjectId memberId, ObjectId id) {
+	public Follow findFollowByMemberId(String memberId, ObjectId id) {
 		return followingRepository.findOptionalByMemberIdAndFollowingId(id,memberId).orElse(new Follow());
 	}
 
@@ -223,7 +228,7 @@ public class MemberServiceImpl implements MemberService{
 
 	@Override
 	public void followCancel(ObjectId id, Follow followUser) {
-		followingRepository.findOptionalByMemberIdAndFollowingId(id, followUser.getFollowingId())
+		followingRepository.findOptionalByMemberIdAndFollowingId(id, followUser.getFollowingId().toString())
 			.ifPresent(e -> followingRepository.delete(e));
 		
 		followerRepository.findOptionalByMemberIdAndFollowerId(followUser.getFollowingId(), id)
@@ -234,6 +239,20 @@ public class MemberServiceImpl implements MemberService{
 	@Override
 	public Notice findNotice(ObjectId followingId) {
 		return noticeRepository.findByMemberId(followingId);
+	}
+
+	@Override
+	public List<Review> findLikedByMemberId(Member member) {
+		List<Like> likes = new ArrayList<Like>();
+		List<Review> reviews = new ArrayList<Review>();
+		likes = likeRepository.findByMemberId(member.getId());
+		
+		if(!likes.isEmpty()) {
+			for (Like like : likes) {
+				reviews.add(reviewRepository.findById(like.getRevId().toString()).orElse(new Review()));
+			}
+		}
+		return reviews;
 	}
 
 

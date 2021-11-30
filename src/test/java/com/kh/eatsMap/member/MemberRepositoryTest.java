@@ -43,6 +43,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kh.eatsMap.calendar.model.dto.Calendar;
 import com.kh.eatsMap.calendar.model.repository.CalendarRepository;
 import com.kh.eatsMap.index.model.repository.ReviewRepository;
+import com.kh.eatsMap.member.model.dto.Follow;
 import com.kh.eatsMap.member.model.dto.Member;
 import com.kh.eatsMap.member.model.dto.Notice;
 import com.kh.eatsMap.member.model.repository.FollowingRepository;
@@ -346,6 +347,27 @@ public class MemberRepositoryTest {
     	.andDo(print());
     			
     	
+    }
+    
+    @Test
+    public void deleteFollow() {
+    	Member loginUser = repository.findByNickname("유진");
+    	logger.debug(loginUser.toString());
+    	Member member = repository.findByNickname("자몽");
+    	logger.debug(member.toString());
+    	//Follow follow = followingRepository.findByMemberIdAndFollowingId(loginUser.getId(), member.getId());
+    	
+    	//logger.debug(follow.toString());
+    	
+    }
+    
+    @Test
+    public void findFollowTest() {
+    	Member loginUser = repository.findByNickname("유진");	//61a537408083d81456e2ff7b(일치)
+    	logger.debug(loginUser.getId().toString());
+    	Member member = repository.findByNickname("자몽");	//61a497d313f7451f784f869d(불일치)
+    	logger.debug(member.getId().toString());
+    	//logger.debug("팔로우 찾아라" + followingRepository.findOptionalByMemberIdAndFollowingId(loginUser.getId().toString(),member.getId()).orElse(new Follow()));
     }
     
 }
