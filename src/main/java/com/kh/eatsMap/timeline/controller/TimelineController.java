@@ -26,6 +26,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.kh.eatsMap.common.util.PageObject;
 import com.kh.eatsMap.member.model.dto.Member;
+import com.kh.eatsMap.myeats.model.dto.Like;
 import com.kh.eatsMap.timeline.model.dto.Review;
 import com.kh.eatsMap.timeline.model.service.TimelineService;
 
@@ -39,42 +40,20 @@ public class TimelineController {
 	Logger logger = LoggerFactory.getLogger(this.getClass());
 	
 	private final TimelineService timelineService;
-	
-	/* 지도 장소검색 테스트 */
-	private static final String REST_API_KEY = "8f9fcce775dd72c4999049b1967438d8";
-	private static final String API_SERVER_HOST  = "https://dapi.kakao.com";
-    private static final String SEARCH_PLACE_KEYWORD_PATH = "/v2/local/search/keyword.json";
-	
-    public ResponseEntity<String> getSearchPlaceByKeyword(String keyword) throws Exception {
-    	
-        String queryString = "?sort=accuracy&query="+URLEncoder.encode(keyword, "UTF-8");
-        //String queryString = "?query="+URLEncoder.encode(keyword.getKeywordNm(), "UTF-8")+"&page="+keyword.getCurrentPage()+"&size="+keyword.getPageSize();
-        
-        RestTemplate restTemplate = new RestTemplate();
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Authorization", "KakaoAK " + REST_API_KEY);
-        headers.add("Accept", MediaType.APPLICATION_JSON_VALUE);
-        headers.add("Content-Type", MediaType.APPLICATION_FORM_URLENCODED_VALUE + ";charset=UTF-8");
-
-        URI url = URI.create(API_SERVER_HOST + SEARCH_PLACE_KEYWORD_PATH + queryString);
-        RequestEntity<String> rq = new RequestEntity<>(headers, HttpMethod.GET, url);
-        ResponseEntity<String> re = restTemplate.exchange(rq, String.class);
-        return re;
-    }
     
 	@GetMapping("/")
-	public String timeline(Model model) {
-		PageObject pageObject = new PageObject(1, 4);
-		List<Review> reviews = timelineService.findAllReviews(pageObject);
+	public String timeline(Model model, @SessionAttribute("authentication") Member member) {
+		PageObject pageObject = new PageObject(1, 8);
+		List<Review> reviews = timelineService.findAllReviews(pageObject, member);
 		model.addAttribute("reviews", reviews);
 		return "timeline/timeline";
 	}
 	
 	@PostMapping("/")
 	@ResponseBody
-	public List<HashMap<String, Object>> timelinePaging(Model model, int page) {
-		PageObject pageObject = new PageObject(page, 4);
-		return timelineService.findReviewsForPaging(pageObject);
+	public List<HashMap<String, Object>> timelinePaging(Model model, int page, @SessionAttribute("authentication") Member member) {
+		PageObject pageObject = new PageObject(page, 8);
+		return timelineService.findReviewsForPaging(pageObject, member);
 	}
 	
 	@PostMapping("upload")
@@ -85,14 +64,14 @@ public class TimelineController {
 	
 	@GetMapping("detail")
 	@ResponseBody
-	public Map<String, Object> detail(String id) {
-		return timelineService.findReviewById(id);
+	public Map<String, Object> detail(String id, @SessionAttribute("authentication") Member member) {
+		return timelineService.findReviewById(id, member);
 	}
 	
 	@GetMapping("edit")
 	@ResponseBody
-	public Map<String, Object> edit(String id) {
-		return timelineService.findReviewById(id);
+	public Map<String, Object> edit(String id, @SessionAttribute("authentication") Member member) {
+		return timelineService.findReviewById(id, member);
 	}
 	
 	@PostMapping("edit")
@@ -107,5 +86,11 @@ public class TimelineController {
 	@ResponseBody
 	public void deleteRevice(@RequestParam(value = "id") String id, @SessionAttribute("authentication") Member member) {
 		timelineService.deleteReview(id, member);
+	}
+	
+	@PostMapping("like")
+	@ResponseBody
+	public void likeReview(String revId, @SessionAttribute("authentication") Member member) {
+		timelineService.saveLike(revId, member);
 	}
 }

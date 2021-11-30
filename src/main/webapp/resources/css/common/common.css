@@ -231,7 +231,7 @@ footer{color:#aaa; font-size:0.8em; padding:30px; text-align:center;}
 	border-radius: 20px;;
 	transition-duration: 0.5s;
 }
-.layer-popup .content.view .view-controller a:hover i{
+.layer-popup .content.view .view-controller a:hover i, .layer-popup .content.view .view-controller a.clicked i{
 	background-color:#fa8633;
 }
 
