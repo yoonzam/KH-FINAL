@@ -10,6 +10,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import com.kh.eatsMap.calendar.model.repository.CalendarRepository;
+import com.kh.eatsMap.firebase.PushMessaging;
 import com.kh.eatsMap.index.model.repository.ReviewRepository;
 import com.kh.eatsMap.member.model.dto.Member;
 import com.kh.eatsMap.member.model.dto.Notice;
@@ -28,12 +29,13 @@ public class PushBatch {
 	private final MemberRepository memberRepository;
 	private final NoticeRepository noticeRepository;
 	private final ReviewRepository reviewRepository;
+	private PushMessaging push = PushMessaging.getInstance();
 	
 	//d-day 일정 조회 -> 남은시간이 24h 이내면 알림 발송
 	//친구 초대 알림인 경우, 친구 초대 시간이 24h이내면 알림 발송
 	
 	//그룹 초대 알림 : 그룹생성 24h이내면 해당 id를 갖는 그룹의 팀원들 조회해 알림 발송
-	@Scheduled(cron = "0 35 17 * * *")
+	@Scheduled(cron = "0 56 14 * * *")
 	public void pushAboutSchedule() {
 		
 		calendarRepository.findAll().forEach(e -> {
@@ -51,6 +53,7 @@ public class PushBatch {
 					noticeRepository.save(notice);
 					
 					//2. 푸시 전송 
+					push.push(member);
 					
 				}else {
 					notice.setCalendarNotice(0);
@@ -63,6 +66,8 @@ public class PushBatch {
 		});
 		System.out.println("batch실행완료");
 	}
+	
+
 	
 
 }

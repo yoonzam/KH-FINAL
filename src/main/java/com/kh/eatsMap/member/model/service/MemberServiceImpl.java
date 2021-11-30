@@ -53,6 +53,11 @@ public class MemberServiceImpl implements MemberService{
 	Logger logger = LoggerFactory.getLogger(this.getClass());
 	
 	@Override
+	public Member findMemberById(ObjectId id) {
+		return memberRepository.findById(id);
+	}
+	
+	@Override
 	public void authenticateByEmail(JoinForm form, String token) {
 		MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
 		body.add("mail-template", "join-auth-email");
@@ -230,6 +235,7 @@ public class MemberServiceImpl implements MemberService{
 	public Notice findNotice(ObjectId followingId) {
 		return noticeRepository.findByMemberId(followingId);
 	}
+
 
 
 

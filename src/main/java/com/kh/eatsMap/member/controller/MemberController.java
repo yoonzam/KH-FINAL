@@ -31,6 +31,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.kh.eatsMap.common.code.ErrorCode;
 import com.kh.eatsMap.common.exception.HandlableException;
 import com.kh.eatsMap.common.validator.ValidatorResult;
+import com.kh.eatsMap.firebase.PushMessaging;
 import com.kh.eatsMap.member.model.dto.Follow;
 import com.kh.eatsMap.member.model.dto.Member;
 import com.kh.eatsMap.member.model.dto.Notice;
@@ -58,7 +59,7 @@ public class MemberController {
 	private final JoinFormValidator joinFormValidator;
 	private final EmailFormValidator emailFormValidator;
 	private final ModifyFormValidator modifyFormValidator;
-	
+	private PushMessaging push = PushMessaging.getInstance();
 
 	//요청파라미터 값들을 바인드해줌
 	@InitBinder(value = "joinForm")	//jsp form태그 modelAttribute value와 바인딩
@@ -83,13 +84,13 @@ public class MemberController {
 							,RedirectAttributes redirectAttr) {
 		
 		Map<String, Object> memberAndNotice = memberService.authenticateUser(member);
-		Notice notice = (Notice) memberAndNotice.get("notice");
-		Member certifiedUser = (Member) memberAndNotice.get("member");
 		
-		if(certifiedUser == null) {
+		if(memberAndNotice == null) {
 			redirectAttr.addFlashAttribute("message", "아이디나 비밀번호가 틀렸습니다.");
 			return "redirect:/member/login";
 		}
+		Member certifiedUser = (Member) memberAndNotice.get("member");
+		Notice notice = (Notice) memberAndNotice.get("notice");
 		
 		session.setAttribute("authentication", certifiedUser);
 		session.setAttribute("notice", notice );
@@ -275,7 +276,8 @@ public class MemberController {
 		session.setAttribute("noticeCnt", cnt);
 	}
 	
-	@GetMapping("saveToken/{clientToken}")	//삭제예정
+	@GetMapping("saveToken/{clientToken}")	
+	@ResponseBody
 	public void saveToken(@PathVariable String clientToken, @SessionAttribute("authentication") Member member) {
 		logger.debug("token받아오기 : " + clientToken);
 		member.setToken(clientToken);
@@ -304,6 +306,9 @@ public class MemberController {
 	public void followImpl(@RequestBody Follow followUser, @SessionAttribute("authentication") Member member) {
 		memberService.followMember( member.getId(), followUser);
 		memberService.updateNotice("follow", memberService.findNotice(followUser.getFollowingId()));
+		
+		Member to = memberService.findMemberById(followUser.getFollowingId());
+		push.push(to);
 	}
 	
 	@PostMapping("follow-cancel")
