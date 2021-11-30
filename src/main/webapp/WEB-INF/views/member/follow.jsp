@@ -51,17 +51,28 @@
 					</div>
 				</div><!-- wrap-profile-info -->
 			</div>
-
+			<c:if test="${empty follow.id }">
+				<div class="btn-wrap">
+					<div class="btn-follow">잇친 맺기</div>
+					<a class="btn-follow-cancel" style="display: none">잇친 취소</a>
+				</div> 			
+			</c:if>
+			<c:if test="${not empty follow.id }">
+				<div class="btn-wrap">
+					<div class="btn-follow" style="display: none">잇친 맺기</div>
+					<a class="btn-follow-cancel">잇친 취소</a>
+				</div> 			
+			</c:if>			
             <div class="section">
 				<div class="detail-wrap">
-					<h2><i class="fas fa-utensils color-m"></i> 게시글 <span class="color-m">관리하기 </span> </h2>
+					<h2><i class="fas fa-utensils color-m"></i> ${member.nickname } 님<span class="color-m"> 게시물 </span> </h2>
 					
 						<c:if test="${empty reviews }">
 							<h4 class="empty-review" style="padding: 40px; text-align:center; border: 1px solid #ddd; width: 928px; margin: auto;">게시물이 존재하지 않습니다.</h4>
 						</c:if>
 						<c:if test="${not empty reviews }">
 						<ul class="detail-brd">
-							<c:forEach items="${reviews}" var="review">
+							<c:forEach items="${reviews}" var="review" varStatus="status"  begin="0"  >
 							<li>
 								<div class="eats-list">
 									<div class="thum thum2">
@@ -79,6 +90,7 @@
 							</c:forEach>
 						</ul>						
 						</c:if>
+
 				
 				</div><!-- detail-wrap -->
 		</div><!-- section -->
@@ -95,7 +107,58 @@
 </section>
 
 <%@ include file="/WEB-INF/views/include/footer.jsp" %>
+<script type="text/javascript">
 
+document.querySelector('.btn-follow').addEventListener('click', e => {
+	
+	//execute();
+	
+	let data = {followingId : `${member.id}`};
+	let header = new Headers();
+	header.append('Content-Type', 'application/json;charset=UTF-8 ')
+	
+	fetch('/member/follow',{
+	 	method : 'POST',
+	 	headers : header,
+	 	body : JSON.stringify(data),
+	 
+	}).then(response => {
+		if(response.ok){
+			document.querySelector('.btn-follow').style.display = 'none';
+			document.querySelector('.btn-follow-cancel').style.display = 'block';
+	 	}else{
+	  		throw new Error(response.status);
+	 	}
+	}).catch((error) => {
+		  console.error('Error', error);
+	  })
+})
+
+document.querySelector('.btn-follow-cancel').addEventListener('click', e => {
+	
+	let data = {followingId : `${member.id}`};
+	let header = new Headers();
+	header.append('Content-Type', 'application/json;charset=UTF-8 ')
+	
+	fetch('/member/follow-cancel',{
+	 	method : 'POST',
+	 	headers : header,
+	 	body : JSON.stringify(data),
+	 
+	}).then(response => {
+		if(response.ok){
+			document.querySelector('.btn-follow').style.display = 'block';
+			document.querySelector('.btn-follow-cancel').style.display = 'none';
+	 	}else{
+	  		throw new Error(response.status);
+	 	}
+	}).catch((error) => {
+		  console.error('Error', error);
+	  })
+})
+
+
+</script>
 
 </body>
 </html>

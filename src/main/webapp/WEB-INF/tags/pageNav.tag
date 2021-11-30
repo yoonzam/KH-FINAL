@@ -2,7 +2,7 @@
 <%@ tag trimDirectiveWhitespaces="true" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ attribute name="pageObject" required="true"
-  type=" com.kh.eatsMap.myeats.model.dto.PageObject" %>
+  type=" com.kh.eatsMap.common.util.PageObject" %>
 <%@ attribute name="listURI" required="true"
  type="java.lang.String" %>
 <%@ attribute name="query" required="false"

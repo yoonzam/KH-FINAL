@@ -1,12 +1,15 @@
 package com.kh.eatsMap.member.controller;
 
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
 import javax.servlet.http.HttpSession;
 
+import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -18,6 +21,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
@@ -27,6 +31,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.kh.eatsMap.common.code.ErrorCode;
 import com.kh.eatsMap.common.exception.HandlableException;
 import com.kh.eatsMap.common.validator.ValidatorResult;
+import com.kh.eatsMap.firebase.PushMessaging;
+import com.kh.eatsMap.member.model.dto.Follow;
 import com.kh.eatsMap.member.model.dto.Member;
 import com.kh.eatsMap.member.model.dto.Notice;
 import com.kh.eatsMap.member.model.repository.NoticeRepository;
@@ -37,6 +43,8 @@ import com.kh.eatsMap.member.validator.JoinForm;
 import com.kh.eatsMap.member.validator.JoinFormValidator;
 import com.kh.eatsMap.member.validator.ModifyForm;
 import com.kh.eatsMap.member.validator.ModifyFormValidator;
+import com.kh.eatsMap.timeline.model.dto.Review;
+import com.kh.eatsMap.timeline.model.service.TimelineService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -51,7 +59,7 @@ public class MemberController {
 	private final JoinFormValidator joinFormValidator;
 	private final EmailFormValidator emailFormValidator;
 	private final ModifyFormValidator modifyFormValidator;
-	
+	private PushMessaging push = PushMessaging.getInstance();
 
 	//요청파라미터 값들을 바인드해줌
 	@InitBinder(value = "joinForm")	//jsp form태그 modelAttribute value와 바인딩
@@ -76,13 +84,13 @@ public class MemberController {
 							,RedirectAttributes redirectAttr) {
 		
 		Map<String, Object> memberAndNotice = memberService.authenticateUser(member);
-		Notice notice = (Notice) memberAndNotice.get("notice");
-		Member certifiedUser = (Member) memberAndNotice.get("member");
 		
-		if(certifiedUser == null) {
+		if(memberAndNotice == null) {
 			redirectAttr.addFlashAttribute("message", "아이디나 비밀번호가 틀렸습니다.");
 			return "redirect:/member/login";
 		}
+		Member certifiedUser = (Member) memberAndNotice.get("member");
+		Notice notice = (Notice) memberAndNotice.get("notice");
 		
 		session.setAttribute("authentication", certifiedUser);
 		session.setAttribute("notice", notice );
@@ -215,6 +223,7 @@ public class MemberController {
 	
 	@PostMapping("edit-profile")
 	public String editProfileImpl(@Validated ModifyForm modifyForm, Errors errors
+								,@RequestParam(name = "profile", required = false) MultipartFile photo
 								,@SessionAttribute("authentication") Member member
 								,Model model) {
 		ValidatorResult vr = new ValidatorResult();
@@ -224,20 +233,13 @@ public class MemberController {
 			vr.addErrors(errors);
 			return "member/edit-profile";
 		}
-		memberService.updateMemberProfile(member,modifyForm);
+		memberService.updateMemberProfile(member,modifyForm,photo);
 		
 		return "redirect:/myeats/post";
 		
 		
 	}
 	
-	@PostMapping("update-img")
-	public String updateImg(MultipartFile profile, @SessionAttribute("authentication") Member member) {
-		
-		memberService.insertProfileImg(member,profile);
-		
-		return "redirect:/member/edit-profile";
-	}
 	
 	@GetMapping("quit")
 	public void quit() {}
@@ -264,7 +266,7 @@ public class MemberController {
 	public void removeNotice(String id, @SessionAttribute("authentication") Member member
 							, @SessionAttribute("notice") Notice notice, @SessionAttribute("noticeCnt") int cnt, HttpSession session) {
 
-		memberService.updateNotice(id, notice);
+		memberService.updateNoticeForDel(id, notice);
 		cnt -= 1;
 		
 		if(cnt == 0) {
@@ -274,10 +276,46 @@ public class MemberController {
 		session.setAttribute("noticeCnt", cnt);
 	}
 	
-	@GetMapping("saveToken/{clientToken}")
+	@GetMapping("saveToken/{clientToken}")	
+	@ResponseBody
 	public void saveToken(@PathVariable String clientToken, @SessionAttribute("authentication") Member member) {
+		logger.debug("token받아오기 : " + clientToken);
 		member.setToken(clientToken);
 		memberService.saveMember(member);
+	}
+	
+	//follow-feed
+	@GetMapping("follow/{memberId}")
+	public String follow(@PathVariable ObjectId memberId, @SessionAttribute("authentication") Member member
+						,Model model) {
+		
+		if(member.getId() == memberId) {
+			return "redirect:/myeats/post";
+		}
+		Follow follow = memberService.findFollowByMemberId(memberId, member.getId());
+		Map<String,Object> commandMap = memberService.findMemberAndReviewByMemberId(memberId);
+
+		model.addAllAttributes(commandMap)
+			.addAttribute("follow",follow); 
+		
+		return "member/follow";
+	}
+	
+	@PostMapping("follow")
+	@ResponseBody
+	public void followImpl(@RequestBody Follow followUser, @SessionAttribute("authentication") Member member) {
+		memberService.followMember( member.getId(), followUser);
+		memberService.updateNotice("follow", memberService.findNotice(followUser.getFollowingId()));
+		
+		Member to = memberService.findMemberById(followUser.getFollowingId());
+		push.push(to);
+	}
+	
+	@PostMapping("follow-cancel")
+	@ResponseBody
+	public void followCancel(@RequestBody Follow followUser, @SessionAttribute("authentication") Member member) {
+		memberService.followCancel(member.getId(), followUser);
+		memberService.updateNoticeForDel("follow", memberService.findNotice(followUser.getFollowingId()));
 	}
 	
 	//파이어베이스

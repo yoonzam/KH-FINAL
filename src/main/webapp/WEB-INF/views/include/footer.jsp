@@ -46,6 +46,12 @@
 	    	  console.dir('token : ' + currentToken);
 	    	  clientToken = currentToken;	//execute()실행시 담길 값
 	    	  fetch('/member/saveToken/' + clientToken)
+	    	  	.then(response => {
+	    	  		if(response.ok) console.dir('성공');
+	    	  		else throw new Error(response.status);	
+	    		}).catch((error) => {
+	    			  console.error('Error', error);
+	    		})
 	    	  
 	        sendTokenToServer(currentToken);
 	        updateUIForPushEnabled(currentToken);
@@ -58,18 +64,11 @@
 	      }
 	    }).catch((err) => {
 	      console.log('An error occurred while retrieving token. ', err);
-	      showToken('Error retrieving registration token. ', err);
 	      setTokenSentToServer(false);
 	    });
 	  }
 		
 	
-	  function showToken(currentToken) {
-		    // Show token in console and UI.
-		    const tokenElement = document.querySelector('#token');
-		    tokenElement.textContent = currentToken;
-	  }
-
   // Send the registration token your application server, so that it can:
   // - send messages back to this app
   // - subscribe/unsubscribe the token from topics

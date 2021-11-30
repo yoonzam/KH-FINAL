@@ -8,7 +8,9 @@ import java.util.Optional;
 
 import org.bson.types.ObjectId;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.geo.GeoJsonPoint;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -16,8 +18,11 @@ import com.kh.eatsMap.common.code.ErrorCode;
 import com.kh.eatsMap.common.exception.HandlableException;
 import com.kh.eatsMap.common.util.FileUtil;
 import com.kh.eatsMap.common.util.Fileinfo;
+import com.kh.eatsMap.common.util.PageObject;
 import com.kh.eatsMap.member.model.dto.Member;
 import com.kh.eatsMap.member.model.repository.MemberRepository;
+import com.kh.eatsMap.myeats.model.dto.Like;
+import com.kh.eatsMap.myeats.model.repository.LikeRepository;
 import com.kh.eatsMap.timeline.model.dto.Review;
 import com.kh.eatsMap.timeline.model.repository.FileRepository;
 import com.kh.eatsMap.timeline.model.repository.TimelineRepository;
@@ -29,8 +34,10 @@ import lombok.RequiredArgsConstructor;
 public class TimelineServiceImpl implements TimelineService{
 
 	private final TimelineRepository timelineRepository;
+	private final LikeRepository likeRepository;
 	private final FileRepository fileRepository;
 	private final MemberRepository memberRepository;
+	private final MongoTemplate mongoTemplate;
 
 	@Override
 	public void insertReview(Review review, double latitude, double longitude, List<MultipartFile> photos, Member member) {
@@ -53,6 +60,7 @@ public class TimelineServiceImpl implements TimelineService{
 	@Override
 	public List<Review> findAllReviews() {
 		List<Review> reviews = timelineRepository.findAll(Sort.by(Sort.Direction.DESC, "id"));
+		
 		for (Review review : reviews) {
 			List<Fileinfo> files = fileRepository.findByTypeId(review.getId());
 			if(files.size() > 0) review.setThumUrl(files.get(0).getDownloadURL());
@@ -60,9 +68,46 @@ public class TimelineServiceImpl implements TimelineService{
 		}
 		return reviews;
 	}
+	
+	@Override
+	public List<Review> findAllReviews(PageObject pageObject, Member member) {
+		Query query = new Query();
+		query = query.with(Sort.by(Sort.Direction.DESC, "id"));
+		query.skip((pageObject.getPage()-1) * pageObject.getPerPageNum());
+		query.limit((int)pageObject.getPerPageNum());
+		List<Review> reviews = mongoTemplate.find(query, com.kh.eatsMap.timeline.model.dto.Review.class);
+		List<Like> likes = likeRepository.findByMemberId(member.getId());
+		
+		for (Review review : reviews) {
+			List<Fileinfo> files = fileRepository.findByTypeId(review.getId());
+			if(files.size() > 0) review.setThumUrl(files.get(0).getDownloadURL());
+			
+			//찜리스트
+			for (Like like : likes) {
+				if(like.getRevId().equals(review.getId())) review.setLike(1);
+			}
+			
+			review.toString();
+		}
+		return reviews;
+	}
 
 	@Override
-	public Map<String, Object> findReviewById(String id) {
+	public List<HashMap<String, Object>> findReviewsForPaging(PageObject pageObject, Member member) {
+		List<HashMap<String, Object>> mapList = new ArrayList<>();
+		List<Review> reviews = findAllReviews(pageObject, member);
+		
+		for (Review review : reviews) {
+			HashMap<String, Object> hashmap = new HashMap<>();
+			hashmap.put("review", review);
+			hashmap.put("reviewId", review.getId().toString());
+			mapList.add(hashmap);
+		}
+		return mapList;
+	}
+	
+	@Override
+	public Map<String, Object> findReviewById(String id, Member member) {
 		Map<String, Object> map = new HashMap<>();
 		
 		//review
@@ -71,6 +116,13 @@ public class TimelineServiceImpl implements TimelineService{
 			Review review = findReview.get();
 			review.setMemberId(new ObjectId(review.getMemberId().toString()));
 			review.setMemberNick(memberRepository.findById(review.getMemberId().toString()).get().getNickname());
+			
+			//찜리스트
+			List<Like> likes = likeRepository.findByMemberId(member.getId());
+			for (Like like : likes) {
+				if(like.getRevId().equals(review.getId())) review.setLike(1);
+			}
+			
 			review.toString();
 			map.put("review", review);
 			
@@ -128,4 +180,18 @@ public class TimelineServiceImpl implements TimelineService{
 		timelineRepository.deleteById(reviewId);
 		fileRepository.deleteByTypeId(new ObjectId(reviewId));
 	}
+
+	@Override
+	public void saveLike(String revId, Member member) {
+		Like like = new Like();
+		like.setMemberId(member.getId());
+		like.setRevId(new ObjectId(revId));
+		likeRepository.save(like);
+	}
+
+	@Override
+	public void deleteLike(String revId, Member member) {
+		likeRepository.deleteByMemberIdAndRevId(member.getId(), new ObjectId(revId));
+	}
+
 }

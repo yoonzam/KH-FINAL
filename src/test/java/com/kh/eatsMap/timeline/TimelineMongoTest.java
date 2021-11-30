@@ -3,6 +3,7 @@ package com.kh.eatsMap.timeline;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
 import java.text.SimpleDateFormat;
+import java.util.List;
 
 import org.bson.types.ObjectId;
 import org.junit.Before;
@@ -22,6 +23,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.context.WebApplicationContext;
 
 import com.kh.eatsMap.common.util.Fileinfo;
+import com.kh.eatsMap.member.model.dto.Member;
+import com.kh.eatsMap.myeats.model.dto.Like;
+import com.kh.eatsMap.myeats.model.repository.LikeRepository;
 import com.kh.eatsMap.timeline.model.dto.Review;
 import com.kh.eatsMap.timeline.model.repository.FileRepository;
 import com.kh.eatsMap.timeline.model.repository.TimelineRepository;
@@ -36,6 +40,9 @@ public class TimelineMongoTest {
 	
 	@Autowired
 	FileRepository fileRepository;
+	
+	@Autowired
+	LikeRepository likeRepository;
 	
 	@Autowired
 	private MongoTemplate mongoTemplate;
@@ -103,6 +110,20 @@ public class TimelineMongoTest {
 		long timeStamp = objectId.getTimestamp();
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd E요일, a hh:mm:ss");
 		System.out.println(sdf.format(timeStamp*1000));
+	}
+	
+	@Test //맛찜하기
+	public void saveLike() {
+		Like like = new Like();
+		like.setMemberId(new ObjectId("6194e8240b3d5d7684723834"));
+		like.setRevId(new ObjectId("61a4c61f728aaf3ab9374aa2"));
+		mongoTemplate.save(like);
+	}
+	
+	@Test //맛찜찾기
+	public void findLike() {
+		List<Like> like = likeRepository.findByMemberId(new ObjectId("6194e8240b3d5d7684723834"));
+		logger.info(like.toString());
 	}
 
 }

@@ -1,7 +1,5 @@
 package com.kh.eatsMap.calendar.model.dto;
 
-import java.util.Date;
-
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.geo.GeoJsonPoint;
@@ -22,12 +20,10 @@ public class Calendar {
 	private String date;
 	private String time;
 	
-	private String location;
+	private String resName;
 	
-	/*
-	 * @GeoSpatialIndexed(type = GeoSpatialIndexType.GEO_2DSPHERE) private
-	 * GeoJsonPoint location;
-	 */
+	@GeoSpatialIndexed(type = GeoSpatialIndexType.GEO_2DSPHERE) 
+	private GeoJsonPoint location;
 	
 	private String participant;
 	/*

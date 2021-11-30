@@ -1,8 +1,9 @@
 package com.kh.eatsMap.member.model.service;
 
-import java.time.LocalDate;
+import java.util.List;
 import java.util.Map;
 
+import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
@@ -17,13 +18,21 @@ import org.springframework.web.multipart.MultipartFile;
 import com.kh.eatsMap.common.code.Config;
 import com.kh.eatsMap.common.mail.MailSender;
 import com.kh.eatsMap.common.util.FileUtil;
+import com.kh.eatsMap.common.util.Fileinfo;
+import com.kh.eatsMap.member.model.dto.Follow;
+import com.kh.eatsMap.member.model.dto.Follower;
 import com.kh.eatsMap.member.model.dto.Member;
 import com.kh.eatsMap.member.model.dto.Notice;
+import com.kh.eatsMap.member.model.repository.FollowerRepository;
+import com.kh.eatsMap.member.model.repository.FollowingRepository;
 import com.kh.eatsMap.member.model.repository.MemberRepository;
+import com.kh.eatsMap.member.model.repository.MemberReviewRepository;
 import com.kh.eatsMap.member.model.repository.NoticeRepository;
 import com.kh.eatsMap.member.validator.EmailForm;
 import com.kh.eatsMap.member.validator.JoinForm;
 import com.kh.eatsMap.member.validator.ModifyForm;
+import com.kh.eatsMap.timeline.model.dto.Review;
+import com.kh.eatsMap.timeline.model.repository.FileRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -36,8 +45,17 @@ public class MemberServiceImpl implements MemberService{
 	private final MemberRepository memberRepository;
 	private final PasswordEncoder passwordEncoder;
 	private final NoticeRepository noticeRepository;
+	private final FollowingRepository followingRepository;
+	private final FileRepository fileRepository;
+	private final MemberReviewRepository reviewRepository;
+	private final FollowerRepository followerRepository;
 	
 	Logger logger = LoggerFactory.getLogger(this.getClass());
+	
+	@Override
+	public Member findMemberById(ObjectId id) {
+		return memberRepository.findById(id);
+	}
 	
 	@Override
 	public void authenticateByEmail(JoinForm form, String token) {
@@ -103,13 +121,6 @@ public class MemberServiceImpl implements MemberService{
 		noticeRepository.save(notice);
 	}
 
-	@Override
-	public void insertProfileImg(Member member, MultipartFile file) {
-		FileUtil fileUtil = new FileUtil();
-		member.setProfile(fileUtil.fileUpload(file));
-		
-		memberRepository.save(member);
-	}
 
 	@Override
 	public void updatePassword(String email, String tmpPassword) {
@@ -134,10 +145,20 @@ public class MemberServiceImpl implements MemberService{
 	}
 
 	@Override
-	public void updateMemberProfile(Member member, ModifyForm form) {
+	public void updateMemberProfile(Member member, ModifyForm form, MultipartFile photo) {
 		member.setNickname(form.getNickname());
-		member.setPassword(form.getPassword());
+		member.setPassword(passwordEncoder.encode(form.getPassword()));
 		
+		if(!photo.isEmpty()) {
+			FileUtil fileUtil = new FileUtil();
+			Fileinfo fileInfo = fileUtil.fileUpload(photo);
+			fileInfo.setTypeId(memberRepository.findById(member.getId()).getId());
+			fileRepository.save(fileInfo);
+			
+			logger.debug(fileInfo.toString());
+			
+			member.setProfile(fileInfo);
+		}
 		memberRepository.save(member);
 	}
 
@@ -148,7 +169,18 @@ public class MemberServiceImpl implements MemberService{
 	}
 
 	@Override
-	public void updateNotice(String id, Notice notice) {
+	public void updateNotice(String noticeId, Notice notice) {
+		switch (noticeId) {
+		case "dday": notice.setCalendarNotice(1); break;
+		case "calendar": notice.setParticipantNotice(1); break;
+		case "follow": notice.setFollowNotice(1); break;
+		case "group": notice.setGroupNotice(1); break;	}	
+		
+		noticeRepository.save(notice);
+	}		
+	
+	@Override
+	public void updateNoticeForDel(String id, Notice notice) {
 		switch (id) {
 		case "dday": notice.setCalendarNotice(0); break;
 		case "calendar": notice.setParticipantNotice(0); break;
@@ -157,6 +189,53 @@ public class MemberServiceImpl implements MemberService{
 		
 		noticeRepository.save(notice);
 	}
+
+	@Override
+	public Map<String,Object> findMemberAndReviewByMemberId(ObjectId memberId) {
+		
+		Member member = memberRepository.findById(memberId);
+		long followCnt = followingRepository.countByMemberId(memberId);
+		long followerCnt = followerRepository.countByMemberId(memberId);
+		
+		List<Review> reviews = reviewRepository.findOptionalByMemberIdOrderByIdDesc(memberId).orElse(List.of());
+		for (Review review : reviews) {
+			List<Fileinfo> files = fileRepository.findByTypeId(review.getId());
+			if(files.size() > 0) review.setThumUrl(files.get(0).getDownloadURL());
+		}
+		return Map.of("reviews", reviews, "member", member, "followCnt", followCnt, "followerCnt",followerCnt);
+	}
+
+	@Override
+	public Follow findFollowByMemberId(ObjectId memberId, ObjectId id) {
+		return followingRepository.findOptionalByMemberIdAndFollowingId(id,memberId).orElse(new Follow());
+	}
+
+	@Override
+	public void followMember(ObjectId memberId, Follow followUser) {
+		followUser.setMemberId(memberId);
+		followingRepository.save(followUser);
+		
+		Follower follower = new Follower();
+		follower.setMemberId(followUser.getFollowingId());	//팔로우 당할 유저 (팔로워 collection의 memberId)
+		follower.setFollowerId(memberId);
+		followerRepository.save(follower);
+	}
+
+	@Override
+	public void followCancel(ObjectId id, Follow followUser) {
+		followingRepository.findOptionalByMemberIdAndFollowingId(id, followUser.getFollowingId())
+			.ifPresent(e -> followingRepository.delete(e));
+		
+		followerRepository.findOptionalByMemberIdAndFollowerId(followUser.getFollowingId(), id)
+			.ifPresent(e -> followerRepository.delete(e));
+			
+	}
+
+	@Override
+	public Notice findNotice(ObjectId followingId) {
+		return noticeRepository.findByMemberId(followingId);
+	}
+
 
 
 

@@ -15,10 +15,10 @@ import com.kh.eatsMap.timeline.model.dto.Review;
 
 public interface MapRepository extends MongoRepository<Review, String>{
 
-	List<Review> findByLocationWithin(Circle circle);
-	List<Review> findByLocationWithin(Box box);
+	//List<Review> findByLocationWithin(Circle circle);
+	//List<Review> findByLocationWithin(Box box);
 	List<Review> findByLocationNear(Point location, Distance distance);
 	
-	List<Review> findByResNameOrderByIdAsc(String resName, Sort sort);
+	//List<Review> findByResNameOrderByIdAsc(String resName, Sort sort);
 
 }
