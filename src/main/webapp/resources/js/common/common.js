@@ -585,7 +585,7 @@ let follow = (followingId) => {
 		contentType: 'application/json',
 		cache: false,
 		success: () => {
-			$('#pop-review-detail .writer').html('<a href="${contextPath}/member/follow/'+data.memberId+'">'+data.review.memberNick+'</a><a onclick="unfollow(\''+data.memberId+'\')" class="unfollow">잇친끊기</a>');
+			$('#pop-review-detail .writer a.follow').html('<a onclick="unfollow(\''+memberId+'\')" class="unfollow">잇친끊기</a>');
 		},
 		error: (e) => {
 			alert("실패");
@@ -601,7 +601,7 @@ let unfollow = (followingId) => {
 		contentType: 'application/json',
 	 	cache:false,
 		success: () => {
-			$('#pop-review-detail .writer').html('<a href="${contextPath}/member/follow/'+data.memberId+'">'+data.review.memberNick+'</a><a onclick="follow(\''+data.memberId+'\')" class="follow">잇친맺기</a>');
+			$('#pop-review-detail .writer a.follow').html('<a onclick="follow(\''+memberId+'\')" class="follow">잇친맺기</a>');
 		},
 		error: (e) => {
 			alert("실패");

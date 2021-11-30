@@ -90,4 +90,28 @@ public class TimelineController {
 	public void unlikeReview(String revId, @SessionAttribute("authentication") Member member) {
 		timelineService.deleteLike(revId, member);
 	}
+	
+	@PostMapping("search")
+	public void search(String keyword_, String[] category_, String[] hashtag_, Model model) {
+		String keyword = keyword_ == null ? "" : keyword_;
+	
+		String[] category = new String[0];
+		if(category_ != null) {
+			category = new String[category_.length];		
+			for (int i = 0; i < category_.length; i++) {
+				category[i] = category_[i];
+			}	
+		}
+		String[] hashtag = new String[0];
+		if(hashtag_ != null) {
+			hashtag = new String[hashtag_.length];		
+			for (int i = 0; i < hashtag_.length; i++) {
+				hashtag[i] = hashtag_[i];
+			}	
+		}
+		List<Review> searchedReviewList = timelineService.searchReview(keyword, category, hashtag);
+		
+		model.addAttribute("searchedReviewList", searchedReviewList);
+		model.addAttribute("keyword", keyword_);
+	}
 }

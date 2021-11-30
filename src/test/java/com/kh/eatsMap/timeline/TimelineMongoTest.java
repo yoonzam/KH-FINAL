@@ -5,6 +5,7 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
 import java.text.SimpleDateFormat;
 import java.util.List;
 
+import org.bson.Document;
 import org.bson.types.ObjectId;
 import org.junit.Before;
 import org.junit.Test;
@@ -15,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.geo.GeoJsonPoint;
+import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -124,6 +126,53 @@ public class TimelineMongoTest {
 	public void findLike() {
 		List<Like> like = likeRepository.findByMemberId(new ObjectId("6194e8240b3d5d7684723834"));
 		logger.info(like.toString());
+	}
+	
+	@Test //검색 테스트
+	public void searchReview() {
+		String[] hashtag = {"pr04"};
+		List<Review> reviews = timelineRepository.findByHashtagOrCategory(hashtag, "cg04");
+//		for (Review review : reviews) {
+//			System.out.println(review.getResName());
+//		}
+		List<Review> reviews2 = timelineRepository.findByResNameLikeAndCategory("도마", "cg04");
+//		for (Review review : reviews2) {
+//			System.out.println("review : " + review);
+//		}
+		List<Review> reviews3 = timelineRepository.findByResNameLikeAndHashtag("도마", hashtag);
+		for (Review review : reviews3) {
+			System.out.println("review : " + review);
+		}
+		List<Review> reviews4 = timelineRepository.findByResNameLikeAndCategoryOrHashtag("도마", "cg03", hashtag);
+//		for (Review review : reviews4) {
+//			System.out.println("review : " + review);
+//		}
+	}
+	
+	@Test //카테고리서치 테스트
+	public void categorySearchTest() {
+		Query query = new Query();
+	    Criteria criteria = new Criteria();
+	    
+	    String list[] = {"cg01","cg02"};
+	    Criteria criteriaArr[]  = new Criteria[list.length];
+	    
+	    for(int i = 0;i < list.length;i++){
+            String question = list[i];
+            criteriaArr[i] = Criteria.where("category").regex(question);
+        }	
+	    query.addCriteria( criteria.orOperator(criteriaArr) );
+	    
+	    List<Review> rsult = mongoTemplate.find(query, Review.class, "review");
+	    rsult.forEach(System.out::println);
+	}
+	
+	@Test //검색 테스트(이름)
+	public void findByResName() {
+		List<Review> reviews = timelineRepository.findByResNameLike("이커");
+		for (Review review : reviews) {
+			System.out.println("review : " + review);
+		}
 	}
 
 }

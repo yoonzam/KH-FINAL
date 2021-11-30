@@ -2,14 +2,17 @@ package com.kh.eatsMap.timeline.model.service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 import org.bson.types.ObjectId;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.geo.GeoJsonPoint;
+import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -200,6 +203,55 @@ public class TimelineServiceImpl implements TimelineService{
 	@Override
 	public void deleteLike(String revId, Member member) {
 		likeRepository.deleteByMemberIdAndRevId(member.getId(), new ObjectId(revId));
+	}
+
+	@Override
+	public List<Review> searchReview(String keyword, String[] category, String[] hashtag) {
+		List<Review> searchKeyword = new ArrayList<Review>();
+		List<Review> searchCategory = new ArrayList<Review>();
+		List<Review> searchHashtag = new ArrayList<Review>();
+		
+		//키워드로 검색
+//		if(!keyword.equals("")) {
+//			searchKeyword = timelineRepository.findReviewByResNameContaining(keyword);
+//		}
+		
+		//카테고리로 검색
+		if(category.length > 0) {
+			Query query = new Query();
+			Criteria criteria = new Criteria();
+		    Criteria criteriaArr[]  = new Criteria[category.length];
+		    
+		    for(int i = 0; i < category.length; i++){
+	            String question = category[i];
+	            criteriaArr[i] = Criteria.where("category").regex(question);
+	        }	
+		    query.addCriteria(criteria.orOperator(criteriaArr));
+		    
+		    searchCategory = mongoTemplate.find(query, Review.class, "review");
+		}
+			
+		//해시태그로 검색
+		if(hashtag.length > 0) {
+			searchHashtag = timelineRepository.findReviewByCategoryLike(hashtag);
+		}
+		for (int i = 0; i < searchHashtag.size(); i++) {
+			System.out.println("해시 검색결과 : "+searchHashtag.get(i).getResName());			
+		}
+
+		List<Review> searchReview_ = new ArrayList<Review>();
+		//searchReview_.addAll(searchKeyword);
+		searchReview_.addAll(searchCategory);
+		searchReview_.addAll(searchHashtag);
+		
+		Set<Review> searchReviewSet = new HashSet<Review>(searchReview_);	//중복제거
+		List<Review> searchReview = new ArrayList<Review>(searchReviewSet);
+		
+		for (Review review : searchReview) {
+			List<Fileinfo> files = fileRepository.findByTypeId(review.getId());
+			if(files.size() > 0) review.setThumUrl(files.get(0).getDownloadURL());
+		}
+		return searchReview;
 	}
 
 }
