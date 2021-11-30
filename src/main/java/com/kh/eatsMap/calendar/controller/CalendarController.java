@@ -69,4 +69,12 @@ public class CalendarController {
 		logger.debug(calendarDetail.toString());
 		return calendarDetail;
 	}
+	
+	/*
+	 * @PostMapping("delete") public String
+	 * deleteSchedule(@SessionAttribute("authentication") Member member) {
+	 * calendarService.deleteSchedule(calendarId); return "redirect:/calendar/"; }
+	 */
+	
+	
 }

@@ -12,8 +12,8 @@
 					<div class="list"><span>참석자 : </span><span id="detail-participant"></span></div>
 				</div>
 				<div class="btn-wrap">
-						<button class="change">수정</button>
-						<button class="delete">삭제</button>
+						<button class="change" id="sch-change-btn">수정</button>
+						<button class="delete" id="sch-delete-btn">삭제</button>
 				</div>
 		</div>
 	</div>
