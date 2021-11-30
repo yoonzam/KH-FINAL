@@ -53,28 +53,37 @@ public class CalendarController {
 	}
 	
 	@PostMapping("upload")
-	public String makeSchedule(Calendar calendar,double latitude, double longitude, @SessionAttribute("authentication") Member member){
-		calendar.setLocation(new GeoJsonPoint(longitude, latitude));
-		calendar.setMemberId(member.getId());
-		calendarService.makeSchedule(calendar);
+	public String makeSchedule(Calendar calendar, String scheduleId, double latitude, double longitude, @SessionAttribute("authentication") Member member){
 		
+		if(scheduleId == null) {
+			calendar.setMemberId(member.getId());
+			calendar.setLocation(new GeoJsonPoint(longitude, latitude));
+
+			calendarService.makeSchedule(calendar);	
+			return "redirect:/calendar/";
+		}
+		Calendar originCalendar = calendarService.findCalendarById(scheduleId);
+		originCalendar.setTitle(calendar.getTitle());
+		originCalendar.setDate(calendar.getDate());
+		originCalendar.setResName(calendar.getResName());
+		originCalendar.setParticipant(calendar.getParticipant());
+		originCalendar.setLocation(new GeoJsonPoint(longitude, latitude));
+		
+		calendarService.makeSchedule(originCalendar);	
 		return "redirect:/calendar/";
 	}
 	
 	@GetMapping("detail")
 	@ResponseBody
-	public Calendar detail(String id){
-		logger.debug("calendarId : " + id);
-		Calendar calendarDetail = calendarService.detailSchedule(id);
-		logger.debug(calendarDetail.toString());
+	public Map<String, Object> detail(String id){
+		Map<String, Object> calendarDetail = calendarService.detailSchedule(id);
 		return calendarDetail;
 	}
+
+	//delete메서드 로직
+	//1. 받아온 String id값으로 서비스에게 전달
+	//2. 서비스단에서 삭제 과정 진행 : 먼저 Calendar객체 조회 
+	//	--> calendarRepository.delete(객체); 로 전달하면 몽고db가 삭제해줌
 	
-	/*
-	 * @PostMapping("delete") public String
-	 * deleteSchedule(@SessionAttribute("authentication") Member member) {
-	 * calendarService.deleteSchedule(calendarId); return "redirect:/calendar/"; }
-	 */
-	
-	
+
 }

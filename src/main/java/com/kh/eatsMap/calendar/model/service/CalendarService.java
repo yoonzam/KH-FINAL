@@ -15,7 +15,9 @@ public interface CalendarService {
 
 	List<HashMap<String, Object>> selectAllSchedule(Member member);
 
-	Calendar detailSchedule(String id);
+	Map<String, Object> detailSchedule(String id);
+
+	Calendar findCalendarById(String scheduleId);
 
 	
 

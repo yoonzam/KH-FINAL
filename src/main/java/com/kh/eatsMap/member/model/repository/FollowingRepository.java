@@ -16,6 +16,4 @@ public interface FollowingRepository extends MongoRepository<Follow, ObjectId>{
 
 	Optional<Follow> findByMemberIdAndFollowingId(ObjectId id, ObjectId memberId);
 
-	Optional<Follow> findByMemberIdAndFollowingId(ObjectId id, String memberId);
-
 }
