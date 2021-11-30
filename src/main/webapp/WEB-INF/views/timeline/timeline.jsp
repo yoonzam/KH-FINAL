@@ -73,7 +73,7 @@
 										${addr[0]} ${addr[1]}&nbsp;&#62;&nbsp;${reviews.category}
 									</div>
 									<div class="eats-name">
-										${reviews.resName} <i class="eats-like ${reviews.like > 0 ? 'fas fa-heart' : 'far fa-heart'}"></i>
+										${reviews.resName} <i data-like="${reviews.id}" class="eats-like ${reviews.like > 0 ? 'fas fa-heart' : 'far fa-heart'}"></i>
 									</div>
 									<div class="eats-tag">
 										<c:forEach items="${reviews.hashtag}" var="hashtag">
@@ -97,7 +97,7 @@
 		let viewTimeline = (reviewId) => {
 			$.ajax({
 				type: 'GET',
-				url: '/timeline/detail',
+				url: '${contextPath}/timeline/detail',
 				data:{ id:reviewId },
 				dataType: 'json',
 				success: (data) => {
@@ -122,7 +122,7 @@
 					}
 					
 					//작성자
-					$('#pop-review-detail .writer').html('<a href="member/follow/'+data.memberId+'">'+data.review.memberNick+'</a><a onclick="follow(\''+data.memberId+'\')" class="follow">잇친맺기</a>');
+					$('#pop-review-detail .writer').html('<a href="${contextPath}/member/follow/'+data.memberId+'">'+data.review.memberNick+'</a><a onclick="follow(\''+data.memberId+'\')" class="follow">잇친맺기</a>');
 					
 					//별점
 					html = '<p>맛</p>';
@@ -159,12 +159,20 @@
 					//세부버튼
 					if(data.review.like > 0) {
 						$('#pop-review-detail .pop-btn-my-list').addClass('clicked');
-					} else{
+						$('#pop-review-detail .pop-btn-my-list').attr('onclick','unlikeReview(\''+reviewId+'\');');
+					} else {
 						$('#pop-review-detail .pop-btn-my-list').removeClass('clicked');
+						$('#pop-review-detail .pop-btn-my-list').attr('onclick','likeReview(\''+reviewId+'\');');
 					}
-					$('#pop-review-detail .pop-btn-my-list').attr('onclick','likeReview(\''+reviewId+'\');');
-					$('#pop-review-detail .pop-btn-edit').attr('onclick','editReview(\''+reviewId+'\');');
-					$('#pop-review-detail .pop-btn-delete').attr('onclick','deleteReview(\''+reviewId+'\');');
+					if(data.memberId == '${authentication.id}') {
+						$('#pop-review-detail .pop-btn-edit').show();
+						$('#pop-review-detail .pop-btn-delete').show();
+						$('#pop-review-detail .pop-btn-edit').attr('onclick','editReview(\''+reviewId+'\');');
+						$('#pop-review-detail .pop-btn-delete').attr('onclick','deleteReview(\''+reviewId+'\');');
+					} else{
+						$('#pop-review-detail .pop-btn-edit').hide();
+						$('#pop-review-detail .pop-btn-delete').hide();
+					}
 
 					$('#pop-review-detail').fadeIn(200);
 					resizeSlideImgHeight();
@@ -252,9 +260,9 @@
 				    			  + '</div>'
 				    			  + '			<div class="eats-name">' + data[i].review.resName;
 				    		if(data[i].review.like > 0) {
-				    			html += '			<i class="eats-like fas fa-heart"></i>';
+				    			html += '			<i data-like="' + data[i].reviewId + '" class="eats-like fas fa-heart"></i>';
 				    		} else{
-				    			html += '			<i class="eats-like far fa-heart"></i>';
+				    			html += '			<i data-like="' + data[i].reviewId + '" class="eats-like far fa-heart"></i>';
 				    		}
 				    		html += '			</div>'
 				    			  + '			<div class="eats-tag">';
@@ -285,6 +293,26 @@
 				data:{ revId:reviewId },
 			 	cache:false,
 				success: () => {
+					$('#pop-review-detail .pop-btn-my-list').addClass('clicked');
+					$('#pop-review-detail .pop-btn-my-list').attr('onclick','unlikeReview(\''+reviewId+'\');');
+					$('.timeline-brd .eats-like[data-like="'+reviewId+'"]').attr('class','eats-like fas fa-heart');
+				},
+				error: (e) => {
+					alert("실패");
+				}
+			});
+		}
+		
+		let unlikeReview = (reviewId) => {
+			$.ajax({
+				type: 'POST',
+				url: '${contextPath}/timeline/unlike',
+				data:{ revId:reviewId },
+			 	cache:false,
+				success: () => {
+					$('#pop-review-detail .pop-btn-my-list').removeClass('clicked');
+					$('#pop-review-detail .pop-btn-my-list').attr('onclick','likeReview(\''+reviewId+'\');');
+					$('.timeline-brd .eats-like[data-like="'+reviewId+'"]').attr('class','eats-like far fa-heart');
 				},
 				error: (e) => {
 					alert("실패");

@@ -28,4 +28,6 @@ public interface TimelineService {
 
 	void saveLike(String revId, Member member);
 
+	void deleteLike(String revId, Member member);
+
 }

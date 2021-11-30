@@ -1,4 +1,4 @@
-package com.kh.eatsMap.timeline.model.repository;
+package com.kh.eatsMap.myeats.model.repository;
 
 import java.util.List;
 
@@ -11,7 +11,7 @@ import com.kh.eatsMap.myeats.model.dto.Like;
 public interface LikeRepository extends MongoRepository<Like, String>{
 
 	List<Like> findByMemberId(ObjectId memberId);
-
 	
+	void deleteByMemberIdAndRevId(ObjectId id, ObjectId objectId);
 
 }

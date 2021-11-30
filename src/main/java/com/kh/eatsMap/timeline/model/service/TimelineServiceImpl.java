@@ -22,9 +22,9 @@ import com.kh.eatsMap.common.util.PageObject;
 import com.kh.eatsMap.member.model.dto.Member;
 import com.kh.eatsMap.member.model.repository.MemberRepository;
 import com.kh.eatsMap.myeats.model.dto.Like;
+import com.kh.eatsMap.myeats.model.repository.LikeRepository;
 import com.kh.eatsMap.timeline.model.dto.Review;
 import com.kh.eatsMap.timeline.model.repository.FileRepository;
-import com.kh.eatsMap.timeline.model.repository.LikeRepository;
 import com.kh.eatsMap.timeline.model.repository.TimelineRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -186,7 +186,12 @@ public class TimelineServiceImpl implements TimelineService{
 		Like like = new Like();
 		like.setMemberId(member.getId());
 		like.setRevId(new ObjectId(revId));
-		mongoTemplate.save(like);
+		likeRepository.save(like);
+	}
+
+	@Override
+	public void deleteLike(String revId, Member member) {
+		likeRepository.deleteByMemberIdAndRevId(member.getId(), new ObjectId(revId));
 	}
 
 }

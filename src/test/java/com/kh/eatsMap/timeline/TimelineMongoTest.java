@@ -25,9 +25,9 @@ import org.springframework.web.context.WebApplicationContext;
 import com.kh.eatsMap.common.util.Fileinfo;
 import com.kh.eatsMap.member.model.dto.Member;
 import com.kh.eatsMap.myeats.model.dto.Like;
+import com.kh.eatsMap.myeats.model.repository.LikeRepository;
 import com.kh.eatsMap.timeline.model.dto.Review;
 import com.kh.eatsMap.timeline.model.repository.FileRepository;
-import com.kh.eatsMap.timeline.model.repository.LikeRepository;
 import com.kh.eatsMap.timeline.model.repository.TimelineRepository;
 
 @WebAppConfiguration
