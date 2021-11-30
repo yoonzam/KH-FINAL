@@ -19,8 +19,11 @@ import com.kh.eatsMap.common.exception.HandlableException;
 import com.kh.eatsMap.common.util.FileUtil;
 import com.kh.eatsMap.common.util.Fileinfo;
 import com.kh.eatsMap.common.util.PageObject;
+import com.kh.eatsMap.member.model.dto.Follow;
 import com.kh.eatsMap.member.model.dto.Member;
+import com.kh.eatsMap.member.model.repository.FollowingRepository;
 import com.kh.eatsMap.member.model.repository.MemberRepository;
+import com.kh.eatsMap.member.model.service.MemberService;
 import com.kh.eatsMap.myeats.model.dto.Like;
 import com.kh.eatsMap.myeats.model.repository.LikeRepository;
 import com.kh.eatsMap.timeline.model.dto.Review;
@@ -37,6 +40,7 @@ public class TimelineServiceImpl implements TimelineService{
 	private final LikeRepository likeRepository;
 	private final FileRepository fileRepository;
 	private final MemberRepository memberRepository;
+	private final FollowingRepository followingRepository;
 	private final MongoTemplate mongoTemplate;
 
 	@Override
@@ -112,24 +116,28 @@ public class TimelineServiceImpl implements TimelineService{
 		
 		//review
 		Optional<Review> findReview = timelineRepository.findById(id);
-		if(findReview.isPresent()) {
-			Review review = findReview.get();
-			review.setMemberId(new ObjectId(review.getMemberId().toString()));
-			review.setMemberNick(memberRepository.findById(review.getMemberId().toString()).get().getNickname());
-			
-			//찜리스트
-			List<Like> likes = likeRepository.findByMemberId(member.getId());
-			for (Like like : likes) {
-				if(like.getRevId().equals(review.getId())) review.setLike(1);
-			}
-			
-			review.toString();
-			map.put("review", review);
-			
-			//objectId
-			map.put("reviewId", review.getId().toString());
-			map.put("memberId", review.getMemberId().toString());
+
+		Review review = findReview.get();
+		review.setMemberId(new ObjectId(review.getMemberId().toString()));
+		review.setMemberNick(memberRepository.findById(review.getMemberId().toString()).get().getNickname());
+		
+		//찜리스트
+		List<Like> likes = likeRepository.findByMemberId(member.getId());
+		for (Like like : likes) {
+			if(like.getRevId().equals(review.getId())) review.setLike(1);
 		}
+		
+		review.toString();
+		map.put("review", review);
+		
+		//objectId
+		map.put("reviewId", review.getId().toString());
+		map.put("memberId", review.getMemberId().toString());
+		
+		//잇친여부
+		Follow follow = followingRepository.findOptionalByMemberIdAndFollowingId(member.getId(), review.getMemberId().toString()).orElse(new Follow());
+		System.out.println(follow);
+		map.put("follow", follow);
 		
 		//file
 		List<Fileinfo> findFiles = fileRepository.findByTypeId(new ObjectId(id));

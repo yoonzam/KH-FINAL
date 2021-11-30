@@ -171,8 +171,20 @@ footer{color:#aaa; font-size:0.8em; padding:30px; text-align:center;}
 	border-radius: 15px;
 	transition-duration:0.5s;
 }
+.layer-popup .content.view .info-wrap .writer a.unfollow{
+	margin-left: 10px;
+	padding:5px;
+	background-color:#e7e2df;
+	color:#fff;
+	font-size:13px;
+	border-radius: 15px;
+	transition-duration:0.5s;
+}
 .layer-popup .content.view .info-wrap .writer a.follow:hover{
 	background-color: #ffa54f;
+}
+.layer-popup .content.view .info-wrap .writer a.unfollow:hover{
+	background-color: #ddd;
 }
 .layer-popup .content.view .info-wrap .info{
 	border-bottom: none;
