@@ -9,7 +9,6 @@ import javax.servlet.http.HttpSession;
 import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -24,7 +23,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
-import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -35,7 +33,6 @@ import com.kh.eatsMap.firebase.PushMessaging;
 import com.kh.eatsMap.member.model.dto.Follow;
 import com.kh.eatsMap.member.model.dto.Member;
 import com.kh.eatsMap.member.model.dto.Notice;
-import com.kh.eatsMap.member.model.repository.NoticeRepository;
 import com.kh.eatsMap.member.model.service.MemberService;
 import com.kh.eatsMap.member.validator.EmailForm;
 import com.kh.eatsMap.member.validator.EmailFormValidator;
@@ -43,8 +40,7 @@ import com.kh.eatsMap.member.validator.JoinForm;
 import com.kh.eatsMap.member.validator.JoinFormValidator;
 import com.kh.eatsMap.member.validator.ModifyForm;
 import com.kh.eatsMap.member.validator.ModifyFormValidator;
-import com.kh.eatsMap.timeline.model.dto.Review;
-import com.kh.eatsMap.timeline.model.service.TimelineService;
+import com.kh.eatsMap.myeats.model.dto.Like;
 
 import lombok.RequiredArgsConstructor;
 
@@ -286,10 +282,10 @@ public class MemberController {
 	
 	//follow-feed
 	@GetMapping("follow/{memberId}")
-	public String follow(@PathVariable ObjectId memberId, @SessionAttribute("authentication") Member member
+	public String follow(@PathVariable String memberId, @SessionAttribute("authentication") Member member
 						,Model model) {
 		
-		if(member.getId() == memberId) {
+		if(member.getId().toString() == memberId) {
 			return "redirect:/myeats/post";
 		}
 		Follow follow = memberService.findFollowByMemberId(memberId, member.getId());
@@ -317,7 +313,7 @@ public class MemberController {
 		memberService.followCancel(member.getId(), followUser);
 		memberService.updateNoticeForDel("follow", memberService.findNotice(followUser.getFollowingId()));
 	}
-	
+
 	//파이어베이스
 	@GetMapping("push-test")
 	public void pushTest() {}
