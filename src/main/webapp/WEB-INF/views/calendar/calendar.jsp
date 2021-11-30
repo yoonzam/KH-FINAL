@@ -89,6 +89,28 @@
 		 				$('#detail-time').text(data.time);
 		 				$('#detail-place').text(data.resName);
 		 				$('#detail-participant').text(data.participant);
+		 				
+		 				$('#sch-change-btn').click(e => {
+		 					
+		 					alert('일정을 수정합니다');
+		 					$('#pop-schedule-detail').hide();
+		 					$('#pop-schedule-form').show();
+		 					
+		 					$.ajax({
+		 						type: 'GET',
+		 						url: '/calendar/edit',
+		 						data:{ id: info.event.id },
+		 						dataType: 'json',
+		 						success: (data) => {
+		 							$('input[name="title"]').text(data.title);
+		 							$('input[name="date"]').text(data.date);
+		 							$('input[name="time"]').text(data.time);
+		 							$('input[name="resName"]').text(data.resName);
+		 							$('input[name="participant"]').text(data.participant);			
+		 						}
+		 					})
+		 				})
+		 				
 		 			}
     			})
 		 			
