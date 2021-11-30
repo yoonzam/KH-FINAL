@@ -71,27 +71,25 @@
 							<h4 class="empty-review" style="padding: 40px; text-align:center; border: 1px solid #ddd; width: 928px; margin: auto;">게시물이 존재하지 않습니다.</h4>
 						</c:if>
 						<c:if test="${not empty reviews }">
-						<ul class="detail-brd">
-							<c:forEach items="${reviews}" var="review" varStatus="status"  begin="0"  >
-							<li>
-								<div class="eats-list">
-									<div class="thum thum2">
-										<img src="${ not empty review.thumUrl ? review.thumUrl : '/resources/img/common/upload-logo.png'}">
-										<div class="info2">
-											<div class="eats-location">${review.resName}<i onclick="clickLike();" class="eats-like far fa-heart"></i></div>
-											<div class="eats-score">
-												<i class="fas fa-star"></i>
-												<fmt:formatNumber value="${(review.taste+review.clean+review.service)/3}" pattern=".0"/>
+							<ul class="detail-brd">
+								<c:forEach items="${reviews}" var="review" varStatus="status"  begin="0"  >
+								<li>
+									<div class="eats-list">
+										<div class="thum thum2">
+											<img src="${ not empty review.thumUrl ? review.thumUrl : '/resources/img/common/upload-logo.png'}">
+											<div class="info2">
+												<div class="eats-location">${review.resName}<i onclick="clickLike();" class="eats-like far fa-heart"></i></div>
+												<div class="eats-score">
+													<i class="fas fa-star"></i>
+													<fmt:formatNumber value="${(review.taste+review.clean+review.service)/3}" pattern=".0"/>
+												</div>
 											</div>
 										</div>
 									</div>
-								</div>
-							</li>
-							</c:forEach>
-						</ul>						
+								</li>
+								</c:forEach>
+							</ul>						
 						</c:if>
-
-				
 				</div><!-- detail-wrap -->
 		</div><!-- section -->
 		
