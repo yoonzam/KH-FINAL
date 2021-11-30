@@ -99,11 +99,12 @@ background-color: var(--red-color);
 					</li>
 				</ul>
 			</div>
+			</form>
 			<div class="btn-area">
 				<a href = "group"><button class="cancel-btn">취소</button></a>
 				<a><button type="submit" class="create-btn">만들기</button></a>
 			</div>
-			</form>
+			
 			
 			
 			
