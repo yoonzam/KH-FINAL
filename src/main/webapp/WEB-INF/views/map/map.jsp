@@ -165,7 +165,7 @@
 		
 		document.querySelector('#search').addEventListener('click', (e) => {
 		    let keyword = document.querySelector('.keyword').value;
-			searchMap(keyword);
+			
 			searchKeyword(keyword);
 			document.querySelector(".popup-wrap").style.display = 'none';
 		});
@@ -173,7 +173,7 @@
 		document.querySelector('.keyword').addEventListener('keyup', (e)=> {
 		    if (e.keyCode === 13) {
 		    	let keyword = document.querySelector('.keyword').value;
-				searchMap(keyword);
+				
 				searchKeyword(keyword);
 				document.querySelector(".popup-wrap").style.display = 'none';
 		  }  
@@ -194,10 +194,12 @@
 				console.dir(json);
 			  	//마크 찍어주기
 				markerCreate(json,keyword);
+			  	
+				searchMap(keyword,json);
 				  
 				for (var i = 0; i < json.length; i++) {
 					  let returnDiv = takeReview(json[i].reviewId,json[i].review.addr,json[i].review.resName,json[i].review.hashtag);
-					  console.dir(returnDiv);
+					  
 					  var $div = $(returnDiv);
 					  $('.map-review').append($div);
 				}
@@ -236,7 +238,7 @@
 			    
 			    // 마커 이미지를 생성합니다    
 			    var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize); 
-			    console.dir("마커 생성중");
+			   
 			    // 마커를 생성합니다
 			   var marker = new kakao.maps.Marker({
 			        map: map, // 마커를 표시할 지도
@@ -311,7 +313,7 @@
 				tags += '<span>#'+tag[i]+'</span>';
 			}
 				
-			console.dir(tags);
+			
 			
 			let addr = address;
 			let na = name;
@@ -342,7 +344,7 @@
 		/* 맵에 표시된 가게의 json정보를 담는 변수 */
 		let markerInfo;
 				
-		let searchMap = (keyword) =>{
+		let searchMap = (keyword,markerData) =>{
 			
 			// 장소 검색 객체를 생성합니다
 			var ps = new kakao.maps.services.Places(); 
@@ -354,9 +356,17 @@
 			        // 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해
 			        // LatLngBounds 객체에 좌표를 추가합니다
 			        var bounds = new kakao.maps.LatLngBounds();
-			        for (var i=0; i<data.length; i++) {
-			            displayMarker(data[i]);    
-			            bounds.extend(new kakao.maps.LatLng(data[i].y, data[i].x));
+			        
+			        
+			        //데이타 중복 마커 처리
+			        let processingData = processingMarker(data,markerData);
+			        console.dir(processingData);
+			        
+			        
+			        for (var i=0; i<processingData.length; i++) {
+			        	
+			            displayMarker(processingData[i]);    
+			            bounds.extend(new kakao.maps.LatLng(processingData[i].y, processingData[i].x));
 			        }       
 			        // 검색된 장소 위치를 기준으로 지도 범위를 재설정합니다
 			        map.setBounds(bounds);
@@ -379,44 +389,21 @@
 			}
 		}
 		
-		let markerClickEvent = (marker) =>{
-			 // 마커에 클릭이벤트를 등록합니다
-		    kakao.maps.event.addListener(marker, 'click', function() {
-		    				    	
-		    	let reviewShow = document.querySelector(".popup-wrap");
-				if (reviewShow.style.display == "none") {
-					reviewShow.style.display = "";
-				}else{
-					reviewShow.style.display = "none";
+		//마커 중복제거 
+		let processingMarker = (data,markerData) =>{
+			let processedMarker = data.filter((review)=>{
+	        	for (var i = 0; i < markerData.length; i++) {
+	        		if (review.x  == markerData[i].review.location.x 
+	        				&& review.y == markerData[i].review.location.y ) {
+						return false;
+					}
 				}
-				alert('마커를 클릭했습니다!');
-		    		
-				
-				//https://dapi.kakao.com/v2/local/search/keyword.json?y=37.514322572335935&x=127.06283102249932&radius=20000&query=카카오프렌즈
-				
-				fetch('https://dapi.kakao.com/v2/local/search/keyword.json?y='+ marker.getPosition().getLat() +'&x='+ marker.getPosition().getLng() +'&radius=1&query=' +keyword, {
-					  headers: {
-					    Authorization: `KakaoAK de36fa19e556a7179bb149f25fa41a95` 
-					  }
-					})
-					.then(response => response.json())
-					.then(json => {
-					// 받은 json으로 기능 구현
-					console.dir(json.documents[0]);
-					markerInfo = json.documents[0];
-					//음식점 이름, 주소 텍스트로 변환 
-					let placeName = json.documents[0].place_name;
-					let roadAddress = json.documents[0].road_address_name;
-					
-					//팝업창에 내용 기입
-					document.querySelector('#place-name').innerHTML = placeName;
-					document.querySelector('#road-address').innerHTML = roadAddress;
-					
-					
-				});
-			    
-			});
+	        	return true;
+	        });
+			
+			return processedMarker;
 		}
+		
 		
 		let shwoBox = () =>{
 			let reviewShow = document.querySelector(".popup-wrap");
@@ -477,6 +464,7 @@
 				document.querySelector('#friendList').style.display = "none";
 			}
 		}
+		
 		
 		
 		
