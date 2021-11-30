@@ -164,6 +164,7 @@ public class IndexServiceImpl implements IndexService{
 			List<Fileinfo> files = fileRepository.findByTypeId(review.getId());
 			if(files.size() > 0) review.setThumUrl(files.get(0).getDownloadURL());
 		}
+		searchReview.toString();
 		return searchReview;
 		
 	}
