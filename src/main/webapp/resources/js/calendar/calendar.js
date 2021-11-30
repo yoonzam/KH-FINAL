@@ -56,7 +56,7 @@ $('.filter-menu input:checkbox').click((e)=>{
 
 
 		// 캘린더 일정 만들기 - 장소 검색
-		$('input[name="location"]').keyup(function(){
+		$('input[name="resName"]').keyup(function(){
 		let keyword = $(this).val();
 		if(!keyword) {
 			$('.locationList').html('');
@@ -88,7 +88,9 @@ $('.filter-menu input:checkbox').click((e)=>{
 	$('.locationList').click(function(e){
 		let placeIdx = e.target.dataset.placeIdx;
 		let place = searchPlaces[placeIdx];
-		$('input[name="location"]').val(place.place_name);
+		$('input[name="resName"]').val(place.place_name);
+		$('input[name="latitude"]').val(place.y);
+		$('input[name="longitude"]').val(place.x);
 		
 		$('.locationList').hide();
 	})

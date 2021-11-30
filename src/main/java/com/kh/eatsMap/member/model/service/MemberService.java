@@ -24,8 +24,6 @@ public interface MemberService {
 
 	void insertMember(JoinForm persistUser);
 
-	void insertProfileImg(Member member, MultipartFile file);
-
 	void updatePassword(String email, String tmpPassword);
 
 	Member findKakaoMember(String kakaoId);
@@ -35,11 +33,12 @@ public interface MemberService {
 
 	Member findMemberByNickname(String nickname);
 
-	void updateMemberProfile(Member member, ModifyForm modifyForm);
+	void updateMemberProfile(Member member, ModifyForm modifyForm, MultipartFile photo);
 
 	void isLeaveMember(Member member);
 
-	void updateNotice(String id, Notice notice);
+	void updateNotice(String noticeId, Notice notice);
+	void updateNoticeForDel(String id, Notice notice);
 
 	Map<String,Object> findMemberAndReviewByMemberId(ObjectId memberId);
 
@@ -48,5 +47,9 @@ public interface MemberService {
 	void followMember(ObjectId memberId, Follow followUser);
 
 	void followCancel(ObjectId id, Follow followUser);
+
+	Notice findNotice(ObjectId followingId);
+
+	
 
 }

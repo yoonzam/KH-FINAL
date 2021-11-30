@@ -14,10 +14,10 @@
 	<div class="container-wrap">
 		<div class="container">
 			<ul class="myeats-tab">
-				<li><a href="group">그룹관리</a></li>
-				<li><a href="post">작성글관리</a></li>
+				<li><a href="/myeats/group">그룹관리</a></li>
+				<li><a href="/myeats/detail">작성글관리</a></li>
 				<li class="selected">맛찜리스트</li>
-				<li><a href="/member/modifyForm">회원정보 수정</a></li>
+				<li><a href="/member/edit-profile">회원정보 수정</a></li>
 			</ul>
 			<div class="section">
 				<div class="detail-wrap">

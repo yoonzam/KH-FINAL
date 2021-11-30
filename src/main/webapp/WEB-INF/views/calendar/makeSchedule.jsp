@@ -10,8 +10,10 @@
 					<div class="list title"><span>제목</span><input type="text" name="title" id="title" placeholder="제목을 입력하세요" required/></div>
 					<div class="list date"><span>일자</span><input type="date" name="date" id="date" required/></div>
 					<div class="list time"><span>시간</span><input type="time" name="time" id="time" required/></div>
-					<div class="list place"><span>장소</span><input type="text" name="location" id="location" placeholder="장소를 입력하세요" required/><ul class="locationList"></ul></div>	
+					<div class="list place"><span>장소</span><input type="text" name="resName" id="location" placeholder="장소를 입력하세요" required/><ul class="locationList"></ul></div>	
 					<div class="list member"><span>참석자</span><input type="text" name="participant" id="participant" placeholder="함께할 잇친을 추가하세요" required/></div>
+					<input class="hidden" type="text" name="latitude" style="display: none">
+					<input class="hidden" type="text" name="longitude" style="display: none">
 					<div class="btn-wrap">
 						<button class="submit" id="save-event">확인</button>
 						<button class="cancel">취소</button>

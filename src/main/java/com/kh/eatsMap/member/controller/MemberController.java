@@ -9,6 +9,7 @@ import javax.servlet.http.HttpSession;
 import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
@@ -220,6 +222,7 @@ public class MemberController {
 	
 	@PostMapping("edit-profile")
 	public String editProfileImpl(@Validated ModifyForm modifyForm, Errors errors
+								,@RequestParam(name = "profile", required = false) MultipartFile photo
 								,@SessionAttribute("authentication") Member member
 								,Model model) {
 		ValidatorResult vr = new ValidatorResult();
@@ -229,20 +232,13 @@ public class MemberController {
 			vr.addErrors(errors);
 			return "member/edit-profile";
 		}
-		memberService.updateMemberProfile(member,modifyForm);
+		memberService.updateMemberProfile(member,modifyForm,photo);
 		
 		return "redirect:/myeats/post";
 		
 		
 	}
 	
-	@PostMapping("update-img")
-	public String updateImg(MultipartFile profile, @SessionAttribute("authentication") Member member) {
-		
-		memberService.insertProfileImg(member,profile);
-		
-		return "redirect:/member/edit-profile";
-	}
 	
 	@GetMapping("quit")
 	public void quit() {}
@@ -269,7 +265,7 @@ public class MemberController {
 	public void removeNotice(String id, @SessionAttribute("authentication") Member member
 							, @SessionAttribute("notice") Notice notice, @SessionAttribute("noticeCnt") int cnt, HttpSession session) {
 
-		memberService.updateNotice(id, notice);
+		memberService.updateNoticeForDel(id, notice);
 		cnt -= 1;
 		
 		if(cnt == 0) {
@@ -279,7 +275,7 @@ public class MemberController {
 		session.setAttribute("noticeCnt", cnt);
 	}
 	
-	@GetMapping("saveToken/{clientToken}")
+	@GetMapping("saveToken/{clientToken}")	//삭제예정
 	public void saveToken(@PathVariable String clientToken, @SessionAttribute("authentication") Member member) {
 		logger.debug("token받아오기 : " + clientToken);
 		member.setToken(clientToken);
@@ -303,18 +299,18 @@ public class MemberController {
 		return "member/follow";
 	}
 	
-	//follow
 	@PostMapping("follow")
 	@ResponseBody
 	public void followImpl(@RequestBody Follow followUser, @SessionAttribute("authentication") Member member) {
-		logger.debug("팔로우 할 id : " + followUser.toString());
 		memberService.followMember( member.getId(), followUser);
+		memberService.updateNotice("follow", memberService.findNotice(followUser.getFollowingId()));
 	}
 	
 	@PostMapping("follow-cancel")
 	@ResponseBody
 	public void followCancel(@RequestBody Follow followUser, @SessionAttribute("authentication") Member member) {
 		memberService.followCancel(member.getId(), followUser);
+		memberService.updateNoticeForDel("follow", memberService.findNotice(followUser.getFollowingId()));
 	}
 	
 	//파이어베이스

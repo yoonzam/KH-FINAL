@@ -20,10 +20,10 @@
 	<div class="container-wrap">
 		<div class="container">
 			<ul class="myeats-tab">
-				<li><a href="group">그룹관리</a></li>
+				<li><a href="/myeats/group">그룹관리</a></li>
 				<li class="selected">작성글관리</li>
-				<li><a href="detail">맛찜리스트</a></li>
-				<li><a href="/member/modifyForm">회원정보 수정</a></li>
+				<li><a href="/myeats/detail">맛찜리스트</a></li>
+				<li><a href="/member/edit-profile">회원정보 수정</a></li>
 			</ul>
 		    <div class="profile">
 				<div class="wrap-profile-img">
@@ -110,6 +110,8 @@
 <script type="text/javascript">
 
 document.querySelector('.btn-follow').addEventListener('click', e => {
+	
+	//execute();
 	
 	let data = {followingId : `${member.id}`};
 	let header = new Headers();

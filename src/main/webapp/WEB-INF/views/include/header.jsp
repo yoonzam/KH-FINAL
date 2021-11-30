@@ -92,10 +92,6 @@
 
 	<script type="text/javascript">
 	
-	window.addEventListener('DOMContentLoaded', (event) => {
-		document.querySelector('.bell-list').style.display = 'none';
-	});
-	
 	document.querySelector('.btn-bell.new').addEventListener('mouseover', () => {
 		document.querySelector('.bell-list').style.display = 'block';
 		setTimeout(() => document.querySelector('.bell-list').style.display = 'none', 3000);
