@@ -40,6 +40,11 @@ background-color: var(--red-color);
     border-radius: 5px;
     border: 1px solid #aaa;
 }
+
+.invited-input{
+   padding: 3px !important;
+   border-style: none !important;
+}
 </style>
 	
 </head>
@@ -55,7 +60,7 @@ background-color: var(--red-color);
 
 			<h3><i class="fas fa-users-cog"></i> 새로운 그룹 만들기</h3>
 			
-			<form id="frmUpload" action="/myeats/createGroup" method="post" enctype="multipart/form-data">
+			<form role="form" id="frmUpload" action="/myeats/createGroup" method="post" enctype="multipart/form-data">
 			<input type="hidden" name="groupcreatedate" value="<%= sf.format(nowTime) %>">
 			<div class="group-form">
 				<ul>
@@ -87,10 +92,6 @@ background-color: var(--red-color);
 							
 							<span><i class="fas fa-minus-square" onclick='removeItem()'></i>
 							<%-- <input type="hidden" name="memberNickName[]" value="<%=request.getAttribute("keyword")%>"> --%>
-							<!-- <input type="hidden" name="memberNickName[]" value="지원">
-							<input type="hidden" name="memberNickName[]" value="댕댕이">
-							<input type="hidden" name="memberNickName[]" value="집에갈래">
-							<input type="hidden" name="memberNickName[]" value="weekband"> -->
 							<ul id='nickNames'></ul>
 							</span>
 							
@@ -100,7 +101,7 @@ background-color: var(--red-color);
 			</div>
 			<div class="btn-area">
 				<a href = "group"><button class="cancel-btn">취소</button></a>
-				<a href = "createGroup"><button type="submit" class="create-btn">만들기</button></a>
+				<a><button type="submit" class="create-btn">만들기</button></a>
 			</div>
 			</form>
 			
@@ -133,10 +134,6 @@ background-color: var(--red-color);
         }  
     });  
     
-
-    
-    
-      
 });   */
 
 $("#inviteButton").click(function(){  
@@ -162,10 +159,10 @@ $("#inviteButton").click(function(){
 function addList()  {
 	
 		const addValue = $("#invited-select").val();
-		console.log(addValue);
-	 	const li = document.createElement("li");
+	 	const li = document.createElement("input");
 	  
-		li.setAttribute('id',addValue);
+	 	li.setAttribute('class', "invited-input");
+		li.setAttribute('id', addValue);
 		li.setAttribute("name", "memberNickName[]");
 		li.setAttribute("value", addValue);
 	  
@@ -190,6 +187,19 @@ function removeItem()  {
 	  }
 	  
 	}
+	
+$(document).ready(function(){
+		var frmObj = $("form[role='form']");
+		console.log("createGroup.jsp지정된 폼태그..");
+		
+		$(".create-btn").on("click", function(){
+			frmObj.attr("action", "/myeats/createGroup");
+			formObj.attr("method", "post");
+			frmObj.submit();
+			});
+		 
+		 
+	});
 	
 
 </script> 
