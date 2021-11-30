@@ -1,6 +1,7 @@
 package com.kh.eatsMap.map.controller;
 
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +32,7 @@ public class MapController {
 	
 	@ResponseBody
 	@GetMapping("search")
-	public List<Review> searchReview(String keyword) {
+	public List<HashMap<String, Object>> searchReview(String keyword) {
 		System.out.println(keyword);
 
 		 
@@ -39,9 +40,9 @@ public class MapController {
 		System.out.println("출력 되는중? "+keyword);
 
 
-		  List<Review> reviewList = mapService.reviewList();
+		List<HashMap<String, Object>> reviewList = mapService.reviewList();
 		  
-		  System.out.println(reviewList.toString());
+		 System.out.println(reviewList.toString());
 		 
 
 		return reviewList;
