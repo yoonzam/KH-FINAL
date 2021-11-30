@@ -15,15 +15,19 @@ public interface TimelineService {
 
 	List<Review> findAllReviews();
 	
-	List<Review> findAllReviews(PageObject pageObject);
+	List<Review> findAllReviews(PageObject pageObject, Member member);
 	
-	List<HashMap<String, Object>> findReviewsForPaging(PageObject pageObject);
+	List<HashMap<String, Object>> findReviewsForPaging(PageObject pageObject, Member member);
 
-	Map<String, Object> findReviewById(String id);
+	Map<String, Object> findReviewById(String id, Member member);
 
 	void editReview(Review review, String reviewId, Member member, String latitude, String longitude,
 			List<MultipartFile> photos, List<String> hdPhotos);
 
 	void deleteReview(String reviewId, Member member);
+
+	void saveLike(String revId, Member member);
+
+	void deleteLike(String revId, Member member);
 
 }

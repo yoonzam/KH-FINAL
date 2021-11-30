@@ -72,7 +72,9 @@
 										<c:set var="addr" value="${fn:split(reviews.addr,' ')}" />
 										${addr[0]} ${addr[1]}&nbsp;&#62;&nbsp;${reviews.category}
 									</div>
-									<div class="eats-name">${reviews.resName} <i onclick="clickLike();" class="eats-like far fa-heart"></i></div>
+									<div class="eats-name">
+										${reviews.resName} <i data-like="${reviews.id}" class="eats-like ${reviews.like > 0 ? 'fas fa-heart' : 'far fa-heart'}"></i>
+									</div>
 									<div class="eats-tag">
 										<c:forEach items="${reviews.hashtag}" var="hashtag">
 											<span>&#35;${hashtag}</span>
@@ -95,7 +97,7 @@
 		let viewTimeline = (reviewId) => {
 			$.ajax({
 				type: 'GET',
-				url: '/timeline/detail',
+				url: '${contextPath}/timeline/detail',
 				data:{ id:reviewId },
 				dataType: 'json',
 				success: (data) => {
@@ -120,7 +122,7 @@
 					}
 					
 					//작성자
-					$('#pop-review-detail .writer').html('<a href="member/follow/'+data.memberId+'">'+data.review.memberNick+'</a><a onclick="follow(\''+data.memberId+'\')" class="follow">잇친맺기</a>');
+					$('#pop-review-detail .writer').html('<a href="${contextPath}/member/follow/'+data.memberId+'">'+data.review.memberNick+'</a><a onclick="follow(\''+data.memberId+'\')" class="follow">잇친맺기</a>');
 					
 					//별점
 					html = '<p>맛</p>';
@@ -155,8 +157,22 @@
 					$('#pop-review-detail .info > .location').html(data.review.addr);
 					
 					//세부버튼
-					$('#pop-review-detail .pop-btn-edit').attr('onclick','editReview(\''+reviewId+'\');');
-					$('#pop-review-detail .pop-btn-delete').attr('onclick','deleteReview(\''+reviewId+'\');');
+					if(data.review.like > 0) {
+						$('#pop-review-detail .pop-btn-my-list').addClass('clicked');
+						$('#pop-review-detail .pop-btn-my-list').attr('onclick','unlikeReview(\''+reviewId+'\');');
+					} else {
+						$('#pop-review-detail .pop-btn-my-list').removeClass('clicked');
+						$('#pop-review-detail .pop-btn-my-list').attr('onclick','likeReview(\''+reviewId+'\');');
+					}
+					if(data.memberId == '${authentication.id}') {
+						$('#pop-review-detail .pop-btn-edit').show();
+						$('#pop-review-detail .pop-btn-delete').show();
+						$('#pop-review-detail .pop-btn-edit').attr('onclick','editReview(\''+reviewId+'\');');
+						$('#pop-review-detail .pop-btn-delete').attr('onclick','deleteReview(\''+reviewId+'\');');
+					} else{
+						$('#pop-review-detail .pop-btn-edit').hide();
+						$('#pop-review-detail .pop-btn-delete').hide();
+					}
 
 					$('#pop-review-detail').fadeIn(200);
 					resizeSlideImgHeight();
@@ -217,12 +233,13 @@
 		}
 		
 		//페이징
-		let timelinePageCnt = 0;
+		let timelinePageCnt = 1;
 		document.addEventListener('scroll', function() {
 		    if((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
 		    	$.ajax({
 					type: 'POST',
 					url: '${contextPath}/timeline/?page='+(timelinePageCnt+1),
+					dataType: 'json',
 					contentType: false,
 					processData: false,
 				 	cache:false,
@@ -230,10 +247,6 @@
 						if(data.length == 0) return;
 						timelinePageCnt++;
 						let html = '';
-						console.log(data[0]);
-						console.log(data[1]);
-						console.log(data[2]);
-						console.log(data[3]);
 						for(i = 0; i < data.length; i++) {
 				    		html += '<li onclick="viewTimeline(\'' + data[i].reviewId + '\')">'
 				    			  + '	<div class="eats-list">'
@@ -245,7 +258,13 @@
 				    			  + 				data[i].review.addr.split(' ')[0] + data[i].review.addr.split(' ')[1]
 				    			  + 				' > ' + data[i].review.category
 				    			  + '</div>'
-				    			  + '			<div class="eats-name">' + data[i].review.resName + ' <i onclick="clickLike();" class="eats-like far fa-heart"></i></div>'
+				    			  + '			<div class="eats-name">' + data[i].review.resName;
+				    		if(data[i].review.like > 0) {
+				    			html += '			<i data-like="' + data[i].reviewId + '" class="eats-like fas fa-heart"></i>';
+				    		} else{
+				    			html += '			<i data-like="' + data[i].reviewId + '" class="eats-like far fa-heart"></i>';
+				    		}
+				    		html += '			</div>'
 				    			  + '			<div class="eats-tag">';
 			    		 	for(j = 0; j < data[i].review.hashtag.length; j++) {
 			    		 		html += '				<span>#' + data[i].review.hashtag[j] + '</span>';
@@ -266,6 +285,40 @@
 				});
 		    }
 		});
+		
+		let likeReview = (reviewId) => {
+			$.ajax({
+				type: 'POST',
+				url: '${contextPath}/timeline/like',
+				data:{ revId:reviewId },
+			 	cache:false,
+				success: () => {
+					$('#pop-review-detail .pop-btn-my-list').addClass('clicked');
+					$('#pop-review-detail .pop-btn-my-list').attr('onclick','unlikeReview(\''+reviewId+'\');');
+					$('.timeline-brd .eats-like[data-like="'+reviewId+'"]').attr('class','eats-like fas fa-heart');
+				},
+				error: (e) => {
+					alert("실패");
+				}
+			});
+		}
+		
+		let unlikeReview = (reviewId) => {
+			$.ajax({
+				type: 'POST',
+				url: '${contextPath}/timeline/unlike',
+				data:{ revId:reviewId },
+			 	cache:false,
+				success: () => {
+					$('#pop-review-detail .pop-btn-my-list').removeClass('clicked');
+					$('#pop-review-detail .pop-btn-my-list').attr('onclick','likeReview(\''+reviewId+'\');');
+					$('.timeline-brd .eats-like[data-like="'+reviewId+'"]').attr('class','eats-like far fa-heart');
+				},
+				error: (e) => {
+					alert("실패");
+				}
+			});
+		}
 		
 	</script>
 <%@ include file="/WEB-INF/views/include/footer.jsp" %>

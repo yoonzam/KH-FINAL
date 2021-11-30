@@ -40,6 +40,8 @@ $('.layer-popup .view-controller a').hover((e) => {
     let btnName = '';
     if(className === 'pop-btn-my-list'){
         btnName = '맛찜하기';
+    } else if(className === 'pop-btn-my-list clicked'){
+        btnName = '맛찜삭제';
     } else if(className === 'pop-btn-calendar'){
         btnName = '캘린더 추가';
     } else if(className === 'pop-btn-edit'){

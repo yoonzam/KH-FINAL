@@ -156,7 +156,7 @@
 	float:right;
 	color:#aaa;
 }
-.timeline-brd .eats-like:hover{
+.timeline-brd .eats-like.fas{
 	color: #f15050;
 }
 .timeline-brd .eats-tag{
