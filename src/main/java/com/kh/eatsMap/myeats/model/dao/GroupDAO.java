@@ -78,6 +78,15 @@ public class GroupDAO {
 			return list;
 		}
 		
+		//전체 멤버 리스트
+				public List<Member> listMember() throws Exception{
+					List<Member> list = null;
+					
+					list = mongoTemplate.findAll(com.kh.eatsMap.member.model.dto.Member.class,"member");
+					
+					return list;
+				}
+		
 	 
 	
 	//페이징 및 조회/group.jsp
