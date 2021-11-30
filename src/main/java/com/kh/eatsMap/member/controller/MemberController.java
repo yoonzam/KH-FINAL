@@ -288,6 +288,7 @@ public class MemberController {
 		if(member.getId().toString() == memberId) {
 			return "redirect:/myeats/post";
 		}
+		logger.debug("memberId : " + memberId );
 		Follow follow = memberService.findFollowByMemberId(memberId, member.getId());
 		Map<String,Object> commandMap = memberService.findMemberAndReviewByMemberId(memberId);
 
@@ -310,6 +311,8 @@ public class MemberController {
 	@PostMapping("follow-cancel")
 	@ResponseBody
 	public void followCancel(@RequestBody Follow followUser, @SessionAttribute("authentication") Member member) {
+		logger.debug(followUser.toString());
+		logger.debug(member.getId().toString());	//로그인유저
 		memberService.followCancel(member.getId(), followUser);
 		memberService.updateNoticeForDel("follow", memberService.findNotice(followUser.getFollowingId()));
 	}

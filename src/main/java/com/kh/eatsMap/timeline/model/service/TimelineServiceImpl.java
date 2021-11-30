@@ -135,7 +135,7 @@ public class TimelineServiceImpl implements TimelineService{
 		map.put("memberId", review.getMemberId().toString());
 		
 		//잇친여부
-		Follow follow = followingRepository.findOptionalByMemberIdAndFollowingId(member.getId(), review.getMemberId().toString()).orElse(new Follow());
+		Follow follow = followingRepository.findOptionalByMemberIdAndFollowingId(member.getId(), review.getMemberId()).orElse(new Follow());
 		System.out.println(follow);
 		map.put("follow", follow);
 		
