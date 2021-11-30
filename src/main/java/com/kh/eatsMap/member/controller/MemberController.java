@@ -1,5 +1,6 @@
 package com.kh.eatsMap.member.controller;
 
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -39,6 +40,7 @@ import com.kh.eatsMap.member.validator.JoinForm;
 import com.kh.eatsMap.member.validator.JoinFormValidator;
 import com.kh.eatsMap.member.validator.ModifyForm;
 import com.kh.eatsMap.member.validator.ModifyFormValidator;
+import com.kh.eatsMap.myeats.model.dto.Like;
 
 import lombok.RequiredArgsConstructor;
 
@@ -280,10 +282,10 @@ public class MemberController {
 	
 	//follow-feed
 	@GetMapping("follow/{memberId}")
-	public String follow(@PathVariable ObjectId memberId, @SessionAttribute("authentication") Member member
+	public String follow(@PathVariable String memberId, @SessionAttribute("authentication") Member member
 						,Model model) {
 		
-		if(member.getId() == memberId) {
+		if(member.getId().toString() == memberId) {
 			return "redirect:/myeats/post";
 		}
 		Follow follow = memberService.findFollowByMemberId(memberId, member.getId());
@@ -311,13 +313,7 @@ public class MemberController {
 		memberService.followCancel(member.getId(), followUser);
 		memberService.updateNoticeForDel("follow", memberService.findNotice(followUser.getFollowingId()));
 	}
-	
-	@GetMapping("post")
-	public String post(@SessionAttribute("authentication") Member member) {
-		
-		return "myeats/post";
-	}
-	
+
 	//파이어베이스
 	@GetMapping("push-test")
 	public void pushTest() {}

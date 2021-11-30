@@ -12,6 +12,7 @@ import com.kh.eatsMap.member.model.dto.Notice;
 import com.kh.eatsMap.member.validator.EmailForm;
 import com.kh.eatsMap.member.validator.JoinForm;
 import com.kh.eatsMap.member.validator.ModifyForm;
+import com.kh.eatsMap.myeats.model.dto.Like;
 import com.kh.eatsMap.timeline.model.dto.Review;
 
 public interface MemberService {
@@ -40,9 +41,9 @@ public interface MemberService {
 	void updateNotice(String noticeId, Notice notice);
 	void updateNoticeForDel(String id, Notice notice);
 
-	Map<String,Object> findMemberAndReviewByMemberId(ObjectId memberId);
+	Map<String,Object> findMemberAndReviewByMemberId(String memberId);
 
-	Follow findFollowByMemberId(ObjectId memberId, ObjectId id);
+	Follow findFollowByMemberId(String memberId, ObjectId id);
 
 	void followMember(ObjectId memberId, Follow followUser);
 
@@ -51,6 +52,8 @@ public interface MemberService {
 	Notice findNotice(ObjectId followingId);
 
 	Member findMemberById(ObjectId followingId);
+
+	List<Review> findLikedByMemberId(Member member);
 
 	
 

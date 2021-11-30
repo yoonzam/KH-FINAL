@@ -7,10 +7,10 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 
 import com.kh.eatsMap.member.model.dto.Follow;
 
-public interface FollowingRepository extends MongoRepository<Follow, ObjectId>{
+public interface FollowingRepository extends MongoRepository<Follow, String>{
 
-	Optional<Follow> findOptionalByMemberIdAndFollowingId(ObjectId memberId, ObjectId followingId);
+	Optional<Follow> findOptionalByMemberIdAndFollowingId(ObjectId memberId, String followingId);
 
-	long countByMemberId(ObjectId memberId);
+	long countByMemberId(String memberId);
 
 }
