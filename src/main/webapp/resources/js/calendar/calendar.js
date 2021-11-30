@@ -95,7 +95,38 @@ $('.filter-menu input:checkbox').click((e)=>{
 		$('.locationList').hide();
 	})
 
+/*	$('#sch-change-btn').click((e)=>{
+		alert('일정을 수정합니다');
+		$('#pop-schedule-detail').hide();
+		$('#pop-schedule-form').show();
+		
+		$.ajax({
+			type: 'GET',
+			url: '/calendar/edit',
+			data:{ id:reviewId },
+			dataType: 'json',
+			success: (data) => {
+				$('input[name="title"]').text(data.title);
+				$('input[name="date"]').text(data.date);
+				$('input[name="time"]').text(data.time);
+				$('input[name="resName"]').text(data.resName);
+				$('input[name="participant"]').text(data.participant);			
+			}
+		})
+		
 
+	})*/
 	
+	$('#sch-delete-btn').on('click', function(){
+		
+		/*$('#sch-delete-btn').unbind();
+		calendar.fullCalendar('removeEvents', $(this).data('id'));
+		// delete ?*/
+		$('#pop-schedule-detail').hide();
+	})
 
+
+	/*$('#sch-delete-btn').click(function() {
+     	calendar.fullCalendar('removeEvents',event._id);
+  	});*/
 

@@ -99,11 +99,15 @@ background-color: var(--red-color);
 					</li>
 				</ul>
 			</div>
+			
 			<div class="btn-area">
-				<a href = "group"><button class="cancel-btn">취소</button></a>
+				
 				<a><button type="submit" class="create-btn">만들기</button></a>
+				</form>
+				<a href="group"><button class="cancel-btn">취소</button></a>
 			</div>
-			</form>
+			
+			
 			
 			
 			
@@ -135,6 +139,19 @@ background-color: var(--red-color);
     });  
     
 });   */
+
+/* $(document).ready(function(){
+	var frmObj = $("form[role='form']");
+	console.log("createGroup.jsp지정된 폼태그..");
+	
+	 $(".cancel-btn").on("click", function(){ 
+			frmObj.attr("action", "/myeats/group");
+			formObj.attr("method", "get");
+			frmObj.submit();
+ 		}); 
+	
+	 
+}); */
 
 $("#inviteButton").click(function(){  
     
@@ -188,18 +205,20 @@ function removeItem()  {
 	  
 	}
 	
-$(document).ready(function(){
+ $(document).ready(function(){
 		var frmObj = $("form[role='form']");
 		console.log("createGroup.jsp지정된 폼태그..");
+		
 		
 		$(".create-btn").on("click", function(){
 			frmObj.attr("action", "/myeats/createGroup");
 			formObj.attr("method", "post");
 			frmObj.submit();
 			});
-		 
+		
 		 
 	});
+	 
 	
 
 </script> 

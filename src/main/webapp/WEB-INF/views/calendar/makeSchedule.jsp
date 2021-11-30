@@ -16,7 +16,7 @@
 					<input class="hidden" type="text" name="longitude" style="display: none">
 					<div class="btn-wrap">
 						<button class="submit" id="save-event">확인</button>
-						<button class="cancel">취소</button>
+						<button class="cancel" id="cancel-btn">취소</button>
 					</div>
 				</div>
 			</form>
