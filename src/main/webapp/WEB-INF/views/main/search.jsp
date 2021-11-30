@@ -39,12 +39,14 @@
 							</li>
 							<li>
 								<span>종류</span>
-								<label class="checked">#한식<input type="checkbox" name="category_" value="cg01" checked value="cg01" checked/></label>
+								<label class="checked">#한식<input type="checkbox" name="category_" value="cg01" checked/></label>
 								<label class="checked">#중식<input type="checkbox" name="category_" value="cg02" checked/></label>
 								<label class="checked">#양식<input type="checkbox" name="category_" value="cg03" checked/></label>
 								<label class="checked">#일식<input type="checkbox" name="category_" value="cg04" checked/></label>
-								<label class="checked">#카페,디저트<input type="checkbox" name="category_" value="cg04" checked/></label>
-								<label class="checked">#술집<input type="checkbox" name="category_" value="cg05" checked/></label>
+								<label class="checked">#아시아<input type="checkbox" name="category_" value="cg05" checked/></label>
+								<label class="checked">#분식<input type="checkbox" name="category_" value="cg06" checked/></label>
+								<label class="checked">#카페/디저트<input type="checkbox" name="category_" value="cg07" checked/></label>
+								<label class="checked">#술집<input type="checkbox" name="category_" value="cg08" checked/></label>
 							</li>
 							<li>
 								<span>분위기</span>
@@ -53,6 +55,7 @@
 								<label class="checked">#가족<input type="checkbox" name="hashtag_" value="md03" checked/></label>
 								<label class="checked">#데이트<input type="checkbox" name="hashtag_" value="md04" checked/></label>
 								<label class="checked">#혼밥<input type="checkbox" name="hashtag_" value="md05" checked/></label>
+								<label class="checked">#회식<input type="checkbox" name="hashtag_" value="md06" checked/></label>
 							</li>
 							<li>
 								<span>가격대</span>
@@ -83,7 +86,18 @@
 									<c:set var="addr" value="${fn:split(reviews.addr,' ')}" />
 									${addr[0]} ${addr[1]}&nbsp;&#62;&nbsp;${reviews.category}
 								</div>
-								<div class="eats-name">${reviews.resName} <i onclick="clickLike();" class="eats-like far fa-heart"></i></div>
+								<div class="eats-name">${reviews.resName} 
+								
+								
+								<c:if test="${reviews.like eq '1'}">
+						         	<i id="${reviews.id}" class="eats-like far fa-heart" onclick="clickLike(this.id, this.like)" style="color: blue;"></i>
+					         	</c:if>
+					         	<c:if test="${reviews.like eq '0'}">
+						         	<i id="${reviews.id}" class="eats-like far fa-heart" onclick="clickLike(this.id, this.like)"></i>
+					         	</c:if>
+								
+								
+								</div>
 								<div class="eats-tag">
 									<c:forEach items="${reviews.hashtag}" var="hashtag">
 										<span>&#35;${hashtag}</span>

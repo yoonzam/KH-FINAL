@@ -42,9 +42,21 @@ public class IndexController {
 	public String index(
 			@SessionAttribute("authentication") Member member
 			,String longitude_ ,String latitude_
-			,Model model
+//			,Model model
 			) throws Exception {
 
+		
+		
+		////////////////////////////////////////////////////////////////////////
+		//hashtag픽(잇친아님) 
+		//like컬럼값이 1인 리뷰중(=내가 찜한 리뷰중) 높은 빈도의 hashtag 2개 선별
+		//그 2개의 hashtag가 포함된 모든 리뷰 출력
+		
+		//List<Review> hashTagRecomendList = indexService.findReviewByHashtag(member);
+		//model.addAttribute(hashTagList);
+		
+		
+		
 		
 		//사용자 위치 받아오기 
 		if(longitude_ != null && latitude_ != null) {
@@ -59,30 +71,14 @@ public class IndexController {
 			//member 테이블에 location 추가 
 			indexService.updateLocation(member, location);
 			logger.debug(member.getLocation().toString());
-			
-			if(member.getLocation() != null) {	
-				
-				//*위치기반 잇친픽 출력 
-				List<Review> locationFollowReviewList = indexService.localReview(member);	
-				model.addAttribute("locationFollowReviewList","locationFollowReviewList");
-			}
-
-
-			
-			
-////////////////////////////////////////////////////////////////////////			
-//		hashtag픽(잇친아님) 
-//		리뷰의 like컬럼값이 1인 리뷰중(=내가 찜한 리뷰중) 높은 빈도의 hashtag 2개 선별
-//		그 2개의 hashtag가 포함된 모든 리뷰 출력
+//			
+//			if(member.getLocation() != null) {	
+//				
+//				//*위치기반 잇친픽 출력 
+//				List<Review> locationFollowReviewList = indexService.localReview(member);	
+//				model.addAttribute("locationFollowReviewList","locationFollowReviewList");
 //
-//		List<Review> hashTagRecomendList = indexService.findReviewByHashtag(member);
-
-		
-		
-		
-		
-//		model.addAttribute(hashTagList);
-
+//			}
 		}
 		return "main/main";
 	}
@@ -94,7 +90,17 @@ public class IndexController {
 	
 
 	@GetMapping("/search")
-	public String search() {
+	public String search(
+//						@SessionAttribute("authentication") Member member
+//						,String id
+						) {
+		
+		//좋아요 테이블에 추가/삭제작업 필요
+		//좋아요 테이블에 findByReviewId로 조회한 후 null 이면 save하기,
+		//findByReviewId로 조회한 후 결과가 있으면 delete하기 
+
+		
+		
 		return "main/search";
 	}
 	
@@ -107,18 +113,19 @@ public class IndexController {
 							,String[] category_ 
 							,String[] hashtag_ 
 							,Model model
-							,RedirectAttributes rttr
+//							,RedirectAttributes rttr
 							) {
 		
 		String keyword = keyword_ == null ? "" : keyword_;
-		
+		System.out.println("keyword : " + keyword);
+	
 		
 		String[] category = new String[0];
 		if(category_ != null) {
 			category = new String[category_.length];		
 			for (int i = 0; i < category_.length; i++) {
 				category[i] = category_[i];
-//				System.out.println("hashtag : " + category[i]);
+//				System.out.println("category : " + category[i]);
 			}	
 		}
 		
@@ -132,28 +139,12 @@ public class IndexController {
 			}	
 		}
 
+
 		//검색 결과 요청
 		List<Review> searchedReviewList = indexService.searchReview(keyword, category, hashtag);	//searchReviewList : 항목들로 서치된 리뷰데이터  
+		model.addAttribute("searchedReviewList", searchedReviewList);	
 
-		if(searchedReviewList.size() > 0) {
-			for (Review review : searchedReviewList) {
-				List<Fileinfo> files = indexService.findFiles(review.getId());
-				review.setThumUrl(files.get(0).getDownloadURL());
-			}
-		
-			 
-			System.out.println("----------------------------------------");
-			for (int i = 0; i < searchedReviewList.size(); i++) {
-				System.out.println("getResName : " + searchedReviewList.get(i).getResName());
-				System.out.println("getThumUrl : " +searchedReviewList.get(i).getThumUrl());
-
-			}
-			
-			model.addAttribute("searchedReviewList", searchedReviewList);	
-
-//			rttr.addFlashAttribute("searchedReviewList", searchedReviewList);
-		}
-
+//		rttr.addFlashAttribute("searchedReviewList", searchedReviewList);
 //		return "redirect:/main/search";
 		return "main/search";
 	}

@@ -18,12 +18,12 @@ public interface ReviewRepository extends MongoRepository<Review, String>{
 	//리뷰 검색 
 	List<Review> findReviewByResNameContaining(String keyword);
 	
-	List<Review> findReviewByCategoryLike(String string);
+	List<Review> findReviewByCategoryLike(String[] category);
 	
-	List<Review> findReviewByHashtagLike(String string);
+	List<Review> findReviewByHashtagLike(String[] hashtag);
 
 	//위치
-	List<Review> findByLocationNear(Point location, Distance distance);	//문제있음 
+	List<Review> findByLocationNear(Point location, Distance distance);
 
 	//해시
 	List<Review> findReviewByLike(int like);

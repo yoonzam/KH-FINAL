@@ -52,7 +52,7 @@ public class IndexMongoTest {
     
 	@Test
 	public void geoTest() {
-		List<Review> findReviewByLocationNear = reviewRepository.findByLocationNear(new Point(126.8989355, 37.4064155), new Distance(5000, Metrics.KILOMETERS));
+		List<Review> findReviewByLocationNear = reviewRepository.findByLocationNear(new Point(126.8989355, 37.4064155), new Distance(50, Metrics.KILOMETERS));
 		findReviewByLocationNear.forEach(e -> logger.debug(e.getResName()));
 	}
 	
@@ -70,8 +70,8 @@ public class IndexMongoTest {
 	
 	@Test
 	public void findCategoryTest() {
-		List<Review> findCategory = reviewRepository.findReviewByCategoryLike("cg");
-		findCategory.forEach(e -> logger.debug(e.getResName()));
+		List<Review> findCategory = reviewRepository.findReviewByCategoryLike(new String[] {"cg04"});
+		findCategory.forEach(e -> logger.debug("여기를보세요!!!!!!!!!!!!!!"+e.getResName()));
 	}
 	
 

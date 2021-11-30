@@ -24,22 +24,7 @@ public interface IndexService {
 	
 	//리뷰 검색 
 	List<Review> searchReview(String keyword, String[] category, String[] hashtag);
-	//리뷰 검색 이미지파일 
-	List<Fileinfo> findFiles(Object id);
 
-
-
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	
 	
