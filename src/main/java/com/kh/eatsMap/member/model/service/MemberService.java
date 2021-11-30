@@ -1,14 +1,18 @@
 package com.kh.eatsMap.member.model.service;
 
+import java.util.List;
 import java.util.Map;
 
+import org.bson.types.ObjectId;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.kh.eatsMap.member.model.dto.Follow;
 import com.kh.eatsMap.member.model.dto.Member;
 import com.kh.eatsMap.member.model.dto.Notice;
 import com.kh.eatsMap.member.validator.EmailForm;
 import com.kh.eatsMap.member.validator.JoinForm;
 import com.kh.eatsMap.member.validator.ModifyForm;
+import com.kh.eatsMap.timeline.model.dto.Review;
 
 public interface MemberService {
 
@@ -20,8 +24,6 @@ public interface MemberService {
 
 	void insertMember(JoinForm persistUser);
 
-	void insertProfileImg(Member member, MultipartFile file);
-
 	void updatePassword(String email, String tmpPassword);
 
 	Member findKakaoMember(String kakaoId);
@@ -31,10 +33,23 @@ public interface MemberService {
 
 	Member findMemberByNickname(String nickname);
 
-	void updateMemberProfile(Member member, ModifyForm modifyForm);
+	void updateMemberProfile(Member member, ModifyForm modifyForm, MultipartFile photo);
 
 	void isLeaveMember(Member member);
 
-	void updateNotice(String id, Notice notice);
+	void updateNotice(String noticeId, Notice notice);
+	void updateNoticeForDel(String id, Notice notice);
+
+	Map<String,Object> findMemberAndReviewByMemberId(ObjectId memberId);
+
+	Follow findFollowByMemberId(ObjectId memberId, ObjectId id);
+
+	void followMember(ObjectId memberId, Follow followUser);
+
+	void followCancel(ObjectId id, Follow followUser);
+
+	Notice findNotice(ObjectId followingId);
+
+	
 
 }

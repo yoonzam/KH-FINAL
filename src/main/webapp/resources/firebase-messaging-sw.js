@@ -1,7 +1,3 @@
-/**
- * 
- */
-
 /*
 import { initializeApp } from "firebase/app";
 import { getMessaging, getToken, onMessage } from 'firebase/messaging';
@@ -69,7 +65,7 @@ messaging.onBackgroundMessage(function(payload) {
   const notificationOptions = {
     body: '잇츠맵에 새로운 알림이 도착했어요! 지금바로 확인해보세요~',
     icon: '/resources/img/member/alarm.png',
-    onclick: "location.href='http://localhost:9090/calendar/'"    
+    onclick: "location.href='http://localhost:9090/main/'"    
   };
 
   self.registration.showNotification(notificationTitle, notificationOptions);

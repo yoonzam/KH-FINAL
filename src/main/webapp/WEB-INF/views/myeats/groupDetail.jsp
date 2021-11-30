@@ -15,27 +15,27 @@
 		<div class="container">
 			
 			<div class="group-view">
-			<c:forEach items="${groupService}" var="groupService">
+			<c:forEach items="${groups}" var="groups">
 			
 			<!-- modify/post, delete/post 로 넘김-->
 			<form role="form" method="post">	
-				<input type="hidden" id="id" name="id" value="${groupService.id}" />
+				<input type="hidden" id="id" name="id" value="${groups.id}" />
 			</form>
 			
 				<div class="group-info">
 					<div class="group-profile">
 						<div class="group-img">
-							<img src="${!empty reviews.thumUrl ? reviews.thumUrl : '/resources/img/common/upload-logo.png'}">
+							<img src="${!empty groups.thumUrl ? groups.thumUrl : '/resources/img/common/upload-logo.png'}">
 						</div>
 					</div>
 					<div class="group-menu">
-						<div class="group-title"><i class="fas fa-bell"></i> ${groupService.groupName}</div>
+						<div class="group-title"><i class="fas fa-bell"></i> ${groups.groupName}</div>
 						<div class="group-service">
 							<button class="main-btn">잇츠맵 바로가기</button>
 							
 						 
 							
-							<a href="groupDetailModify?id=${groupService.id}"><button class = "modifybtn">수정</button></a>
+							<a href="groupDetailModify?id=${groups.id}"><button class = "modifybtn">수정</button></a>
 							<button class="deletebtn">삭제</button>
 						</div>
 					</div>
@@ -43,8 +43,8 @@
 				<div class="group-member">
 					<h4>함께하는 잇친 리스트</h4>
 					<ul>
-						<li><i class="fas fa-user"></i> ${groupService.memberNickName[0]}<span>(alpaca@naver.com)</span> <a><i class="fas fa-times"></i>삭제</a></li>
-						<li><i class="fas fa-user"></i> ${groupService.memberNickName[1]}<span>(quitting-time@naver.com)</span> <a><i class="fas fa-times"></i>삭제</a></li>
+						<li><i class="fas fa-user"></i> ${groups.memberNickName[0]}<span>(alpaca@naver.com)</span> <a><i class="fas fa-times"></i>삭제</a></li>
+						<li><i class="fas fa-user"></i> ${groups.memberNickName[1]}<span>(quitting-time@naver.com)</span> <a><i class="fas fa-times"></i>삭제</a></li>
 					</ul>
 				</div>
 				<a href = "group"><button class="btn-list">그룹 목록으로 돌아가기</button></a>

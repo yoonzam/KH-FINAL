@@ -81,9 +81,9 @@
 		<div class="container">
 			<ul class="myeats-tab">
 				<li class="selected">그룹관리</li>
-				<li><a href="post">작성글관리</a></li>
-				<li><a href="detail">맛찜리스트</a></li>
-				<li><a href="/member/modifyForm">회원정보 수정</a></li>
+				<li><a href="/myeats/post">작성글관리</a></li>
+				<li><a href="/myeats/detail">맛찜리스트</a></li>
+				<li><a href="/member/edit-profile">회원정보 수정</a></li>
 			</ul>
 				<c:forEach items="${groups}" var="groups" varStatus="status"  begin="0"  >
 				<c:if test="${status.first}"><ul class="group-wrap"></c:if>

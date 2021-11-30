@@ -5,6 +5,19 @@
    * See instructions for running APIs Explorer code samples locally:
    * https://developers.google.com/explorer-help/guides/code_samples#javascript
    */
+   
+/*	const admin = require('firebase-admin');
+	
+	function getAccessToken() {
+	  return admin.credential.applicationDefault().getAccessToken()
+	      .then(accessToken => {
+	        return accessToken.access_token;
+	      })
+	      .catch(err => {
+	        console.error('Unable to get access token');
+	        console.error(err);
+	      });
+	}*/
 
   function authenticate() {
     return gapi.auth2.getAuthInstance()
@@ -25,10 +38,6 @@
       "resource": {
         "message": {
           "webpush": {
-            "data": {
-              "name": "hmd",
-              "age": "13"
-            },
             "notification": {
               "title": "알림을 확인해주세요.",
               "body": "&lt;a href='https://www.naver.com'&gt;네이버로 이동&lt;/a&gt;",
@@ -41,8 +50,7 @@
     }).then(function(response) {
                 // Handle the results here (response.result has the parsed body).
                 console.log("Response", response);
-              },
-              function(err) { console.error("Execute error", err); });
+      		},function(err) { console.error("Execute error", err); });
   };
   gapi.load("client:auth2", function() {
     gapi.auth2.init({client_id: "197983811902-pjbm4hbcnb5lt33ese87h4g2vbl35qtt.apps.googleusercontent.com"});

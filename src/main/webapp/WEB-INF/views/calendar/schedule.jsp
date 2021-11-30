@@ -4,12 +4,12 @@
 	<div class="dimmed"></div>
 	<div class="layer-popup review">
 		<div class="schedule">
-				<div class="popup-title">2021년</div>
+				<div class="popup-title" id="detail-date"></div>
 				<div class="schedule-spec">
-					<div class="title" id="list"><span>제목 : </span><span></span></div>
-					<div class="time" id="list"><span>시간 : </span><span></span></div>
-					<div class="place" id="list"><span>장소 : </span><span></span></div>
-					<div class="member" id="list"><span>참석자 : </span><span></span></div>
+					<div class="list"><span>제목 : </span><span id="detail-title"></span></div>
+					<div class="list"><span>시간 : </span><span id="detail-time" ></span></div>
+					<div class="list"><span>장소 : </span><span id="detail-place"></span></div>
+					<div class="list"><span>참석자 : </span><span id="detail-participant"></span></div>
 				</div>
 				<div class="btn-wrap">
 						<button class="change">수정</button>

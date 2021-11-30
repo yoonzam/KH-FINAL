@@ -20,9 +20,14 @@
 			</ul>
 			<div class="util">
 				<div onclick="location.href='/member/logout'" class="btn-logout">로그아웃</div>
-				<div class="btn-bell new">
-					<i class="fas fa-bell"><c:if test="${noticeCnt != 0}"> ${noticeCnt}</c:if></i>
-				</div>
+				<c:if test="${noticeCnt == 0}">
+					<div class="btn-bell"><i class="fas fa-bell"></i></div>
+				</c:if>
+				<c:if test="${noticeCnt != 0}">
+					<div class="btn-bell new">
+						<i class="fas fa-bell"> ${noticeCnt}</i>
+					</div>
+				</c:if>
 
 				<c:if test="${noticeCnt != 0}">
 					<div class="bell-list">
@@ -86,10 +91,6 @@
 	
 
 	<script type="text/javascript">
-	
-	window.addEventListener('DOMContentLoaded', (event) => {
-		document.querySelector('.bell-list').style.display = 'none';
-	});
 	
 	document.querySelector('.btn-bell.new').addEventListener('mouseover', () => {
 		document.querySelector('.bell-list').style.display = 'block';

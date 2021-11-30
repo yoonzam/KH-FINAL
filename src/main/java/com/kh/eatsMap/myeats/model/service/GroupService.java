@@ -37,7 +37,7 @@ public interface GroupService {
 	
 	public void remove(String id);
 	
-	public void modify(Group group) throws Exception;
+	public void modify(Group group,List<MultipartFile> photos, Member member) throws Exception;
 	
 	
 	

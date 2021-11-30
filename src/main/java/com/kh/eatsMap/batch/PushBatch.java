@@ -2,22 +2,14 @@ package com.kh.eatsMap.batch;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
-import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-import org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver;
 
 import com.kh.eatsMap.calendar.model.repository.CalendarRepository;
-import com.kh.eatsMap.common.code.ErrorCode;
-import com.kh.eatsMap.common.exception.HandlableException;
 import com.kh.eatsMap.index.model.repository.ReviewRepository;
 import com.kh.eatsMap.member.model.dto.Member;
 import com.kh.eatsMap.member.model.dto.Notice;
