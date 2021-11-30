@@ -196,9 +196,9 @@ public class MemberServiceImpl implements MemberService{
 	}
 
 	@Override
-	public Map<String,Object> findMemberAndReviewByMemberId(String memberId) {
+	public Map<String,Object> findMemberAndReviewByMemberId(ObjectId memberId) {
 		
-		Member member = memberRepository.findById(memberId).orElse(new Member());
+		Member member = memberRepository.findById(memberId);
 		long followCnt = followingRepository.countByMemberId(memberId);
 		long followerCnt = followerRepository.countByMemberId(memberId);
 		
@@ -211,8 +211,8 @@ public class MemberServiceImpl implements MemberService{
 	}
 
 	@Override
-	public Follow findFollowByMemberId(String memberId, ObjectId id) {
-		return followingRepository.findByMemberIdAndFollowingId(id,memberId).get();
+	public Follow findFollowByMemberId(ObjectId memberId, ObjectId id) {
+		return followingRepository.findByMemberIdAndFollowingId(id,memberId).orElse(new Follow());
 	}
 
 	@Override
@@ -248,7 +248,7 @@ public class MemberServiceImpl implements MemberService{
 		
 		if(!likes.isEmpty()) {
 			for (Like like : likes) {
-				reviews.add(reviewRepository.findById(like.getRevId().toString()).orElse(new Review()));
+				reviews.add(reviewRepository.findById(like.getRevId()).get());
 			}
 		}
 		return reviews;

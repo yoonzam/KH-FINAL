@@ -355,9 +355,9 @@ public class MemberRepositoryTest {
     	logger.debug(loginUser.toString());
     	Member member = repository.findByNickname("자몽");
     	logger.debug(member.toString());
-    	//Follow follow = followingRepository.findByMemberIdAndFollowingId(loginUser.getId(), member.getId());
+    	Follow follow = followingRepository.findByMemberIdAndFollowingId(loginUser.getId(), member.getId()).get();
     	
-    	//logger.debug(follow.toString());
+    	logger.debug(follow.toString());
     	
     }
     
@@ -367,7 +367,7 @@ public class MemberRepositoryTest {
     	logger.debug(loginUser.getId().toString());				//마루우 61a48ac95599286ec903cd01
     	Member member = repository.findByNickname("자몽");	//61a497d313f7451f784f869d(불일치)
     	logger.debug(member.getId().toString());
-    	//logger.debug("팔로우 찾아라" + followingRepository.findOptionalByMemberIdAndFollowingId(loginUser.getId().toString(),member.getId()).orElse(new Follow()));
+    	logger.debug("팔로우 찾아라 " + followingRepository.findOptionalByMemberIdAndFollowingId(loginUser.getId(),member.getId()).orElse(new Follow()));
     }
     
 }

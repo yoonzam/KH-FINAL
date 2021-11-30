@@ -281,16 +281,16 @@ public class MemberController {
 	}
 	
 	//follow-feed
-	@GetMapping("follow/{memberId}")
-	public String follow(@PathVariable String memberId, @SessionAttribute("authentication") Member member
+	@GetMapping("follow/{nickname}")
+	public String follow(@PathVariable String nickname, @SessionAttribute("authentication") Member member
 						,Model model) {
 		
-		if(member.getId().toString() == memberId) {
+		if(member.getNickname().toString() == nickname) {
 			return "redirect:/myeats/post";
 		}
-		logger.debug("memberId : " + memberId );
-		Follow follow = memberService.findFollowByMemberId(memberId, member.getId());
-		Map<String,Object> commandMap = memberService.findMemberAndReviewByMemberId(memberId);
+		Member writer = memberService.findMemberByNickname(nickname);
+		Follow follow = memberService.findFollowByMemberId(writer.getId(), member.getId());
+		Map<String,Object> commandMap = memberService.findMemberAndReviewByMemberId(writer.getId());
 
 		model.addAllAttributes(commandMap)
 			.addAttribute("follow",follow); 
@@ -300,21 +300,23 @@ public class MemberController {
 	
 	@PostMapping("follow")
 	@ResponseBody
-	public void followImpl(@RequestBody Follow followUser, @SessionAttribute("authentication") Member member) {
+	public String followImpl(@RequestBody Follow followUser, @SessionAttribute("authentication") Member member) {
 		memberService.followMember( member.getId(), followUser);
 		memberService.updateNotice("follow", memberService.findNotice(followUser.getFollowingId()));
 		
 		Member to = memberService.findMemberById(followUser.getFollowingId());
 		push.push(to);
+		
+		return to.getId().toString();
 	}
 	
 	@PostMapping("follow-cancel")
 	@ResponseBody
-	public void followCancel(@RequestBody Follow followUser, @SessionAttribute("authentication") Member member) {
-		logger.debug(followUser.toString());
-		logger.debug(member.getId().toString());	//로그인유저
+	public String followCancel(@RequestBody Follow followUser, @SessionAttribute("authentication") Member member) {
 		memberService.followCancel(member.getId(), followUser);
 		memberService.updateNoticeForDel("follow", memberService.findNotice(followUser.getFollowingId()));
+		
+		return memberService.findMemberById(followUser.getFollowingId()).getId().toString();
 	}
 
 	//파이어베이스

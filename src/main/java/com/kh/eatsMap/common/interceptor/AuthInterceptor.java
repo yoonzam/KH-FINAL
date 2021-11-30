@@ -53,6 +53,11 @@ public class AuthInterceptor implements HandlerInterceptor {
 				throw new HandlableException(ErrorCode.REDIRECT_LOGIN_PAGE);
 			}
 			break;
+		case "follow":
+			if(httpRequest.getSession().getAttribute("authentication") == null) {
+				throw new HandlableException(ErrorCode.REDIRECT_LOGIN_PAGE);
+			}
+			break;
 		default:
 			break;
 		}
