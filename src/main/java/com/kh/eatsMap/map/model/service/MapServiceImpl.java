@@ -1,5 +1,7 @@
 package com.kh.eatsMap.map.model.service;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,12 +26,18 @@ public class MapServiceImpl implements MapService{
 	private final TimelineRepository timelineRepository;
 
 	@Override
-	public List<Review> reviewList() {
-		System.out.println("리뷰 서치 동작중?");
-		Sort sort = Sort.by("resName").descending();
+	public List<HashMap<String, Object>> reviewList() {
+		List<HashMap<String, Object>> mapList = new ArrayList<>();
+		
 		List<Review> reviews = mapRepository.findAll();
-		System.out.println(reviews.toString());
-		return reviews;
+		for (Review review : reviews) {
+			HashMap<String, Object> hashmap = new HashMap<>();
+			hashmap.put("review", review);
+			hashmap.put("reviewId", review.getId().toString());
+			mapList.add(hashmap);
+		}
+		
+		return mapList;
 
 	}
 

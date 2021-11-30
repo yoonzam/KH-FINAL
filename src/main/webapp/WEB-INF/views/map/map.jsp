@@ -96,7 +96,7 @@
 				</div>
 			</div>
 			<div class="map-review">
-				<div class="review_wrap">
+				<div class="review_wrap" onclick="">
 						<div class="img-box">
 							<img class="image-thumbnail" src="/resources/img/upload/01.jpg">
 						</div>
@@ -139,6 +139,11 @@
 	/* 유진 추가내용 */
 	document.querySelector('.btn').addEventListener('click',() => {
 		document.querySelector('#pop-review-form').style.display='flex';
+	})
+	
+	document.querySelector('.review_wrap').addEventListener('click',()=>{
+		console.dir("동작중");
+		document.querySelector('#pop-review-detail').style.display='flex';
 	})
 	
 		let clickLock = (e) =>{
@@ -191,9 +196,10 @@
 				markerCreate(json,keyword);
 				  
 				for (var i = 0; i < json.length; i++) {
-					  let returnDiv = takeReview(json[i].addr,json[i].resName,json[i].hashtag);
-						 var $div = $(returnDiv);
-						 $('.map-review').append($div);
+					  let returnDiv = takeReview(json[i].reviewId,json[i].review.addr,json[i].review.resName,json[i].review.hashtag);
+					  console.dir(returnDiv);
+					  var $div = $(returnDiv);
+					  $('.map-review').append($div);
 				}
 					  
 			  }).catch(error => {
@@ -214,8 +220,8 @@
 			
 			for (var i = 0; i < reviews.length; i++) {
 				let mark = {
-				        title: reviews[i].resName, 
-				        latlng: new kakao.maps.LatLng(reviews[i].location.coordinates[1], reviews[i].location.coordinates[0])
+				        title: reviews[i].review.resName, 
+				        latlng: new kakao.maps.LatLng(reviews[i].review.location.coordinates[1], reviews[i].review.location.coordinates[0])
 				 }
 				positions.push(mark);
 			}
@@ -240,24 +246,32 @@
 			        
 			    });	
 			   kakao.maps.event.addListener(marker, 'click', function(){
-				   let reviewShow = document.querySelector(".popup-wrap");
-					if (reviewShow.style.display == "none") {
-						reviewShow.style.display = "";
-					}else{
-						reviewShow.style.display = "none";
-					}
-					alert('마커를 클릭했습니다!');
-					
-					//박스 정보 출력
-					restInfo(marker,keyword);
+				   
+				   restInfo(marker,keyword);
 			   });
 			});
 			
 			
 		}
+		let showDiv = (placeName,roadAddress) =>{
+			let reviewShow = document.querySelector(".popup-wrap");
+			//같은 내용일경우 
+			if (document.querySelector('#place-name').innerHTML == placeName 
+					&& document.querySelector('#road-address').innerHTML == roadAddress 
+					&& reviewShow.style.display == "") {
+				
+				reviewShow.style.display = "none";
+			}else if(document.querySelector('#place-name').innerHTML != placeName 
+					&& document.querySelector('#road-address').innerHTML != roadAddress 
+					&& reviewShow.style.display == ""){
+				reviewShow.style.display = "";
+			}else{
+				reviewShow.style.display = "";
+			}
+		}
 		
 		let restInfo = (marker,keyword) =>{
-			console.dir(marker.getPosition().getLat());
+			
 			fetch('https://dapi.kakao.com/v2/local/search/keyword.json?y='+ marker.getPosition().getLat() +'&x='+ marker.getPosition().getLng() +'&radius=1&query=' +keyword, {
 				  headers: {
 				    Authorization: `KakaoAK de36fa19e556a7179bb149f25fa41a95` 
@@ -272,18 +286,24 @@
 				let placeName = json.documents[0].place_name;
 				let roadAddress = json.documents[0].road_address_name;
 				
+				
+				//
+				showDiv(placeName,roadAddress);
+				
 				//팝업창에 내용 기입
 				document.querySelector('#place-name').innerHTML = placeName;
 				document.querySelector('#road-address').innerHTML = roadAddress;
 				
 				
 			});
+			
+			
 		}
 		
 		
 		
 		//review div 받아온 리뷰에 맞게 수정하는 함수
-		let takeReview = (address,name,tag) =>{
+		let takeReview = (id,address,name,tag) =>{
 			
 			
 			let tags = '';
@@ -301,7 +321,7 @@
 			let splitName = name.split(' ');
 			
 			let reviewContent = 
-				'<div class="review_wrap">'
+				'<div class="review_wrap" onclick="viewTimeline(\'' + id + '\')">'
 				+'<div class="img-box">'
 				+'<img class="image-thumbnail" src="/resources/img/upload/01.jpg">'
 				+'</div>'
@@ -316,6 +336,8 @@
 			
 			return reviewContent;
 		}
+		
+		
 	
 		/* 맵에 표시된 가게의 json정보를 담는 변수 */
 		let markerInfo;
@@ -350,18 +372,7 @@
 			    });
 			    // 마커에 클릭이벤트를 등록합니다
 			    kakao.maps.event.addListener(marker, 'click', function() {
-			    				    	
-			    	let reviewShow = document.querySelector(".popup-wrap");
-					if (reviewShow.style.display == "none") {
-						reviewShow.style.display = "";
-					}else{
-						reviewShow.style.display = "none";
-					}
-					alert('마커를 클릭했습니다!');
-			    		
-					restInfo(marker,keyword);
-					//https://dapi.kakao.com/v2/local/search/keyword.json?y=37.514322572335935&x=127.06283102249932&radius=20000&query=카카오프렌즈
-					
+			    	restInfo(marker,keyword);
 					
 				    
 				});
@@ -471,6 +482,7 @@
 		
 	</script>
 	<script type="text/javascript" src="/resources/js/map/Geolocation.js"></script>
+	<script type="text/javascript" src="/resources/js/map/map.js"></script>
 
 </body>
 </html>
