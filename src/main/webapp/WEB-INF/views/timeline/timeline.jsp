@@ -122,7 +122,11 @@
 					}
 					
 					//작성자
-					$('#pop-review-detail .writer').html('<a href="${contextPath}/member/follow/'+data.memberId+'">'+data.review.memberNick+'</a><a onclick="follow(\''+data.memberId+'\')" class="follow">잇친맺기</a>');
+					if(data.follow.followingId == null) {
+						$('#pop-review-detail .writer').html('<a href="${contextPath}/member/follow/'+data.memberId+'">'+data.review.memberNick+'</a><a onclick="follow(\''+data.memberId+'\')" class="follow">잇친맺기</a>');						
+					} else{						
+						$('#pop-review-detail .writer').html('<a href="${contextPath}/member/follow/'+data.memberId+'">'+data.review.memberNick+'</a><a onclick="unfollow(\''+data.memberId+'\')" class="unfollow">잇친끊기</a>');						
+					}
 					
 					//별점
 					html = '<p>맛</p>';
@@ -218,9 +222,8 @@
 			$('#pop-review-detail').hide();
 			$.ajax({
 				type: 'POST',
-				url: '${contextPath}/timeline/delete?id='+reviewId,
-				contentType: false,
-				processData: false,
+				url: '${contextPath}/timeline/delete',
+				data: { id:reviewId },
 			 	cache:false,
 				success: () => {
 					alert("성공");
@@ -320,6 +323,37 @@
 			});
 		}
 		
+		let follow = (followingId) => {
+			$.ajax({
+				type: 'POST',
+				url: '${contextPath}/member/follow',
+				data: JSON.stringify({ followingId:followingId }),
+				contentType: 'application/json',
+				cache: false,
+				success: () => {
+					$('#pop-review-detail .writer').html('<a href="${contextPath}/member/follow/'+data.memberId+'">'+data.review.memberNick+'</a><a onclick="unfollow(\''+data.memberId+'\')" class="unfollow">잇친끊기</a>');
+				},
+				error: (e) => {
+					alert("실패");
+				}
+			});
+		}
+		
+		let unfollow = (followingId) => {
+			$.ajax({
+				type: 'POST',
+				url: '${contextPath}/member/follow-cancel',
+				data: JSON.stringify({ followingId:followingId }),
+				contentType: 'application/json',
+			 	cache:false,
+				success: () => {
+					$('#pop-review-detail .writer').html('<a href="${contextPath}/member/follow/'+data.memberId+'">'+data.review.memberNick+'</a><a onclick="follow(\''+data.memberId+'\')" class="follow">잇친맺기</a>');
+				},
+				error: (e) => {
+					alert("실패");
+				}
+			});
+		}
 	</script>
 <%@ include file="/WEB-INF/views/include/footer.jsp" %>
 </body>

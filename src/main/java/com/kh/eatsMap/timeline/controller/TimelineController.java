@@ -75,7 +75,7 @@ public class TimelineController {
 	
 	@PostMapping("delete")
 	@ResponseBody
-	public void deleteRevice(@RequestParam(value = "id") String id, @SessionAttribute("authentication") Member member) {
+	public void deleteRevice(String id, @SessionAttribute("authentication") Member member) {
 		timelineService.deleteReview(id, member);
 	}
 	
