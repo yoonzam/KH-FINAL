@@ -79,8 +79,6 @@ background-color: var(--red-color);
 					<li>
 						<span>초대하기</span>
 						<div class="friend-list"> 
-							<%-- <input type="text"  id='addValue' placeholder="초대할 친구의 닉네임을 입력하세요."
-							 value="<%=request.getAttribute("keyword")%>"> --%>
 							<select id="invited-select">
 							</select>
 							
@@ -91,7 +89,6 @@ background-color: var(--red-color);
 				
 							
 							<span><i class="fas fa-minus-square" onclick='removeItem()'></i>
-							<%-- <input type="hidden" name="memberNickName[]" value="<%=request.getAttribute("keyword")%>"> --%>
 							<ul id='nickNames'></ul>
 							</span>
 							
@@ -119,39 +116,6 @@ background-color: var(--red-color);
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 <script type="text/javascript">
 
-/* $("#inviteButton").click(function(){  
-    
-    var url="/info/memberInfo";  
-  
-    $.ajax({      
-        type:"GET",  
-        url:url,   
-        dataType: 'json',
-        success:function(data){ 
-      	let html = '';
-		for (var i = 0; i < data.length; i++)
-			html += '<li><a>'+data[i].nickname+'</a></li>';
-			$('#modifyDiv').html(html);
-        },   
-        error:function(e){  
-            alert(e.responseText);  
-        }  
-    });  
-    
-});   */
-
-/* $(document).ready(function(){
-	var frmObj = $("form[role='form']");
-	console.log("createGroup.jsp지정된 폼태그..");
-	
-	 $(".cancel-btn").on("click", function(){ 
-			frmObj.attr("action", "/myeats/group");
-			formObj.attr("method", "get");
-			frmObj.submit();
- 		}); 
-	
-	 
-}); */
 
 $("#inviteButton").click(function(){  
     
@@ -207,7 +171,6 @@ function removeItem()  {
 	
  $(document).ready(function(){
 		var frmObj = $("form[role='form']");
-		console.log("createGroup.jsp지정된 폼태그..");
 		
 		
 		$(".create-btn").on("click", function(){

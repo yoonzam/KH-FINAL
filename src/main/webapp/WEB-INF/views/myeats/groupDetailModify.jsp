@@ -37,12 +37,6 @@
 						<div class="group-img">
 							<img src="${!empty groups.thumUrl ? groups.thumUrl : '/resources/img/common/upload-logo.png'}" name="thumUrl"
 							value="${groups.thumUrl}">
-							<!-- <li>
-							<span>프로필</span>
-							<input id="photo1" type="file"name="photos" accept=".gif, .jpg, .jpeg, .png">
-							<div class="preview-photo photo1">
-							</div>
-							</li> -->
 						</div>
 					</div>
 					<div class="group-menu">
@@ -109,7 +103,6 @@
 
 $(document).ready(function(){
 	var frmObj = $("form[role='form']");
-	console.log("group.jsp지정된 폼태그..");
 	
 	
 	 $(".delete-btn").on("click", function(){

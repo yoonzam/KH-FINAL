@@ -43,7 +43,6 @@ public class GroupDAO {
 		
 		//검색기능
 		public List<Member> listFind(FindCriteria findCri) throws Exception{
-			System.out.println("GroupDAO.listFind()");
 			List<Member> list = null;
 			String tagName = "닉넹";
 			String tagName2 = tagName;
@@ -61,13 +60,11 @@ public class GroupDAO {
 		}
 		//검색기능
 		public int findCountData(FindCriteria findCri) throws Exception{
-			System.out.println("GroupDAO.findCountData()");
 			return (int)mongoTemplate.count(new Query(), "member"); 
 		}
 		
 		//닉네임 리스트 멤버
 		public List<Member> listMemberFindByNickName(String nickname) throws Exception{
-			System.out.println("GroupDAO.listMemberFindByNickName()");
 			List<Member> list = null;
 			
 			Query query = new Query();
@@ -91,7 +88,6 @@ public class GroupDAO {
 	
 	//페이징 및 조회/group.jsp
 	public List<Group> list(PageObject pageObject) {
-		System.out.println("GroupDAO.list()");
 		
 		//페이징 쿼리
 		//db.group.find().sort({_id:-1}).skip((page-1) * perPageNum).limit(perPageNum)
@@ -116,7 +112,6 @@ public class GroupDAO {
 	
 	//전체 게시글의 개수:조회 기능에 사용
 	public Integer getTotalCount() {
-		System.out.println("GroupDAO.getTotalCount()");
 		//new Query()(조건없는 쿼리)
 		//group테이블에서 조건 없는 쿼리를 통해 모든 데이터를 꺼내와 개수를 헤아림
 		return (int)mongoTemplate.count(new Query(), "group"); 
