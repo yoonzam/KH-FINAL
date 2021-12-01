@@ -22,8 +22,10 @@
     padding: 13px;
     border: 1px solid #ddd;
     margin-top: 10px;
-    margin-right: 10px;
+    margin-right: -17px;
     background-color: #ffead6;
+    margin-left: 20px;
+       
 }
 
 #addButton {
@@ -52,7 +54,10 @@
     padding: 2px;
     border-radius: 5px;
     border: 1px solid #aaa;
+    
 }
+
+
 </style>
 
 </head>
@@ -69,7 +74,7 @@
 			<form role = "form" action="/myeats/groupDetailModify" method="post" enctype="multipart/form-data">	
 				<input type="hidden"  name="id" value="${groups.id}" />
 				<!-- 테스트용 -->
-				<input type="hidden"  name="delNickName" value="테스트용" />
+				<input type="hidden"  name="delNickName" value="추가테스트" /> 
 				
 				<div class="group-info">
 					<div class="group-profile">
@@ -117,7 +122,7 @@
 						<c:choose>
 							<c:when test="true">
 							<c:if test="${groups.memberNickName[0]!= null}">
-		          				<li id="nickOne"><i class="fas fa-user"></i> ${groups.memberNickName[0]}<a id="fasOne"><i class="fas fa-times" ></i>삭제</a></li>
+		          				<li id="nickOne"><i class="fas fa-user"></i> ${groups.memberNickName[0]}<a id="fasOne" onclick='deleteDiv()'><i class="fas fa-times" ></i>삭제</a></li>
 		          			</c:if>
 		          			<c:if test="${groups.memberNickName[1]!= null}">
 		          				<li><i class="fas fa-user"></i> ${groups.memberNickName[1]}<a><i class="fas fa-times"></i>삭제</a></li>
@@ -184,19 +189,27 @@ function addList()  {
 	li.setAttribute("name", "newNickNameOne");
 	li.setAttribute("value", addValue);
   
-	var textNode = document.createTextNode(addValue);
+ var textNode = document.createTextNode(addValue);
 	li.appendChild(textNode);
   
-  document
-    .getElementById("nickNames")
-    .appendChild(li);
+ var icon = document.createElement("i");
+	 icon.setAttribute('class', "fas fa-times");
+	
+  /* document.getElementById("nickNames").appendChild(li); */
+  document.getElementById("nickNames").append(li,icon);
 }
 
-app.delete("/groupDetailModify/:id", (request, response) => {
-    const id = Number(request.params.id)
-    items.splice(id, 1)
-    response.send("success")
-})
+
+
+
+function deleteList()  {
+	var div = document.getElementId('nickOne');
+	 div.remove();
+	var li = document.createElement("input");
+	 	li.setAttribute('class', "delNickName");
+	  
+	  document.getElementByClassName("fas fa-times").append(li);
+	}
 
 
 

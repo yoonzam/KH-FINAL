@@ -52,23 +52,23 @@
 					<c:choose>
 						<c:when test="true">
 						<c:if test="${groups.memberNickName[0]!= null}">
-	          				<li><i class="fas fa-user"></i> ${groups.memberNickName[0]}<a><i class="fas fa-times"></i>삭제</a></li>
+	          				<li><i class="fas fa-user"></i> ${groups.memberNickName[0]}</li>
 	          			</c:if>
 	          			<c:if test="${groups.memberNickName[1]!= null}">
 	          				<%-- <li><i class="fas fa-user"></i> ${groups.memberNickName[1]}<span>(quitting-time@naver.com)</span> <a><i class="fas fa-times"></i>삭제</a></li> --%>
-	          				<li><i class="fas fa-user"></i> ${groups.memberNickName[1]}<a><i class="fas fa-times"></i>삭제</a></li>
+	          				<li><i class="fas fa-user"></i> ${groups.memberNickName[1]}</li>
 	          			</c:if>
 	          			<c:if test="${groups.memberNickName[2]!= null}">
-	          				<li><i class="fas fa-user"></i> ${groups.memberNickName[2]} <a><i class="fas fa-times"></i>삭제</a></li>
+	          				<li><i class="fas fa-user"></i> ${groups.memberNickName[2]} </li>
 	          			</c:if>
 	          			<c:if test="${groups.memberNickName[3]!= null}">
-	          				<li><i class="fas fa-user"></i> ${groups.memberNickName[3]}<a><i class="fas fa-times"></i>삭제</a></li>
+	          				<li><i class="fas fa-user"></i> ${groups.memberNickName[3]}</li>
 	          			</c:if>
 	          			<c:if test="${groups.memberNickName[4]!= null}">
-	          				<li><i class="fas fa-user"></i> ${groups.memberNickName[4]}<a><i class="fas fa-times"></i>삭제</a></li>
+	          				<li><i class="fas fa-user"></i> ${groups.memberNickName[4]}</li>
 	          			</c:if>
 	          			<c:if test="${groups.memberNickName[5]!= null}">
-	          				<li><i class="fas fa-user"></i> ${groups.memberNickName[5]}<a><i class="fas fa-times"></i>삭제</a></li>
+	          				<li><i class="fas fa-user"></i> ${groups.memberNickName[5]}</li>
 	          			</c:if>
 	          			</c:when>
 						</c:choose> 
@@ -81,7 +81,6 @@
 				
 			</div>
 		</div>
-	</div>
 </section>     
 
 <%@ include file="/WEB-INF/views/include/footer.jsp" %>
