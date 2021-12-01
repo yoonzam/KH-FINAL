@@ -33,6 +33,18 @@ background-color: var(--red-color);
     color: #fff;
     border: none;	
 }
+
+.group-form select {
+    width: calc(100% - 160px);
+    padding: 13px;
+    border-radius: 5px;
+    border: 1px solid #aaa;
+}
+
+.invited-input{
+   padding: 3px !important;
+   border-style: none !important;
+}
 </style>
 	
 </head>
@@ -43,9 +55,12 @@ background-color: var(--red-color);
 <section>
 	<div class="container-wrap">
 		<div class="container">
+		
+	
+
 			<h3><i class="fas fa-users-cog"></i> 새로운 그룹 만들기</h3>
 			
-			<form id="frmUpload" action="/myeats/createGroup" method="post" enctype="multipart/form-data">
+			<form role="form" id="frmUpload" action="/myeats/createGroup" method="post" enctype="multipart/form-data">
 			<input type="hidden" name="groupcreatedate" value="<%= sf.format(nowTime) %>">
 			<div class="group-form">
 				<ul>
@@ -64,48 +79,113 @@ background-color: var(--red-color);
 					<li>
 						<span>초대하기</span>
 						<div class="friend-list"> 
-							<input type="text"  id='addValue' placeholder="초대할 친구의 닉네임을 입력하세요."name="memberNickName[]"
-							 value="<%=request.getAttribute("keyword")%>">
+							<%-- <input type="text"  id='addValue' placeholder="초대할 친구의 닉네임을 입력하세요."
+							 value="<%=request.getAttribute("keyword")%>"> --%>
+							<select id="invited-select">
+							</select>
 							
 							
 							<input id="addButton" type='button' value='추가' onclick='addList()' />
-							<a href="invite"><button type="button">초대</button></a>
+							<button type="button" id="inviteButton">초대</button>
 							
+				
 							
-							<span><i class="fas fa-minus-square" onclick='removeItem()'></i><input type="hidden" name="memberNickName[]" value="<%=request.getAttribute("keyword")%>"><ul id='nickNames'></ul></span>
+							<span><i class="fas fa-minus-square" onclick='removeItem()'></i>
+							<%-- <input type="hidden" name="memberNickName[]" value="<%=request.getAttribute("keyword")%>"> --%>
+							<ul id='nickNames'></ul>
+							</span>
 							
 						</div>
 					</li>
 				</ul>
 			</div>
+			
 			<div class="btn-area">
-				<a href = "group"><button class="cancel-btn">취소</button></a>
-				<a href = "createGroup"><button type="submit" class="create-btn">만들기</button></a>
+				
+				<a><button type="submit" class="create-btn">만들기</button></a>
+				</form>
+				<a href="group"><button class="cancel-btn">취소</button></a>
 			</div>
-			</form>
+			
+			
+			
+			
+			
+				
+				
 		</div><!-- container -->
 	</div><!-- container-wrap -->
 </section>    
-
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 <script type="text/javascript">
+
+/* $("#inviteButton").click(function(){  
+    
+    var url="/info/memberInfo";  
+  
+    $.ajax({      
+        type:"GET",  
+        url:url,   
+        dataType: 'json',
+        success:function(data){ 
+      	let html = '';
+		for (var i = 0; i < data.length; i++)
+			html += '<li><a>'+data[i].nickname+'</a></li>';
+			$('#modifyDiv').html(html);
+        },   
+        error:function(e){  
+            alert(e.responseText);  
+        }  
+    });  
+    
+});   */
+
+/* $(document).ready(function(){
+	var frmObj = $("form[role='form']");
+	console.log("createGroup.jsp지정된 폼태그..");
+	
+	 $(".cancel-btn").on("click", function(){ 
+			frmObj.attr("action", "/myeats/group");
+			formObj.attr("method", "get");
+			frmObj.submit();
+ 		}); 
+	
+	 
+}); */
+
+$("#inviteButton").click(function(){  
+    
+    var url="/info/memberInfo";  
+  
+    $.ajax({      
+        type:"GET",  
+        url:url,   
+        dataType: 'json',
+        success:function(data){ 
+      	let html = '';
+      	for (var i = 0; i < data.length; i++)
+			html += '<option value='+data[i].nickname+'>'+data[i].nickname +'</option>';
+			
+			$('#invited-select').html(html);
+        },   
+        error:function(e){  
+            alert(e.responseText);  
+        }  
+    });  
+});  
 function addList()  {
+	
+		const addValue = $("#invited-select").val();
+	 	const li = document.createElement("input");
 	  
-	  // 1. 추가할 값을 input창에서 읽어온다
-	  const addValue 
-	    = document.getElementById('addValue').value;
+	 	li.setAttribute('class', "invited-input");
+		li.setAttribute('id', addValue);
+		li.setAttribute("name", "memberNickName[]");
+		li.setAttribute("value", addValue);
 	  
-	  // 2. 추가할 li element 생성
-	  // 2-1. 추가할 li element 생성
-	  const li = document.createElement("li");
+		const textNode = document.createTextNode(addValue);
+		li.appendChild(textNode);
 	  
-	  // 2-2. li에 id 속성 추가 
-	  li.setAttribute('id',addValue);
-	  
-	  // 2-3. li에 text node 추가 
-	  const textNode = document.createTextNode(addValue);
-	  li.appendChild(textNode);
-	  
-	  // 3. 생성된 li를 ul에 추가
 	  document
 	    .getElementById('nickNames')
 	    .appendChild(li);
@@ -114,19 +194,31 @@ function addList()  {
 	
 function removeItem()  {
 	  
-	  // 1. <ul> element 선택
 	  const ul = document
 	    .getElementById('nickNames');
 	  
-	  // 2. <li> 목록 선택
 	  const items = ul.getElementsByTagName('li');
 	  
-	  // 3. <li> 목록 중 첫번째 item 삭제
 	  if(items.length > 0)  {
 	    items[0].remove();
 	  }
 	  
 	}
+	
+ $(document).ready(function(){
+		var frmObj = $("form[role='form']");
+		console.log("createGroup.jsp지정된 폼태그..");
+		
+		
+		$(".create-btn").on("click", function(){
+			frmObj.attr("action", "/myeats/createGroup");
+			formObj.attr("method", "post");
+			frmObj.submit();
+			});
+		
+		 
+	});
+	 
 	
 
 </script> 

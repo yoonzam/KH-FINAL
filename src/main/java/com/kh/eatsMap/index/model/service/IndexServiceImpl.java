@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -164,8 +165,92 @@ public class IndexServiceImpl implements IndexService{
 			List<Fileinfo> files = fileRepository.findByTypeId(review.getId());
 			if(files.size() > 0) review.setThumUrl(files.get(0).getDownloadURL());
 		}
+		searchReview.toString();
 		return searchReview;
 		
+	}
+
+
+	@Override
+	public Map<String,Object> findAllReview(Member member) {
+		List<Review> reviews = reviewRepository.findByMemberId(member.getId());
+		int cnt = hashtagCnt(reviews);
+		String hashtag = maxOfHashtag(cnt);
+		
+		return Map.of("reviews", reviews, "hashtag", hashtag);
+	}  
+	
+	public int hashtagCnt(List<Review> reviews) {
+		
+		int md01 = 0;
+		int md02 = 0;
+		int md03 = 0;
+		int md04 = 0;
+		int md05 = 0;
+		int md06 = 0;
+		int pr01 = 0;
+		int pr02 = 0;
+		int pr03 = 0;
+		int pr04 = 0;
+		int pr05 = 0;
+		
+		logger.debug(reviews.toString());
+		for (Review review : reviews) {
+			
+			logger.debug("hashtag" + review.getHashtag().toString());
+			
+			for (int i = 0; i < review.getHashtag().length; i++) {
+				switch (review.getHashtag()[i]) {
+				case "친근함":md01++; break;
+				case "고급짐":md02++; break;
+				case "가족":md03++; break;
+				case "데이트":md04++; break;
+				case "혼밥":md05++; break;
+				case "회식":md06++; break;
+				case "가성비":pr01++; break;
+				case "가심비":pr02++; break;
+				case "1~2만원대":pr03++; break;
+				case "2~3만원대":pr04++; break;
+				case "3만원 이상":pr05++; break;
+				}
+			}
+		}
+		int[] cntArr = { md01,md02,md03,md04,md05,md06,pr01,pr02,pr03,pr04,pr05 };
+		int max = cntArr[0];	
+		int maxIndex = 0;
+		 
+		for (int i = 0; i < cntArr.length; i++) {
+			if (cntArr[i] > max) {
+				max = cntArr[i];
+				maxIndex = i;
+			}
+		}
+		
+		System.out.println("max : " + max);
+		System.out.println("maxIndex : " + maxIndex); 
+		
+		return maxIndex;
+	}
+	
+	
+	public String maxOfHashtag(int maxIndex){
+		
+		String hashtag = "";
+		
+		switch (maxIndex) {
+		case 0: hashtag = "md01"; break;
+		case 1: hashtag = "md02"; break;
+		case 2: hashtag = "md03"; break;
+		case 3: hashtag = "md04"; break;
+		case 4: hashtag = "md05"; break;
+		case 5: hashtag = "md06"; break;
+		case 6: hashtag = "pr01"; break;
+		case 7: hashtag = "pr02"; break;
+		case 8: hashtag = "pr03"; break;
+		case 9: hashtag = "pr04"; break;
+		case 10: hashtag = "pr05"; break;
+		}
+		return hashtag;
 	}
 
 

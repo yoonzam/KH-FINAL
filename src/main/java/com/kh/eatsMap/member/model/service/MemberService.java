@@ -41,9 +41,9 @@ public interface MemberService {
 	void updateNotice(String noticeId, Notice notice);
 	void updateNoticeForDel(String id, Notice notice);
 
-	Map<String,Object> findMemberAndReviewByMemberId(String memberId);
+	Map<String,Object> findMemberAndReviewByMemberId(ObjectId memberId);
 
-	Follow findFollowByMemberId(String memberId, ObjectId id);
+	Follow findFollowByMemberId(ObjectId memberId, ObjectId id);
 
 	void followMember(ObjectId memberId, Follow followUser);
 

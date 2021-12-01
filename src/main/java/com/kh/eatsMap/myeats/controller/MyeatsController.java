@@ -191,7 +191,7 @@ public class MyeatsController {
 	//유진 11/30
 	@GetMapping("post")
 	public void group(@SessionAttribute("authentication") Member member,Model model) {
-		model.addAllAttributes(memberService.findMemberAndReviewByMemberId(member.getId().toString()));
+		model.addAllAttributes(memberService.findMemberAndReviewByMemberId(member.getId()));
 	}
 	
 

@@ -84,11 +84,37 @@
 		 			dataType: 'json',
 		 			success: (data) => {
 		 			
-		 				$('#detail-title').text(data.title);
-		 				$('#detail-date').text(data.date);
-		 				$('#detail-time').text(data.time);
-		 				$('#detail-place').text(data.resName);
-		 				$('#detail-participant').text(data.participant);
+		 				$('#detail-title').text(data.calendar.title);
+		 				$('#detail-date').text(data.calendar.date);
+		 				$('#detail-time').text(data.calendar.time);
+		 				$('#detail-place').text(data.calendar.resName);
+		 				$('#detail-participant').text(data.calendar.participant);
+		 				
+		 				$('#sch-change-btn').click(e => {
+		 					
+		 					alert('일정을 수정합니다');
+		 					$('#pop-schedule-detail').hide();
+		 					$('#pop-schedule-form').show();
+		 					$('#save-event').text('수정완료');
+		 					
+		 					$('#scheduleId').val(data.calendarId);
+							$('#title').val(data.calendar.title);
+							$('#date').val(data.calendar.date);
+							$('#time').val(data.calendar.time);
+							$('#location').val(data.calendar.resName);
+							$('#participant').val(data.calendar.participant);
+							
+		 				})
+		 				
+		 				$('#sch-delete-btn').click(e => {
+		 					//비동기 통신 필요 url : /calendar/delete (post)
+		 					
+		 					//같이 보낼 데이터 : id -> data.calendarId
+		 					
+		 					//success 이후 과정은 다른 코드 참조(복붙)
+		 					
+		 				}
+		 				
 		 			}
     			})
 		 			

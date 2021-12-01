@@ -196,9 +196,9 @@ public class MemberServiceImpl implements MemberService{
 	}
 
 	@Override
-	public Map<String,Object> findMemberAndReviewByMemberId(String memberId) {
+	public Map<String,Object> findMemberAndReviewByMemberId(ObjectId memberId) {
 		
-		Member member = memberRepository.findById(memberId).orElse(new Member());
+		Member member = memberRepository.findById(memberId);
 		long followCnt = followingRepository.countByMemberId(memberId);
 		long followerCnt = followerRepository.countByMemberId(memberId);
 		
@@ -211,8 +211,8 @@ public class MemberServiceImpl implements MemberService{
 	}
 
 	@Override
-	public Follow findFollowByMemberId(String memberId, ObjectId id) {
-		return followingRepository.findOptionalByMemberIdAndFollowingId(id,memberId).orElse(new Follow());
+	public Follow findFollowByMemberId(ObjectId memberId, ObjectId id) {
+		return followingRepository.findByMemberIdAndFollowingId(id,memberId).orElse(new Follow());
 	}
 
 	@Override
@@ -228,12 +228,11 @@ public class MemberServiceImpl implements MemberService{
 
 	@Override
 	public void followCancel(ObjectId id, Follow followUser) {
-		followingRepository.findOptionalByMemberIdAndFollowingId(id, followUser.getFollowingId().toString())
-			.ifPresent(e -> followingRepository.delete(e));
+		followingRepository.findOptionalByMemberIdAndFollowingId(id, followUser.getFollowingId())
+			.ifPresent(e -> followingRepository.delete(e));	//얘 검증필요
 		
 		followerRepository.findOptionalByMemberIdAndFollowerId(followUser.getFollowingId(), id)
 			.ifPresent(e -> followerRepository.delete(e));
-			
 	}
 
 	@Override
@@ -249,7 +248,7 @@ public class MemberServiceImpl implements MemberService{
 		
 		if(!likes.isEmpty()) {
 			for (Like like : likes) {
-				reviews.add(reviewRepository.findById(like.getRevId().toString()).orElse(new Review()));
+				reviews.add(reviewRepository.findById(like.getRevId()).get());
 			}
 		}
 		return reviews;

@@ -89,21 +89,21 @@ public class IndexController {
 	
 	
 
-	@GetMapping("/search")
-	public String search(
-//						@SessionAttribute("authentication") Member member
-//						,String id
-						) {
-		
-		//좋아요 테이블에 추가/삭제작업 필요
-		//좋아요 테이블에 findByReviewId로 조회한 후 null 이면 save하기,
-		//findByReviewId로 조회한 후 결과가 있으면 delete하기 
-
-		
-		
-		return "main/search";
-	}
-	
+//	@GetMapping("/search")
+//	public String search(
+////						@SessionAttribute("authentication") Member member
+////						,String id
+//						) {
+//		
+//		//좋아요 테이블에 추가/삭제작업 필요
+//		//좋아요 테이블에 findByReviewId로 조회한 후 null 이면 save하기,
+//		//findByReviewId로 조회한 후 결과가 있으면 delete하기 
+//
+//		
+//		
+//		return "main/search";
+//	}
+//	
 	
 	
 	
@@ -148,4 +148,15 @@ public class IndexController {
 //		return "redirect:/main/search";
 		return "main/search";
 	}
+	
+	
+	//유진 : 해시태그 추천 리스트
+	@GetMapping("search")
+	public String search(@SessionAttribute("authentication") Member member) {
+		Map<String,Object> reviewsAndHashtag = indexService.findAllReview(member);
+		logger.debug(reviewsAndHashtag.get("reviews").toString());
+		logger.debug("가장 많은 해시태그 : " + reviewsAndHashtag.get("hashtag"));
+		return "main/search";
+	}
+	
 }

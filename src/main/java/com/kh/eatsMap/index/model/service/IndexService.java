@@ -1,6 +1,7 @@
 package com.kh.eatsMap.index.model.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.geo.GeoJsonPoint;
@@ -24,6 +25,8 @@ public interface IndexService {
 	
 	//리뷰 검색 
 	List<Review> searchReview(String keyword, String[] category, String[] hashtag);
+
+	Map<String,Object> findAllReview(Member member);
 
 	
 	

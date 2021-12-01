@@ -14,9 +14,10 @@
 					<div class="list member"><span>참석자</span><input type="text" name="participant" id="participant" placeholder="함께할 잇친을 추가하세요" required/></div>
 					<input class="hidden" type="text" name="latitude" style="display: none">
 					<input class="hidden" type="text" name="longitude" style="display: none">
+					<input class="hidden" type="text" name="scheduleId" id= "scheduleId" style="display: none">
 					<div class="btn-wrap">
 						<button class="submit" id="save-event">확인</button>
-						<button class="cancel">취소</button>
+						<a href="/calendar/" class="cancel" id="cancel-btn">취소</a>
 					</div>
 				</div>
 			</form>
