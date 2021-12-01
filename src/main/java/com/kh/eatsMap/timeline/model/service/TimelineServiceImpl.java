@@ -29,7 +29,9 @@ import com.kh.eatsMap.member.model.dto.Member;
 import com.kh.eatsMap.member.model.repository.FollowingRepository;
 import com.kh.eatsMap.member.model.repository.MemberRepository;
 import com.kh.eatsMap.member.model.service.MemberService;
+import com.kh.eatsMap.myeats.model.dto.Group;
 import com.kh.eatsMap.myeats.model.dto.Like;
+import com.kh.eatsMap.myeats.model.repository.GroupRepository;
 import com.kh.eatsMap.myeats.model.repository.LikeRepository;
 import com.kh.eatsMap.timeline.model.dto.Review;
 import com.kh.eatsMap.timeline.model.repository.FileRepository;
@@ -46,6 +48,7 @@ public class TimelineServiceImpl implements TimelineService{
 	private final FileRepository fileRepository;
 	private final MemberRepository memberRepository;
 	private final FollowingRepository followingRepository;
+	private final GroupRepository groupRepository;
 	private final MongoTemplate mongoTemplate;
 
 	@Override
@@ -208,6 +211,21 @@ public class TimelineServiceImpl implements TimelineService{
 		likeRepository.deleteByMemberIdAndRevId(member.getId(), new ObjectId(revId));
 	}
 
+	@Override
+	public List<Map<String, String>> findGroup(Member member) {
+		List<Map<String, String>> result = new ArrayList<>();
+		List<Group> groups = groupRepository.findByParticipants(member.getId());
+		
+		for (Group group : groups) {
+			Map<String, String> map = new HashMap<>();
+			map.put("id", group.getId().toString());
+			map.put("name", group.getGroupName().toString());
+			result.add(map);
+		}
+
+		return result;
+	}
+	
 	@Override
 	public List<Review> searchReview(String keyword, String[] area, String[] category, String[] hashtag, Member member) {
 		List<Review> reviews = new ArrayList<Review>();

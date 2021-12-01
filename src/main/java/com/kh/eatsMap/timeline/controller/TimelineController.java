@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -97,17 +98,7 @@ public class TimelineController {
 	@PostMapping("group")
 	@ResponseBody
 	public List<Map<String, String>> group(@SessionAttribute("authentication") Member member) {
-		//roup group = 
-		List<Map<String, String>> groups = new ArrayList<>();
-		Map<String, String> group = new HashMap<>();
-		group.put("id", "61a5cd12b7ef8a4d0bf1413d");
-		group.put("name", "그룹6");
-		groups.add(group);
-		group.put("id", "61a63dbc1a10d83f718251a7");
-		group.put("name", "그룹7");
-		groups.add(group);
-		
-		return groups;
+		return timelineService.findGroup(member);
 	}
 	
 	@GetMapping("search")

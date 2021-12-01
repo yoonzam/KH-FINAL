@@ -32,4 +32,6 @@ public interface TimelineService {
 
 	List<Review> searchReview(String keyword, String[] area, String[] category, String[] hashtag, Member member);
 
+	List<Map<String, String>> findGroup(Member member);
+
 }

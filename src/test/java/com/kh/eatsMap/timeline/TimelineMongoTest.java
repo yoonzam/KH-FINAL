@@ -26,7 +26,9 @@ import org.springframework.web.context.WebApplicationContext;
 
 import com.kh.eatsMap.common.util.Fileinfo;
 import com.kh.eatsMap.member.model.dto.Member;
+import com.kh.eatsMap.myeats.model.dto.Group;
 import com.kh.eatsMap.myeats.model.dto.Like;
+import com.kh.eatsMap.myeats.model.repository.GroupRepository;
 import com.kh.eatsMap.myeats.model.repository.LikeRepository;
 import com.kh.eatsMap.timeline.model.dto.Review;
 import com.kh.eatsMap.timeline.model.repository.FileRepository;
@@ -45,6 +47,9 @@ public class TimelineMongoTest {
 	
 	@Autowired
 	LikeRepository likeRepository;
+	
+	@Autowired
+	GroupRepository groupRepository;
 	
 	@Autowired
 	private MongoTemplate mongoTemplate;
@@ -169,6 +174,14 @@ public class TimelineMongoTest {
 		List<Review> reviews = timelineRepository.findByResNameLike("이커");
 		for (Review review : reviews) {
 			System.out.println("review : " + review);
+		}
+	}
+	
+	@Test
+	public void findGroupByMemberId() {
+		List<Group> groups = groupRepository.findByParticipants(new ObjectId("61a4a78a421834204011fc49"));
+		for (Group group : groups) {
+			System.out.println(group);
 		}
 	}
 
