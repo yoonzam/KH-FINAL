@@ -140,7 +140,6 @@
 <script>
  	$(document).ready(function(){
  		var frmObj = $("form[role='form']");
- 		console.log("group.jsp지정된 폼태그..");
  		
  		 $(".delete").on("click", function(){ 
 			frmObj.attr("action", "/myeats/delete");

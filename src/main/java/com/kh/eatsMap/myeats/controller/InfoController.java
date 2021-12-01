@@ -85,7 +85,6 @@ public class InfoController {
 	public List<Member> list() throws Exception {
 		List<Member> memberList = null;
 		memberList = dao.listMember();
-		System.out.println(memberList.toString());
 		return memberList;
 	}
 	
@@ -94,7 +93,6 @@ public class InfoController {
 	public List<Member> listPost() throws Exception {
 		List<Member> memberList = null;
 		memberList = dao.listMember();
-		System.out.println(memberList.toString());
 		return memberList;
 	}
 

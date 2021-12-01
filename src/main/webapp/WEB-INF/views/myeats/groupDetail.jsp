@@ -76,29 +76,6 @@
 			</c:forEach>	
 		
 	
-						<%-- <li><i class="fas fa-user"></i>${groups.memberNickName[0]}<span>(alpaca@naver.com)</span> <a><i class="fas fa-times"></i>삭제</a></li>
-						<li><i class="fas fa-user"></i> ${groups.memberNickName[1]}<span>(quitting-time@naver.com)</span> <a><i class="fas fa-times"></i>삭제</a></li>
-						<li><i class="fas fa-user"></i> ${groups.memberNickName[2]}<span>(quitting-time@naver.com)</span> <a><i class="fas fa-times"></i>삭제</a></li>
-						<li><i class="fas fa-user"></i> ${groups.memberNickName[3]}<span>(quitting-time@naver.com)</span> <a><i class="fas fa-times"></i>삭제</a></li>
-						
-					</ul>
-				<%-- 	<table>
-					<tr>
-					<td> ${groups.memberNickName[0]}</td>
-					</tr>
-					<tr>
-					<td> ${groups.memberNickName[1]}</td>
-					</tr>
-					<tr>
-					<td> ${groups.memberNickName[2]}</td>
-					</tr>
-					<tr>
-					<td> ${groups.memberNickName[3]}</td>
-					</tr>
-					<tr>
-					<td> ${groups.memberNickName[4]}</td>
-					</tr>
-					</table> --%>
 				</div>
 				<a href = "group"><button class="btn-list">그룹 목록으로 돌아가기</button></a>
 				
@@ -110,53 +87,6 @@
 <%@ include file="/WEB-INF/views/include/footer.jsp" %>
 
 <script>
-/* $(document).ready(function(){
-	var url="/info/memberInfo";  
-	  
-    $.ajax({      
-        type:"GET",  
-        url:url,   
-        dataType: 'json',
-        success:function(data){ 
-      	let html = '';
-      	for (var i = 0; i < data.length; i++)
-			html += '<option value='+data[i].nickname+'>'+data[i].nickname +'</option>';
-			
-			$('#nickNames').html(html);
-        },   
-        error:function(e){  
-            alert(e.responseText);  
-        }  
-    });  
-});   */
-
-/*  $(document).ready(function(){
-	var url="/info/groupInfoByName/";  
-	var name = "그룹1" 
-	
-		 
-        $.ajax({
-            type : "GET",
-            url : url
-            data : {groupName: name},
-            dataType : "JSON",
-            error : function(){
-                alert('통신실패!!');
-            },
-            success : function(data){
-                alert("통신데이터 값 : " + data) ;
-                $("#nickNames").html(data) ;
-            }
-             
-        });
-
-});   */
-
-
- 
-/*  $( document ).ready( function() {
-     $( 'td' ).before("<i class='fas fa-user'></i>");
-   } ); */
 
 $(document).ready(function(){
 	var frmObj = $("form[role='form']");

@@ -59,9 +59,7 @@ public class MyeatsController {
 	
 	@RequestMapping(value="/invite", method=RequestMethod.GET)
 	public void list(@ModelAttribute("fCri") FindCriteria fCri, Model model) throws Exception{
-		logger.info(fCri.toString());
 		model.addAttribute("list", groupService.listMemberFind(fCri));
-		
 		
 		PageObject pageObject = new PageObject();
 		pageObject.setPage(fCri.getPage());
@@ -89,7 +87,6 @@ public class MyeatsController {
 	
 	@RequestMapping(value="/group", method=RequestMethod.GET)
 	public void groupGet(Model model, PageObject pageObject) throws Exception{
-		logger.info("groupGet.............");
 		List<Group> groups = groupService.list(pageObject);
 		for (Group group : groups) {
 			List<Fileinfo> files = groupService.findFiles(group.getId());
@@ -104,8 +101,6 @@ public class MyeatsController {
 	//그룹생성 폼/createGroup.jsp
 	@RequestMapping(value="/createGroup", method = RequestMethod.GET)
 	public void createGroupGet(Group group, Model model, String memberNickName) throws Exception{
-		logger.info("createGroupGet.....");
-		
 		model.addAttribute("group",memberService.findMemberByNickname("알파카").getNickname());
 		//System.out.println(memberService.findMemberByNickname("geoTest1").toString());
 	}
@@ -115,8 +110,6 @@ public class MyeatsController {
 	//그룹생성 처리/createGroup.jsp
 	@RequestMapping(value="/createGroup", method = RequestMethod.POST)
 	public String writePost(Group group, RedirectAttributes reAttr, PageObject pageObject,List<MultipartFile> photos, Member member) throws Exception{
-		logger.info("writePost....");
-		logger.info(group.toString());
 		
 		groupService.write(group,photos,member);
 		reAttr.addFlashAttribute("list", groupService.list(pageObject));
@@ -143,7 +136,6 @@ public class MyeatsController {
 	public String delete(@RequestParam("id") String id, RedirectAttributes reAttr)throws Exception{ 
 		
 		groupService.remove(id);
-		System.out.println(id);
 		reAttr.addFlashAttribute("result", "success");	
 		
 		return "redirect:/myeats/group";
@@ -152,7 +144,6 @@ public class MyeatsController {
 	//수정조회
 	@RequestMapping(value="/groupDetailModify", method=RequestMethod.GET)
 	public void modifyGet(@RequestParam("id") ObjectId id, Model model) throws Exception{
-		logger.info("modifyGET()........");
 		
 		List<Group> groups = groupService.read(id);
 		for (Group group : groups) {
@@ -165,7 +156,6 @@ public class MyeatsController {
 	//수정처리
 	@RequestMapping(value="/groupDetailModify", method=RequestMethod.POST)
 	public String modifyPOST(Group group,List<MultipartFile> photos, Member member) throws Exception{
-		logger.info("modifyPOST()........");
 		groupService.modify(group,photos,member);
 		
 		
@@ -183,7 +173,6 @@ public class MyeatsController {
 	
 	@RequestMapping(value="/detail", method=RequestMethod.GET)	
 	public String detailList(Model model) {
-		logger.info("detaiGET()........");
 		model.addAttribute("allReviews",timelineService.findAllReviews()); 
 		return "myeats/detail";
 	}
