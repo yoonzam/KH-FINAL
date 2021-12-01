@@ -34,6 +34,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.context.WebApplicationContext;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.kh.eatsMap.common.util.PageObject;
 import com.kh.eatsMap.member.model.dto.Member;
 import com.kh.eatsMap.member.model.repository.MemberRepository;
 import com.kh.eatsMap.myeats.model.dto.Group;
@@ -150,6 +151,19 @@ public class RepositoryTest {
 			query.addCriteria(Criteria.where("id").is("619cb6eb7e8be86c3929698e"));
 			update.set("groupName", "ee");
 			mongoTemplate.updateFirst(query, update, Group.class);
+		}
+		
+		@Test
+		public void list() {
+			
+			Member member = new Member();
+			List<Group> list = null;
+			Query query = new Query();
+			query.addCriteria(Criteria.where("memberNickName").regex("yang"));
+			query = query.with(Sort.by(Sort.Direction.DESC,"id"));
+			list = mongoTemplate.find(query,com.kh.eatsMap.myeats.model.dto.Group.class,"group");
+			
+			list.forEach(e -> logger.debug(e.toString()));
 		}
     
 }

@@ -24,7 +24,7 @@ public interface GroupService {
 	
 	
 	//페이징 및 조회/group.jsp
-	public List<Group> list(PageObject pageObject);
+	public List<Group> list(PageObject pageObject, Member member);
 	
 	//groupIdx제외 예정
 	public List<Group> read(ObjectId id);
