@@ -2,7 +2,7 @@
     pageEncoding="UTF-8"%>
 <div class="dimmed-wrap" id="pop-schedule-form" style="display:none;">
 	<div class="dimmed"></div>
-	<div class="layer-popup review">
+	<div class="layer-popup schedule">
 		<div class="content view">
 			<form class="schedule" method="post" action="upload">
 				<div class="popup-title">일정 만들기</div>
@@ -17,7 +17,8 @@
 					<input class="hidden" type="text" name="scheduleId" id= "scheduleId" style="display: none">
 					<div class="btn-wrap">
 						<button class="submit" id="save-event">확인</button>
-						<a href="/calendar/" class="cancel" id="cancel-btn">취소</a>
+						<!-- <a href="/calendar/" class="cancel" id="cancel-btn">취소</a> -->
+						<button class="cancel" id="cancel-btn">취소</button>
 					</div>
 				</div>
 			</form>

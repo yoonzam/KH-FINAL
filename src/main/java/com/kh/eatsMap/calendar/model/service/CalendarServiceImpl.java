@@ -62,6 +62,12 @@ public class CalendarServiceImpl implements CalendarService{
 		return calendarRepository.findById(scheduleId).orElse(new Calendar());
 	}
 
+
+	@Override
+	public void deleteSchedule(String id) {
+		calendarRepository.deleteById(id);
+	}
+
 	
 	/*
 	 * public Map<String, Object> selectScheduleById(String id){
