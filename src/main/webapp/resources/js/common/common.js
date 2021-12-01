@@ -429,9 +429,9 @@ let viewTimeline = (reviewId) => {
 			
 			//작성자
 			if(data.follow.followingId == null) {
-				$('#pop-review-detail .writer').html('<a href="${contextPath}/member/follow/'+data.memberId+'">'+data.review.memberNick+'</a><a onclick="follow(\''+data.memberId+'\')" class="follow">잇친맺기</a>');						
+				$('#pop-review-detail .writer').html('<a href="/member/follow/'+data.review.memberNick+'">'+data.review.memberNick+'</a><a onclick="follow(\''+data.memberId+'\')" class="follow">잇친맺기</a>');						
 			} else{						
-				$('#pop-review-detail .writer').html('<a href="${contextPath}/member/follow/'+data.memberId+'">'+data.review.memberNick+'</a><a onclick="unfollow(\''+data.memberId+'\')" class="unfollow">잇친끊기</a>');						
+				$('#pop-review-detail .writer').html('<a href="/member/follow/'+data.review.memberNick+'">'+data.review.memberNick+'</a><a onclick="unfollow(\''+data.memberId+'\')" class="unfollow">잇친끊기</a>');						
 			}
 			
 			//별점
@@ -474,7 +474,8 @@ let viewTimeline = (reviewId) => {
 				$('#pop-review-detail .pop-btn-my-list').removeClass('clicked');
 				$('#pop-review-detail .pop-btn-my-list').attr('onclick','likeReview(\''+reviewId+'\');');
 			}
-			if(data.memberId == '${authentication.id}') {
+			
+			if(data.memberId == data.myId) {
 				$('#pop-review-detail .pop-btn-edit').show();
 				$('#pop-review-detail .pop-btn-delete').show();
 				$('#pop-review-detail .pop-btn-edit').attr('onclick','editReview(\''+reviewId+'\');');

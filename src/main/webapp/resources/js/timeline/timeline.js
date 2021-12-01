@@ -54,7 +54,7 @@ document.addEventListener('scroll', function() {
 				if(data.length == 0) return;
 				timelinePageCnt++;
 				let html = '';
-				for(i = 0; i < data.length; i++) {
+				for(let i = 0; i < data.length; i++) {
 		    		html += '<li onclick="viewTimeline(\'' + data[i].reviewId + '\')">'
 		    			  + '	<div class="eats-list">'
 		    			  + '		<div class="thum">'
@@ -73,7 +73,7 @@ document.addEventListener('scroll', function() {
 		    		}
 		    		html += '			</div>'
 		    			  + '			<div class="eats-tag">';
-	    		 	for(j = 0; j < data[i].review.hashtag.length; j++) {
+	    		 	for(let j = 0; j < data[i].review.hashtag.length; j++) {
 	    		 		html += '				<span>#' + data[i].review.hashtag[j] + '</span>';
 	    		 	}
 		    		html += '			</div>'

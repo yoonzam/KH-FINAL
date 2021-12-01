@@ -128,27 +128,6 @@ public class TimelineMongoTest {
 		logger.info(like.toString());
 	}
 	
-	@Test //검색 테스트
-	public void searchReview() {
-		String[] hashtag = {"pr04"};
-		List<Review> reviews = timelineRepository.findByHashtagOrCategory(hashtag, "cg04");
-//		for (Review review : reviews) {
-//			System.out.println(review.getResName());
-//		}
-		List<Review> reviews2 = timelineRepository.findByResNameLikeAndCategory("도마", "cg04");
-//		for (Review review : reviews2) {
-//			System.out.println("review : " + review);
-//		}
-		List<Review> reviews3 = timelineRepository.findByResNameLikeAndHashtag("도마", hashtag);
-		for (Review review : reviews3) {
-			System.out.println("review : " + review);
-		}
-		List<Review> reviews4 = timelineRepository.findByResNameLikeAndCategoryOrHashtag("도마", "cg03", hashtag);
-//		for (Review review : reviews4) {
-//			System.out.println("review : " + review);
-//		}
-	}
-	
 	@Test //카테고리서치 테스트
 	public void categorySearchTest() {
 		Query query = new Query();
@@ -165,6 +144,24 @@ public class TimelineMongoTest {
 	    
 	    List<Review> rsult = mongoTemplate.find(query, Review.class, "review");
 	    rsult.forEach(System.out::println);
+	}
+	
+	@Test //카테고리서치 테스트
+	public void areaSearchTest() {
+		Query query = new Query();
+		Criteria criteria = new Criteria();
+		
+		String list[] = {"서울","대전"};
+		Criteria criteriaArr[]  = new Criteria[list.length];
+		
+		for(int i = 0;i < list.length;i++){
+			String question = list[i];
+			criteriaArr[i] = Criteria.where("addr").regex(question);
+		}	
+		query.addCriteria( criteria.orOperator(criteriaArr) );
+		
+		List<Review> rsult = mongoTemplate.find(query, Review.class, "review");
+		rsult.forEach(System.out::println);
 	}
 	
 	@Test //검색 테스트(이름)

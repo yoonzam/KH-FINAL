@@ -1,5 +1,6 @@
 package com.kh.eatsMap.timeline.controller;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -91,8 +92,9 @@ public class TimelineController {
 		timelineService.deleteLike(revId, member);
 	}
 	
-	@PostMapping("search")
-	public void search(String keyword_, String[] category_, String[] hashtag_, Model model) {
+	@GetMapping("search")
+	public void search(String keyword_, String[] area_, String[] category_, String[] hashtag_, Model model, @SessionAttribute("authentication") Member member) {
+		System.out.println(Arrays.toString(area_));
 		String keyword = keyword_ == null ? "" : keyword_;
 	
 		String[] category = new String[0];
@@ -100,7 +102,7 @@ public class TimelineController {
 			category = new String[category_.length];		
 			for (int i = 0; i < category_.length; i++) {
 				category[i] = category_[i];
-			}	
+			}
 		}
 		String[] hashtag = new String[0];
 		if(hashtag_ != null) {
@@ -109,9 +111,16 @@ public class TimelineController {
 				hashtag[i] = hashtag_[i];
 			}	
 		}
-		List<Review> searchedReviewList = timelineService.searchReview(keyword, category, hashtag);
+		String[] area = new String[0];
+		if(area_ != null) {
+			area = new String[area_.length];		
+			for (int i = 0; i < area_.length; i++) {
+				area[i] = area_[i];
+			}	
+		}
+		List<Review> searchedReviewList = timelineService.searchReview(keyword, area, category, hashtag, member);
 		
-		model.addAttribute("searchedReviewList", searchedReviewList);
+		model.addAttribute("reviews", searchedReviewList);
 		model.addAttribute("keyword", keyword_);
 	}
 }
