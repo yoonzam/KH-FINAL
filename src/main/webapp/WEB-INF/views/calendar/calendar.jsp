@@ -22,8 +22,6 @@
 			</div>
 	</section>
 <%@ include file="/WEB-INF/views/include/footer.jsp" %>
-<%@ include file="/WEB-INF/views/calendar/makeSchedule.jsp" %>
-<%@ include file="/WEB-INF/views/calendar/schedule.jsp" %>
 
 <script>
 	 /* $(document).ready(function() {  */

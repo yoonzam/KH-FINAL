@@ -57,7 +57,7 @@ public class MapServiceImpl implements MapService {
 	public List<Follow> findFollowList(ObjectId member_id) {
 		// TODO Auto-generated method stub
 
-		List<Follow> follows = followingRepository.findByMemberId(member_id);
+		List<Follow> follows = followingRepository.findByMemberId(member_id).orElse(List.of());
 
 		return follows;
 	}

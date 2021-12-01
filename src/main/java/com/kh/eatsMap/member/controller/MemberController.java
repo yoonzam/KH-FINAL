@@ -93,9 +93,6 @@ public class MemberController {
 		session.setAttribute("notice", notice );
 		session.setAttribute("noticeCnt", memberAndNotice.get("noticeCnt"));
 		
-		logger.debug(notice.toString());
-		logger.debug(memberAndNotice.get("noticeCnt").toString());
-		
 		return "redirect:/main/";
 	}
 	

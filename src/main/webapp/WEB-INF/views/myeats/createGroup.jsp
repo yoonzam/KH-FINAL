@@ -102,10 +102,7 @@ $("#inviteButton").click(function(){
 				html += '<option class="option" value='+data[i].memberId+'>'+data[i].member.nickname +'</option>';
 				$('#invited-select').html(html);
 	      	}
-        },   
-        error:function(e){  
-            alert(e.responseText);  
-        }  
+        }   
     });  
 });  
 
