@@ -1,14 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-    
 <%@ page import="java.util.Date" %>
 <%@ page import="java.text.SimpleDateFormat" %>
     <%
 	Date nowTime = new Date();
 	SimpleDateFormat sf = new SimpleDateFormat("yyyy/MM/dd");
 	%>
-
     
 <!DOCTYPE html>
 <html>
@@ -17,9 +15,8 @@
 <link rel="stylesheet" type="text/css" href="/resources/css/myeats/myeats.css" />
 
 <style type="text/css">
-
 /* css 상태 보고 추후에 이동 예정 */
- #addValue{
+#addValue{
 	width:200px;
 	}
 #addButton{
@@ -33,25 +30,21 @@ background-color: var(--red-color);
     color: #fff;
     border: none;	
 }
-
 .group-form select {
-    width: calc(100% - 160px);
+    width: calc(100% - 92px);
     padding: 13px;
     border-radius: 5px;
     border: 1px solid #aaa;
 }
-
 .invited-input{
    padding: 3px !important;
    border-style: none !important;
 }
 </style>
-	
 </head>
 
 <body>
 <%@ include file="/WEB-INF/views/include/header.jsp" %>
-
 <section>
 	<div class="container-wrap">
 		<div class="container">
@@ -64,20 +57,18 @@ background-color: var(--red-color);
 							<span>프로필</span>
 							<input id="photo1" type="file"name="photos" accept=".gif, .jpg, .jpeg, .png">
 							<div class="preview-photo photo1">
-							 
 							</div>
 						</li>
 						<li>
 							<span>그룹이름</span>
 							<input type="text" placeholder="그룹 이름을 입력하세요."name="groupName"  maxlength="8" required >
-							
 						</li>
 						<li>
 							<span>초대하기</span>
 							<div class="friend-list"> 
 								<select id="invited-select" name="participant" onchange="addList()"></select>
 								
-								<input id="addButton" type='button' value='추가'  /><!-- onclick='addList()' -->
+								<!-- <input id="addButton" type='button' value='추가'  /> --><!-- onclick='addList()' -->
 								<button type="button" id="inviteButton">초대</button>
 								
 								<span><i class="fas fa-minus-square" onclick='removeItem()'></i>
@@ -89,25 +80,17 @@ background-color: var(--red-color);
 				</div>
 				<div class="btn-area">
 					<a><button type="submit" class="create-btn">만들기</button></a>
-					<a href="group" class="cancel-btn">취소</a>
+					<a href="group"><button class="cancel-btn">취소</button></a>
 				</div>
 			</form>
-			
-			
-			
-				
-				
 		</div><!-- container -->
 	</div><!-- container-wrap -->
-</section>    
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+</section> 
+   
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script> -->
 <script type="text/javascript">
-
-
 $("#inviteButton").click(function(){  
-    
     var url="/info/memberInfo";  
-  
     $.ajax({      
         type:"GET",  
         url:url,   
@@ -117,10 +100,8 @@ $("#inviteButton").click(function(){
       		let html = '';
 	      	for (var i = 0; i < data.length; i++){
 				html += '<option class="option" value='+data[i].memberId+'>'+data[i].member.nickname +'</option>';
-				
 				$('#invited-select').html(html);
 	      	}
-	      	
         },   
         error:function(e){  
             alert(e.responseText);  
@@ -177,12 +158,7 @@ function removeItem()  {
 		
 		 
 	});
-	 
-	
-
 </script> 
-
 <%@ include file="/WEB-INF/views/include/footer.jsp" %>
-
 </body>
 </html>
