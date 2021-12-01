@@ -1,6 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+
+
 
 <!DOCTYPE html>
 <html>
@@ -42,13 +45,63 @@
 				</div>
 				<div class="group-member">
 					<h4>함께하는 잇친 리스트</h4>
-					<ul>
-						<li><i class="fas fa-user"></i> ${groups.memberNickName[0]}<span>(alpaca@naver.com)</span> <a><i class="fas fa-times"></i>삭제</a></li>
+					<ul id='nickNames'>
+			</c:forEach>		
+	      	<c:forEach items="${groups}" var="groups" varStatus="status"  begin="0">
+					 <c:if test="${status.first}"><ul id='nickNames'></c:if>
+					<c:choose>
+						<c:when test="true">
+						<c:if test="${groups.memberNickName[0]!= null}">
+	          				<li><i class="fas fa-user"></i> ${groups.memberNickName[0]}<a><i class="fas fa-times"></i>삭제</a></li>
+	          			</c:if>
+	          			<c:if test="${groups.memberNickName[1]!= null}">
+	          				<%-- <li><i class="fas fa-user"></i> ${groups.memberNickName[1]}<span>(quitting-time@naver.com)</span> <a><i class="fas fa-times"></i>삭제</a></li> --%>
+	          				<li><i class="fas fa-user"></i> ${groups.memberNickName[1]}<a><i class="fas fa-times"></i>삭제</a></li>
+	          			</c:if>
+	          			<c:if test="${groups.memberNickName[2]!= null}">
+	          				<li><i class="fas fa-user"></i> ${groups.memberNickName[2]} <a><i class="fas fa-times"></i>삭제</a></li>
+	          			</c:if>
+	          			<c:if test="${groups.memberNickName[3]!= null}">
+	          				<li><i class="fas fa-user"></i> ${groups.memberNickName[3]}<a><i class="fas fa-times"></i>삭제</a></li>
+	          			</c:if>
+	          			<c:if test="${groups.memberNickName[4]!= null}">
+	          				<li><i class="fas fa-user"></i> ${groups.memberNickName[4]}<a><i class="fas fa-times"></i>삭제</a></li>
+	          			</c:if>
+	          			<c:if test="${groups.memberNickName[5]!= null}">
+	          				<li><i class="fas fa-user"></i> ${groups.memberNickName[5]}<a><i class="fas fa-times"></i>삭제</a></li>
+	          			</c:if>
+	          			</c:when>
+						</c:choose> 
+					<c:if test="${status.last}"></ul></c:if> 
+			</c:forEach>	
+		
+	
+						<%-- <li><i class="fas fa-user"></i>${groups.memberNickName[0]}<span>(alpaca@naver.com)</span> <a><i class="fas fa-times"></i>삭제</a></li>
 						<li><i class="fas fa-user"></i> ${groups.memberNickName[1]}<span>(quitting-time@naver.com)</span> <a><i class="fas fa-times"></i>삭제</a></li>
+						<li><i class="fas fa-user"></i> ${groups.memberNickName[2]}<span>(quitting-time@naver.com)</span> <a><i class="fas fa-times"></i>삭제</a></li>
+						<li><i class="fas fa-user"></i> ${groups.memberNickName[3]}<span>(quitting-time@naver.com)</span> <a><i class="fas fa-times"></i>삭제</a></li>
+						
 					</ul>
+				<%-- 	<table>
+					<tr>
+					<td> ${groups.memberNickName[0]}</td>
+					</tr>
+					<tr>
+					<td> ${groups.memberNickName[1]}</td>
+					</tr>
+					<tr>
+					<td> ${groups.memberNickName[2]}</td>
+					</tr>
+					<tr>
+					<td> ${groups.memberNickName[3]}</td>
+					</tr>
+					<tr>
+					<td> ${groups.memberNickName[4]}</td>
+					</tr>
+					</table> --%>
 				</div>
 				<a href = "group"><button class="btn-list">그룹 목록으로 돌아가기</button></a>
-			</c:forEach>	
+				
 			</div>
 		</div>
 	</div>
@@ -57,12 +110,57 @@
 <%@ include file="/WEB-INF/views/include/footer.jsp" %>
 
 <script>
+/* $(document).ready(function(){
+	var url="/info/memberInfo";  
+	  
+    $.ajax({      
+        type:"GET",  
+        url:url,   
+        dataType: 'json',
+        success:function(data){ 
+      	let html = '';
+      	for (var i = 0; i < data.length; i++)
+			html += '<option value='+data[i].nickname+'>'+data[i].nickname +'</option>';
+			
+			$('#nickNames').html(html);
+        },   
+        error:function(e){  
+            alert(e.responseText);  
+        }  
+    });  
+});   */
 
+/*  $(document).ready(function(){
+	var url="/info/groupInfoByName/";  
+	var name = "그룹1" 
+	
+		 
+        $.ajax({
+            type : "GET",
+            url : url
+            data : {groupName: name},
+            dataType : "JSON",
+            error : function(){
+                alert('통신실패!!');
+            },
+            success : function(data){
+                alert("통신데이터 값 : " + data) ;
+                $("#nickNames").html(data) ;
+            }
+             
+        });
+
+});   */
+
+
+ 
+/*  $( document ).ready( function() {
+     $( 'td' ).before("<i class='fas fa-user'></i>");
+   } ); */
 
 $(document).ready(function(){
 	var frmObj = $("form[role='form']");
 	console.log("group.jsp지정된 폼태그..");
-	
 	
 	 $(".deletebtn").on("click", function(){
 		frmObj.attr("action", "/myeats/delete");
@@ -73,6 +171,8 @@ $(document).ready(function(){
 			frmObj.attr("action", "/myeats/groupDetailModify");
 			frmObj.submit();
 		}); 
+	 
+	 
 	
 	 
 	 

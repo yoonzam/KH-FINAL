@@ -59,18 +59,42 @@
 						</div>
 					</div>
 				</div>
-				
+				</c:forEach>
 				<div class="group-member">
 					<h4>함께하는 잇친 리스트</h4>
-					<ul>
-						<li><i class="fas fa-user"></i> ${groups.memberNickName[0]}<span>(alpaca@naver.com)</span> <a><i class="fas fa-times"></i>삭제</a></li>
-						<li><i class="fas fa-user"></i> ${groups.memberNickName[1]}<span>(quitting-time@naver.com)</span> <a><i class="fas fa-times"></i>삭제</a></li>
-					</ul>
+					
+				<c:forEach items="${groups}" var="groups" varStatus="status"  begin="0">
+					 <c:if test="${status.first}"><ul id='nickNames'></c:if>
+						<c:choose>
+							<c:when test="true">
+							<c:if test="${groups.memberNickName[0]!= null}">
+		          				<li><i class="fas fa-user"></i> ${groups.memberNickName[0]}<a><i class="fas fa-times"></i>삭제</a></li>
+		          			</c:if>
+		          			<c:if test="${groups.memberNickName[1]!= null}">
+		          				<%-- <li><i class="fas fa-user"></i> ${groups.memberNickName[1]}<span>(quitting-time@naver.com)</span> <a><i class="fas fa-times"></i>삭제</a></li> --%>
+		          				<li><i class="fas fa-user"></i> ${groups.memberNickName[1]}<a><i class="fas fa-times"></i>삭제</a></li>
+		          			</c:if>
+		          			<c:if test="${groups.memberNickName[2]!= null}">
+		          				<li><i class="fas fa-user"></i> ${groups.memberNickName[2]} <a><i class="fas fa-times"></i>삭제</a></li>
+		          			</c:if>
+		          			<c:if test="${groups.memberNickName[3]!= null}">
+		          				<li><i class="fas fa-user"></i> ${groups.memberNickName[3]}<a><i class="fas fa-times"></i>삭제</a></li>
+		          			</c:if>
+		          			<c:if test="${groups.memberNickName[4]!= null}">
+		          				<li><i class="fas fa-user"></i> ${groups.memberNickName[4]}<a><i class="fas fa-times"></i>삭제</a></li>
+		          			</c:if>
+		          			<c:if test="${groups.memberNickName[5]!= null}">
+		          				<li><i class="fas fa-user"></i> ${groups.memberNickName[5]}<a><i class="fas fa-times"></i>삭제</a></li>
+		          			</c:if>
+		          			</c:when>
+							</c:choose> 
+					<c:if test="${status.last}"></ul></c:if> 
+				</c:forEach>	
 				</div>
 				</form>
 				
 				<a href = "group"><button class="btn-list">그룹 목록으로 돌아가기</button></a>
-			</c:forEach>	
+				
 			</div>
 			
 		</div>
