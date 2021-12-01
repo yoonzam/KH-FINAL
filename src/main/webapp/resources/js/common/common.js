@@ -74,6 +74,22 @@ $("#map_reviewBtn").click(function(){
 });
 
 let uploadReview = (reviewId) => {
+//	그룹불러오기
+	$.ajax({
+		type: 'POST',
+		url: '/timeline/group',
+		dataType: 'json',
+		success: (data) => {
+			html = '';
+			for(var i = 0; i < data.length; i++){
+				html += '<option value="' + data[i].id + '"> '+ data[i].name +' </option>';
+			}
+			$('.upload-group select[name="group"]').append(html);
+		},
+		error: function (e) {
+			alert('에러발생');
+		}
+	});
 //	초기화
 	uploadStep = 1;
 	photoCount = 0;
@@ -94,6 +110,7 @@ let uploadReview = (reviewId) => {
 	$('.star-review i').attr('class','far fa-star');
 	$('#pop-review-form textarea').val('');
 	$('.preview-photo').css('display','none');
+	
 	$('#pop-review-form select[name="group"]').val('').prop("selected", true);
 	$('#pop-review-form select[name="privacy"]').val('0').prop("selected", true);
 	$('#pop-review-form select[name="privacy"]').attr('disabled',false);

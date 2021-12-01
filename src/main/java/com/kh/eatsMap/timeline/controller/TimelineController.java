@@ -1,5 +1,6 @@
 package com.kh.eatsMap.timeline.controller;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -19,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.kh.eatsMap.common.util.PageObject;
 import com.kh.eatsMap.member.model.dto.Member;
+import com.kh.eatsMap.myeats.model.dto.Group;
 import com.kh.eatsMap.timeline.model.dto.Review;
 import com.kh.eatsMap.timeline.model.service.TimelineService;
 
@@ -90,6 +92,22 @@ public class TimelineController {
 	@ResponseBody
 	public void unlikeReview(String revId, @SessionAttribute("authentication") Member member) {
 		timelineService.deleteLike(revId, member);
+	}
+	
+	@PostMapping("group")
+	@ResponseBody
+	public List<Map<String, String>> group(@SessionAttribute("authentication") Member member) {
+		//roup group = 
+		List<Map<String, String>> groups = new ArrayList<>();
+		Map<String, String> group = new HashMap<>();
+		group.put("id", "61a5cd12b7ef8a4d0bf1413d");
+		group.put("name", "그룹6");
+		groups.add(group);
+		group.put("id", "61a63dbc1a10d83f718251a7");
+		group.put("name", "그룹7");
+		groups.add(group);
+		
+		return groups;
 	}
 	
 	@GetMapping("search")
