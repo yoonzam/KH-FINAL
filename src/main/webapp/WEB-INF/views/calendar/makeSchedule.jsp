@@ -17,7 +17,6 @@
 					<input class="hidden" type="text" name="scheduleId" id= "scheduleId" style="display: none">
 					<div class="btn-wrap">
 						<button class="submit" id="save-event">확인</button>
-						<!-- <a href="/calendar/" class="cancel" id="cancel-btn">취소</a> -->
 						<button class="cancel" id="cancel-btn">취소</button>
 					</div>
 				</div>
@@ -27,3 +26,50 @@
 	
 	<a class="close-btn" onclick="closePopup();"><i class="fas fa-times"></i></a>
 </div>
+
+<script>
+
+// 캘린더 일정 만들기 - 장소 검색
+$('input[name="resName"]').keyup(function () {
+    let keyword = $(this).val();
+    if (!keyword) {
+        $('.locationList').html('');
+        return;
+    }
+    // 장소 검색 객체 생성
+    let ps = new kakao.maps.services.Places();
+    // 키워드로 장소 검색
+    ps.keywordSearch(keyword, (data, status) => {
+        if (status === kakao.maps.services.Status.OK) {
+            let html = '';
+            searchPlaces = data;
+            for (var i = 0; i < data.length; i++) {
+                if (data[i].category_group_code == 'FD6' || data[i].category_group_code == 'CE7')
+                    html += '<li data-place-idx="' + i + '"><span class="place-name">' + data[i].place_name + '</span> <span class="road-address-name">' + data[i].road_address_name + '</span></li>';
+            }
+            $('.locationList').html(html);
+            $('.locationList').show();
+        }
+    });
+});
+
+$('.locationList').click(function (e) {
+    let placeIdx = e.target.dataset.placeIdx;
+    let place = searchPlaces[placeIdx];
+    $('input[name="resName"]').val(place.place_name);
+    $('input[name="latitude"]').val(place.y);
+    $('input[name="longitude"]').val(place.x);
+
+    $('.locationList').hide();
+})
+
+
+$('#sch-delete-btn').on('click', function () {
+
+    /*$('#sch-delete-btn').unbind();
+    calendar.fullCalendar('removeEvents', $(this).data('id'));
+    // delete ?*/
+    $('#pop-schedule-detail').hide();
+})
+
+</script>
