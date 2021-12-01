@@ -171,11 +171,11 @@ public class MyeatsController {
 //		return "myeats/post";
 //	}
 	
-	@RequestMapping(value="/detail", method=RequestMethod.GET)	
-	public String detailList(Model model) {
-		model.addAttribute("allReviews",timelineService.findAllReviews()); 
-		return "myeats/detail";
-	}
+//	@RequestMapping(value="/detail", method=RequestMethod.GET)	
+//	public String detailList(Model model) {
+//		model.addAttribute("allReviews",timelineService.findAllReviews()); 
+//		return "myeats/detail";
+//	}
 		
 	//유진 11/30
 	@GetMapping("post")
@@ -183,7 +183,10 @@ public class MyeatsController {
 		model.addAllAttributes(memberService.findMemberAndReviewByMemberId(member.getId()));
 	}
 	
-
+	@GetMapping("detail")
+	public void likedReview(@SessionAttribute("authentication") Member member, Model model) {
+		model.addAttribute("reviews",memberService.findLikedByMemberId(member));
+	}
 
 
 }
