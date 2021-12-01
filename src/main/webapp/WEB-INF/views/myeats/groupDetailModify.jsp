@@ -69,7 +69,7 @@
 			<form role = "form" action="/myeats/groupDetailModify" method="post" enctype="multipart/form-data">	
 				<input type="hidden"  name="id" value="${groups.id}" />
 				<!-- 테스트용 -->
-				<!-- <input type="hidden"  name="delNickName" value="추가테스트" /> -->
+				<input type="hidden"  name="delNickName" value="테스트용" />
 				
 				<div class="group-info">
 					<div class="group-profile">
