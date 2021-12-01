@@ -2,7 +2,7 @@
     pageEncoding="UTF-8"%>
 <div class="dimmed-wrap" id="pop-schedule-detail" style="display:none;">
 	<div class="dimmed"></div>
-	<div class="layer-popup review">
+	<div class="layer-popup schedule">
 		<div class="schedule">
 				<div class="popup-title" id="detail-date"></div>
 				<div class="schedule-spec">

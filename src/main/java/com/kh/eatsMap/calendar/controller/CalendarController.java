@@ -49,13 +49,15 @@ public class CalendarController {
 	@GetMapping("getSchedule")
 	@ResponseBody
 	public List<HashMap<String, Object>> getSchedule(@SessionAttribute("authentication") Member member) {
-		return calendarService.selectAllSchedule(member);
+		 List<HashMap<String, Object>> map = calendarService.selectAllSchedule(member);
+		 logger.debug(map.toString());
+		return map ;
 	}
 	
 	@PostMapping("upload")
 	public String makeSchedule(Calendar calendar, String scheduleId, double latitude, double longitude, @SessionAttribute("authentication") Member member){
 		
-		if(scheduleId == null) {
+		if(scheduleId.equals("")) {
 			calendar.setMemberId(member.getId());
 			calendar.setLocation(new GeoJsonPoint(longitude, latitude));
 
@@ -85,5 +87,10 @@ public class CalendarController {
 	//2. 서비스단에서 삭제 과정 진행 : 먼저 Calendar객체 조회 
 	//	--> calendarRepository.delete(객체); 로 전달하면 몽고db가 삭제해줌
 	
+	@PostMapping("delete")
+	public String deleteSchedule(String id) {
+		calendarService.deleteSchedule(id);
+		return "redirect:/calendar/";
+	}
 
 }

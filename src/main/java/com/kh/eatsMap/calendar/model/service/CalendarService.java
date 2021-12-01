@@ -3,6 +3,7 @@ package com.kh.eatsMap.calendar.model.service;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.bson.types.ObjectId;
 
@@ -15,9 +16,11 @@ public interface CalendarService {
 
 	List<HashMap<String, Object>> selectAllSchedule(Member member);
 
+	Calendar findCalendarById(String scheduleId);
+	
 	Map<String, Object> detailSchedule(String id);
 
-	Calendar findCalendarById(String scheduleId);
+	void deleteSchedule(String id);
 
 	
 
