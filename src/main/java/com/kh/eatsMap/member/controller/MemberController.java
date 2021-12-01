@@ -40,6 +40,7 @@ import com.kh.eatsMap.member.validator.JoinForm;
 import com.kh.eatsMap.member.validator.JoinFormValidator;
 import com.kh.eatsMap.member.validator.ModifyForm;
 import com.kh.eatsMap.member.validator.ModifyFormValidator;
+import com.kh.eatsMap.myeats.model.dto.Group;
 import com.kh.eatsMap.myeats.model.dto.Like;
 
 import lombok.RequiredArgsConstructor;
@@ -317,6 +318,12 @@ public class MemberController {
 		memberService.updateNoticeForDel("follow", memberService.findNotice(followUser.getFollowingId()));
 		
 		return memberService.findMemberById(followUser.getFollowingId()).getId().toString();
+	}
+	
+	@PostMapping("invite-group")
+	@ResponseBody
+	public void inviteGroup(Group group) {
+		
 	}
 
 	//파이어베이스

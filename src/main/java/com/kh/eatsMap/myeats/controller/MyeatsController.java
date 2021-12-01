@@ -34,6 +34,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kh.eatsMap.common.util.Fileinfo;
 import com.kh.eatsMap.common.util.FindCriteria;
 import com.kh.eatsMap.common.util.PageObject;
+import com.kh.eatsMap.firebase.PushMessaging;
 import com.kh.eatsMap.member.model.dto.Member;
 import com.kh.eatsMap.member.model.service.MemberService;
 import com.kh.eatsMap.myeats.model.dto.Group;
@@ -47,6 +48,7 @@ import com.kh.eatsMap.timeline.model.service.TimelineService;
 public class MyeatsController {
 
 	private static final Logger logger = LoggerFactory.getLogger(MyeatsController.class);
+	private PushMessaging push = PushMessaging.getInstance();
 	
 	@Autowired
 	private GroupService groupService;
@@ -109,15 +111,15 @@ public class MyeatsController {
 
 	
 	//그룹생성 처리/createGroup.jsp
-	@RequestMapping(value="/createGroup", method = RequestMethod.POST)
-	public String writePost(Group group, RedirectAttributes reAttr, PageObject pageObject,List<MultipartFile> photos, @SessionAttribute("authentication") Member member) throws Exception{
-		
-		groupService.write(group,photos,member);
-		reAttr.addFlashAttribute("list", groupService.list(pageObject,member));
-		reAttr.addFlashAttribute("result", "success");
-		
-		return "redirect:/myeats/group";
-	}
+//	@RequestMapping(value="/createGroup", method = RequestMethod.POST)
+//	public String writePost(Group group, RedirectAttributes reAttr, PageObject pageObject,List<MultipartFile> photos, @SessionAttribute("authentication") Member member) throws Exception{
+//		
+//		groupService.write(group,photos,member);
+//		reAttr.addFlashAttribute("list", groupService.list(pageObject,member));
+//		reAttr.addFlashAttribute("result", "success");
+//		
+//		return "redirect:/myeats/group";
+//	}
 	
 	//그룹상세보기 폼/groupDetail.jsp
 	@RequestMapping(value="/groupDetail", method=RequestMethod.GET)
@@ -155,13 +157,14 @@ public class MyeatsController {
 		
 	}
 	//수정처리
-	@RequestMapping(value="/groupDetailModify", method=RequestMethod.POST)
-	public String modifyPOST(Group group,List<MultipartFile> photos, Member member) throws Exception{
-		groupService.modify(group,photos,member);
-		
-		
-		return "redirect:/myeats/groupDetail?id="+group.getId();
-	}
+		@RequestMapping(value="/groupDetailModify", method=RequestMethod.POST)
+		public String modifyPOST(Group group,List<MultipartFile> photos, Member member,
+				@RequestParam("delNickName") String delNickName,@RequestParam("newNickNameOne")String newNickNameOne) throws Exception{
+			groupService.modify(group,photos,member,delNickName,newNickNameOne);
+			
+			
+			return "redirect:/myeats/groupDetail?id="+group.getId();
+		}
 	
 
 
@@ -188,6 +191,22 @@ public class MyeatsController {
 	public void likedReview(@SessionAttribute("authentication") Member member, Model model) {
 		model.addAttribute("reviews",memberService.findLikedByMemberId(member));
 	}
+	
+   //유진 12/01
+   @PostMapping("createGroup")
+   public String createGroup(Group group, PageObject pageObject,List<MultipartFile> photos
+                     , @SessionAttribute("authentication") Member member, RedirectAttributes reAttr ) {
+      groupService.write(group,photos,member);
+      
+      for (int i = 0; i < group.getParticipants().length; i++) {
+    	  Member to = memberService.findMemberById(group.getParticipants()[i]);
+    	  push.push(to);
+      }
+      
+      reAttr.addFlashAttribute("list", groupService.list(pageObject,member));
+      reAttr.addFlashAttribute("result", "success");
+      return "redirect:/myeats/group";
+   }
 
 
 

@@ -165,5 +165,23 @@ public class RepositoryTest {
 			
 			list.forEach(e -> logger.debug(e.toString()));
 		}
+		
+		//제거하고 추가하고 
+				@Test
+				public void updated(){
+					Query query = new Query();
+					query.addCriteria(Criteria.where("id").is("61a5cceab7ef8a4d0bf1413b"));
+					Update update = new Update();
+					update.set("groupName", "ee");
+				    //데이터를 제거
+				    update.pull("memberNickName", "댕댕이");  
+				    mongoTemplate.updateFirst(query, update, Group.class);
+				    
+				    //데이터를 추가
+				    String [] newItem = new String[]{"새로운애","새로운애"};
+				    update = new Update();
+				    update.push("memberNickName").each(newItem);
+				    mongoTemplate.updateFirst(query, update, Group.class);    
+				}
     
 }

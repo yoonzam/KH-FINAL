@@ -1,6 +1,7 @@
 package com.kh.eatsMap.member.model.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -252,6 +253,17 @@ public class MemberServiceImpl implements MemberService{
 			}
 		}
 		return reviews;
+	}
+
+	@Override
+	public List<Map<String, Object>> findAllMemberToMap() {
+		List<Map<String,Object>> memberList = new ArrayList<Map<String,Object>>();
+		List<Member> members = memberRepository.findAll();
+		
+		for (Member member : members) {
+			memberList.add(Map.of("memberId", member.getId().toString(), "member", member));
+		}
+		return memberList;
 	}
 
 
