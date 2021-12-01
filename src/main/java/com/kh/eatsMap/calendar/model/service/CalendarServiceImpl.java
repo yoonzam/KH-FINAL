@@ -46,9 +46,20 @@ public class CalendarServiceImpl implements CalendarService{
 
 
 	@Override
-	public Calendar detailSchedule(String id) {
+	public Map<String, Object> detailSchedule(String id) {
+		Map<String, Object> map = new HashMap<String, Object>();
 		Calendar calendar = calendarRepository.findById(id).get();
-		return calendar;
+		
+		map.put("calendar", calendar);
+		map.put("calendarId", calendar.getId().toString());
+		
+		return map;
+	}
+
+
+	@Override
+	public Calendar findCalendarById(String scheduleId) {
+		return calendarRepository.findById(scheduleId).orElse(new Calendar());
 	}
 
 	

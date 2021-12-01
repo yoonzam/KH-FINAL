@@ -83,7 +83,7 @@
     background-color: var(--main-color);
 }
 
-.schedule .btn-wrap button.cancel {
+.schedule .btn-wrap .cancel {
     background-color: #cbc5c2;
 }
 
@@ -91,7 +91,7 @@
     background-color: #ffa54f;
 }
 
-.schedule .btn-wrap button.cancel:hover {
+.schedule .btn-wrap .cancel:hover {
     background-color: #d8d2cf;
 }
 
