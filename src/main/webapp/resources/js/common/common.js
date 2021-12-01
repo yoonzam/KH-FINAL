@@ -429,9 +429,9 @@ let viewTimeline = (reviewId) => {
 			
 			//작성자
 			if(data.follow.followingId == null) {
-				$('#pop-review-detail .writer').html('<a href="/member/follow/'+data.review.memberNick+'">'+data.review.memberNick+'</a><a onclick="follow(\''+data.memberId+'\')" class="follow">잇친맺기</a>');						
+				$('#pop-review-detail .writer').html('<a href="/member/follow/'+data.review.memberNick+'">'+data.review.memberNick+'</a><div><a onclick="follow(\''+data.memberId+'\')" class="follow">잇친맺기</a></div>');						
 			} else{						
-				$('#pop-review-detail .writer').html('<a href="/member/follow/'+data.review.memberNick+'">'+data.review.memberNick+'</a><a onclick="unfollow(\''+data.memberId+'\')" class="unfollow">잇친끊기</a>');						
+				$('#pop-review-detail .writer').html('<a href="/member/follow/'+data.review.memberNick+'">'+data.review.memberNick+'</a><div><a onclick="unfollow(\''+data.memberId+'\')" class="unfollow">잇친끊기</a></div>');						
 			}
 			
 			//별점
@@ -586,7 +586,7 @@ let follow = (followingId) => {
 		contentType: 'application/json',
 		cache: false,
 		success: (memberId) => {
-			$('#pop-review-detail .writer a.follow').html('<a onclick="unfollow(\''+memberId+'\')" class="unfollow">잇친끊기</a>');
+			$('#pop-review-detail .writer > div').html('<a onclick="unfollow(\''+memberId+'\')" class="unfollow">잇친끊기</a>');
 		},
 		error: (e) => {
 			alert("실패");
@@ -602,7 +602,7 @@ let unfollow = (followingId) => {
 		contentType: 'application/json',
 	 	cache:false,
 		success: (memberId) => {
-			$('#pop-review-detail .writer a.follow').html('<a onclick="follow(\''+memberId+'\')" class="follow">잇친맺기</a>');
+			$('#pop-review-detail .writer > div').html('<a onclick="follow(\''+memberId+'\')" class="follow">잇친맺기</a>');
 		},
 		error: (e) => {
 			alert("실패");
