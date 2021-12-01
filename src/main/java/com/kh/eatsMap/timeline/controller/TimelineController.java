@@ -1,9 +1,12 @@
 package com.kh.eatsMap.timeline.controller;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -18,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.kh.eatsMap.common.util.PageObject;
 import com.kh.eatsMap.member.model.dto.Member;
+import com.kh.eatsMap.myeats.model.dto.Group;
 import com.kh.eatsMap.timeline.model.dto.Review;
 import com.kh.eatsMap.timeline.model.service.TimelineService;
 
@@ -89,5 +93,43 @@ public class TimelineController {
 	@ResponseBody
 	public void unlikeReview(String revId, @SessionAttribute("authentication") Member member) {
 		timelineService.deleteLike(revId, member);
+	}
+	
+	@PostMapping("group")
+	@ResponseBody
+	public List<Map<String, String>> group(@SessionAttribute("authentication") Member member) {
+		return timelineService.findGroup(member);
+	}
+	
+	@GetMapping("search")
+	public void search(String keyword_, String[] area_, String[] category_, String[] hashtag_, Model model, @SessionAttribute("authentication") Member member) {
+		System.out.println(Arrays.toString(area_));
+		String keyword = keyword_ == null ? "" : keyword_;
+	
+		String[] category = new String[0];
+		if(category_ != null) {
+			category = new String[category_.length];		
+			for (int i = 0; i < category_.length; i++) {
+				category[i] = category_[i];
+			}
+		}
+		String[] hashtag = new String[0];
+		if(hashtag_ != null) {
+			hashtag = new String[hashtag_.length];		
+			for (int i = 0; i < hashtag_.length; i++) {
+				hashtag[i] = hashtag_[i];
+			}	
+		}
+		String[] area = new String[0];
+		if(area_ != null) {
+			area = new String[area_.length];		
+			for (int i = 0; i < area_.length; i++) {
+				area[i] = area_[i];
+			}	
+		}
+		List<Review> searchedReviewList = timelineService.searchReview(keyword, area, category, hashtag, member);
+		
+		model.addAttribute("reviews", searchedReviewList);
+		model.addAttribute("keyword", keyword_);
 	}
 }

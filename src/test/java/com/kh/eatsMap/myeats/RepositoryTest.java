@@ -34,6 +34,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.context.WebApplicationContext;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.kh.eatsMap.common.util.PageObject;
 import com.kh.eatsMap.member.model.dto.Member;
 import com.kh.eatsMap.member.model.repository.MemberRepository;
 import com.kh.eatsMap.myeats.model.dto.Group;
@@ -151,5 +152,36 @@ public class RepositoryTest {
 			update.set("groupName", "ee");
 			mongoTemplate.updateFirst(query, update, Group.class);
 		}
+		
+		@Test
+		public void list() {
+			
+			Member member = new Member();
+			List<Group> list = null;
+			Query query = new Query();
+			query.addCriteria(Criteria.where("memberNickName").regex("yang"));
+			query = query.with(Sort.by(Sort.Direction.DESC,"id"));
+			list = mongoTemplate.find(query,com.kh.eatsMap.myeats.model.dto.Group.class,"group");
+			
+			list.forEach(e -> logger.debug(e.toString()));
+		}
+		
+		//제거하고 추가하고 
+				@Test
+				public void updated(){
+					Query query = new Query();
+					query.addCriteria(Criteria.where("id").is("61a5cceab7ef8a4d0bf1413b"));
+					Update update = new Update();
+					update.set("groupName", "ee");
+				    //데이터를 제거
+				    update.pull("memberNickName", "댕댕이");  
+				    mongoTemplate.updateFirst(query, update, Group.class);
+				    
+				    //데이터를 추가
+				    String [] newItem = new String[]{"새로운애","새로운애"};
+				    update = new Update();
+				    update.push("memberNickName").each(newItem);
+				    mongoTemplate.updateFirst(query, update, Group.class);    
+				}
     
 }

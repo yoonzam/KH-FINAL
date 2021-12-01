@@ -55,48 +55,55 @@ import com.kh.eatsMap.timeline.model.service.TimelineService;
 @RequestMapping("info")
 public class InfoController {
 
-	@Inject
+	@Autowired
 	private GroupService groupService;
 
-	@Inject
+	@Autowired
 	private MemberService memberService;
 
-	@Inject
+	@Autowired
 	private TimelineService timelineService;
 
-	@Inject
+	@Autowired
 	private GroupDAO dao;
 
-	@Inject
+	@Autowired
 	private MongoTemplate mongoTemplate;
 
-	@Inject
+	@Autowired
 	private static Group group;
 
-	@Inject
+	@Autowired
 	private static Member member;
 
 	// 전체 멤버 리스트
 	@GetMapping("ajaxTest")
 	public void ajaxTest() {}
 
-	@GetMapping("memberInfo")
-	@ResponseBody
-	public List<Member> list() throws Exception {
-		List<Member> memberList = null;
-		memberList = dao.listMember();
-		System.out.println(memberList.toString());
-		return memberList;
-	}
+//	@GetMapping("memberInfo")
+//	@ResponseBody
+//	public List<Member> list() throws Exception {
+//		List<Member> memberList = null;
+//		memberList = dao.listMember();
+//		return memberList;
+//	}
 	
 	@PostMapping("memberInfo")
 	@ResponseBody
 	public List<Member> listPost() throws Exception {
 		List<Member> memberList = null;
 		memberList = dao.listMember();
-		System.out.println(memberList.toString());
 		return memberList;
 	}
+	
+    //유진 12/01
+   @GetMapping("memberInfo")
+   @ResponseBody
+   public List<Map<String,Object>> memberInfo(){
+      List<Map<String,Object>> members = memberService.findAllMemberToMap();
+      
+      return members;
+   }
 
 	 
 

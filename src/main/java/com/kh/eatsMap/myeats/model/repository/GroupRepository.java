@@ -12,6 +12,8 @@ public interface GroupRepository extends MongoRepository<Group, String>{
 	
 	List<Group> findById(ObjectId Id);
 
+	List<Group> findByParticipants(ObjectId memberId);
+
 
 
 

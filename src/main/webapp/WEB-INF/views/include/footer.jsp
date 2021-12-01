@@ -6,6 +6,7 @@
 <script type="text/javascript" src="/resources/js/firebase/firebase-init.js"></script>
 <script type="text/javascript" src="/resources/js/firebase/firebase-app.js"></script>
 <script type="text/javascript" src="/resources/js/firebase/firebase-messaging.js"></script>	
+<script defer type="text/javascript" src="/resources/js/calendar/calendar.js"></script>
 <script type="text/javascript">
 
 	/* push시작 */
@@ -168,3 +169,5 @@
 </div>
 <%@ include file="/WEB-INF/views/common/review.jsp" %>
 <%@ include file="/WEB-INF/views/common/upload.jsp" %>
+<%@ include file="/WEB-INF/views/calendar/makeSchedule.jsp" %>
+<%@ include file="/WEB-INF/views/calendar/schedule.jsp" %>

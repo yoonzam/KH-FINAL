@@ -35,7 +35,7 @@ public class PushBatch {
 	//친구 초대 알림인 경우, 친구 초대 시간이 24h이내면 알림 발송
 	
 	//그룹 초대 알림 : 그룹생성 24h이내면 해당 id를 갖는 그룹의 팀원들 조회해 알림 발송
-	@Scheduled(cron = "0 56 14 * * *")
+	@Scheduled(cron = "0 25 16 * * *")
 	public void pushAboutSchedule() {
 		
 		calendarRepository.findAll().forEach(e -> {

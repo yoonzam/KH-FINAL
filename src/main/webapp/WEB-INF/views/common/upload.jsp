@@ -105,8 +105,6 @@
 							<div class="group-box">
 								<select name="group">
 									<option value=""> 내 피드 </option>
-									<option value="니캉내캉"> 니캉내캉 </option>
-									<option value="맛집소녀단"> 맛집소녀단 </option>
 								</select>
 							</div>
 							<p><strong>#공개 여부</strong><br>공개 여부를 선택하세요.</p>

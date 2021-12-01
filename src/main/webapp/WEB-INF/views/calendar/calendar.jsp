@@ -62,6 +62,7 @@
     		 			url : '/calendar/getSchedule',
     		 			dataType: 'json',
     		 			success: function(datas){
+    		 			
     		 				for (var i = 0; i < datas.length; i++) {
     		 					let obj = {
     		 						'id' : datas[i].calendarId,
@@ -97,31 +98,41 @@
 		 					$('#pop-schedule-form').show();
 		 					$('#save-event').text('수정완료');
 		 					
+		 					console.dir(data.calendar);
+		 					
 		 					$('#scheduleId').val(data.calendarId);
 							$('#title').val(data.calendar.title);
 							$('#date').val(data.calendar.date);
 							$('#time').val(data.calendar.time);
 							$('#location').val(data.calendar.resName);
 							$('#participant').val(data.calendar.participant);
+							$('input[name="latitude"]').val(data.calendar.location.coordinates[1]);
+							$('input[name="longitude"]').val(data.calendar.location.coordinates[0]);
 							
 		 				})
 		 				
 		 				$('#sch-delete-btn').click(e => {
 		 					//비동기 통신 필요 url : /calendar/delete (post)
-		 					
 		 					//같이 보낼 데이터 : id -> data.calendarId
-		 					
 		 					//success 이후 과정은 다른 코드 참조(복붙)
-		 					
-		 				}
+		 					$.ajax({
+						 			url : '/calendar/delete',
+						 			type: 'post',
+						 			data:{'id': data.calendarId},
+						 			dataType: 'json',
+						 			
+						 			success: (data) => {
+						 				alert('일정이 삭제되었습니다.');
+						 				$('#pop-schedule-detail').hide();
+						 			}
+		 					})
 		 				
+		 				})
 		 			}
     			})
 		 			
     			$('#pop-schedule-detail').show();
-    		
-    			
-    		}
+    		}//eventClick
 	    		
 	 	}); 
     	calendar.render();

@@ -1,4 +1,4 @@
-$(document).ready(()=>{
+/*$(document).ready(()=>{
     resizeImg();
 });
 
@@ -18,7 +18,7 @@ let resizeImg = () => {
             thumImg.style.width=thumWidth+'px';
         }
     })
-}
+}*/
 
 $('.eats-list').hover((e) => {
     e.currentTarget.children[0].children[0].style.transform='scale(1.1)';
@@ -68,22 +68,18 @@ $('.filter-menu input:checkbox').click((e)=>{
 		// 키워드로 장소 검색
 		ps.keywordSearch(keyword, (data, status) => {
 			if (status === kakao.maps.services.Status.OK) {
-				$('.locationList').html(displayPlaces(data));
+				let html = '';
+				searchPlaces = data;
+				for ( var i=0; i<data.length; i++ ) {
+					if(data[i].category_group_code == 'FD6' || data[i].category_group_code == 'CE7' )
+						html += '<li data-place-idx="'+i+'"><span class="place-name">'+data[i].place_name+'</span> <span class="road-address-name">'+data[i].road_address_name+'</span></li>';
+				}				
+				$('.locationList').html(html);
 				$('.locationList').show();
 			}
 		}); 
 	});
 	
-	//검색리스트 출력
-	let displayPlaces = (places) => {
-		searchPlaces = places;
-		html = '';
-		for ( var i=0; i<places.length; i++ ) {
-			if(places[i].category_group_code == 'FD6' || places[i].category_group_code == 'CE7' )
-				html += '<li data-place-idx="'+i+'"><span class="place-name">'+places[i].place_name+'</span> <span class="road-address-name">'+places[i].road_address_name+'</span></li>';
-		}
-		return html;
-	}
 	
 	$('.locationList').click(function(e){
 		let placeIdx = e.target.dataset.placeIdx;

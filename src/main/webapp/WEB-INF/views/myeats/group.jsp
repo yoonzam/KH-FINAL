@@ -94,7 +94,7 @@
 							<div class="group-img"><img src="${!empty groups.thumUrl ? groups.thumUrl : '/resources/img/common/upload-logo.png'}"></div>
 								<p class="group-info">
 									<strong>${groups.groupName}</strong><br>
-									<i class="fas fa-user"></i> ${fn:length(groups.memberNickName) }    &nbsp;&nbsp;<i class="fas fa-feather"></i>
+									<%-- <i class="fas fa-user"></i> ${fn:length(groups.memberNickName) }    &nbsp;&nbsp;<i class="fas fa-feather"></i> --%>
 									<fmt:formatDate pattern="yyyy/MM/dd" value="${groups.groupcreatedate}"/>
 								</p>
 						</div>
@@ -140,7 +140,6 @@
 <script>
  	$(document).ready(function(){
  		var frmObj = $("form[role='form']");
- 		console.log("group.jsp지정된 폼태그..");
  		
  		 $(".delete").on("click", function(){ 
 			frmObj.attr("action", "/myeats/delete");

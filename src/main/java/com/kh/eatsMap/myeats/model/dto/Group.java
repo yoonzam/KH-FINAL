@@ -22,7 +22,7 @@ public class Group {
 	private String groupImg;
 	private Date groupcreatedate; 
 	private ObjectId memberId;
-	private String[] memberNickName;
+	private ObjectId[] participants;	//유진 수정 12/01
 	private String thumUrl;			//썸네일URL
 
 	

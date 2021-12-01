@@ -24,7 +24,7 @@ public interface GroupService {
 	
 	
 	//페이징 및 조회/group.jsp
-	public List<Group> list(PageObject pageObject);
+	public List<Group> list(PageObject pageObject, Member member);
 	
 	//groupIdx제외 예정
 	public List<Group> read(ObjectId id);
@@ -37,7 +37,7 @@ public interface GroupService {
 	
 	public void remove(String id);
 	
-	public void modify(Group group,List<MultipartFile> photos, Member member) throws Exception;
+	public void modify(Group group,List<MultipartFile> photos, Member member,String delNickName,String newNickNameOne) throws Exception;
 	
 	
 	

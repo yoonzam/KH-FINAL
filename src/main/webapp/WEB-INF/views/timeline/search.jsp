@@ -8,7 +8,12 @@
 <head>
 <%@ include file="/WEB-INF/views/include/head.jsp" %>
 <link rel="stylesheet" type="text/css" href="/resources/css/timeline/timeline.css" />
-<script defer type="text/javascript" src="/resources/js/timeline/timeline.js"></script>
+<script defer type="text/javascript" src="/resources/js/timeline/search.js"></script>
+
+<!-- paging -->
+
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
 </head>
 <body>
 <%@ include file="/WEB-INF/views/include/header.jsp" %>
@@ -22,7 +27,7 @@
 				</div>
 			</div>
 			<div class="timeline-wrap">
-				<h2><i class="fas fa-utensils color-m"></i> 실시간 <span class="color-m">잇친 PICK</span> 맛집을 소개합니다!</h2>
+				<h2><i class="fas fa-search color-m"></i> <span class="color-m">${keyword}</span> 검색결과</h2>
 				<ul class="timeline-brd">
 					<c:forEach items="${reviews}" var="reviews">
 						<li onclick="viewTimeline('${reviews.id}')">

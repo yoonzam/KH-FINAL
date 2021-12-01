@@ -30,4 +30,8 @@ public interface TimelineService {
 
 	void deleteLike(String revId, Member member);
 
+	List<Review> searchReview(String keyword, String[] area, String[] category, String[] hashtag, Member member);
+
+	List<Map<String, String>> findGroup(Member member);
+
 }

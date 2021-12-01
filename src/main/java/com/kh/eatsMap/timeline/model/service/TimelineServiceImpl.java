@@ -2,15 +2,20 @@ package com.kh.eatsMap.timeline.model.service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.bson.types.ObjectId;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.geo.GeoJsonPoint;
+import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.util.Streamable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -24,7 +29,9 @@ import com.kh.eatsMap.member.model.dto.Member;
 import com.kh.eatsMap.member.model.repository.FollowingRepository;
 import com.kh.eatsMap.member.model.repository.MemberRepository;
 import com.kh.eatsMap.member.model.service.MemberService;
+import com.kh.eatsMap.myeats.model.dto.Group;
 import com.kh.eatsMap.myeats.model.dto.Like;
+import com.kh.eatsMap.myeats.model.repository.GroupRepository;
 import com.kh.eatsMap.myeats.model.repository.LikeRepository;
 import com.kh.eatsMap.timeline.model.dto.Review;
 import com.kh.eatsMap.timeline.model.repository.FileRepository;
@@ -41,6 +48,7 @@ public class TimelineServiceImpl implements TimelineService{
 	private final FileRepository fileRepository;
 	private final MemberRepository memberRepository;
 	private final FollowingRepository followingRepository;
+	private final GroupRepository groupRepository;
 	private final MongoTemplate mongoTemplate;
 
 	@Override
@@ -118,7 +126,7 @@ public class TimelineServiceImpl implements TimelineService{
 		Optional<Review> findReview = timelineRepository.findById(id);
 
 		Review review = findReview.get();
-		review.setMemberId(new ObjectId(review.getMemberId().toString()));
+		review.setMemberId(review.getMemberId());
 		review.setMemberNick(memberRepository.findById(review.getMemberId().toString()).get().getNickname());
 		
 		//찜리스트
@@ -133,6 +141,7 @@ public class TimelineServiceImpl implements TimelineService{
 		//objectId
 		map.put("reviewId", review.getId().toString());
 		map.put("memberId", review.getMemberId().toString());
+		map.put("myId", member.getId().toString());
 		
 		//잇친여부
 		Follow follow = followingRepository.findOptionalByMemberIdAndFollowingId(member.getId(), review.getMemberId()).orElse(new Follow());
@@ -202,4 +211,127 @@ public class TimelineServiceImpl implements TimelineService{
 		likeRepository.deleteByMemberIdAndRevId(member.getId(), new ObjectId(revId));
 	}
 
+	@Override
+	public List<Map<String, String>> findGroup(Member member) {
+		List<Map<String, String>> result = new ArrayList<>();
+		List<Group> groups = groupRepository.findByParticipants(member.getId());
+		
+		for (Group group : groups) {
+			Map<String, String> map = new HashMap<>();
+			map.put("id", group.getId().toString());
+			map.put("name", group.getGroupName().toString());
+			result.add(map);
+		}
+
+		return result;
+	}
+	
+	@Override
+	public List<Review> searchReview(String keyword, String[] area, String[] category, String[] hashtag, Member member) {
+		List<Review> reviews = new ArrayList<Review>();
+		String[] areaName = getareaName(area);
+		
+		if(area.length == 17 && category.length == 8 && hashtag.length == 11) {
+			reviews = timelineRepository.findByResNameIgnoreCaseContaining(keyword);
+		} else {
+			List<Review> margeReviews = new ArrayList<Review>();
+			List<Review> searchArea = new ArrayList<Review>();
+			List<Review> searchCategory = new ArrayList<Review>();
+			List<Review> searchHashtag = new ArrayList<Review>();
+			
+			//지역으로 검색
+			if(areaName.length > 0) {
+				Query query = new Query();
+				Criteria criteria = new Criteria();
+				Criteria areaArr[] = new Criteria[areaName.length];
+				
+				for(int i = 0; i < areaName.length; i++){
+					String question = areaName[i];
+					areaArr[i] = Criteria.where("addr").regex(question);
+				}
+				
+				query.addCriteria(criteria.orOperator(areaArr));
+				searchArea = mongoTemplate.find(query, Review.class, "review");
+			}
+			
+			//카테고리로 검색
+			if(category.length > 0) {
+				Query query = new Query();
+				Criteria criteria = new Criteria();
+				Criteria categoryArr[] = new Criteria[category.length];
+				
+				for(int i = 0; i < category.length; i++){
+					String question = category[i];
+					categoryArr[i] = Criteria.where("category").regex(question);
+				}
+				
+				query.addCriteria(criteria.orOperator(categoryArr));
+				searchCategory = mongoTemplate.find(query, Review.class, "review");
+			}
+			
+			//해시태그로 검색
+			if(hashtag.length > 0) {
+				searchHashtag = timelineRepository.findByHashtagLike(hashtag);
+			}
+		
+			if(area.length > 0) {
+				margeReviews = searchArea;
+				if(category.length > 0) margeReviews.retainAll(searchCategory);
+				if(hashtag.length > 0) margeReviews.retainAll(searchHashtag);
+			} else if(category.length > 0){
+				margeReviews = searchCategory;
+				if(hashtag.length > 0) margeReviews.retainAll(searchHashtag);
+			} else {
+				margeReviews = searchHashtag;
+			}
+			
+			//키워드로 가려내기
+			if(!keyword.equals("")) {
+				for (Review review : margeReviews) {
+					if(review.getResName().toLowerCase().contains(keyword.toLowerCase())) {
+						reviews.add(review);
+					}
+				}
+			} else {
+				reviews = margeReviews;
+			}
+		}
+
+		//리뷰 가공
+		List<Like> likes = likeRepository.findByMemberId(member.getId());
+		for (Review review : reviews) {
+			List<Fileinfo> files = fileRepository.findByTypeId(review.getId());
+			if(files.size() > 0) review.setThumUrl(files.get(0).getDownloadURL());
+			for (Like like : likes) if(like.getRevId().equals(review.getId())) review.setLike(1);
+			review.toString();
+		}
+		return reviews;
+	}
+	
+	private String[] getareaName(String areaNum[]) {
+		String[] areaName = new String[areaNum.length];
+		for (int i = 0; i < areaNum.length; i++) {
+			switch (areaNum[i]) {
+				case "02": areaName[i] = "서울"; break;
+				case "032": areaName[i] = "인천"; break;
+				case "031": areaName[i] = "경기"; break;
+				case "033": areaName[i] = "강원"; break;
+				case "044": areaName[i] = "세종"; break;
+				case "043": areaName[i] = "충북"; break;
+				case "041": areaName[i] = "충남"; break;
+				case "042": areaName[i] = "대전"; break;
+				case "062": areaName[i] = "광주"; break;
+				case "063": areaName[i] = "전북"; break;
+				case "061": areaName[i] = "전남"; break;
+				case "053": areaName[i] = "대구"; break;
+				case "054": areaName[i] = "경북"; break;
+				case "055": areaName[i] = "경남"; break;
+				case "052": areaName[i] = "울산"; break;
+				case "051": areaName[i] = "부산"; break;
+				case "064": areaName[i] = "제주"; break;
+				default: areaName[i] = ""; break;
+			}
+		}
+		return areaName;
+	}
 }

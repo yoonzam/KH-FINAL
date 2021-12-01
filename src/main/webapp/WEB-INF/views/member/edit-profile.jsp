@@ -102,12 +102,11 @@
 	  document.querySelector('#btn-edit').addEventListener('click', e => {
 			e.preventDefault();
 			
-			if(nickname == `${authentication.nickname}`){
+			if(nickname.defaultValue == `${authentication.nickname}`){
 				document.editForm.submit();
-				alert('닉네임 유지');
 			}
 			
-			if(nickname != `${authentication.nickname}` && confirmNick == ""){
+			if(nickname.defaultValue != `${authentication.nickname}` && confirmNick == ""){
 				document.querySelector('#alert_nick').style.color = 'var(--red-color)';
 				document.querySelector('#alert_nick').innerHTML = '중복확인을 하지 않았습니다.';
 				return;
