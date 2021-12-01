@@ -1,7 +1,9 @@
 package com.kh.eatsMap.map.model.repository;
 
+import java.util.Collection;
 import java.util.List;
 
+import org.bson.types.ObjectId;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.geo.Box;
 import org.springframework.data.geo.Circle;
@@ -20,5 +22,11 @@ public interface MapRepository extends MongoRepository<Review, String>{
 	List<Review> findByLocationNear(Point location, Distance distance);
 	
 	//List<Review> findByResNameOrderByIdAsc(String resName, Sort sort);
+	
+	List<Review> findByMemberIdOrPrivacy(ObjectId memberId,int privacy);
+
+	List<Review> findByMemberIdAndPrivacy(ObjectId followingId, int privacy);
+
+	
 
 }

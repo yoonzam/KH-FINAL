@@ -1,5 +1,6 @@
 package com.kh.eatsMap.member.model.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.bson.types.ObjectId;
@@ -15,5 +16,7 @@ public interface FollowingRepository extends MongoRepository<Follow, ObjectId>{
 	long countByMemberId(ObjectId memberId);
 
 	Optional<Follow> findByMemberIdAndFollowingId(ObjectId id, ObjectId memberId);
+	
+	List<Follow> findByMemberId(ObjectId memberId);
 
 }
