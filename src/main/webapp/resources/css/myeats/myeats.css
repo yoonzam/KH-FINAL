@@ -24,7 +24,7 @@
 .group-wrap .controller a.group-menu:hover{background-color:var(--hover-color);}
 
 .btn-area{text-align:center;}
-.btn-area button{cursor:pointer; font-weight:700; border-radius:5px; font-size:20px; padding:20px 30px; transition-duration:0.5s; color:#fff; border:none;}
+.btn-area button, .cancel-btn{cursor:pointer; font-weight:700; border-radius:5px; font-size:20px; padding:20px 30px; transition-duration:0.5s; color:#fff; border:none;}
 .btn-area .create-btn{background-color:var(--red-color);}
 .btn-area .create-btn:hover{background-color:var(--pink-color);}
 .btn-area .cancel-btn{background-color:#aaa;}
