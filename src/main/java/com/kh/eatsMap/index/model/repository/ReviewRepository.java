@@ -30,6 +30,10 @@ public interface ReviewRepository extends MongoRepository<Review, String>{
 
 	List<Review> findByMemberId(ObjectId id);
 
+	List<Review> findReviewByPrivacyAndHashtagLike(int i, String[] strings);
+
+	List<Review> findByPrivacyAndLocationNear(int i, Point point, Distance distance);
+
 	
 //	Review findFirstByIdOrderByCategoryDesc(ObjectId id);
 

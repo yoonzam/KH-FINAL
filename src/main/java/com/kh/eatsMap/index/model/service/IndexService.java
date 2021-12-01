@@ -21,23 +21,12 @@ public interface IndexService {
 	List<Review> localReview(Member member);
 
 	//해쉬태그 기반 리뷰리스트 
-	List<Review> findReviewByHashtag(Member member);
+	Map<String,Object> findAllReview(Member member);
 	
 	//리뷰 검색 
 	List<Review> searchReview(String keyword, String[] category, String[] hashtag);
 
-	Map<String,Object> findAllReview(Member member);
 
-	
-	
-	
-	
-	
-//	List<Fileinfo> searchReviewImg(String searchReviewListId);
-
-//	String[] searchReviewd(String reviewId);
-
-//	List<Fileinfo> searchReviewImg(String[] searchReviewListId);
 
 
 }

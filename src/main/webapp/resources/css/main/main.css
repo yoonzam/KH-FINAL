@@ -115,7 +115,7 @@
 .visual button{
 	cursor:pointer;
 	position: absolute;
-	z-index: 100;
+	z-index: auto;
 	top: 90px;
 	width: 70px;
 	height: 70px;

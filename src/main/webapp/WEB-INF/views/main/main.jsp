@@ -79,10 +79,12 @@
 			</div>
 		</div>
 	</section>
-	<h2><i class="fas fa-utensils color-m"></i> 여기는 어떠세요? <span class="color-m">#데이트</span> <span class="color-m">#술집</span></h2>
-	<section class="visual"> 
+	<h2><i class="fas fa-utensils color-m"></i> 여기는 어떠세요? 
 	
-		<c:forEach items="${locationFollowReviewList}" var="reviews">
+	<span class="color-m">#<c:out value="${reviewsAndHashtag.maxHash1}" /></span> <span class="color-m">
+	<c:if test="${reviewsAndHashtag.maxHash1 != reviewsAndHashtag.maxHash2 }">#<c:out value="${reviewsAndHashtag.maxHash2}" /></c:if></span></h2>
+	<section class="visual"> 
+		<c:forEach items="${reviewsAndHashtag.reviews}" var="reviews">
 	
 			<div class="eats-list">
 				<div class="thum">
@@ -108,23 +110,38 @@
 		</div>
 		
 		</c:forEach>
-		
-			<div class="eats-list">
-				<div class="thum" id="">
-					<img src="/resources/img/upload/02.jpg">
-				</div>
-				<div class="info">
-					<div class="eats-location">서울 영등포구</div>
-					<div class="eats-name">스시 아루히2 <i onclick="clickLike();" class="eats-like far fa-heart"></i></div>
-					<div class="eats-tag"><span>#가성비</span> <span>#친근함</span> <span>#1~2만원대</span></div>
-					<div class="eats-score"><i class="fas fa-star"></i>5.0</div>
-				</div>
-			</div>
 	</section>
 
 	<h2><i class="fas fa-utensils color-m"></i>   내 주변 <span class="color-m">잇친</span>이 추천한 맛집이에요!</h2>
 	
 	<section class="visual2">
+		<c:forEach items="${locationReviewList}" var="reviews">
+	
+			<div class="eats-list">
+			<div class="thum1">
+					<img src="${!empty reviews.thumUrl ? reviews.thumUrl : '/resources/img/common/upload-logo.png'}">
+				</div>
+				<div class="info">
+					<div class="eats-location">
+						<c:set var="addr" value="${fn:split(reviews.addr,' ')}" />
+						${addr[0]} ${addr[1]}&nbsp;&#62;&nbsp;${reviews.category}
+					</div>
+					<div class="eats-name">
+						${reviews.resName}
+					<i onclick="clickLike();" class="eats-like far fa-heart"></i></div>
+					<div class="eats-tag">
+						<c:forEach items="${reviews.hashtag}" var="hashtag">
+							<span>&#35;${hashtag}</span>
+						</c:forEach>
+					<div class="eats-score"><i class="fas fa-star"></i>
+						<fmt:formatNumber value="${(reviews.taste+reviews.clean+reviews.service)/3}" pattern=".0"/>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		</c:forEach>
+	
 		<div class="eats-list">
 			<div class="thum1">
 				<img src="/resources/img/upload/01.jpg">
@@ -136,83 +153,8 @@
 				<div class="eats-score"><i class="fas fa-star"></i>5.0</div>
 			</div>
 		</div>
-		<div class="eats-list">
-			<div class="thum1" id="">
-				<img src="/resources/img/upload/02.jpg">
-			</div>
-			<div class="info">
-				<div class="eats-location">서울 영등포구</div>
-				<div class="eats-name">스시 아루히2 <i onclick="clickLike();" class="eats-like far fa-heart"></i></div>
-				<div class="eats-tag"><span>#가성비</span> <span>#친근함</span> <span>#1~2만원대</span></div>
-				<div class="eats-score"><i class="fas fa-star"></i>5.0</div>
-			</div>
-		</div>
-		<div class="eats-list">
-			<div class="thum1" id="">
-				<img src="/resources/img/upload/03.jpg">
-			</div>
-			<div class="info">
-				<div class="eats-location">서울 영등포구</div>
-				<div class="eats-name">스시 아루히3 <i onclick="clickLike();" class="eats-like far fa-heart"></i></div>
-				<div class="eats-tag"><span>#가성비</span> <span>#친근함</span> <span>#1~2만원대</span></div>
-				<div class="eats-score"><i class="fas fa-star"></i>5.0</div>
-			</div>
-		</div>
-		<div class="eats-list">
-			<div class="thum1" id="">
-				<img src="/resources/img/upload/04.jpg">
-			</div>
-			<div class="info">
-				<div class="eats-location">서울 영등포구</div>
-				<div class="eats-name">스시 아루히4 <i onclick="clickLike();" class="eats-like far fa-heart"></i></div>
-				<div class="eats-tag"><span>#가성비</span> <span>#친근함</span> <span>#1~2만원대</span></div>
-				<div class="eats-score"><i class="fas fa-star"></i>5.0</div>
-			</div>
-		</div>
-		<div class="eats-list">
-			<div class="thum1" id="">
-				<img src="/resources/img/upload/01.jpg">
-			</div>
-			<div class="info">
-				<div class="eats-location">서울 영등포구</div>
-				<div class="eats-name">스시 아루히5 <i onclick="clickLike();" class="eats-like far fa-heart"></i></div>
-				<div class="eats-tag"><span>#가성비</span> <span>#친근함</span> <span>#1~2만원대</span></div>
-				<div class="eats-score"><i class="fas fa-star"></i>5.0</div>
-			</div>
-		</div>
-		<div class="eats-list">
-			<div class="thum1" id="">
-				<img src="/resources/img/upload/02.jpg">
-			</div>
-			<div class="info">
-				<div class="eats-location">서울 영등포구</div>
-				<div class="eats-name">스시 아루히6 <i onclick="clickLike();" class="eats-like far fa-heart"></i></div>
-				<div class="eats-tag"><span>#가성비</span> <span>#친근함</span> <span>#1~2만원대</span></div>
-				<div class="eats-score"><i class="fas fa-star"></i>5.0</div>
-			</div>
-		</div>
-		<div class="eats-list">
-			<div class="thum1" id="">
-				<img src="/resources/img/upload/02.jpg">
-			</div>
-			<div class="info">
-				<div class="eats-location">서울 영등포구</div>
-				<div class="eats-name">스시 아루히7 <i onclick="clickLike();" class="eats-like far fa-heart"></i></div>
-				<div class="eats-tag"><span>#가성비</span> <span>#친근함</span> <span>#1~2만원대</span></div>
-				<div class="eats-score"><i class="fas fa-star"></i>5.0</div>
-			</div>
-		</div>
-		<div class="eats-list">
-			<div class="thum1" id="">
-				<img src="/resources/img/upload/02.jpg">
-			</div>
-			<div class="info">
-				<div class="eats-location">서울 영등포구</div>
-				<div class="eats-name">스시 아루히8 <i onclick="clickLike();" class="eats-like far fa-heart"></i></div>
-				<div class="eats-tag"><span>#가성비</span> <span>#친근함</span> <span>#1~2만원대</span></div>
-				<div class="eats-score"><i class="fas fa-star"></i>5.0</div>
-			</div>
-		</div>
+		
+
 
 	</section>
 	
