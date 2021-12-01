@@ -585,7 +585,7 @@ let follow = (followingId) => {
 		data: JSON.stringify({ followingId:followingId }),
 		contentType: 'application/json',
 		cache: false,
-		success: () => {
+		success: (memberId) => {
 			$('#pop-review-detail .writer a.follow').html('<a onclick="unfollow(\''+memberId+'\')" class="unfollow">잇친끊기</a>');
 		},
 		error: (e) => {
@@ -601,7 +601,7 @@ let unfollow = (followingId) => {
 		data: JSON.stringify({ followingId:followingId }),
 		contentType: 'application/json',
 	 	cache:false,
-		success: () => {
+		success: (memberId) => {
 			$('#pop-review-detail .writer a.follow').html('<a onclick="follow(\''+memberId+'\')" class="follow">잇친맺기</a>');
 		},
 		error: (e) => {
