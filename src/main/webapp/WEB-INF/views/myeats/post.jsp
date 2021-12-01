@@ -62,7 +62,7 @@
 						<c:if test="${not empty reviews }">
 						<ul class="detail-brd">
 							<c:forEach items="${reviews}" var="review">
-							<li>
+							<li onclick="viewTimeline('${review.id}')">
 								<div class="eats-list">
 									<div class="thum thum2">
 										<img src="${ not empty review.thumUrl ? review.thumUrl : '/resources/img/common/upload-logo.png'}">
