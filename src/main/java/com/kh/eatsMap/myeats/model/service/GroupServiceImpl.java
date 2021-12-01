@@ -79,10 +79,10 @@ public class GroupServiceImpl implements GroupService{
 	
 	//페이징 및 조회/group.jsp
 	@Override
-	public List<Group> list(PageObject pageObject){
+	public List<Group> list(PageObject pageObject, Member member){
 		//GroupDAO의 전체 행의 개수를 받아서 pageObject객체의 TotalRow변수 초기화
 		pageObject.setTotalRow(dao.getTotalCount());
-		return dao.list(pageObject);
+		return dao.list(pageObject, member);
 	}
 	
 	//groupIdx로 Group 읽어드리기

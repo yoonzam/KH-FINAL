@@ -86,8 +86,8 @@ public class MyeatsController {
 
 	
 	@RequestMapping(value="/group", method=RequestMethod.GET)
-	public void groupGet(Model model, PageObject pageObject) throws Exception{
-		List<Group> groups = groupService.list(pageObject);
+	public void groupGet(Model model, PageObject pageObject,@SessionAttribute("authentication") Member member) throws Exception{
+		List<Group> groups = groupService.list(pageObject,member);
 		for (Group group : groups) {
 			List<Fileinfo> files = groupService.findFiles(group.getId());
 			if(files.size() > 0) group.setThumUrl(files.get(0).getDownloadURL());
@@ -109,10 +109,10 @@ public class MyeatsController {
 	
 	//그룹생성 처리/createGroup.jsp
 	@RequestMapping(value="/createGroup", method = RequestMethod.POST)
-	public String writePost(Group group, RedirectAttributes reAttr, PageObject pageObject,List<MultipartFile> photos, Member member) throws Exception{
+	public String writePost(Group group, RedirectAttributes reAttr, PageObject pageObject,List<MultipartFile> photos, @SessionAttribute("authentication") Member member) throws Exception{
 		
 		groupService.write(group,photos,member);
-		reAttr.addFlashAttribute("list", groupService.list(pageObject));
+		reAttr.addFlashAttribute("list", groupService.list(pageObject,member));
 		reAttr.addFlashAttribute("result", "success");
 		
 		return "redirect:/myeats/group";
@@ -187,6 +187,7 @@ public class MyeatsController {
 	public void likedReview(@SessionAttribute("authentication") Member member, Model model) {
 		model.addAttribute("reviews",memberService.findLikedByMemberId(member));
 	}
+
 
 
 }

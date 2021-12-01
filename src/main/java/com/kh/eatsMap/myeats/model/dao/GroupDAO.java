@@ -87,7 +87,7 @@ public class GroupDAO {
 	 
 	
 	//페이징 및 조회/group.jsp
-	public List<Group> list(PageObject pageObject) {
+	public List<Group> list(PageObject pageObject,Member member) {
 		
 		//페이징 쿼리
 		//db.group.find().sort({_id:-1}).skip((page-1) * perPageNum).limit(perPageNum)
@@ -97,6 +97,8 @@ public class GroupDAO {
 		Query query = new Query();
 		//groupIdx로 최근순 정렬
 		//id로 잡으면 알아서 최신순 정렬됨
+		String memberNickName = member.getNickname();
+		query.addCriteria(Criteria.where("memberNickName").regex(memberNickName));
 		query = query.with(Sort.by(Sort.Direction.DESC,"id"));
 		//이전 페이지의 데이터는 skip 시킨다.
 		query.skip((pageObject.getPage()-1) * pageObject.getPerPageNum());
