@@ -80,13 +80,13 @@ public class InfoController {
 	@GetMapping("ajaxTest")
 	public void ajaxTest() {}
 
-	@GetMapping("memberInfo")
-	@ResponseBody
-	public List<Member> list() throws Exception {
-		List<Member> memberList = null;
-		memberList = dao.listMember();
-		return memberList;
-	}
+//	@GetMapping("memberInfo")
+//	@ResponseBody
+//	public List<Member> list() throws Exception {
+//		List<Member> memberList = null;
+//		memberList = dao.listMember();
+//		return memberList;
+//	}
 	
 	@PostMapping("memberInfo")
 	@ResponseBody
@@ -95,6 +95,15 @@ public class InfoController {
 		memberList = dao.listMember();
 		return memberList;
 	}
+	
+    //유진 12/01
+   @GetMapping("memberInfo")
+   @ResponseBody
+   public List<Map<String,Object>> memberInfo(){
+      List<Map<String,Object>> members = memberService.findAllMemberToMap();
+      
+      return members;
+   }
 
 	 
 

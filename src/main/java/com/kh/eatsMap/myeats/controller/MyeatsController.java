@@ -109,15 +109,15 @@ public class MyeatsController {
 
 	
 	//그룹생성 처리/createGroup.jsp
-	@RequestMapping(value="/createGroup", method = RequestMethod.POST)
-	public String writePost(Group group, RedirectAttributes reAttr, PageObject pageObject,List<MultipartFile> photos, @SessionAttribute("authentication") Member member) throws Exception{
-		
-		groupService.write(group,photos,member);
-		reAttr.addFlashAttribute("list", groupService.list(pageObject,member));
-		reAttr.addFlashAttribute("result", "success");
-		
-		return "redirect:/myeats/group";
-	}
+//	@RequestMapping(value="/createGroup", method = RequestMethod.POST)
+//	public String writePost(Group group, RedirectAttributes reAttr, PageObject pageObject,List<MultipartFile> photos, @SessionAttribute("authentication") Member member) throws Exception{
+//		
+//		groupService.write(group,photos,member);
+//		reAttr.addFlashAttribute("list", groupService.list(pageObject,member));
+//		reAttr.addFlashAttribute("result", "success");
+//		
+//		return "redirect:/myeats/group";
+//	}
 	
 	//그룹상세보기 폼/groupDetail.jsp
 	@RequestMapping(value="/groupDetail", method=RequestMethod.GET)
@@ -189,6 +189,16 @@ public class MyeatsController {
 	public void likedReview(@SessionAttribute("authentication") Member member, Model model) {
 		model.addAttribute("reviews",memberService.findLikedByMemberId(member));
 	}
+	
+   //유진 12/01
+   @PostMapping("createGroup")
+   public String createGroup(Group group, PageObject pageObject,List<MultipartFile> photos
+                     , @SessionAttribute("authentication") Member member, RedirectAttributes reAttr ) {
+      groupService.write(group,photos,member);
+      reAttr.addFlashAttribute("list", groupService.list(pageObject,member));
+      reAttr.addFlashAttribute("result", "success");
+      return "redirect:/myeats/group";
+   }
 
 
 
