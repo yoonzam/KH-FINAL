@@ -16,6 +16,43 @@
     border-radius: 5px;
     border: 1px solid #aaa;
 }
+
+.invited-input {
+    color: #333;
+    padding: 13px;
+    border: 1px solid #ddd;
+    margin-top: 10px;
+    margin-right: 10px;
+    background-color: #ffead6;
+}
+
+#addButton {
+    background-color: var(--red-color);
+    width: 25px;
+    cursor: pointer;
+    border-radius: 5px;
+    padding: 2px 0px;
+    color: #fff;
+    border: none;
+}
+
+#inviteButton {
+    background-color: var(--main-color);
+    width: 25px;
+    cursor: pointer;
+    border-radius: 5px;
+    padding: 2px 0px;
+    color: #fff;
+    border: none;
+}
+
+#invited-select {
+	margin-top:8px;
+    width: 50%;
+    padding: 2px;
+    border-radius: 5px;
+    border: 1px solid #aaa;
+}
 </style>
 
 </head>
@@ -30,7 +67,9 @@
 			<div class="group-view">
 			<c:forEach items="${groups}" var="groups">
 			<form role = "form" action="/myeats/groupDetailModify" method="post" enctype="multipart/form-data">	
-				<input type="hidden" id = "id" name="id" value="${groups.id}" />
+				<input type="hidden"  name="id" value="${groups.id}" />
+				<!-- 테스트용 -->
+				<!-- <input type="hidden"  name="delNickName" value="추가테스트" /> -->
 				
 				<div class="group-info">
 					<div class="group-profile">
@@ -57,15 +96,30 @@
 				<div class="group-member">
 					<h4>함께하는 잇친 리스트</h4>
 					
+					
+					
 				<c:forEach items="${groups}" var="groups" varStatus="status"  begin="0">
 					 <c:if test="${status.first}"><ul id='nickNames'></c:if>
+					 
+					 	<li>
+						<span>초대하기</span>
+						<div class="friend-list"> 
+							<select id="invited-select">
+							</select>
+							<input id="addButton" type='button' value='추가' onclick='addList()' />
+							<input id="inviteButton" type='button' value='초대'/>
+							<ul id='nickNames'>
+							</ul>
+						</div>
+					</li>
+					
+					
 						<c:choose>
 							<c:when test="true">
 							<c:if test="${groups.memberNickName[0]!= null}">
-		          				<li><i class="fas fa-user"></i> ${groups.memberNickName[0]}<a><i class="fas fa-times"></i>삭제</a></li>
+		          				<li id="nickOne"><i class="fas fa-user"></i> ${groups.memberNickName[0]}<a id="fasOne"><i class="fas fa-times" ></i>삭제</a></li>
 		          			</c:if>
 		          			<c:if test="${groups.memberNickName[1]!= null}">
-		          				<%-- <li><i class="fas fa-user"></i> ${groups.memberNickName[1]}<span>(quitting-time@naver.com)</span> <a><i class="fas fa-times"></i>삭제</a></li> --%>
 		          				<li><i class="fas fa-user"></i> ${groups.memberNickName[1]}<a><i class="fas fa-times"></i>삭제</a></li>
 		          			</c:if>
 		          			<c:if test="${groups.memberNickName[2]!= null}">
@@ -100,6 +154,58 @@
 
 <script>
 
+$("#inviteButton").click(function(){  
+	   
+	var url="/info/memberInfo";  
+    
+	$.ajax({      
+        type:"GET",  
+        url:url,   
+        dataType: 'json',
+        success:function(data){ 
+      	let html = '';
+      	for (var i = 0; i < data.length; i++)
+			html += '<option value='+data[i].nickname+'>'+data[i].nickname +'</option>';
+			
+			$('#invited-select').html(html);
+        },   
+        error:function(e){  
+            alert(e.responseText);  
+        }  
+    });  
+});  
+
+function addList()  {
+	
+ var addValue = $("#invited-select").val();
+ var li = document.createElement("input");
+ 	li.setAttribute('class', "invited-input");
+	li.setAttribute('id', addValue);
+	li.setAttribute("name", "newNickNameOne");
+	li.setAttribute("value", addValue);
+  
+	var textNode = document.createTextNode(addValue);
+	li.appendChild(textNode);
+  
+  document
+    .getElementById("nickNames")
+    .appendChild(li);
+}
+
+app.delete("/groupDetailModify/:id", (request, response) => {
+    const id = Number(request.params.id)
+    items.splice(id, 1)
+    response.send("success")
+})
+
+
+
+
+
+
+
+
+
 
 $(document).ready(function(){
 	var frmObj = $("form[role='form']");
@@ -110,12 +216,33 @@ $(document).ready(function(){
 		frmObj.submit();
 	}); 
 	 
+		 $("#fasOne").click(function(){
+            $("#nickOne").remove();  
+        }); 
+        
+        $("#fasOne").click(function () {
+            $.ajax({
+                url: "/groupDetailModify/0",
+                method: "DELETE",
+                dataType: "text",
+                success: function (data) {
+                    $('#nickOne').val(data)
+                    console.log(data)
+                }
+            })
+        })
+        
+
+        
+	 
 	//수정처리 페이지 이동
 		$(".complete-btn").on("click", function(){
 		frmObj.attr("action", "/myeats/groupDetailModify");
 		formObj.attr("method", "post");
 		frmObj.submit();
 		});
+	
+	
 	
 });
 </script>
