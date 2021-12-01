@@ -80,13 +80,13 @@ public class InfoController {
 	@GetMapping("ajaxTest")
 	public void ajaxTest() {}
 
-//	@GetMapping("memberInfo")
-//	@ResponseBody
-//	public List<Member> list() throws Exception {
-//		List<Member> memberList = null;
-//		memberList = dao.listMember();
-//		return memberList;
-//	}
+	@GetMapping("memberInfotwo")
+	@ResponseBody
+	public List<Member> list() throws Exception {
+		List<Member> memberList = null;
+		memberList = dao.listMember();
+		return memberList;
+	}
 	
 	@PostMapping("memberInfo")
 	@ResponseBody
