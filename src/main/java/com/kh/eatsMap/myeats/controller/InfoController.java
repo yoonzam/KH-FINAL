@@ -55,25 +55,25 @@ import com.kh.eatsMap.timeline.model.service.TimelineService;
 @RequestMapping("info")
 public class InfoController {
 
-	@Inject
+	@Autowired
 	private GroupService groupService;
 
-	@Inject
+	@Autowired
 	private MemberService memberService;
 
-	@Inject
+	@Autowired
 	private TimelineService timelineService;
 
-	@Inject
+	@Autowired
 	private GroupDAO dao;
 
-	@Inject
+	@Autowired
 	private MongoTemplate mongoTemplate;
 
-	@Inject
+	@Autowired
 	private static Group group;
 
-	@Inject
+	@Autowired
 	private static Member member;
 
 	// 전체 멤버 리스트

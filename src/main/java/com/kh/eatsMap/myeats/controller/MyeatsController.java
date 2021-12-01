@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -47,13 +48,13 @@ public class MyeatsController {
 
 	private static final Logger logger = LoggerFactory.getLogger(MyeatsController.class);
 	
-	@Inject
+	@Autowired
 	private GroupService groupService;
 	
-	@Inject
+	@Autowired
 	private MemberService memberService;
 	
-	@Inject
+	@Autowired
 	private TimelineService timelineService;
 	
 	
