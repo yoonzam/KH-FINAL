@@ -87,7 +87,6 @@ background-color: var(--red-color);
 	</div><!-- container-wrap -->
 </section> 
    
-<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script> -->
 <script type="text/javascript">
 $("#inviteButton").click(function(){  
     var url="/info/memberInfo";  
@@ -102,7 +101,9 @@ $("#inviteButton").click(function(){
 				html += '<option class="option" value='+data[i].memberId+'>'+data[i].member.nickname +'</option>';
 				$('#invited-select').html(html);
 	      	}
-        }   
+        },   
+        error:function(e){  
+        }  
     });  
 });  
 
