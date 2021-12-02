@@ -57,6 +57,13 @@
     
 }
 
+li, input {
+    border-style: none;
+}
+
+.fa-user {
+    margin-right: 10px;
+}
 
 </style>
 
@@ -73,8 +80,6 @@
 			<c:forEach items="${groups}" var="groups">
 			<form role = "form" action="/myeats/groupDetailModify" method="post" enctype="multipart/form-data">	
 				<input type="hidden"  name="id" value="${groups.id}" />
-				<!-- 테스트용 -->
-				<!-- <input type="hidden"  name="delNickName" value="삭제테스트" />  -->
 				
 				<div class="group-info">
 					<div class="group-profile">
@@ -128,7 +133,7 @@
 		          			<c:if test="${groups.participants[2]!= null}">
 		          				<li id="nickThree"><i class="fas fa-user"></i><input id="delThree" value="${groups.participants[2]}"><a id="fasThree"><i class="fas fa-times"></i>삭제</a></li>
 		          			</c:if>
-		          			<c:if test="${groups.participants[2]!= null}">
+		          			<c:if test="${groups.participants[3]!= null}">
 		          				<li id="nickFour"><i class="fas fa-user"></i><input id="delFour" value="${groups.participants[3]}"><a id="fasFour"><i class="fas fa-times"></i>삭제</a></li>
 		          			</c:if>
 		          			<c:if test="${groups.participants[4]!= null}">
