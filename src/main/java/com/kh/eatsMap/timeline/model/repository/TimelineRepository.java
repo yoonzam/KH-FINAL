@@ -13,24 +13,34 @@ public interface TimelineRepository extends MongoRepository<Review, String>{
 
 	List<Review> findByResNameOrderByIdAsc(String resName, Sort sort);
 
+	List<Review> findByGroup(String group, Sort sort);
+
+	List<Review> findByPrivacy(int privacy, Sort sort);
+	
 	List<Review> findByResNameIgnoreCaseContaining(String keyword);
 	
 	List<Review> findByCategoryLike(String[] category);
 	
 	List<Review> findByHashtagLike(String[] hashtag);
+
+	List<Review> findByHashtagLikeAndPrivacy(String[] hashtag, int privacy);
 	
 	//테스트 쿼리
 	List<Review> findByHashtagOrCategory(String[] hashtag, String string);
 
 	List<Review> findByResNameLike(String string);
 
-	List<Review> findByResNameLikeAndCategory(String string, String string2);
+
+
+
 	
-	List<Review> findByResNameLikeAndCategoryOrHashtag(String string2, String string, String[] hashtag);
 
-	List<Review> findByResNameLikeAndHashtag(String string, String[] hashtag);
 
-	List<Review> findByMemberId(ObjectId id);
+
+
+
+
+
 
 
 

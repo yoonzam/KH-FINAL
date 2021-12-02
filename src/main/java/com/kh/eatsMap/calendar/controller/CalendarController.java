@@ -60,7 +60,8 @@ public class CalendarController {
 	}
 	
 	@PostMapping("upload")
-	public String makeSchedule(Calendar calendar, String scheduleId, double latitude, double longitude, @SessionAttribute("authentication") Member member){
+	@ResponseBody
+	public void makeSchedule(Calendar calendar, String scheduleId, double latitude, double longitude, @SessionAttribute("authentication") Member member){
 		
 		if(scheduleId.equals("")) {
 			calendar.setMemberId(member.getId());
@@ -84,7 +85,7 @@ public class CalendarController {
 		    	  push.push(to);
 			}			
 		}
-		return "redirect:/calendar/";
+		//return "redirect:/calendar/";
 	}
 	
 	@GetMapping("detail")

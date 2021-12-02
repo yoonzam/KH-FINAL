@@ -50,13 +50,20 @@
 
 #invited-select {
 	margin-top:8px;
-    width: 50%;
+    width: 30%;
     padding: 2px;
     border-radius: 5px;
     border: 1px solid #aaa;
     
 }
 
+li, input {
+    border-style: none;
+}
+
+.fa-user {
+    margin-right: 10px;
+}
 
 </style>
 
@@ -73,8 +80,6 @@
 			<c:forEach items="${groups}" var="groups">
 			<form role = "form" action="/myeats/groupDetailModify" method="post" enctype="multipart/form-data">	
 				<input type="hidden"  name="id" value="${groups.id}" />
-				<!-- 테스트용 -->
-				<input type="hidden"  name="delNickName" value="추가테스트" /> 
 				
 				<div class="group-info">
 					<div class="group-profile">
@@ -109,9 +114,7 @@
 					 	<li>
 						<span>초대하기</span>
 						<div class="friend-list"> 
-							<select id="invited-select">
-							</select>
-							<input id="addButton" type='button' value='추가' onclick='addList()' />
+							<select id="invited-select" name="participant" onchange="addList()"></select>
 							<input id="inviteButton" type='button' value='초대'/>
 							<ul id='nickNames'>
 							</ul>
@@ -122,22 +125,22 @@
 						<c:choose>
 							<c:when test="true">
 							<c:if test="${groups.participants[0]!= null}">
-		          				<li id="nickOne"><i class="fas fa-user"></i> ${groups.participants[0]}<a id="fasOne" onclick='deleteDiv()'><i class="fas fa-times" ></i>삭제</a></li>
+		          				<li id="nickOne"><i class="fas fa-user"></i><input id="delOne" value="${groups.participants[0]}"><a id="fasOne" ><i class="fas fa-times" ></i>삭제</a></li>
 		          			</c:if>
 		          			<c:if test="${groups.participants[1]!= null}">
-		          				<li><i class="fas fa-user"></i> ${groups.participants[1]}<a><i class="fas fa-times"></i>삭제</a></li>
+		          				<li id="nickTwo"><i class="fas fa-user"></i><input id="delTwo" value="${groups.participants[1]}"><a id="fasTwo" ><i class="fas fa-times"></i>삭제</a></li>
 		          			</c:if>
 		          			<c:if test="${groups.participants[2]!= null}">
-		          				<li><i class="fas fa-user"></i> ${groups.participants[2]} <a><i class="fas fa-times"></i>삭제</a></li>
+		          				<li id="nickThree"><i class="fas fa-user"></i><input id="delThree" value="${groups.participants[2]}"><a id="fasThree"><i class="fas fa-times"></i>삭제</a></li>
 		          			</c:if>
 		          			<c:if test="${groups.participants[3]!= null}">
-		          				<li><i class="fas fa-user"></i> ${groups.participants[3]}<a><i class="fas fa-times"></i>삭제</a></li>
+		          				<li id="nickFour"><i class="fas fa-user"></i><input id="delFour" value="${groups.participants[3]}"><a id="fasFour"><i class="fas fa-times"></i>삭제</a></li>
 		          			</c:if>
 		          			<c:if test="${groups.participants[4]!= null}">
-		          				<li><i class="fas fa-user"></i> ${groups.participants[4]}<a><i class="fas fa-times"></i>삭제</a></li>
+		          				<li id="nickFive"><i class="fas fa-user"></i><input id="delFive" value="${groups.participants[4]}"><a id="fasFive"><i class="fas fa-times"></i>삭제</a></li>
 		          			</c:if>
 		          			<c:if test="${groups.participants[5]!= null}">
-		          				<li><i class="fas fa-user"></i> ${groups.participants[5]}<a><i class="fas fa-times"></i>삭제</a></li>
+		          				<li id="nickSix"><i class="fas fa-user"></i><input id="delSix" value="${groups.participants[5]}"><a id="fasSix"><i class="fas fa-times"></i>삭제</a></li>
 		          			</c:if>
 		          			</c:when>
 							</c:choose> 
@@ -160,22 +163,20 @@
 <script>
 
 $("#inviteButton").click(function(){  
-	   
-	var url="/info/memberInfotwo";  
-    
-	$.ajax({      
+    var url="/info/memberInfo";  
+    $.ajax({      
         type:"GET",  
         url:url,   
         dataType: 'json',
         success:function(data){ 
-      	let html = '';
-      	for (var i = 0; i < data.length; i++)
-			html += '<option value='+data[i].nickname+'>'+data[i].nickname +'</option>';
-			
-			$('#invited-select').html(html);
+        	
+      		let html = '';
+	      	for (var i = 0; i < data.length; i++){
+				html += '<option class="option" value='+data[i].memberId+'>'+data[i].member.nickname +'</option>';
+				$('#invited-select').html(html);
+	      	}
         },   
         error:function(e){  
-            alert(e.responseText);  
         }  
     });  
 });  
@@ -201,7 +202,6 @@ function addList()  {
 
 
 
-
 function deleteList()  {
 	var div = document.getElementId('nickOne');
 	 div.remove();
@@ -213,37 +213,46 @@ function deleteList()  {
 
 
 
-
-
-
-
-
-
-
 $(document).ready(function(){
 	var frmObj = $("form[role='form']");
 	
-	
+	//그룹삭제
 	 $(".delete-btn").on("click", function(){
 		frmObj.attr("action", "/myeats/delete");
 		frmObj.submit();
 	}); 
-	 
-		 $("#fasOne").click(function(){
-            $("#nickOne").remove();  
+	 //개별삭제
+	 $("#fasOne").click(function(){
+		 var delOne = document.getElementById("delOne")
+			delOne.setAttribute('name',"delNickName");
+           $("#nickOne").hide();  
+       }); 
+	 $("#fasTwo").click(function(){
+		 var delTwo = document.getElementById("delTwo")
+			delTwo.setAttribute('name',"delNickName");
+            $("#nickTwo").hide();  
         }); 
+	 $("#fasThree").click(function(){
+		 var delThree = document.getElementById("delThree")
+			delThree.setAttribute('name',"delNickName");
+            $("#nickThree").hide();  
+        }); 
+	 $("#fasFour").click(function(){
+		 var delFour = document.getElementById("delFour")
+			delFour.setAttribute('name',"delNickName");
+         $("#nickFour").hide();  
+     });
+	 $("#fasFive").click(function(){
+		 var delFive = document.getElementById("delFive")
+			delFive.setAttribute('name',"delNickName");
+         $("#nickFive").hide();  
+    	 }); 
+	 $("#fasSix").click(function(){
+		 var delSix = document.getElementById("delSix")
+			delSix.setAttribute('name',"delNickName");
+         $("#nickSix").hide();  
+    	 }); 
         
-        $("#fasOne").click(function () {
-            $.ajax({
-                url: "/groupDetailModify/0",
-                method: "DELETE",
-                dataType: "text",
-                success: function (data) {
-                    $('#nickOne').val(data)
-                    console.log(data)
-                }
-            })
-        })
         
 
         
