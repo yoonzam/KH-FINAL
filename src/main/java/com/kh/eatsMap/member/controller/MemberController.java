@@ -317,12 +317,24 @@ public class MemberController {
 		return memberService.findMemberById(followUser.getFollowingId()).getId().toString();
 	}
 	
-	@PostMapping("invite-group")
-	@ResponseBody
-	public void inviteGroup(Group group) {
-		
+	@GetMapping("post")
+	public String post(@SessionAttribute("authentication") Member member,Model model) {
+		model.addAllAttributes(memberService.findMemberAndReviewByMemberId(member.getId()));
+		return "myeats/post";
 	}
-
+	
+	@PostMapping("follow-pop")
+	@ResponseBody
+	public List<Map<String,Object>> followPop(@RequestBody Member member) {
+		return memberService.findAllFollowingToMap(member);
+	}
+	
+	@PostMapping("follower-pop")
+	@ResponseBody
+	public Map<String, Object> followerPop(@RequestBody Member member) {
+		return memberService.findAllFollowerToMap(member);
+	}
+	
 	//파이어베이스
 	@GetMapping("push-test")
 	public void pushTest() {}

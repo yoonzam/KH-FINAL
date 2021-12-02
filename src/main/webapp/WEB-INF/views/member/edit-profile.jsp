@@ -13,7 +13,7 @@
       <div class="container">
         <ul class="myeats-tab">
           <li><a href="/myeats/group">그룹관리</a></li>
-          <li><a href="/myeats/post">작성글관리</a></li>
+          <li><a href="/member/post">작성글관리</a></li>
           <li><a href="/myeats/detail">맛찜리스트</a></li>
           <li class="selected">회원정보 수정</li>
         </ul>

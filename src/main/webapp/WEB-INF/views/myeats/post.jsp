@@ -12,6 +12,7 @@
 <link rel="stylesheet" type="text/css" href="/resources/css/myeats/myeats.css" />
 <link rel="stylesheet" type="text/css" href="/resources/css/myeats/post.css" />
 <link rel="stylesheet" type="text/css" href="/resources/css/myeats/detail.css" />
+<link rel="stylesheet" type="text/css" href="/resources/css/member/following-list.css" />
 <script defer type="text/javascript" src="/resources/js/myeats/detail.js"></script>
 </head>
 <body>
@@ -42,11 +43,11 @@
 						<span class="cnt">${fn:length(reviews)}</span>
 					</div>
 					<div class="followCnt">
-						<h3 class="postCnt-txt">내 잇친</h3>
+						<h3 class="postCnt-txt" ><a onclick="viewFollowing('${memberId}')">내 잇친</a></h3>
 						<span class="cnt">${followCnt}</span>
 					</div>
 					<div class="followingCnt">
-						<h3 class="postCnt-txt">나를 추가한 잇친</h3>
+						<h3 class="postCnt-txt" ><a onclick="viewFollower('${memberId}')">나를 추가한 잇친</a></h3>
 						<span class="cnt">${followerCnt }</span>
 					</div>
 				</div><!-- wrap-profile-info -->
@@ -95,7 +96,139 @@
 </section>
 
 <%@ include file="/WEB-INF/views/include/footer.jsp" %>
+<%@ include file="/WEB-INF/views/myeats/following-pop.jsp" %>
+<%@ include file="/WEB-INF/views/myeats/follower-pop.jsp" %>
+<script type="text/javascript">
+	
+
+let viewFollowing = (memberId) => {
+	
+	$('.wrap-list-following').empty();
+
+	let data = {id : memberId};
+	let header = new Headers();
+	header.append('Content-Type', 'application/json;charset=UTF-8 ');
+
+	fetch('/member/follow-pop',{
+	 	method : 'POST',
+	 	headers : header,
+	 	body : JSON.stringify(data),
+	 	
+	}).then(response => {
+		if(response.ok){
+			return response.json();
+	 	}else{
+	  		throw new Error(response.status);
+	 	}
+	}).then(data => {
+		let html = '';
+		if(data.length == 0){
+			html += '<h3 style="text-align:center; padding-top:15px;">잇친을 팔로우해 보세요!</h3>';
+		}
+		
+		if(data.length > 0){
+			for (var i = 0; i < data.length; i++) {
+				html += '<li id="' + data[i].memberId + '">'	//팔로워
+					  + '	<a href="/member/follow/' + data[i].member.nickname + '">'+ data[i].member.nickname +'</a>'
+					  + '	<a onclick="popUnfollow(\''+data[i].memberId+'\')" class="btn-pop unfollow">잇친끊기</a>'
+					  + '</li>'
+			}			
+		}
+
+		document.querySelector('#following-pop').style.display = 'flex';
+		$('.wrap-list-following').append(html);
+		
+	}).catch((error) => {
+		  console.error('Error', error);
+	});
+	
+	
+};
+
+let viewFollower = (memberId) => {
+	$('.wrap-list-follower').empty();
+
+	let data = {id : memberId};
+	let header = new Headers();
+	header.append('Content-Type', 'application/json;charset=UTF-8 ');
+
+	fetch('/member/follower-pop',{
+	 	method : 'POST',
+	 	headers : header,
+	 	body : JSON.stringify(data),
+	 	
+	}).then(response => {
+		if(response.ok){
+			return response.json();
+	 	}else{
+	  		throw new Error(response.status);
+	 	}
+	}).then(data => {
+		let html = '';
+		let followEachOther = data.followEachOther; //Follower
+		let followerInfo = data.memberInfo;	//List<Map>
+		if(data.length == 0){
+			html += '<h3 style="text-align:center; padding-top:15px;">나를 팔로우한 잇친이 없습니다.</h3>';
+		}
+		
+		if(followerInfo.length > 0){
+			for (var i = 0; i < followerInfo.length; i++) {	//팔로워
+				for (var j = 0; j < followEachOther.length; j++) {	//서로이웃인 팔로워 정보
+					
+					
+					
+					if (followerInfo[i].memberId == followEachOther[j].memberId) {
+						console.dir('일치했다');
+						html += '<li id="' + followerInfo[i].memberId + '">'
+							  + '	<a href="/member/follow/' + followerInfo[i].member.nickname + '">'+ followerInfo[i].member.nickname +'</a>'
+							  + '	<a onclick="popUnfollow(\''+ followerInfo[i].memberId+'\')" class="btn-pop unfollow">잇친끊기</a>'
+							  + '</li>'						
+					}else{
+						html += '<li id="' + followerInfo[i].memberId + '">'
+							  + '	<a href="/member/follow/' + followerInfo[i].member.nickname + '">'+ followerInfo[i].member.nickname +'</a>'
+							  + '	<a onclick="popfollow(\''+ followerInfo[i].memberId+'\')" class="btn-pop follow">잇친맺기</a>'
+							  + '</li>'						
+					}					
+				}
+			}	
+		
+		}
+		
+		console.dir(html);
+		document.querySelector('#follower-pop').style.display = 'flex';
+		$('.wrap-list-follower').append(html);
+		
+		console.dir(data);
+		console.dir(followEachOther);
+		console.dir(followerInfo);
+	
+	}).catch((error) => {
+		  console.error('Error', error);
+	});	
+	
+	
+}
 
 
+let popUnfollow = (followingId) => {
+	$.ajax({
+		type: 'POST',
+		url: '/member/follow-cancel',
+		data: JSON.stringify({ followingId : followingId }),
+		contentType: 'application/json',
+	 	cache:false,
+		success: (memberId) => {
+			$('#' + memberId).remove();
+		},
+		error: (e) => {
+			alert("실패");
+		}
+	});
+}
+
+
+
+
+</script>
 </body>
 </html>
