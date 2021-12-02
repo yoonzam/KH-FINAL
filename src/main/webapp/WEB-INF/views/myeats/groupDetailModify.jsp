@@ -50,7 +50,7 @@
 
 #invited-select {
 	margin-top:8px;
-    width: 50%;
+    width: 30%;
     padding: 2px;
     border-radius: 5px;
     border: 1px solid #aaa;
@@ -109,9 +109,7 @@
 					 	<li>
 						<span>초대하기</span>
 						<div class="friend-list"> 
-							<select id="invited-select">
-							</select>
-							<input id="addButton" type='button' value='추가' onclick='addList()' />
+							<select id="invited-select" name="participant" onchange="addList()"></select>
 							<input id="inviteButton" type='button' value='초대'/>
 							<ul id='nickNames'>
 							</ul>
@@ -160,22 +158,20 @@
 <script>
 
 $("#inviteButton").click(function(){  
-	   
-	var url="/info/memberInfotwo";  
-    
-	$.ajax({      
+    var url="/info/memberInfo";  
+    $.ajax({      
         type:"GET",  
         url:url,   
         dataType: 'json',
         success:function(data){ 
-      	let html = '';
-      	for (var i = 0; i < data.length; i++)
-			html += '<option value='+data[i].nickname+'>'+data[i].nickname +'</option>';
-			
-			$('#invited-select').html(html);
+        	
+      		let html = '';
+	      	for (var i = 0; i < data.length; i++){
+				html += '<option class="option" value='+data[i].memberId+'>'+data[i].member.nickname +'</option>';
+				$('#invited-select').html(html);
+	      	}
         },   
         error:function(e){  
-            alert(e.responseText);  
         }  
     });  
 });  
@@ -201,7 +197,6 @@ function addList()  {
 
 
 
-
 function deleteList()  {
 	var div = document.getElementId('nickOne');
 	 div.remove();
@@ -210,13 +205,6 @@ function deleteList()  {
 	  
 	  document.getElementByClassName("fas fa-times").append(li);
 	}
-
-
-
-
-
-
-
 
 
 
