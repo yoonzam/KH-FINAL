@@ -16,6 +16,8 @@ import com.kh.eatsMap.map.model.repository.MapRepository;
 import com.kh.eatsMap.map.model.repository.myMapRepository;
 import com.kh.eatsMap.member.model.dto.Follow;
 import com.kh.eatsMap.member.model.repository.FollowingRepository;
+import com.kh.eatsMap.myeats.model.dto.Group;
+import com.kh.eatsMap.myeats.model.repository.GroupRepository;
 import com.kh.eatsMap.timeline.model.dto.Review;
 import com.kh.eatsMap.timeline.model.repository.TimelineRepository;
 
@@ -36,6 +38,9 @@ public class MapServiceImpl implements MapService {
 
 	@Autowired
 	private final myMapRepository myMapRepository;
+	
+	@Autowired
+	private final GroupRepository groupRepository;
 
 	@Override
 	public List<HashMap<String, Object>> reviewList() {
@@ -120,6 +125,12 @@ public class MapServiceImpl implements MapService {
 	public Map findByMemberId(ObjectId memberId) {
 
 		return myMapRepository.findByMemberId(memberId);
+	}
+
+	@Override
+	public List<Group> findGroupList(ObjectId id) {
+		// TODO Auto-generated method stub
+		return groupRepository.findByParticipants(id);
 	}
 
 }
