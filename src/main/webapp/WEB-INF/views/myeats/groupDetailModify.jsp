@@ -74,7 +74,7 @@
 			<form role = "form" action="/myeats/groupDetailModify" method="post" enctype="multipart/form-data">	
 				<input type="hidden"  name="id" value="${groups.id}" />
 				<!-- 테스트용 -->
-				<input type="hidden"  name="delNickName" value="추가테스트" /> 
+				<input type="hidden"  name="delNickName" value="삭제테스트" /> 
 				
 				<div class="group-info">
 					<div class="group-profile">
@@ -123,19 +123,19 @@
 		          				<li id="nickOne"><i class="fas fa-user"></i> ${groups.participants[0]}<a id="fasOne" onclick='deleteDiv()'><i class="fas fa-times" ></i>삭제</a></li>
 		          			</c:if>
 		          			<c:if test="${groups.participants[1]!= null}">
-		          				<li><i class="fas fa-user"></i> ${groups.participants[1]}<a><i class="fas fa-times"></i>삭제</a></li>
+		          				<li id="nickTwo"><i class="fas fa-user"></i> ${groups.participants[1]}<a id="fasTwo" onclick='deleteDiv()'><i class="fas fa-times"></i>삭제</a></li>
 		          			</c:if>
 		          			<c:if test="${groups.participants[2]!= null}">
-		          				<li><i class="fas fa-user"></i> ${groups.participants[2]} <a><i class="fas fa-times"></i>삭제</a></li>
+		          				<li id="nickThree"><i class="fas fa-user"></i> ${groups.participants[2]} <a id="fasThree" onclick='deleteDiv()'><i class="fas fa-times"></i>삭제</a></li>
 		          			</c:if>
-		          			<c:if test="${groups.participants[3]!= null}">
-		          				<li><i class="fas fa-user"></i> ${groups.participants[3]}<a><i class="fas fa-times"></i>삭제</a></li>
+		          			<c:if test="${groups.participants[2]!= null}">
+		          				<li id="nickFour"><i class="fas fa-user"></i> ${groups.participants[2]} <a id="fasFour" onclick='deleteDiv()'><i class="fas fa-times"></i>삭제</a></li>
 		          			</c:if>
 		          			<c:if test="${groups.participants[4]!= null}">
-		          				<li><i class="fas fa-user"></i> ${groups.participants[4]}<a><i class="fas fa-times"></i>삭제</a></li>
+		          				<li id="nickFive"><i class="fas fa-user"></i> ${groups.participants[4]}<a id="fasFive" onclick='deleteDiv()'><i class="fas fa-times"></i>삭제</a></li>
 		          			</c:if>
 		          			<c:if test="${groups.participants[5]!= null}">
-		          				<li><i class="fas fa-user"></i> ${groups.participants[5]}<a><i class="fas fa-times"></i>삭제</a></li>
+		          				<li id="nickSix"><i class="fas fa-user"></i> ${groups.participants[5]}<a id="fasSix" onclick='deleteDiv()'><i class="fas fa-times"></i>삭제</a></li>
 		          			</c:if>
 		          			</c:when>
 							</c:choose> 
@@ -217,21 +217,25 @@ $(document).ready(function(){
 		frmObj.submit();
 	}); 
 	 
-		 $("#fasOne").click(function(){
-            $("#nickOne").remove();  
+	 $("#fasOne").click(function(){
+           $("#nickOne").remove();  
+       }); 
+	 $("#fasTwo").click(function(){
+            $("#nickTwo").remove();  
         }); 
+	 $("#fasThree").click(function(){
+            $("#nickThree").remove();  
+        }); 
+	 $("#fasFour").click(function(){
+         $("#nickFour").remove();  
+     });
+	 $("#fasFive").click(function(){
+         $("#nickFive").remove();  
+    	 }); 
+	 $("#fasSix").click(function(){
+         $("#nickSix").remove();  
+    	 }); 
         
-        $("#fasOne").click(function () {
-            $.ajax({
-                url: "/groupDetailModify/0",
-                method: "DELETE",
-                dataType: "text",
-                success: function (data) {
-                    $('#nickOne').val(data)
-                    console.log(data)
-                }
-            })
-        })
         
 
         
