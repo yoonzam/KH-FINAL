@@ -14,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -36,14 +37,36 @@ public class IndexController {
 		this.indexService = indexService;
 	}
 
+	@GetMapping("setLocation")
+	@ResponseBody
+	public List<HashMap<String, Object>> setLocation(String longitude_ ,String latitude_, @SessionAttribute("authentication") Member member) {
+		
+		List<HashMap<String, Object>> reviews = new ArrayList<HashMap<String,Object>>();
+		
+		if(longitude_ != null && latitude_ != null) {
+			
+			double longitude = Double.parseDouble(longitude_);
+			double latitude = Double.parseDouble(latitude_);
+			
+			//GeoJsonPoint : (경도, 위도) 
+			GeoJsonPoint location = new GeoJsonPoint(longitude, latitude);		
+
+			//member 테이블에 location 추가 
+			indexService.updateLocation(member, location);
+		}
+		
+		if(member.getLocation() != null) {	
+			//*위치기반 잇친픽 출력 
+			reviews = indexService.localReview(member);	
+			logger.debug(reviews.toString());
+		}
+		return reviews;
+	}
 	
 	//메인화면 
 	@GetMapping("/")
 	public String index(
-			@SessionAttribute("authentication") Member member
-			,String longitude_ ,String latitude_
-			,Model model
-			) throws Exception {
+			@SessionAttribute("authentication") Member member ,Model model) throws Exception {
 
 //hashtag픽(잇친아님) 
 		
@@ -59,27 +82,27 @@ public class IndexController {
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////		
 //사용자 위치 받아오기 
 		
-		if(longitude_ != null && latitude_ != null) {
-			
-			double longitude = Double.parseDouble(longitude_);
-			double latitude = Double.parseDouble(latitude_);
-			
-			//GeoJsonPoint : (경도, 위도) 
-			GeoJsonPoint location = new GeoJsonPoint(longitude, latitude);		
-		
-
-			//member 테이블에 location 추가 
-			indexService.updateLocation(member, location);
-//			logger.debug(member.getLocation().toString());
-			
-			List<Review> locationReviewList = new ArrayList<Review>();
-			if(member.getLocation() != null) {	
-				//*위치기반 잇친픽 출력 
-				locationReviewList = indexService.localReview(member);	
-			}
-			logger.debug("위치기반 잇친픽 출력********************"+ locationReviewList.toString());
-			model.addAttribute("locationReviewList", locationReviewList);
-		}
+//		if(longitude_ != null && latitude_ != null) {
+//			
+//			double longitude = Double.parseDouble(longitude_);
+//			double latitude = Double.parseDouble(latitude_);
+//			
+//			//GeoJsonPoint : (경도, 위도) 
+//			GeoJsonPoint location = new GeoJsonPoint(longitude, latitude);		
+//		
+//
+//			//member 테이블에 location 추가 
+//			indexService.updateLocation(member, location);
+////			logger.debug(member.getLocation().toString());
+//			
+//			List<Review> locationReviewList = new ArrayList<Review>();
+//			if(member.getLocation() != null) {	
+//				//*위치기반 잇친픽 출력 
+//				//locationReviewList = indexService.localReview(member);	
+//			}
+//			logger.debug("위치기반 잇친픽 출력********************"+ locationReviewList.toString());
+//			model.addAttribute("locationReviewList", locationReviewList);
+//		}
 	
 		return "main/main";
 	}

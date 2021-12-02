@@ -105,6 +105,15 @@
 	color:#fff;
 }
 
+
+
+
+
+
+
+
+
+/* /////////////////////////////////////////////////////////////////////////// */
 .visual{
 	max-width: 1240px;
 	margin: 0 auto;
@@ -115,7 +124,7 @@
 .visual button{
 	cursor:pointer;
 	position: absolute;
-	z-index: auto;
+	z-index: 50;
 	top: 90px;
 	width: 70px;
 	height: 70px;
@@ -234,7 +243,7 @@
 .visual2 button{
 	cursor:pointer;
 	position: absolute;
-	z-index: 100;
+	z-index: 50;
 	top: 90px;
 	width: 70px;
 	height: 70px;
@@ -269,7 +278,7 @@
 }
 
 
-.visual2 .eats-list{
+.visual2 .eats-list1{
 	cursor: pointer;
 }
 .visual2 .thum1{

@@ -3,6 +3,7 @@ package com.kh.eatsMap.index.model.service;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -239,18 +240,23 @@ public class IndexServiceImpl implements IndexService{
 	
 	//위치반경에 따른 잇친픽 리뷰리스트 출력 	
 	@Override
-	public List<Review> localReview(Member member) {
+	public List<HashMap<String, Object>> localReview(Member member) {
+		List<HashMap<String, Object>> reviews = new ArrayList<HashMap<String,Object>>();
+		
 		//내 반경 5키로 미터 이내의 공개된 모든 식당 리뷰 조회
 		List<Review> locationReviewList = 
 				reviewRepository.findByPrivacyAndLocationNear(0, member.getLocation(), new Distance(50, Metrics.KILOMETERS));
 		
 		for (Review review : locationReviewList) {
+			HashMap<String, Object> map = new HashMap<String, Object>();
+			
 			List<Fileinfo> files = fileRepository.findByTypeId(review.getId());
 			if(files.size() > 0) review.setThumUrl(files.get(0).getDownloadURL());
+			map.put("reviewId", review.getId());
+			map.put("reviews", review);
+			reviews.add(map);
 		}
-		locationReviewList.toString();
-		
-		return locationReviewList;
+		return reviews;
 	}
 
 	

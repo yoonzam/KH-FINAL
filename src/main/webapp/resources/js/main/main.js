@@ -23,24 +23,90 @@ $(document).ready(()=>{
 function setLocation(obj){
 
 	$.ajax({
-	    url: "/main/",
+	    url: "/main/setLocation",
 	    method: "get",
 	    type: "json",
 	    data: obj,
 	    success: function(data) {
+
+			console.dir(data);
+			let html = "";
+			for(i = 0; i < data.length; i++){
+				html += '<div class="eats-list">'
+					 +  '<div class="thum1">'
+					 +  '<img src="'+ data[i].reviews.thumUrl +'">'
+					 +  '</div>'
+					 +  '<div class="info">'
+					 +  '<div class="eats-location">'
+					 +  data[i].reviews.addr.split(' ')[0] + data[i].reviews.addr.split(' ')[1]
+					 +  ' > ' + data[i].reviews.category
+					 +  '</div>'
+					 +  '<div class="eats-name">' + data[i].reviews.resName;
+						if(data[i].reviews.like > 0) {
+		    				html += '<i data-like="' + data[i].reviewId + '" class="eats-like fas fa-heart"></i>';
+		    			} else{
+		    				html += '<i data-like="' + data[i].reviewId + '" class="eats-like far fa-heart"></i>';
+			    		}
+	    		html += '</div>'
+	    			 +  '<div class="eats-tag">';
+	    		 		for(j = 0; j < data[i].reviews.hashtag.length; j++) {
+	    		 			html += '<span>#' + data[i].reviews.hashtag[j] + '</span>';
+	    		 		}
+	    		html += '</div>'
+	    			  + '<div class="eats-score">'
+	    			  + '<i class="fas fa-star"></i>' + ((data[i].reviews.taste + data[i].reviews.clean + data[i].reviews.service)/3).toFixed(1)
+	    			  + '</div>'
+	    			  + '</div>'
+					  + '</div>';
+//				console.dir(data[i].reviewId);
+//				console.dir(data[i].reviews.resName);
+//				console.dir(data[i].reviews.hashtag);
+			}
+			
+		$('.visual2').append(html);
 		
-/*				alert("위치값 전송 성공");
-				close();*/
+		
+			let thum1 = $(".visual2 .thum1");
+		   		Array.from(thum1).forEach((e)=>{
+		        e.style.width= 400+'px';
+		        e.style.height= 250+'px';
+			 });
+
+
+		$('.visual2').slick({
+		  centerMode: true,
+		  centerPadding: '60px',
+		  slidesToShow: 3,
+		  responsive: [
+		    {
+		      breakpoint: 768,
+		      settings: {
+		        arrows: false,
+		        centerMode: true,
+		        centerPadding: '40px',
+		        slidesToShow: 3
+		      }
+		    },
+		    {
+		      breakpoint: 480,
+		      settings: {
+		        arrows: false,
+		        centerMode: true,
+		        centerPadding: '40px',
+		        slidesToShow: 1
+		      }
 		    }
+		  ]
+		});
+			
+
+
+		 }
+		 
 //		error: console.log("위치값 전송 실패")
-		})    
+	})    
 };
 	
-
-$(window).resize(() => {
-    resizeImg();
-    resizeImg2();
-});
 
 
 
@@ -77,7 +143,10 @@ $('.filter-menu input:checkbox').click((e)=>{
     label.classList.toggle('checked');
 });
 
-
+$(window).resize(() => {
+    resizeImg();
+    resizeImg2();
+});
 
 let resizeImg = () => {
     let thum = $(".visual .thum");
@@ -128,32 +197,4 @@ $('.visual').slick({
 	
 
 
-
-
-$('.visual2').slick({
-  centerMode: true,
-  centerPadding: '60px',
-  slidesToShow: 3,
-  responsive: [
-    {
-      breakpoint: 768,
-      settings: {
-        arrows: false,
-        centerMode: true,
-        centerPadding: '40px',
-        slidesToShow: 3
-      }
-    },
-    {
-      breakpoint: 480,
-      settings: {
-        arrows: false,
-        centerMode: true,
-        centerPadding: '40px',
-        slidesToShow: 1
-      }
-    }
-  ]
-});
-	
 

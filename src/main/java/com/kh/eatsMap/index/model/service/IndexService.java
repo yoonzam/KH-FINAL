@@ -1,5 +1,6 @@
 package com.kh.eatsMap.index.model.service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -18,7 +19,7 @@ public interface IndexService {
 	void updateLocation(Member member, GeoJsonPoint location);
 
 	//위치기반 잇친픽 리뷰리스트
-	List<Review> localReview(Member member);
+	List<HashMap<String, Object>> localReview(Member member);
 
 	//해쉬태그 기반 리뷰리스트 
 	Map<String,Object> findAllReview(Member member);

@@ -34,11 +34,6 @@ public interface ReviewRepository extends MongoRepository<Review, String>{
 
 	List<Review> findByPrivacyAndLocationNear(int i, Point point, Distance distance);
 
-	
-//	Review findFirstByIdOrderByCategoryDesc(ObjectId id);
-
-//	@Query(value = "{category : ?0}", count = true)
-//	Integer findReviewCountByCategory;
 
 
 }
