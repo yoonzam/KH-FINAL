@@ -80,7 +80,7 @@ background-color: var(--red-color);
 				</div>
 				<div class="btn-area">
 					<a><button type="submit" class="create-btn">만들기</button></a>
-					<a href="group"><button class="cancel-btn">취소</button></a>
+					<button type="button" class="cancel-btn" onclick="location.href='group'">취소</button>
 				</div>
 			</form>
 		</div><!-- container -->
