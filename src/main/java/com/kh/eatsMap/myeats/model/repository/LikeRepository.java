@@ -14,4 +14,6 @@ public interface LikeRepository extends MongoRepository<Like, String>{
 	
 	void deleteByMemberIdAndRevId(ObjectId id, ObjectId objectId);
 
+	void deleteByRevId(ObjectId revId);
+
 }

@@ -3,6 +3,7 @@ package com.kh.eatsMap.timeline;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.bson.Document;
@@ -151,7 +152,7 @@ public class TimelineMongoTest {
 	    rsult.forEach(System.out::println);
 	}
 	
-	@Test //카테고리서치 테스트
+	@Test //카테고리 검색 테스트
 	public void areaSearchTest() {
 		Query query = new Query();
 		Criteria criteria = new Criteria();
@@ -167,22 +168,6 @@ public class TimelineMongoTest {
 		
 		List<Review> rsult = mongoTemplate.find(query, Review.class, "review");
 		rsult.forEach(System.out::println);
-	}
-	
-	@Test //검색 테스트(이름)
-	public void findByResName() {
-		List<Review> reviews = timelineRepository.findByResNameLike("이커");
-		for (Review review : reviews) {
-			System.out.println("review : " + review);
-		}
-	}
-	
-	@Test
-	public void findGroupByMemberId() {
-		List<Group> groups = groupRepository.findByParticipants(new ObjectId("61a4a78a421834204011fc49"));
-		for (Group group : groups) {
-			System.out.println(group);
-		}
 	}
 
 }

@@ -104,7 +104,7 @@
 							<p><strong>#그룹 구분</strong><br>후기를 저장할 그룹을 선택하세요.</p>
 							<div class="group-box">
 								<select name="group">
-									<option value=""> 내 피드 </option>
+									<option value="my"> 내 피드 </option>
 								</select>
 							</div>
 							<p><strong>#공개 여부</strong><br>공개 여부를 선택하세요.</p>

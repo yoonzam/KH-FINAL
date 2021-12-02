@@ -55,7 +55,7 @@ public class TimelineServiceImpl implements TimelineService{
 	public void insertReview(Review review, double latitude, double longitude, List<MultipartFile> photos, Member member) {
 		review.setLocation(new GeoJsonPoint(longitude, latitude));
 		review.setMemberId(member.getId());
-		if(review.getGroup().equals("")) review.setGroup(null);
+		if(review.getGroup().equals("my")) review.setGroup(null);
 		
 		review = timelineRepository.insert(review);
 		
@@ -71,12 +71,13 @@ public class TimelineServiceImpl implements TimelineService{
 
 	@Override
 	public List<Review> findAllReviews() {
-		List<Review> reviews = timelineRepository.findAll(Sort.by(Sort.Direction.DESC, "id"));
+		List<Review> reviews = timelineRepository.findByPrivacy(0, Sort.by(Sort.Direction.DESC, "id"));
 		
 		for (Review review : reviews) {
 			List<Fileinfo> files = fileRepository.findByTypeId(review.getId());
 			if(files.size() > 0) review.setThumUrl(files.get(0).getDownloadURL());
 			review.toString();
+			System.out.println(review);
 		}
 		return reviews;
 	}
@@ -85,6 +86,7 @@ public class TimelineServiceImpl implements TimelineService{
 	public List<Review> findAllReviews(PageObject pageObject, Member member) {
 		Query query = new Query();
 		query = query.with(Sort.by(Sort.Direction.DESC, "id"));
+		query.addCriteria(Criteria.where("privacy").in(0));
 		query.skip((pageObject.getPage()-1) * pageObject.getPerPageNum());
 		query.limit((int)pageObject.getPerPageNum());
 		List<Review> reviews = mongoTemplate.find(query, com.kh.eatsMap.timeline.model.dto.Review.class);
@@ -196,6 +198,7 @@ public class TimelineServiceImpl implements TimelineService{
 		
 		timelineRepository.deleteById(reviewId);
 		fileRepository.deleteByTypeId(new ObjectId(reviewId));
+		likeRepository.deleteByRevId(new ObjectId(reviewId));
 	}
 
 	@Override
@@ -229,7 +232,7 @@ public class TimelineServiceImpl implements TimelineService{
 	@Override
 	public List<Review> searchReview(String keyword, String[] area, String[] category, String[] hashtag, Member member) {
 		List<Review> reviews = new ArrayList<Review>();
-		String[] areaName = getareaName(area);
+		String[] areaName = getAreaName(area);
 		
 		if(area.length == 17 && category.length == 8 && hashtag.length == 11) {
 			reviews = timelineRepository.findByResNameIgnoreCaseContaining(keyword);
@@ -250,7 +253,9 @@ public class TimelineServiceImpl implements TimelineService{
 					areaArr[i] = Criteria.where("addr").regex(question);
 				}
 				
+				query = query.with(Sort.by(Sort.Direction.DESC, "id"));
 				query.addCriteria(criteria.orOperator(areaArr));
+				query.addCriteria(Criteria.where("privacy").in(0));
 				searchArea = mongoTemplate.find(query, Review.class, "review");
 			}
 			
@@ -265,15 +270,17 @@ public class TimelineServiceImpl implements TimelineService{
 					categoryArr[i] = Criteria.where("category").regex(question);
 				}
 				
+				query = query.with(Sort.by(Sort.Direction.DESC, "id"));
 				query.addCriteria(criteria.orOperator(categoryArr));
+				query.addCriteria(Criteria.where("privacy").in(0));
 				searchCategory = mongoTemplate.find(query, Review.class, "review");
 			}
 			
 			//해시태그로 검색
 			if(hashtag.length > 0) {
-				searchHashtag = timelineRepository.findByHashtagLike(hashtag);
+				searchHashtag = timelineRepository.findByHashtagLikeAndPrivacy(hashtag, 0);
 			}
-		
+			
 			if(area.length > 0) {
 				margeReviews = searchArea;
 				if(category.length > 0) margeReviews.retainAll(searchCategory);
@@ -296,7 +303,7 @@ public class TimelineServiceImpl implements TimelineService{
 				reviews = margeReviews;
 			}
 		}
-
+		
 		//리뷰 가공
 		List<Like> likes = likeRepository.findByMemberId(member.getId());
 		for (Review review : reviews) {
@@ -308,7 +315,7 @@ public class TimelineServiceImpl implements TimelineService{
 		return reviews;
 	}
 	
-	private String[] getareaName(String areaNum[]) {
+	private String[] getAreaName(String areaNum[]) {
 		String[] areaName = new String[areaNum.length];
 		for (int i = 0; i < areaNum.length; i++) {
 			switch (areaNum[i]) {

@@ -492,6 +492,8 @@ let viewTimeline = (reviewId) => {
 				$('#pop-review-detail .pop-btn-my-list').attr('onclick','likeReview(\''+reviewId+'\');');
 			}
 			
+			$('#pop-review-detail .pop-btn-calendar').attr('onclick','makeMySchedule(\''+data.review.resName+'\','+data.review.location.x+','+data.review.location.y+');');
+			
 			if(data.memberId == data.myId) {
 				$('#pop-review-detail .pop-btn-edit').show();
 				$('#pop-review-detail .pop-btn-delete').show();
@@ -625,4 +627,12 @@ let unfollow = (followingId) => {
 			alert("실패");
 		}
 	});
+}
+
+let makeMySchedule = (resName, x, y) => {
+	$('#pop-review-detail').hide();
+	$('input[name="resName"]').val(resName);
+    $('input[name="latitude"]').val(y);
+    $('input[name="longitude"]').val(x);
+	$('#pop-schedule-form').show();
 }

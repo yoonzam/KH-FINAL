@@ -16,7 +16,7 @@ let resizeImg = () => {
 
 $('.filter-btn').click(()=>{
     if($('.filter-menu').css('display')=='none'){
-        $('.filter-menu').show();
+        $('.filter-menu').css('display','block');
         $('.filter-btn').css('border','1px solid #fa8633');
     } else{
         $('.filter-menu').hide();
