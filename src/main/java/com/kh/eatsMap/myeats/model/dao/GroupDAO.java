@@ -123,7 +123,7 @@ public class GroupDAO {
 	
 
 	
-	public void update(Group group,List<MultipartFile> photos, Member member,String delNickName,ObjectId newNickNameOne) throws Exception{
+	public void update(Group group,List<MultipartFile> photos, Member member,ObjectId delNickName,ObjectId newNickNameOne) throws Exception{
 		
 		group.setMemberId(member.getId());
 		

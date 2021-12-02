@@ -161,7 +161,7 @@ public class MyeatsController {
 	//수정처리
 			@RequestMapping(value="/groupDetailModify", method=RequestMethod.POST)
 			public String modifyPOST(Group group,List<MultipartFile> photos, Member member,
-					@RequestParam("delNickName") String delNickName,@RequestParam("newNickNameOne")ObjectId newNickNameOne) throws Exception{
+					@RequestParam("delNickName") ObjectId delNickName,@RequestParam("newNickNameOne")ObjectId newNickNameOne) throws Exception{
 				groupService.modify(group,photos,member,delNickName,newNickNameOne);
 				
 				
