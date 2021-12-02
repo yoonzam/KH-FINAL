@@ -74,7 +74,7 @@
 			<form role = "form" action="/myeats/groupDetailModify" method="post" enctype="multipart/form-data">	
 				<input type="hidden"  name="id" value="${groups.id}" />
 				<!-- 테스트용 -->
-				<input type="hidden"  name="delNickName" value="삭제테스트" /> 
+				<!-- <input type="hidden"  name="delNickName" value="삭제테스트" />  -->
 				
 				<div class="group-info">
 					<div class="group-profile">
@@ -120,22 +120,22 @@
 						<c:choose>
 							<c:when test="true">
 							<c:if test="${groups.participants[0]!= null}">
-		          				<li id="nickOne"><i class="fas fa-user"></i> ${groups.participants[0]}<a id="fasOne" onclick='deleteDiv()'><i class="fas fa-times" ></i>삭제</a></li>
+		          				<li id="nickOne"><i class="fas fa-user"></i><input id="delOne" value="${groups.participants[0]}"><a id="fasOne" ><i class="fas fa-times" ></i>삭제</a></li>
 		          			</c:if>
 		          			<c:if test="${groups.participants[1]!= null}">
-		          				<li id="nickTwo"><i class="fas fa-user"></i> ${groups.participants[1]}<a id="fasTwo" onclick='deleteDiv()'><i class="fas fa-times"></i>삭제</a></li>
+		          				<li id="nickTwo"><i class="fas fa-user"></i><input id="delTwo" value="${groups.participants[1]}"><a id="fasTwo" ><i class="fas fa-times"></i>삭제</a></li>
 		          			</c:if>
 		          			<c:if test="${groups.participants[2]!= null}">
-		          				<li id="nickThree"><i class="fas fa-user"></i> ${groups.participants[2]} <a id="fasThree" onclick='deleteDiv()'><i class="fas fa-times"></i>삭제</a></li>
+		          				<li id="nickThree"><i class="fas fa-user"></i><input id="delThree" value="${groups.participants[2]}"><a id="fasThree"><i class="fas fa-times"></i>삭제</a></li>
 		          			</c:if>
 		          			<c:if test="${groups.participants[2]!= null}">
-		          				<li id="nickFour"><i class="fas fa-user"></i> ${groups.participants[2]} <a id="fasFour" onclick='deleteDiv()'><i class="fas fa-times"></i>삭제</a></li>
+		          				<li id="nickFour"><i class="fas fa-user"></i><input id="delFour" value="${groups.participants[3]}"><a id="fasFour"><i class="fas fa-times"></i>삭제</a></li>
 		          			</c:if>
 		          			<c:if test="${groups.participants[4]!= null}">
-		          				<li id="nickFive"><i class="fas fa-user"></i> ${groups.participants[4]}<a id="fasFive" onclick='deleteDiv()'><i class="fas fa-times"></i>삭제</a></li>
+		          				<li id="nickFive"><i class="fas fa-user"></i><input id="delFive" value="${groups.participants[4]}"><a id="fasFive"><i class="fas fa-times"></i>삭제</a></li>
 		          			</c:if>
 		          			<c:if test="${groups.participants[5]!= null}">
-		          				<li id="nickSix"><i class="fas fa-user"></i> ${groups.participants[5]}<a id="fasSix" onclick='deleteDiv()'><i class="fas fa-times"></i>삭제</a></li>
+		          				<li id="nickSix"><i class="fas fa-user"></i><input id="delSix" value="${groups.participants[5]}"><a id="fasSix"><i class="fas fa-times"></i>삭제</a></li>
 		          			</c:if>
 		          			</c:when>
 							</c:choose> 
@@ -211,29 +211,41 @@ function deleteList()  {
 $(document).ready(function(){
 	var frmObj = $("form[role='form']");
 	
-	
+	//그룹삭제
 	 $(".delete-btn").on("click", function(){
 		frmObj.attr("action", "/myeats/delete");
 		frmObj.submit();
 	}); 
-	 
+	 //개별삭제
 	 $("#fasOne").click(function(){
-           $("#nickOne").remove();  
+		 var delOne = document.getElementById("delOne")
+			delOne.setAttribute('name',"delNickName");
+           $("#nickOne").hide();  
        }); 
 	 $("#fasTwo").click(function(){
-            $("#nickTwo").remove();  
+		 var delTwo = document.getElementById("delTwo")
+			delTwo.setAttribute('name',"delNickName");
+            $("#nickTwo").hide();  
         }); 
 	 $("#fasThree").click(function(){
-            $("#nickThree").remove();  
+		 var delThree = document.getElementById("delThree")
+			delThree.setAttribute('name',"delNickName");
+            $("#nickThree").hide();  
         }); 
 	 $("#fasFour").click(function(){
-         $("#nickFour").remove();  
+		 var delFour = document.getElementById("delFour")
+			delFour.setAttribute('name',"delNickName");
+         $("#nickFour").hide();  
      });
 	 $("#fasFive").click(function(){
-         $("#nickFive").remove();  
+		 var delFive = document.getElementById("delFive")
+			delFive.setAttribute('name',"delNickName");
+         $("#nickFive").hide();  
     	 }); 
 	 $("#fasSix").click(function(){
-         $("#nickSix").remove();  
+		 var delSix = document.getElementById("delSix")
+			delSix.setAttribute('name',"delNickName");
+         $("#nickSix").hide();  
     	 }); 
         
         
