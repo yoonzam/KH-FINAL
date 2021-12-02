@@ -1,6 +1,7 @@
 package com.kh.eatsMap.member.model.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -252,6 +253,23 @@ public class MemberServiceImpl implements MemberService{
 			}
 		}
 		return reviews;
+	}
+
+	@Override
+	public List<Map<String, Object>> findAllFollowingToMap(Member member) {
+		List<Map<String,Object>> memberList = new ArrayList<Map<String,Object>>();
+		List<Member> friendsInfo = new ArrayList<Member>();
+		List<Follow> friends = followingRepository.findByMemberId(member.getId()).orElse(List.of());
+		
+		if(!friends.isEmpty()) {
+			for (Follow friend : friends) {
+				friendsInfo.add(memberRepository.findById(friend.getFollowingId()));
+			}	
+			for (Member info : friendsInfo) {
+				memberList.add(Map.of("memberId", info.getId().toString(), "member", info));
+			}
+		}
+		return memberList;
 	}
 
 

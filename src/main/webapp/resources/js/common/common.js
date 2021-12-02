@@ -74,6 +74,22 @@ $("#map_reviewBtn").click(function(){
 });
 
 let uploadReview = (reviewId) => {
+//	그룹불러오기
+	$.ajax({
+		type: 'POST',
+		url: '/timeline/group',
+		dataType: 'json',
+		success: (data) => {
+			html = '';
+			for(var i = 0; i < data.length; i++){
+				html += '<option value="' + data[i].id + '"> '+ data[i].name +' </option>';
+			}
+			$('.upload-group select[name="group"]').append(html);
+		},
+		error: function (e) {
+			alert('에러발생');
+		}
+	});
 //	초기화
 	uploadStep = 1;
 	photoCount = 0;
@@ -94,6 +110,7 @@ let uploadReview = (reviewId) => {
 	$('.star-review i').attr('class','far fa-star');
 	$('#pop-review-form textarea').val('');
 	$('.preview-photo').css('display','none');
+	
 	$('#pop-review-form select[name="group"]').val('').prop("selected", true);
 	$('#pop-review-form select[name="privacy"]').val('0').prop("selected", true);
 	$('#pop-review-form select[name="privacy"]').attr('disabled',false);
@@ -429,9 +446,9 @@ let viewTimeline = (reviewId) => {
 			
 			//작성자
 			if(data.follow.followingId == null) {
-				$('#pop-review-detail .writer').html('<a href="${contextPath}/member/follow/'+data.memberId+'">'+data.review.memberNick+'</a><a onclick="follow(\''+data.memberId+'\')" class="follow">잇친맺기</a>');						
+				$('#pop-review-detail .writer').html('<a href="/member/follow/'+data.review.memberNick+'">'+data.review.memberNick+'</a><div><a onclick="follow(\''+data.memberId+'\')" class="follow">잇친맺기</a></div>');						
 			} else{						
-				$('#pop-review-detail .writer').html('<a href="${contextPath}/member/follow/'+data.memberId+'">'+data.review.memberNick+'</a><a onclick="unfollow(\''+data.memberId+'\')" class="unfollow">잇친끊기</a>');						
+				$('#pop-review-detail .writer').html('<a href="/member/follow/'+data.review.memberNick+'">'+data.review.memberNick+'</a><div><a onclick="unfollow(\''+data.memberId+'\')" class="unfollow">잇친끊기</a></div>');						
 			}
 			
 			//별점
@@ -474,7 +491,8 @@ let viewTimeline = (reviewId) => {
 				$('#pop-review-detail .pop-btn-my-list').removeClass('clicked');
 				$('#pop-review-detail .pop-btn-my-list').attr('onclick','likeReview(\''+reviewId+'\');');
 			}
-			if(data.memberId == '${authentication.id}') {
+			
+			if(data.memberId == data.myId) {
 				$('#pop-review-detail .pop-btn-edit').show();
 				$('#pop-review-detail .pop-btn-delete').show();
 				$('#pop-review-detail .pop-btn-edit').attr('onclick','editReview(\''+reviewId+'\');');
@@ -584,8 +602,8 @@ let follow = (followingId) => {
 		data: JSON.stringify({ followingId:followingId }),
 		contentType: 'application/json',
 		cache: false,
-		success: () => {
-			$('#pop-review-detail .writer').html('<a href="${contextPath}/member/follow/'+data.memberId+'">'+data.review.memberNick+'</a><a onclick="unfollow(\''+data.memberId+'\')" class="unfollow">잇친끊기</a>');
+		success: (memberId) => {
+			$('#pop-review-detail .writer > div').html('<a onclick="unfollow(\''+memberId+'\')" class="unfollow">잇친끊기</a>');
 		},
 		error: (e) => {
 			alert("실패");
@@ -600,8 +618,8 @@ let unfollow = (followingId) => {
 		data: JSON.stringify({ followingId:followingId }),
 		contentType: 'application/json',
 	 	cache:false,
-		success: () => {
-			$('#pop-review-detail .writer').html('<a href="${contextPath}/member/follow/'+data.memberId+'">'+data.review.memberNick+'</a><a onclick="follow(\''+data.memberId+'\')" class="follow">잇친맺기</a>');
+		success: (memberId) => {
+			$('#pop-review-detail .writer > div').html('<a onclick="follow(\''+memberId+'\')" class="follow">잇친맺기</a>');
 		},
 		error: (e) => {
 			alert("실패");

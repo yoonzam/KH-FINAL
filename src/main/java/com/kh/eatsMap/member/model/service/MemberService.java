@@ -1,5 +1,6 @@
 package com.kh.eatsMap.member.model.service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -54,6 +55,8 @@ public interface MemberService {
 	Member findMemberById(ObjectId followingId);
 
 	List<Review> findLikedByMemberId(Member member);
+
+	List<Map<String, Object>> findAllFollowingToMap(Member member);
 
 	
 

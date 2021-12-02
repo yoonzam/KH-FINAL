@@ -1,9 +1,18 @@
-$('.eats-list').hover((e) => {
-    e.currentTarget.children[0].children[0].style.transform='scale(1.1)';
-    e.currentTarget.children[0].children[0].style.transitionDuration='0.5s';
-  }, (e)=>{
-    e.currentTarget.children[0].children[0].style.transform='scale(1)';
+$(document).ready(()=>{
+    resizeImg();
 });
+
+$(window).resize(() => {
+    resizeImg();
+});
+
+let resizeImg = () => {
+    let thum = $(".timeline-brd .thum");
+    let thumWidth = thum.width();
+    Array.from(thum).forEach((e)=>{
+        e.style.height=thumWidth+'px';
+    });
+}
 
 $('.filter-btn').click(()=>{
     if($('.filter-menu').css('display')=='none'){
@@ -26,7 +35,6 @@ $('#allCheck').click(()=>{
 });
 
 $('.filter-menu input:checkbox').click((e)=>{
-    let checkbox = e.currentTarget;
     let label = e.currentTarget.parentNode;
     label.classList.toggle('checked');
 });
