@@ -129,6 +129,18 @@ public class GroupServiceImpl implements GroupService{
 		dao.update(group,photos,member,delNickName,newNickNameOne);
 	}
 	
+	@Override
+	 public Member findMemberById(ObjectId id) {
+		Member member = new Member();
+		member = dao.findMemberById(id);
+		return member;
+	}
+	@Override
+	 public  List<Member> findMember() throws Exception{
+		List<Member> members = dao.listMember();
+		return members;
+	}
+	
 
 
 

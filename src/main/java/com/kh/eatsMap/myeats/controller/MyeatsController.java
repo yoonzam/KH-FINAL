@@ -36,6 +36,7 @@ import com.kh.eatsMap.common.util.FindCriteria;
 import com.kh.eatsMap.common.util.PageObject;
 import com.kh.eatsMap.firebase.PushMessaging;
 import com.kh.eatsMap.member.model.dto.Member;
+import com.kh.eatsMap.member.model.dto.Notice;
 import com.kh.eatsMap.member.model.service.MemberService;
 import com.kh.eatsMap.myeats.model.dto.Group;
 import com.kh.eatsMap.myeats.model.service.GroupService;
@@ -129,10 +130,11 @@ public class MyeatsController {
 			List<Fileinfo> files = groupService.findFiles(group.getId());
 			if(files.size() > 0) group.setThumUrl(files.get(0).getDownloadURL());
 		}
-		model.addAttribute("groups", groups);
+		 Map<String,Object> map = new HashMap<String,Object>();
+		List<Member> members = groupService.findMember();
+		map = Map.of("members", members, "groups", groups);
 		
-		
-		
+		model.addAllAttributes(map);
 	}
 	
 	@RequestMapping(value="/delete", method=RequestMethod.POST)
@@ -192,7 +194,7 @@ public class MyeatsController {
 		model.addAttribute("reviews",memberService.findLikedByMemberId(member));
 	}
 	
-   //유진 12/01
+   //유진 12/02
    @PostMapping("createGroup")
    public String createGroup(Group group, PageObject pageObject,List<MultipartFile> photos
                      , @SessionAttribute("authentication") Member member, RedirectAttributes reAttr ) {
@@ -200,6 +202,8 @@ public class MyeatsController {
       
       for (int i = 0; i < group.getParticipants().length; i++) {
     	  Member to = memberService.findMemberById(group.getParticipants()[i]);
+    	  Notice notice = memberService.findNotice(to.getId());
+    	  memberService.updateNotice("group", notice);
     	  push.push(to);
       }
       

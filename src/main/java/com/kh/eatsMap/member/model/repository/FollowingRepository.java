@@ -16,7 +16,7 @@ public interface FollowingRepository extends MongoRepository<Follow, ObjectId>{
 	long countByMemberId(ObjectId memberId);
 
 	Optional<Follow> findByMemberIdAndFollowingId(ObjectId id, ObjectId memberId);
-	
-	List<Follow> findByMemberId(ObjectId memberId);
+
+	Optional<List<Follow>> findByMemberId(ObjectId id);
 
 }

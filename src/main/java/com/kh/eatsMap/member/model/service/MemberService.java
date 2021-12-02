@@ -56,7 +56,7 @@ public interface MemberService {
 
 	List<Review> findLikedByMemberId(Member member);
 
-	List<Map<String, Object>> findAllMemberToMap();
+	List<Map<String, Object>> findAllFollowingToMap(Member member);
 
 	
 

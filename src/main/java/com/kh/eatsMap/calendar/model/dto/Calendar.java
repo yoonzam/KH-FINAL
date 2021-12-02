@@ -25,7 +25,7 @@ public class Calendar {
 	@GeoSpatialIndexed(type = GeoSpatialIndexType.GEO_2DSPHERE) 
 	private GeoJsonPoint location;
 	
-	private String participant;
+	private ObjectId[] participants;
 	/*
 	 * private ObjectId[] participant; //참가자
 	 */

@@ -51,24 +51,24 @@
 					 <c:if test="${status.first}"><ul id='nickNames'></c:if>
 					<c:choose>
 						<c:when test="true">
-						<c:if test="${groups.memberNickName[0]!= null}">
-	          				<li><i class="fas fa-user"></i> ${groups.memberNickName[0]}</li>
+						<c:if test="${groups.participants[0]!= null}">
+	          				<li><i class="fas fa-user"></i> ${groups.participants[0]}</li>
 	          			</c:if>
-	          			<c:if test="${groups.memberNickName[1]!= null}">
+	          			<c:if test="${groups.participants[1]!= null}">
 	          				<%-- <li><i class="fas fa-user"></i> ${groups.memberNickName[1]}<span>(quitting-time@naver.com)</span> <a><i class="fas fa-times"></i>삭제</a></li> --%>
-	          				<li><i class="fas fa-user"></i> ${groups.memberNickName[1]}</li>
+	          				<li><i class="fas fa-user"></i> ${groups.participants[1]}</li>
 	          			</c:if>
-	          			<c:if test="${groups.memberNickName[2]!= null}">
-	          				<li><i class="fas fa-user"></i> ${groups.memberNickName[2]} </li>
+	          			<c:if test="${groups.participants[2]!= null}">
+	          				<li><i class="fas fa-user"></i> ${groups.participants[2]} </li>
 	          			</c:if>
-	          			<c:if test="${groups.memberNickName[3]!= null}">
-	          				<li><i class="fas fa-user"></i> ${groups.memberNickName[3]}</li>
+	          			<c:if test="${groups.participants[3]!= null}">
+	          				<li><i class="fas fa-user"></i> ${groups.participants[3]}</li>
 	          			</c:if>
-	          			<c:if test="${groups.memberNickName[4]!= null}">
-	          				<li><i class="fas fa-user"></i> ${groups.memberNickName[4]}</li>
+	          			<c:if test="${groups.participants[4]!= null}">
+	          				<li><i class="fas fa-user"></i> ${groups.participants[4]}</li>
 	          			</c:if>
-	          			<c:if test="${groups.memberNickName[5]!= null}">
-	          				<li><i class="fas fa-user"></i> ${groups.memberNickName[5]}</li>
+	          			<c:if test="${groups.participants[5]!= null}">
+	          				<li><i class="fas fa-user"></i> ${groups.participants[5]}</li>
 	          			</c:if>
 	          			</c:when>
 						</c:choose> 

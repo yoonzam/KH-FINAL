@@ -256,12 +256,18 @@ public class MemberServiceImpl implements MemberService{
 	}
 
 	@Override
-	public List<Map<String, Object>> findAllMemberToMap() {
+	public List<Map<String, Object>> findAllFollowingToMap(Member member) {
 		List<Map<String,Object>> memberList = new ArrayList<Map<String,Object>>();
-		List<Member> members = memberRepository.findAll();
+		List<Member> friendsInfo = new ArrayList<Member>();
+		List<Follow> friends = followingRepository.findByMemberId(member.getId()).orElse(List.of());
 		
-		for (Member member : members) {
-			memberList.add(Map.of("memberId", member.getId().toString(), "member", member));
+		if(!friends.isEmpty()) {
+			for (Follow friend : friends) {
+				friendsInfo.add(memberRepository.findById(friend.getFollowingId()));
+			}	
+			for (Member info : friendsInfo) {
+				memberList.add(Map.of("memberId", info.getId().toString(), "member", info));
+			}
 		}
 		return memberList;
 	}

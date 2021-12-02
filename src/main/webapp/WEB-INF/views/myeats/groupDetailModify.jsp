@@ -121,23 +121,23 @@
 					
 						<c:choose>
 							<c:when test="true">
-							<c:if test="${groups.memberNickName[0]!= null}">
-		          				<li id="nickOne"><i class="fas fa-user"></i> ${groups.memberNickName[0]}<a id="fasOne" onclick='deleteDiv()'><i class="fas fa-times" ></i>삭제</a></li>
+							<c:if test="${groups.participants[0]!= null}">
+		          				<li id="nickOne"><i class="fas fa-user"></i> ${groups.participants[0]}<a id="fasOne" onclick='deleteDiv()'><i class="fas fa-times" ></i>삭제</a></li>
 		          			</c:if>
-		          			<c:if test="${groups.memberNickName[1]!= null}">
-		          				<li><i class="fas fa-user"></i> ${groups.memberNickName[1]}<a><i class="fas fa-times"></i>삭제</a></li>
+		          			<c:if test="${groups.participants[1]!= null}">
+		          				<li><i class="fas fa-user"></i> ${groups.participants[1]}<a><i class="fas fa-times"></i>삭제</a></li>
 		          			</c:if>
-		          			<c:if test="${groups.memberNickName[2]!= null}">
-		          				<li><i class="fas fa-user"></i> ${groups.memberNickName[2]} <a><i class="fas fa-times"></i>삭제</a></li>
+		          			<c:if test="${groups.participants[2]!= null}">
+		          				<li><i class="fas fa-user"></i> ${groups.participants[2]} <a><i class="fas fa-times"></i>삭제</a></li>
 		          			</c:if>
-		          			<c:if test="${groups.memberNickName[3]!= null}">
-		          				<li><i class="fas fa-user"></i> ${groups.memberNickName[3]}<a><i class="fas fa-times"></i>삭제</a></li>
+		          			<c:if test="${groups.participants[3]!= null}">
+		          				<li><i class="fas fa-user"></i> ${groups.participants[3]}<a><i class="fas fa-times"></i>삭제</a></li>
 		          			</c:if>
-		          			<c:if test="${groups.memberNickName[4]!= null}">
-		          				<li><i class="fas fa-user"></i> ${groups.memberNickName[4]}<a><i class="fas fa-times"></i>삭제</a></li>
+		          			<c:if test="${groups.participants[4]!= null}">
+		          				<li><i class="fas fa-user"></i> ${groups.participants[4]}<a><i class="fas fa-times"></i>삭제</a></li>
 		          			</c:if>
-		          			<c:if test="${groups.memberNickName[5]!= null}">
-		          				<li><i class="fas fa-user"></i> ${groups.memberNickName[5]}<a><i class="fas fa-times"></i>삭제</a></li>
+		          			<c:if test="${groups.participants[5]!= null}">
+		          				<li><i class="fas fa-user"></i> ${groups.participants[5]}<a><i class="fas fa-times"></i>삭제</a></li>
 		          			</c:if>
 		          			</c:when>
 							</c:choose> 
@@ -161,7 +161,7 @@
 
 $("#inviteButton").click(function(){  
 	   
-	var url="/info/memberInfo";  
+	var url="/info/memberInfotwo";  
     
 	$.ajax({      
         type:"GET",  

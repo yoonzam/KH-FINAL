@@ -31,7 +31,10 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.kh.eatsMap.calendar.model.dto.Calendar;
 import com.kh.eatsMap.calendar.model.service.CalendarService;
+import com.kh.eatsMap.firebase.PushMessaging;
 import com.kh.eatsMap.member.model.dto.Member;
+import com.kh.eatsMap.member.model.dto.Notice;
+import com.kh.eatsMap.member.model.service.MemberService;
 
 @Controller
 @RequestMapping("calendar")
@@ -39,7 +42,10 @@ public class CalendarController {
 	
 	@Autowired
 	private CalendarService calendarService;
+	@Autowired
+	private MemberService memberService;
 	Logger logger = LoggerFactory.getLogger(this.getClass());
+	private PushMessaging push = PushMessaging.getInstance();
 
 	@GetMapping("/")
 	public String calendar() {
@@ -50,7 +56,6 @@ public class CalendarController {
 	@ResponseBody
 	public List<HashMap<String, Object>> getSchedule(@SessionAttribute("authentication") Member member) {
 		 List<HashMap<String, Object>> map = calendarService.selectAllSchedule(member);
-		 logger.debug(map.toString());
 		return map ;
 	}
 	
@@ -60,18 +65,25 @@ public class CalendarController {
 		if(scheduleId.equals("")) {
 			calendar.setMemberId(member.getId());
 			calendar.setLocation(new GeoJsonPoint(longitude, latitude));
-
 			calendarService.makeSchedule(calendar);	
-			return "redirect:/calendar/";
+		}else {
+			Calendar originCalendar = calendarService.findCalendarById(scheduleId);
+			originCalendar.setTitle(calendar.getTitle());
+			originCalendar.setDate(calendar.getDate());
+			originCalendar.setResName(calendar.getResName());
+			originCalendar.setParticipants(calendar.getParticipants());
+			originCalendar.setLocation(new GeoJsonPoint(longitude, latitude));		
+			calendarService.makeSchedule(originCalendar);	
 		}
-		Calendar originCalendar = calendarService.findCalendarById(scheduleId);
-		originCalendar.setTitle(calendar.getTitle());
-		originCalendar.setDate(calendar.getDate());
-		originCalendar.setResName(calendar.getResName());
-		originCalendar.setParticipant(calendar.getParticipant());
-		originCalendar.setLocation(new GeoJsonPoint(longitude, latitude));
-		
-		calendarService.makeSchedule(originCalendar);	
+		//유진 12/02 알람
+		if(calendar.getParticipants().length > 0) {
+			for (int i = 0; i < calendar.getParticipants().length; i++) {
+		    	  Member to = memberService.findMemberById(calendar.getParticipants()[i]);
+		    	  Notice notice = memberService.findNotice(to.getId());
+		    	  memberService.updateNotice("calendar", notice);
+		    	  push.push(to);
+			}			
+		}
 		return "redirect:/calendar/";
 	}
 	
@@ -91,6 +103,13 @@ public class CalendarController {
 	public String deleteSchedule(String id) {
 		calendarService.deleteSchedule(id);
 		return "redirect:/calendar/";
+	}
+	
+	//유진12/02
+	@GetMapping("memberList")
+	@ResponseBody
+	public List<Map<String,Object>> memberInfo(@SessionAttribute("authentication") Member member){
+		return memberService.findAllFollowingToMap(member);
 	}
 
 }

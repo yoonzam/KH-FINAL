@@ -80,13 +80,13 @@ public class InfoController {
 	@GetMapping("ajaxTest")
 	public void ajaxTest() {}
 
-//	@GetMapping("memberInfo")
-//	@ResponseBody
-//	public List<Member> list() throws Exception {
-//		List<Member> memberList = null;
-//		memberList = dao.listMember();
-//		return memberList;
-//	}
+	@GetMapping("memberInfotwo")
+	@ResponseBody
+	public List<Member> list() throws Exception {
+		List<Member> memberList = null;
+		memberList = dao.listMember();
+		return memberList;
+	}
 	
 	@PostMapping("memberInfo")
 	@ResponseBody
@@ -99,8 +99,8 @@ public class InfoController {
     //유진 12/01
    @GetMapping("memberInfo")
    @ResponseBody
-   public List<Map<String,Object>> memberInfo(){
-      List<Map<String,Object>> members = memberService.findAllMemberToMap();
+   public List<Map<String,Object>> memberInfo(@SessionAttribute("authentication") Member member){
+      List<Map<String,Object>> members = memberService.findAllFollowingToMap(member);
       
       return members;
    }

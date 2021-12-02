@@ -6,6 +6,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
@@ -182,6 +183,29 @@ public class RepositoryTest {
 				    update = new Update();
 				    update.push("memberNickName").each(newItem);
 				    mongoTemplate.updateFirst(query, update, Group.class);    
+				}
+				
+				//재테스트
+				
+				@Test
+				public void listthree() {
+					Member member = repository.findByNickname("yang");
+					
+					List<Group> list = new ArrayList<Group>();
+					list = groupRepository.findByParticipants(member.getId());
+					list.forEach(e -> logger.debug(e.toString()));
+				}
+				@Test
+				public void listtwo() {
+					
+					Member member = repository.findByNickname("yang");
+					List<Group> list = new ArrayList<Group>();
+					Query query = new Query();
+					query.addCriteria(Criteria.where("participants").in(member.getId()));
+					query = query.with(Sort.by(Sort.Direction.DESC,"id"));
+					list = mongoTemplate.find(query,com.kh.eatsMap.myeats.model.dto.Group.class,"group");
+					
+					list.forEach(e -> logger.debug(e.toString()));
 				}
     
 }

@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
@@ -97,8 +98,7 @@ public class GroupDAO {
 		Query query = new Query();
 		//groupIdx로 최근순 정렬
 		//id로 잡으면 알아서 최신순 정렬됨
-		String memberNickName = member.getNickname();
-		query.addCriteria(Criteria.where("memberNickName").regex(memberNickName));
+		query.addCriteria(Criteria.where("participants").in(member.getId()));
 		query = query.with(Sort.by(Sort.Direction.DESC,"id"));
 		//이전 페이지의 데이터는 skip 시킨다.
 		query.skip((pageObject.getPage()-1) * pageObject.getPerPageNum());
@@ -169,6 +169,13 @@ public class GroupDAO {
 		
 		
 	}
+	
+	 public Member findMemberById(ObjectId id){
+	        Query query = new Query(Criteria.where("_id").is(id));
+
+	        Member member = mongoTemplate.findOne(query, Member.class, "member");
+	        return member;
+	    }
 	
 	
 }
