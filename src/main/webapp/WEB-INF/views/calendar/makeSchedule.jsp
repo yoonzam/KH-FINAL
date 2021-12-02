@@ -4,7 +4,7 @@
 	<div class="dimmed"></div>
 	<div class="layer-popup schedule">
 		<div class="content view">
-			<form class="schedule" method="post" action="/calendar/upload">
+			<form id="frmSchedule" class="schedule" method="post" action="/calendar/upload">
 				<div class="popup-title">일정 만들기</div>
 				<div class="schedule-list">
 					<div class="list title"><span>제목</span><input type="text" name="title" id="title" placeholder="제목을 입력하세요" required/></div>
@@ -20,8 +20,8 @@
 					<input class="hidden" type="text" name="longitude" style="display: none">
 					<input class="hidden" type="text" name="scheduleId" id= "scheduleId" style="display: none">
 					<div class="btn-wrap">
-						<button class="submit" id="save-event">확인</button>
-						<button class="cancel" id="cancel-btn">취소</button>
+						<button type="button" class="submit" id="save-event" onclick="makeNewSchedule();">확인</button>
+						<button type="button" class="cancel" id="cancel-btn">취소</button>
 					</div>
 				</div>
 			</form>
@@ -31,25 +31,22 @@
 	<a class="close-btn" onclick="closePopup();"><i class="fas fa-times"></i></a>
 <script type="text/javascript">
 $(document).ready(() => {
-    $.ajax({      
-        type:"GET",  
-        url: '/calendar/memberList',   
+    $.ajax({
+        type:"GET",
+        url: '/calendar/memberList',
         dataType: 'json',
-        success:function(data){ 
+        success:function(data){
         	console.dir(data);
         	if(data != null){
           		let html = '';
           		let textNode = '';
           		
     	      	for (var i = 0; i < data.length; i++){
-    	      		
     	      		let option = document.createElement("option");
-    	      		
     	      		option.value = data[i].memberId;
     	      		option.innerHTML = data[i].member.nickname;
-    	      		
     				document.querySelector('#participant').appendChild(option);
-    	      	}         		
+    	      	}
         	}
         }
     });
@@ -102,5 +99,25 @@ $('#sch-delete-btn').on('click', function () {
     // delete ?*/
     $('#pop-schedule-detail').hide();
 })
+
+//업로드
+let makeNewSchedule = () => {
+	let form = $('#frmSchedule')[0];
+	let formData = new FormData(form);
+
+	$.ajax({
+		type: "POST",
+		url: "/calendar/upload",
+		data: formData,
+		contentType : false,
+    	processData : false,
+	 	cache:false,
+		success: () => {
+			location.reload();
+		},
+		error: (e) => {
+		}
+	});
+}
 
 </script>
