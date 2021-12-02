@@ -11,6 +11,7 @@ import org.springframework.data.mongodb.core.index.GeoSpatialIndexed;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 
 import com.kh.eatsMap.member.model.dto.Follow;
+import com.kh.eatsMap.myeats.model.dto.Group;
 import com.kh.eatsMap.timeline.model.dto.Review;
 
 import lombok.Data;
@@ -35,6 +36,8 @@ public class Map {
 	private List<Review> reviews;
 	
 	private List<Follow> follows;
+	
+	private List<Group> groups;
 
 	public void setFollows(List<Follow> follows) {
 		// TODO Auto-generated method stub
@@ -44,6 +47,10 @@ public class Map {
 	public void setReviews(List<Review> reviews) {
 		// TODO Auto-generated method stub
 		this.reviews = reviews;
+	}
+	public void setGroups(List<Group> groups) {
+		// TODO Auto-generated method stub
+		this.groups = groups;
 	}
 
 

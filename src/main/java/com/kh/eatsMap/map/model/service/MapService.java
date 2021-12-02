@@ -7,6 +7,7 @@ import org.bson.types.ObjectId;
 
 import com.kh.eatsMap.map.model.dto.Map;
 import com.kh.eatsMap.member.model.dto.Follow;
+import com.kh.eatsMap.myeats.model.dto.Group;
 import com.kh.eatsMap.timeline.model.dto.Review;
 
 public interface MapService {
@@ -25,6 +26,9 @@ public interface MapService {
 
 
 	Map findByMemberId(ObjectId id);
+
+
+	List<Group> findGroupList(ObjectId id);
 
 
 

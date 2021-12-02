@@ -20,6 +20,7 @@ import com.kh.eatsMap.map.model.service.MapService;
 import com.kh.eatsMap.member.model.dto.Follow;
 import com.kh.eatsMap.member.model.dto.Member;
 import com.kh.eatsMap.member.model.service.MemberService;
+import com.kh.eatsMap.myeats.model.dto.Group;
 import com.kh.eatsMap.timeline.model.dto.Review;
 
 import lombok.RequiredArgsConstructor;
@@ -43,12 +44,17 @@ public class MapController {
 		
 
 		
-
+		//검색을 위한 자신의 팔로우 리스트 
 		List<Follow> follows = mapService.findFollowList(member.getId());
 		System.out.println("팔로우 목록");
 		System.out.println(follows);
-		// 필터링된 값 model로 뿌려준후 map 콜렉션에 저장
+		
+		// 공개된 리뷰목록과 팔로워한 리뷰를 가져옴
 		List<HashMap<String, Object>> reviews = mapService.myEatsMap(member.getId(), follows);
+		
+		//자신의 group리스트
+		List<Group> groups = mapService.findGroupList(member.getId());
+		
 		//js 에서 사용하기 위해 json으로 변환
 		ObjectMapper mapper = new ObjectMapper();
 		String jsonText = mapper.writeValueAsString(reviews);
@@ -63,7 +69,7 @@ public class MapController {
 		myMap.setMemberId(member.getId());
 		myMap.setFollows(follows);
 		myMap.setReviews(saveReview);
-
+		myMap.setGroups(groups);
 		
 		
 		//저장 전에 map collection에 자신의 맵이 존재하는지 확인
