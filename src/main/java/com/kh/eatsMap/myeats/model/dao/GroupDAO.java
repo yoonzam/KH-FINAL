@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
@@ -168,6 +169,13 @@ public class GroupDAO {
 		
 		
 	}
+	
+	 public Member findMemberById(ObjectId id){
+	        Query query = new Query(Criteria.where("_id").is(id));
+
+	        Member member = mongoTemplate.findOne(query, Member.class, "member");
+	        return member;
+	    }
 	
 	
 }

@@ -130,10 +130,11 @@ public class MyeatsController {
 			List<Fileinfo> files = groupService.findFiles(group.getId());
 			if(files.size() > 0) group.setThumUrl(files.get(0).getDownloadURL());
 		}
-		model.addAttribute("groups", groups);
+		 Map<String,Object> map = new HashMap<String,Object>();
+		List<Member> members = groupService.findMember();
+		map = Map.of("members", members, "groups", groups);
 		
-		
-		
+		model.addAllAttributes(map);
 	}
 	
 	@RequestMapping(value="/delete", method=RequestMethod.POST)
