@@ -50,7 +50,7 @@
 
 #invited-select {
 	margin-top:8px;
-    width: 50%;
+    width: 30%;
     padding: 2px;
     border-radius: 5px;
     border: 1px solid #aaa;
@@ -74,7 +74,7 @@
 			<form role = "form" action="/myeats/groupDetailModify" method="post" enctype="multipart/form-data">	
 				<input type="hidden"  name="id" value="${groups.id}" />
 				<!-- 테스트용 -->
-				<input type="hidden"  name="delNickName" value="추가테스트" /> 
+				<input type="hidden"  name="delNickName" value="삭제테스트" /> 
 				
 				<div class="group-info">
 					<div class="group-profile">
@@ -109,9 +109,7 @@
 					 	<li>
 						<span>초대하기</span>
 						<div class="friend-list"> 
-							<select id="invited-select">
-							</select>
-							<input id="addButton" type='button' value='추가' onclick='addList()' />
+							<select id="invited-select" name="participant" onchange="addList()"></select>
 							<input id="inviteButton" type='button' value='초대'/>
 							<ul id='nickNames'>
 							</ul>
@@ -125,19 +123,19 @@
 		          				<li id="nickOne"><i class="fas fa-user"></i> ${groups.participants[0]}<a id="fasOne" onclick='deleteDiv()'><i class="fas fa-times" ></i>삭제</a></li>
 		          			</c:if>
 		          			<c:if test="${groups.participants[1]!= null}">
-		          				<li><i class="fas fa-user"></i> ${groups.participants[1]}<a><i class="fas fa-times"></i>삭제</a></li>
+		          				<li id="nickTwo"><i class="fas fa-user"></i> ${groups.participants[1]}<a id="fasTwo" onclick='deleteDiv()'><i class="fas fa-times"></i>삭제</a></li>
 		          			</c:if>
 		          			<c:if test="${groups.participants[2]!= null}">
-		          				<li><i class="fas fa-user"></i> ${groups.participants[2]} <a><i class="fas fa-times"></i>삭제</a></li>
+		          				<li id="nickThree"><i class="fas fa-user"></i> ${groups.participants[2]} <a id="fasThree" onclick='deleteDiv()'><i class="fas fa-times"></i>삭제</a></li>
 		          			</c:if>
-		          			<c:if test="${groups.participants[3]!= null}">
-		          				<li><i class="fas fa-user"></i> ${groups.participants[3]}<a><i class="fas fa-times"></i>삭제</a></li>
+		          			<c:if test="${groups.participants[2]!= null}">
+		          				<li id="nickFour"><i class="fas fa-user"></i> ${groups.participants[2]} <a id="fasFour" onclick='deleteDiv()'><i class="fas fa-times"></i>삭제</a></li>
 		          			</c:if>
 		          			<c:if test="${groups.participants[4]!= null}">
-		          				<li><i class="fas fa-user"></i> ${groups.participants[4]}<a><i class="fas fa-times"></i>삭제</a></li>
+		          				<li id="nickFive"><i class="fas fa-user"></i> ${groups.participants[4]}<a id="fasFive" onclick='deleteDiv()'><i class="fas fa-times"></i>삭제</a></li>
 		          			</c:if>
 		          			<c:if test="${groups.participants[5]!= null}">
-		          				<li><i class="fas fa-user"></i> ${groups.participants[5]}<a><i class="fas fa-times"></i>삭제</a></li>
+		          				<li id="nickSix"><i class="fas fa-user"></i> ${groups.participants[5]}<a id="fasSix" onclick='deleteDiv()'><i class="fas fa-times"></i>삭제</a></li>
 		          			</c:if>
 		          			</c:when>
 							</c:choose> 
@@ -160,22 +158,20 @@
 <script>
 
 $("#inviteButton").click(function(){  
-	   
-	var url="/info/memberInfotwo";  
-    
-	$.ajax({      
+    var url="/info/memberInfo";  
+    $.ajax({      
         type:"GET",  
         url:url,   
         dataType: 'json',
         success:function(data){ 
-      	let html = '';
-      	for (var i = 0; i < data.length; i++)
-			html += '<option value='+data[i].nickname+'>'+data[i].nickname +'</option>';
-			
-			$('#invited-select').html(html);
+        	
+      		let html = '';
+	      	for (var i = 0; i < data.length; i++){
+				html += '<option class="option" value='+data[i].memberId+'>'+data[i].member.nickname +'</option>';
+				$('#invited-select').html(html);
+	      	}
         },   
         error:function(e){  
-            alert(e.responseText);  
         }  
     });  
 });  
@@ -201,7 +197,6 @@ function addList()  {
 
 
 
-
 function deleteList()  {
 	var div = document.getElementId('nickOne');
 	 div.remove();
@@ -210,13 +205,6 @@ function deleteList()  {
 	  
 	  document.getElementByClassName("fas fa-times").append(li);
 	}
-
-
-
-
-
-
-
 
 
 
@@ -229,21 +217,25 @@ $(document).ready(function(){
 		frmObj.submit();
 	}); 
 	 
-		 $("#fasOne").click(function(){
-            $("#nickOne").remove();  
+	 $("#fasOne").click(function(){
+           $("#nickOne").remove();  
+       }); 
+	 $("#fasTwo").click(function(){
+            $("#nickTwo").remove();  
         }); 
+	 $("#fasThree").click(function(){
+            $("#nickThree").remove();  
+        }); 
+	 $("#fasFour").click(function(){
+         $("#nickFour").remove();  
+     });
+	 $("#fasFive").click(function(){
+         $("#nickFive").remove();  
+    	 }); 
+	 $("#fasSix").click(function(){
+         $("#nickSix").remove();  
+    	 }); 
         
-        $("#fasOne").click(function () {
-            $.ajax({
-                url: "/groupDetailModify/0",
-                method: "DELETE",
-                dataType: "text",
-                success: function (data) {
-                    $('#nickOne').val(data)
-                    console.log(data)
-                }
-            })
-        })
         
 
         

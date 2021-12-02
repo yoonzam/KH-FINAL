@@ -80,14 +80,13 @@ background-color: var(--red-color);
 				</div>
 				<div class="btn-area">
 					<a><button type="submit" class="create-btn">만들기</button></a>
-					<a href="group"><button class="cancel-btn">취소</button></a>
+					<button type="button" class="cancel-btn" onclick="location.href='group'">취소</button>
 				</div>
 			</form>
 		</div><!-- container -->
 	</div><!-- container-wrap -->
 </section> 
    
-<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script> -->
 <script type="text/javascript">
 $("#inviteButton").click(function(){  
     var url="/info/memberInfo";  
@@ -102,7 +101,9 @@ $("#inviteButton").click(function(){
 				html += '<option class="option" value='+data[i].memberId+'>'+data[i].member.nickname +'</option>';
 				$('#invited-select').html(html);
 	      	}
-        }   
+        },   
+        error:function(e){  
+        }  
     });  
 });  
 

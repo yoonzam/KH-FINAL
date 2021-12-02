@@ -68,13 +68,5 @@ public class CalendarServiceImpl implements CalendarService{
 		calendarRepository.deleteById(id);
 	}
 
-	
-	/*
-	 * public Map<String, Object> selectScheduleById(String id){
-	 * 
-	 * List<Map> calendar = calendarRepository.selectSchedule(id);
-	 * 
-	 * return null; }
-	 */
 
 }

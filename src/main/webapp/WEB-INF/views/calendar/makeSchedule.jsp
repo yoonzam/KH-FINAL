@@ -4,7 +4,7 @@
 	<div class="dimmed"></div>
 	<div class="layer-popup schedule">
 		<div class="content view">
-			<form class="schedule" method="post" action="upload">
+			<form class="schedule" method="post" action="/calendar/upload">
 				<div class="popup-title">일정 만들기</div>
 				<div class="schedule-list">
 					<div class="list title"><span>제목</span><input type="text" name="title" id="title" placeholder="제목을 입력하세요" required/></div>
@@ -12,7 +12,7 @@
 					<div class="list time"><span>시간</span><input type="time" name="time" id="time" required/></div>
 					<div class="list place"><span>장소</span><input type="text" name="resName" id="location" placeholder="장소를 입력하세요" required/><ul class="locationList"></ul></div>	
 					<div class="list member"><span>참석자</span>
-						<select class="list" name="participants[]" id="participant" multiple="multiple">
+						<select class="list" name="participants[]" id="participant" multiple size="5">
 							<option value="" id="default-option">---함께할 잇친을 추가하세요---</option>
 						</select>
 					</div>

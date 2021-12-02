@@ -1,4 +1,4 @@
-$('.eats-list').hover((e) => {
+/*$('.eats-list').hover((e) => {
     e.currentTarget.children[0].children[0].style.transform='scale(1.1)';
     e.currentTarget.children[0].children[0].style.transitionDuration='0.5s';
   }, (e)=>{

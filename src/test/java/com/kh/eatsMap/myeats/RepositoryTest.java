@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
+import org.bson.types.ObjectId;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -186,7 +187,6 @@ public class RepositoryTest {
 				}
 				
 				//재테스트
-				
 				@Test
 				public void listthree() {
 					Member member = repository.findByNickname("yang");
@@ -206,6 +206,25 @@ public class RepositoryTest {
 					list = mongoTemplate.find(query,com.kh.eatsMap.myeats.model.dto.Group.class,"group");
 					
 					list.forEach(e -> logger.debug(e.toString()));
+				}
+				
+				 //objectId로 업뎃 성공
+				@Test
+				public void updatedd(){
+					Query query = new Query();
+					query.addCriteria(Criteria.where("id").is("61a7a2a6fa88ce490331292e"));
+					Update update = new Update();
+					update.set("groupName", "그룹1수정");
+				    //데이터를 제거
+					
+				    update.pull("participants", new ObjectId("619f82ad35d7987fdb82f440"));  
+				    mongoTemplate.updateFirst(query, update, Group.class);
+				    
+				    //데이터를 추가
+				    ObjectId[] newItem = new ObjectId[]{new ObjectId("619f82ad35d7987fdb82f440"),new ObjectId("619f82ad35d7987fdb82f440")};
+				    update = new Update();
+				    update.push("participants").each(newItem);
+				    mongoTemplate.updateFirst(query, update, Group.class);    
 				}
     
 }
