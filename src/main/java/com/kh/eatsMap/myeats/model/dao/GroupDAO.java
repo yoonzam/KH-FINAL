@@ -121,33 +121,9 @@ public class GroupDAO {
 	
 	
 	
-	//수정하기에 쓰인 update
-//		public void update(Group group,List<MultipartFile> photos, Member member ) throws Exception{
-//			
-//			group.setMemberId(member.getId());
-//			
-//			Query query = new Query();
-//			Update update = new Update();
-//			//query.addCriteria(Criteria.where("컬럼명1").is("조건값1"));
-//			query.addCriteria(Criteria.where("id").is(group.getId()));
-//			//추가필요 update.set("컬럼명1", "변경값1");
-//			update.set("groupName", group.getGroupName());
-//			
-//			
-//			
-////			FileUtil fileUtil = new FileUtil();
-////			for (MultipartFile photo : photos) {
-////				if(!photo.isEmpty()) {
-////					Fileinfo fileInfo = fileUtil.fileUpload(photo);
-////					fileInfo.setTypeId(group.getId());
-////					fileRepository.save(fileInfo);
-////				}
-////			}
-//			update.set("thumUrl", group.getThumUrl());
-//			mongoTemplate.updateFirst(query, update, Group.class);
-//		}
+
 	
-	public void update(Group group,List<MultipartFile> photos, Member member,String delNickName,String newNickNameOne) throws Exception{
+	public void update(Group group,List<MultipartFile> photos, Member member,String delNickName,ObjectId newNickNameOne) throws Exception{
 		
 		group.setMemberId(member.getId());
 		
@@ -157,18 +133,19 @@ public class GroupDAO {
 		update.set("groupName", group.getGroupName());
 		
 		//데이터를 제거
-		update.pull("memberNickName", delNickName); 
+		//update.pull("participants", new ObjectId("619f82ad35d7987fdb82f440"));  
+		update.pull("participants", delNickName); 
 		 mongoTemplate.updateFirst(query, update, Group.class);
 		
 		//데이터를 추가
-	    String [] newItem = new String[]{newNickNameOne};
+		 ObjectId[] newItem = new ObjectId[]{newNickNameOne};
 	    update = new Update();
-	    update.push("memberNickName").each(newItem);
-	    update.set("thumUrl", group.getThumUrl());
+	    update.push("participants").each(newItem);
+	    //update.set("thumUrl", group.getThumUrl());
 	    mongoTemplate.updateFirst(query, update, Group.class);   
 		
 		
-	}
+		}
 	
 	 public Member findMemberById(ObjectId id){
 	        Query query = new Query(Criteria.where("_id").is(id));

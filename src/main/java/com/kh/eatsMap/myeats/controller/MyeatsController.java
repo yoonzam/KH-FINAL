@@ -159,14 +159,14 @@ public class MyeatsController {
 		
 	}
 	//수정처리
-		@RequestMapping(value="/groupDetailModify", method=RequestMethod.POST)
-		public String modifyPOST(Group group,List<MultipartFile> photos, Member member,
-				@RequestParam("delNickName") String delNickName,@RequestParam("newNickNameOne")String newNickNameOne) throws Exception{
-			groupService.modify(group,photos,member,delNickName,newNickNameOne);
-			
-			
-			return "redirect:/myeats/groupDetail?id="+group.getId();
-		}
+			@RequestMapping(value="/groupDetailModify", method=RequestMethod.POST)
+			public String modifyPOST(Group group,List<MultipartFile> photos, Member member,
+					@RequestParam("delNickName") String delNickName,@RequestParam("newNickNameOne")ObjectId newNickNameOne) throws Exception{
+				groupService.modify(group,photos,member,delNickName,newNickNameOne);
+				
+				
+				return "redirect:/myeats/groupDetail?id="+group.getId();
+			}
 	
 
 
