@@ -15,7 +15,9 @@ import com.kh.eatsMap.map.model.dto.Map;
 import com.kh.eatsMap.map.model.repository.MapRepository;
 import com.kh.eatsMap.map.model.repository.myMapRepository;
 import com.kh.eatsMap.member.model.dto.Follow;
+import com.kh.eatsMap.member.model.dto.Member;
 import com.kh.eatsMap.member.model.repository.FollowingRepository;
+import com.kh.eatsMap.member.model.repository.MemberRepository;
 import com.kh.eatsMap.myeats.model.dto.Group;
 import com.kh.eatsMap.myeats.model.repository.GroupRepository;
 import com.kh.eatsMap.timeline.model.dto.Review;
@@ -41,6 +43,9 @@ public class MapServiceImpl implements MapService {
 	
 	@Autowired
 	private final GroupRepository groupRepository;
+	
+	@Autowired
+	private final MemberRepository memberRepository;
 
 	@Override
 	public List<HashMap<String, Object>> reviewList() {
@@ -80,18 +85,14 @@ public class MapServiceImpl implements MapService {
 		for (Follow follow : follows) {
 			followReview.addAll(mapRepository.findByMemberIdAndPrivacy(follow.getFollowingId(), 1));
 		}
-		System.out.println("내가 팔로워하여 볼수 있는 리뷰");
-		System.out.println(followReview);
+		
 		/*
 		 * reviews = reviews.stream().filter(e-> e.getPrivacy() == 0 || (e.getPrivacy()
 		 * == 1 && e.getMemberId() == )
 		 */
-		System.out.println("공개된 리뷰");
-		System.out.println(reviews);
 		
-		System.out.println("합쳐진 리뷰");
 		reviews.addAll(followReview);
-		System.out.println(reviews);
+		
 
 		/*
 		 * reviews = reviews.stream() .filter(e -> e.getPrivacy() == 0 ||
@@ -131,6 +132,40 @@ public class MapServiceImpl implements MapService {
 	public List<Group> findGroupList(ObjectId id) {
 		// TODO Auto-generated method stub
 		return groupRepository.findByParticipants(id);
+	}
+
+	@Override
+	public List<HashMap<String, Object>> findMemberList(String groupId) {
+		
+		List<HashMap<String, Object>> memberList = new ArrayList<>();
+		
+		ObjectId grid = new ObjectId(groupId);
+
+		List<Group> groups = groupRepository.findById(grid);
+		
+		System.out.println(groups);
+		Member member = new Member();
+		
+		for (Group group : groups) {
+			ObjectId[] ObjectArr = group.getParticipants();
+			for (int i = 0; i < group.getParticipants().length; i++) {
+				HashMap<String, Object> hashmap = new HashMap<>();
+				System.out.println("그룹멤버 아이디");
+				System.out.println(ObjectArr[i]);
+				member = memberRepository.findById(ObjectArr[i]);
+				System.out.println("찾은 멤버");
+				System.out.println(member);	
+				hashmap.put("memberName", member.getNickname());
+				hashmap.put("memberId", member.getId().toString());
+				memberList.add(hashmap);
+				
+			}
+			System.out.println("최종 그룹멤버");
+			System.out.println(memberList);	
+			
+		}
+		
+		return memberList;
 	}
 
 }

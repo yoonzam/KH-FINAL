@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
@@ -46,8 +47,7 @@ public class MapController {
 		
 		//검색을 위한 자신의 팔로우 리스트 
 		List<Follow> follows = mapService.findFollowList(member.getId());
-		System.out.println("팔로우 목록");
-		System.out.println(follows);
+		
 		
 		// 공개된 리뷰목록과 팔로워한 리뷰를 가져옴
 		List<HashMap<String, Object>> reviews = mapService.myEatsMap(member.getId(), follows);
@@ -57,9 +57,14 @@ public class MapController {
 		
 		//js 에서 사용하기 위해 json으로 변환
 		ObjectMapper mapper = new ObjectMapper();
-		String jsonText = mapper.writeValueAsString(reviews);
+		String jsonReview = mapper.writeValueAsString(reviews);
+		//String jsonGroup = mapper.writeValueAsString(groups);
 		
-		model.addAttribute("reviews",jsonText);
+		//view단에 사용하기 위해 model에 데이터 담기
+		model.addAttribute("reviews",jsonReview);
+		model.addAttribute("groups",groups);
+		
+		//hashmap에서 데이터 추출후 분리 저장
 		List<Review> saveReview = new ArrayList();
 		for (HashMap<String, Object> hashMap : reviews) {
 			
@@ -106,5 +111,15 @@ public class MapController {
 
 		return reviewList;
 	}
+	
+	@ResponseBody
+	@GetMapping("group")
+	public List<HashMap<String, Object>> groupMember(String groupId){
+		
+		List<HashMap<String, Object>> memberList = mapService.findMemberList(groupId);
+		
+		return memberList;
+	}
+	
 
 }

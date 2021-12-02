@@ -17,6 +17,7 @@
 	display: flex;
 	justify-content: center;
 }
+
 .popup-wrap {
 	display: flex;
 	justify-content: center;
@@ -27,26 +28,29 @@
 	padding-left: 20px;
 	box-shadow: 2px 2px 4px rgb(0 0 0/ 30%);
 }
+
 .rest-info {
 	padding: 20px 0;
-	flex:6;
+	flex: 6;
 	display: flex;
-    flex-direction: column;
-    justify-content: space-around;
+	flex-direction: column;
+	justify-content: space-around;
 }
+
 .rest-title {
 	font-weight: 700;
 	font-size: 20px;
 	color: #111;
-	margin-top:0;
+	margin-top: 0;
 	margin-bottom: 10px;
 }
-.wrap-btn{
-	flex:1;
-	position: relative; 
+
+.wrap-btn {
+	flex: 1;
+	position: relative;
 	display: flex;
-	
 }
+
 .btn {
 	padding: 18px;
 	border-radius: 5px;
@@ -56,15 +60,12 @@
 	transition-duration: 0.5s;
 	position: absolute;
 	top: 50%;
-	transform : translateY(-50%);
-}
-.btn:hover{
-	background-color:#ffa54f;
+	transform: translateY(-50%);
 }
 
-
-
-
+.btn:hover {
+	background-color: #ffa54f;
+}
 </style>
 </head>
 <body>
@@ -79,40 +80,42 @@
 							class="search-btn">검색</a>
 					</div>
 					<div class="select-bar">
-						<select id="friendList" name="friends" class="select" style="display: none;">
+						<select id="friendList" name="friends" class="select"
+							style="display: none;">
 							<option disabled selected>🍟잇친이들의 맛집</option>
-							<option>이지원</option>
-							<option>김지원</option>
-							<option>박지원</option>
-							<option>최지원</option>
-						</select>
-						<select name="category" class="select" onchange="changeLangSelect()" id="checkCategory">
+						
+						</select> <select name="category" class="select"
+							onchange="changeLangSelect()" id="checkCategory">
 							<option disabled="disabled" selected="selected">🎈잇츠맵카테고리</option>
-							<option value="group">니캉내캉</option>
+							<c:forEach items="${groups}" var="groups">
+								<option  value="${groups.id}" >${groups.groupName}</option>
+							</c:forEach>
 							<option value="follower">잇친맵</option>
 							<option value="social">소셜맵</option>
-						</select> 
+						</select>
 					</div>
 				</div>
 			</div>
 			<div class="map-review">
 				<div class="review_wrap" onclick="">
-						<div class="img-box">
-							<img class="image-thumbnail" src="/resources/img/upload/01.jpg">
-						</div>
-						<div class="info">
-							<div class="title-wrap">
-								<div class="eats-name">스시 아루히</div>
-								<div class="icons"><i onclick="clickLock(this);"class="fas fa-unlock"></i></div>
-							</div>
-							
-							<div class="eats-location">서울 영등포구</div>
-							<div class="eats-tag">
-								<span>#가성비</span> <span>#친근함</span> <span>#1~2만원대</span>
+					<div class="img-box">
+						<img class="image-thumbnail" src="/resources/img/upload/01.jpg">
+					</div>
+					<div class="info">
+						<div class="title-wrap">
+							<div class="eats-name">스시 아루히</div>
+							<div class="icons">
+								<i onclick="clickLock(this);" class="fas fa-unlock"></i>
 							</div>
 						</div>
-				</div>	
-				
+
+						<div class="eats-location">서울 영등포구</div>
+						<div class="eats-tag">
+							<span>#가성비</span> <span>#친근함</span> <span>#1~2만원대</span>
+						</div>
+					</div>
+				</div>
+
 			</div>
 			<div class="eatsMap">
 				<div id="map"></div>
@@ -120,7 +123,7 @@
 			<div class="popup">
 				<div class="popup-wrap" style="display: none;">
 					<div class="rest-info">
-						<h2 class="rest-title" id="place-name"></h2> 
+						<h2 class="rest-title" id="place-name"></h2>
 						<span class="rest-content" id="road-address"></span>
 					</div>
 					<div class="wrap-btn">
@@ -410,25 +413,63 @@
 			return processedMarker;
 		}
 		
-			
 		
 		/* 니캉내캉 선택 후 나타나는 group 친구창 */
 		let changeLangSelect = () => {
 			let check = document.getElementById("checkCategory");
-			if ('group' == check.options[check.selectedIndex].value) {	
-				document.querySelector('#friendList').style.display = "";
-			}else{
+			if ('follower' == check.options[check.selectedIndex].value) {
+				console.dir("1동작");
 				document.querySelector('#friendList').style.display = "none";
+			}else if ('social' == check.options[check.selectedIndex].value) {
+				console.dir("2동작");
+				document.querySelector('#friendList').style.display = "none";
+			}else{
+				console.dir("3동작");
+				console.dir(check.options[check.selectedIndex].value);
+				findGroupMember(check.options[check.selectedIndex].value);
+				document.querySelector('#friendList').style.display = "";
 			}
 		}
+		
+		//그룹창 선택 후 그룹내 잇친리스트 불러오기
+		let findGroupMember = (groupId) =>{
+			console.dir("클릭 확인");
+			fetch("/map/group?groupId=" + groupId)
+			  .then(response => {
+				  if(response.ok){	//통신 성공시
+					  return response.json();
+				  }else{
+					  throw new Error(response.status);
+				  }
+			  }).then(json => {	//promise객체의 json
+				console.dir("그룹 멤버리스트");
+				console.dir(json);
+				optionAdd(json);
+					  
+			  }).catch(error => {
+				  alert("실패");
+			  });
+			
+		}
+		
+		//멤버리스트 옵션에 추가 메서드
+		let optionAdd = (memberList) =>{
+			
+			
+			$('#friendList').children('option:not(:first)').remove();
+			let selectEl = document.querySelector("#friendList"); 
+			
+			for (var i = 0; i < memberList.length; i++) {
+				$(selectEl).append("<option value='"+ (memberList[i].memberId)+"'>" + (memberList[i].memberName) + "</option>")
+			}
+			
+		}
+		
 		
 		//map 초기 화면에 리뷰 리스트와 마커 뿌려주기
 		var myEetsReview = 	${reviews};	
 		console.dir("json잘 받아왔나?");
 		console.dir(myEetsReview);
-		
-		
-		
 		
 	</script>
 	<script type="text/javascript" src="/resources/js/map/Geolocation.js"></script>

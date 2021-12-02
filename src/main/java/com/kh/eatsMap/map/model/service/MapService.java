@@ -31,6 +31,9 @@ public interface MapService {
 	List<Group> findGroupList(ObjectId id);
 
 
+	List<HashMap<String, Object>> findMemberList(String groupId);
+
+
 
 
 }
