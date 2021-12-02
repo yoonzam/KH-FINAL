@@ -19,14 +19,11 @@ public class Calendar {
 	private String title;
 	private String date;
 	private String time;
-	
 	private String resName;
 	
 	@GeoSpatialIndexed(type = GeoSpatialIndexType.GEO_2DSPHERE) 
 	private GeoJsonPoint location;
 	
 	private ObjectId[] participants;
-	/*
-	 * private ObjectId[] participant; //참가자
-	 */
+
 }

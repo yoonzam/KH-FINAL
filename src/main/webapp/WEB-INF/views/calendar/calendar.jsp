@@ -87,7 +87,14 @@
 		 				$('#detail-date').text(data.calendar.date);
 		 				$('#detail-time').text(data.calendar.time);
 		 				$('#detail-place').text(data.calendar.resName);
-		 				$('#detail-participant').text(data.calendar.participant);
+		 				
+		 				/* ObjectId[] participants = request.getParameterValues("participants[]");
+		 				for(int i = 0, len = participants.length; i<len ; i++){
+		 					Object participants = participants[i];
+		 				} */
+		 				
+		 				/* $('#detail-participant').text(data.calendar.participant); */
+		 				$('#detail-participant').text(data.calendar.participants);
 		 				
 		 				$('#sch-change-btn').click(e => {
 		 					

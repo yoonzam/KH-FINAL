@@ -22,13 +22,5 @@ public interface CalendarService {
 
 	void deleteSchedule(String id);
 
-	
-
-	
-	/*
-	 * static Map<String, Object> selectScheduleById(String id) { Auto-generated
-	 * method stub return null; }
-	 */
-	 
 
 }
