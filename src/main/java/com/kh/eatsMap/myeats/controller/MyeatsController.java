@@ -149,7 +149,6 @@ public class MyeatsController {
 	//수정조회
 	@RequestMapping(value="/groupDetailModify", method=RequestMethod.GET)
 	public void modifyGet(@RequestParam("id") ObjectId id, Model model) throws Exception{
-		
 		List<Group> groups = groupService.read(id);
 		for (Group group : groups) {
 			List<Fileinfo> files = groupService.findFiles(group.getId());
@@ -160,10 +159,11 @@ public class MyeatsController {
 	}
 	//수정처리
 	@RequestMapping(value="/groupDetailModify", method=RequestMethod.POST)
-	public String modifyPOST(Group group,List<MultipartFile> photos, Member member,
+	public String modifyPOST(Group group,
+			List<MultipartFile> photos, Member member,
 			@RequestParam(value="delNickName", required = false) ObjectId delNickName,@RequestParam(value ="newNickNameOne",required = false)ObjectId newNickNameOne) throws Exception{
+		System.out.println(photos);
 		groupService.modify(group,photos,member,delNickName,newNickNameOne);
-		
 		
 		return "redirect:/myeats/groupDetail?id="+group.getId();
 	}
@@ -198,7 +198,9 @@ public class MyeatsController {
    @PostMapping("createGroup")
    public String createGroup(Group group, PageObject pageObject,List<MultipartFile> photos
                      , @SessionAttribute("authentication") Member member, RedirectAttributes reAttr ) {
-      groupService.write(group,photos,member);
+     
+	   System.out.println(photos);
+	   groupService.write(group,photos,member);
       
       for (int i = 0; i < group.getParticipants().length; i++) {
     	  Member to = memberService.findMemberById(group.getParticipants()[i]);
@@ -206,7 +208,7 @@ public class MyeatsController {
     	  memberService.updateNotice("group", notice);
     	  push.push(to);
       }
-      
+      System.out.println(photos);
       reAttr.addFlashAttribute("list", groupService.list(pageObject,member));
       reAttr.addFlashAttribute("result", "success");
       return "redirect:/myeats/group";
