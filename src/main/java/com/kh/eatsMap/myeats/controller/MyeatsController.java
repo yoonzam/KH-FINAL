@@ -130,11 +130,33 @@ public class MyeatsController {
 			List<Fileinfo> files = groupService.findFiles(group.getId());
 			if(files.size() > 0) group.setThumUrl(files.get(0).getDownloadURL());
 		}
-		 Map<String,Object> map = new HashMap<String,Object>();
-		List<Member> members = groupService.findMember();
-		map = Map.of("members", members, "groups", groups);
+//		 Map<String,Object> map = new HashMap<String,Object>();
+//		List<Member> members = groupService.findMember();
+//		map = Map.of("members", members, "groups", groups);
+//		
+//		model.addAllAttributes(map);
 		
-		model.addAllAttributes(map);
+		
+		/////그룹타입 반환의 그룹에서 getObjectid를 한다.
+		//위 id에 해당하는 멤버타입 반환의 멤버를 조회한다.
+		//멤버객체서 닉네임을 얻는다.
+		Group currentGroup = groupService.findGroupById(id);
+		ObjectId[] currentParticipants = currentGroup.getParticipants();
+		Member member = new Member();
+		String nickName = null;
+		List<String> nickNames =  new ArrayList<String>(); 
+		int i = 0;
+			for (ObjectId currentParticipant : currentParticipants) {
+				member = groupService.findMemberById(currentParticipant);
+				nickName = member.getNickname(); 
+				nickNames.add(i,nickName);
+				i++;
+			}
+			 Map<String,Object> map = new HashMap<String,Object>();
+				map = Map.of("groups", groups, "nickNames", nickNames);
+			//model.addAttribute("nickName", nickNames);
+			
+			model.addAllAttributes(map);
 	}
 	
 	@RequestMapping(value="/delete", method=RequestMethod.POST)
@@ -162,7 +184,7 @@ public class MyeatsController {
 	public String modifyPOST(Group group,
 			List<MultipartFile> photos, Member member,
 			@RequestParam(value="delNickName", required = false) ObjectId delNickName,@RequestParam(value ="newNickNameOne",required = false)ObjectId newNickNameOne) throws Exception{
-		System.out.println(photos);
+		//System.out.println(photos);
 		groupService.modify(group,photos,member,delNickName,newNickNameOne);
 		
 		return "redirect:/myeats/groupDetail?id="+group.getId();
@@ -199,7 +221,7 @@ public class MyeatsController {
    public String createGroup(Group group, PageObject pageObject,List<MultipartFile> photos
                      , @SessionAttribute("authentication") Member member, RedirectAttributes reAttr ) {
      
-	   System.out.println(photos);
+	   //System.out.println(photos);
 	   groupService.write(group,photos,member);
       
       for (int i = 0; i < group.getParticipants().length; i++) {
@@ -208,7 +230,7 @@ public class MyeatsController {
     	  memberService.updateNotice("group", notice);
     	  push.push(to);
       }
-      System.out.println(photos);
+      //System.out.println(photos);
       reAttr.addFlashAttribute("list", groupService.list(pageObject,member));
       reAttr.addFlashAttribute("result", "success");
       return "redirect:/myeats/group";

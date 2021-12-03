@@ -30,13 +30,19 @@
 	
 	<a class="close-btn" onclick="closePopup();"><i class="fas fa-times"></i></a>
 <script type="text/javascript">
-$(document).ready(() => {
+
+let viewCalendarForm = () => {
+	$('input[type=text]').val = '';
+	$('input[type=date]').val = '';
+	$('input[type=time]').val = '';
+	$('#participant').empty = '';
+	
     $.ajax({
         type:"GET",
         url: '/calendar/memberList',
         dataType: 'json',
         success:function(data){
-        	console.dir(data);
+        	/* console.dir("멤버들: " + data); */
         	if(data != null){
           		let html = '';
           		let textNode = '';
@@ -50,7 +56,7 @@ $(document).ready(() => {
         	}
         }
     });
-});
+}
 
 </script>
 </div>
