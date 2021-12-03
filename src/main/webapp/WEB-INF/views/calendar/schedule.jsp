@@ -9,7 +9,7 @@
 					<div class="list"><span>제목 : </span><span id="detail-title"></span></div>
 					<div class="list"><span>시간 : </span><span id="detail-time" ></span></div>
 					<div class="list"><span>장소 : </span><span id="detail-place"></span></div>
-					<div class="list"><span>참석자 : </span><span id="detail-participant"></span></div>
+					<div class="list" id="participant-tit"><span>참석자 : </span><span id="detail-participant"></span></div>
 				</div>
 				<div class="btn-wrap">
 						<button class="change" id="sch-change-btn">수정</button>
