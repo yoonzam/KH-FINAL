@@ -162,7 +162,7 @@ public class MyeatsController {
 	public String modifyPOST(Group group,
 			List<MultipartFile> photos, Member member,
 			@RequestParam(value="delNickName", required = false) ObjectId delNickName,@RequestParam(value ="newNickNameOne",required = false)ObjectId newNickNameOne) throws Exception{
-		System.out.println(photos);
+		//System.out.println(photos);
 		groupService.modify(group,photos,member,delNickName,newNickNameOne);
 		
 		return "redirect:/myeats/groupDetail?id="+group.getId();
@@ -199,7 +199,7 @@ public class MyeatsController {
    public String createGroup(Group group, PageObject pageObject,List<MultipartFile> photos
                      , @SessionAttribute("authentication") Member member, RedirectAttributes reAttr ) {
      
-	   System.out.println(photos);
+	   //System.out.println(photos);
 	   groupService.write(group,photos,member);
       
       for (int i = 0; i < group.getParticipants().length; i++) {
@@ -208,7 +208,7 @@ public class MyeatsController {
     	  memberService.updateNotice("group", notice);
     	  push.push(to);
       }
-      System.out.println(photos);
+      //System.out.println(photos);
       reAttr.addFlashAttribute("list", groupService.list(pageObject,member));
       reAttr.addFlashAttribute("result", "success");
       return "redirect:/myeats/group";

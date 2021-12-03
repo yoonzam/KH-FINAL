@@ -127,7 +127,7 @@ public class GroupDAO {
 	
 	public void update(Group group,List<MultipartFile> photos, Member member,ObjectId delNickName,ObjectId newNickNameOne) throws Exception{
 		
-		System.out.println("1"+photos);
+		//System.out.println("1"+photos);
 		
 		group.setMemberId(member.getId());
 		
