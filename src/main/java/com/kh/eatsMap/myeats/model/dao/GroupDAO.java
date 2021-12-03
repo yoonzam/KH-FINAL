@@ -86,6 +86,25 @@ public class GroupDAO {
 					
 					return list;
 				}
+				
+				//id로 조회 멤버 리스트
+				public List<Member> listMemberbyId(ObjectId id) throws Exception{
+					List<Member> list = null;
+					Query query = new Query();
+					query = query.addCriteria(Criteria.where("id").is(id));
+					list = mongoTemplate.find(query,com.kh.eatsMap.member.model.dto.Member.class,"member");
+					
+					return list;
+				}
+				
+				
+				 public Group findGroupById(ObjectId id){
+				        Query query = new Query(Criteria.where("_id").is(id));
+
+				        Group group = mongoTemplate.findOne(query,com.kh.eatsMap.myeats.model.dto.Group.class,"group");
+				        return group;
+				    }
+				 
 		
 	 
 	

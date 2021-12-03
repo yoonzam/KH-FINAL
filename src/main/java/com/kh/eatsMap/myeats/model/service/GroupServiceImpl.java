@@ -141,6 +141,18 @@ public class GroupServiceImpl implements GroupService{
 		return members;
 	}
 	
+	@Override
+	public  List<Member> findMemberlistById(ObjectId id) throws Exception{
+		List<Member> members = dao.listMemberbyId(id);
+		return members;
+	}
+	@Override
+	public Group findGroupById(ObjectId id) throws Exception{
+		Group group = new Group();
+		group = dao.findGroupById(id);
+		return group;
+	}
+	
 
 
 
