@@ -3,10 +3,8 @@ package com.kh.eatsMap.timeline;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.List;
 
-import org.bson.Document;
 import org.bson.types.ObjectId;
 import org.junit.Before;
 import org.junit.Test;
@@ -25,9 +23,6 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.context.WebApplicationContext;
 
-import com.kh.eatsMap.common.util.Fileinfo;
-import com.kh.eatsMap.member.model.dto.Member;
-import com.kh.eatsMap.myeats.model.dto.Group;
 import com.kh.eatsMap.myeats.model.dto.Like;
 import com.kh.eatsMap.myeats.model.repository.GroupRepository;
 import com.kh.eatsMap.myeats.model.repository.LikeRepository;
