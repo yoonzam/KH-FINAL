@@ -168,4 +168,18 @@ public class MapServiceImpl implements MapService {
 		return memberList;
 	}
 
+	@Override
+	public List<HashMap<String, Object>> findGroupReview(String groupId) {
+		List<HashMap<String, Object>> groupReview = new ArrayList<>();
+		
+		List<Review> reviews = mapRepository.findByGroup(groupId);
+		for (Review review : reviews) {
+			HashMap<String, Object> hashmap = new HashMap<>();
+			hashmap.put("review", review);
+			hashmap.put("reviewId", review.getId().toString());
+			groupReview.add(hashmap);
+		}
+		return groupReview;
+	}
+
 }

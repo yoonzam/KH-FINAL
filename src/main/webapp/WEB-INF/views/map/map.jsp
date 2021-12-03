@@ -83,14 +83,14 @@
 						<select id="friendList" name="friends" class="select"
 							style="display: none;">
 							<option disabled selected>🍟잇친이들의 맛집</option>
-						
+
 						</select> <select name="category" class="select"
 							onchange="changeLangSelect()" id="checkCategory">
 							<option disabled="disabled" selected="selected">🎈잇츠맵카테고리</option>
 							<c:forEach items="${groups}" var="groups">
-								<option  value="${groups.id}" >${groups.groupName}</option>
+								<option value="${groups.id}">${groups.groupName}</option>
 							</c:forEach>
-							<option value="follower">잇친맵</option>
+							<option value="myMap">마이잇츠맵</option>
 							<option value="social">소셜맵</option>
 						</select>
 					</div>
@@ -162,7 +162,8 @@
 			
 			
 		}
-		
+		//마커 담을 배열
+		var markers = [];
 		  var container = document.getElementById('map'); //지도를 담을 영역의 DOM 레퍼런스
 		  var options = { //지도를 생성할 때 필요한 기본 옵션
 			center : new kakao.maps.LatLng(37.54699, 127.09598), //지도의 중심좌표.
@@ -190,8 +191,7 @@
 		
 		/*비동기로 백으로 값보내기 */
 		let searchKeyword = (keyword) =>{
-			let parent = document.querySelector('.map-review');
-			removeAllChildNodes(parent);
+			
 			fetch("/map/search?keyword=" + keyword)
 			  .then(response => {
 				  if(response.ok){	//통신 성공시
@@ -202,66 +202,73 @@
 			  }).then(json => {	//promise객체의 json
 				console.dir(json);
 			  	//마크 찍어주기
-				markerCreate(json,keyword);
+			  	removeMarker();
+			  	let imgLink = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png";
+				markerCreate(json,imgLink);
 			  	
 				searchMap(keyword,json);
 				  
-				for (var i = 0; i < json.length; i++) {
-					  let returnDiv = takeReview(json[i].reviewId,json[i].review.addr,json[i].review.resName,json[i].review.hashtag);
-					  
-					  var $div = $(returnDiv);
-					  $('.map-review').append($div);
-				}
+				divCreate(json);
 					  
 			  }).catch(error => {
 				  alert("실패");
 			  });
 		}
 		//이전 검색 삭제
-		function removeAllChildNodes(parent) {
+		function removeAllChildNodes() {
+			let parent = document.querySelector('.map-review');
 		    while (parent.firstChild) {
 		        parent.removeChild(parent.firstChild);
 		    }
 		}
 		
-		//리뷰검색 마크 생성
-		let markerCreate = (reviews,keyword) =>{
-			var positions = [];
+		//divCreate
+		let divCreate = (data) => {
 			
+			removeAllChildNodes();
+			for (var i = 0; i < data.length; i++) {
+				  let returnDiv = takeReview(data[i].reviewId,data[i].review.addr,data[i].review.resName,data[i].review.hashtag);
+				  
+				  var $div = $(returnDiv);
+				  $('.map-review').append($div);
+			}
+		}
+		
+		
+		//리뷰검색 마크 생성
+		let markerCreate = (reviews,imgRef) =>{
+			var positions = [];
+			var bounds = new kakao.maps.LatLngBounds();
 			
 			for (var i = 0; i < reviews.length; i++) {
 				let mark = {
-				        title: reviews[i].review.resName, 
-				        latlng: new kakao.maps.LatLng(reviews[i].review.location.coordinates[1], reviews[i].review.location.coordinates[0])
+						place_name: reviews[i].review.resName, 
+				        x : reviews[i].review.location.coordinates[0],
+				        y : reviews[i].review.location.coordinates[1]
 				 }
 				positions.push(mark);
 			}
-			
+			console.dir("dede");
 			console.dir(positions);
 
 			// 마커 이미지의 이미지 주소입니다
-			var imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png"; 
+			var imageSrc = imgRef; 
 			positions.forEach(function(position, idx) {
 				 // 마커 이미지의 이미지 크기 입니다
 			    var imageSize = new kakao.maps.Size(24, 35); 
 			    
 			    // 마커 이미지를 생성합니다    
 			    var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize); 
-			   
-			    // 마커를 생성합니다
-			   var marker = new kakao.maps.Marker({
-			        map: map, // 마커를 표시할 지도
-			        position: position.latlng, // 마커를 표시할 위치
-			        title : position.title, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
-			        image : markerImage // 마커 이미지
-			        
-			    });	
-			   kakao.maps.event.addListener(marker, 'click', function(){
-				   
-				   restInfo(marker,keyword);
-			   });
+			    console.dir(position);
+			    
+			    
+			    
+			 	// 마커를 생성합니다
+			    displayMarker(position,markerImage);
+			    
+			    bounds.extend(new kakao.maps.LatLng(position.y, position.x));
 			});
-			
+			 map.setBounds(bounds);
 			
 		}
 		let showDiv = (placeName,roadAddress) =>{
@@ -369,6 +376,7 @@
 			        
 			        //데이타 중복 마커 처리
 			        let processingData = processingMarker(data,markerData);
+			        console.dir("확인");
 			        console.dir(processingData);
 			        
 			        
@@ -381,21 +389,29 @@
 			        map.setBounds(bounds);
 			    } 
 			}
-			// 지도에 마커를 표시하는 함수입니다
-			function displayMarker(place) {
+			
+		}
+		
+		// 지도에 마커를 표시하는 함수입니다
+		function displayMarker(place,markerImage) {
+		    console.dir("마커 생성중");
+		    console.dir(place);
+		    // 마커를 생성하고 지도에 표시합니다
+		    var marker = new kakao.maps.Marker({
+		    	title : place.place_name,
+		        map: map,
+		        image : markerImage,
+		        position: new kakao.maps.LatLng(place.y, place.x) 
+		    });
+		    markers.push(marker);	
+		    console.dir("문제");
+		    console.dir(marker.getTitle());
+		    // 마커에 클릭이벤트를 등록합니다
+		    kakao.maps.event.addListener(marker, 'click', function() {
+		    	restInfo(marker,marker.getTitle());
+				
 			    
-			    // 마커를 생성하고 지도에 표시합니다
-			    var marker = new kakao.maps.Marker({
-			        map: map,
-			        position: new kakao.maps.LatLng(place.y, place.x) 
-			    });
-			    // 마커에 클릭이벤트를 등록합니다
-			    kakao.maps.event.addListener(marker, 'click', function() {
-			    	restInfo(marker,keyword);
-					
-				    
-				});
-			}
+			});
 		}
 		
 		//마커 중복제거 
@@ -417,7 +433,7 @@
 		/* 니캉내캉 선택 후 나타나는 group 친구창 */
 		let changeLangSelect = () => {
 			let check = document.getElementById("checkCategory");
-			if ('follower' == check.options[check.selectedIndex].value) {
+			if ('myMap' == check.options[check.selectedIndex].value) {
 				console.dir("1동작");
 				document.querySelector('#friendList').style.display = "none";
 			}else if ('social' == check.options[check.selectedIndex].value) {
@@ -444,7 +460,33 @@
 			  }).then(json => {	//promise객체의 json
 				console.dir("그룹 멤버리스트");
 				console.dir(json);
-				optionAdd(json);
+				console.dir(json.memberList);
+				optionAdd(json.memberList);
+				//groupFilterMap(groupId);
+				if (document.querySelector(".popup-wrap").style.display == "") {
+					document.querySelector(".popup-wrap").style.display = "none";
+				}
+				//맵에 그룹 마크 출력
+				console.dir("그룹 리뷰 잘 받아왔나?");
+				console.dir(json.groupReview);
+				if (!json.groupReview) {
+					console.dir("비었습니다.");
+					removeAllChildNodes();
+				}else{
+					//그룹 리스트 출력
+					divCreate(json.groupReview);
+					//원래 있는 지도에 마커 지우기
+					removeMarker();
+					//지도 위치 수정 및 마커 출력 //"http://t1.daumcdn.net/localimg/localimages/07/2012/img/marker_normal.png";
+					
+					var hotImageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png";
+
+					markerCreate(json.groupReview,hotImageSrc);
+				}
+				
+				
+				
+				
 					  
 			  }).catch(error => {
 				  alert("실패");
@@ -465,11 +507,40 @@
 			
 		}
 		
+		let groupFilterMap = (groupId) => {
+			let filteredMap = myEetsReview.filter((data)=>{
+				console.dir(data.review);
+				console.dir(groupId);
+	        	if (data.review.group == groupId) {
+					return true;
+				}
+	        	return false;
+	        });
+			return filteredMap;
+		}
+		
+		//지도 마크 추가 메서드
+		
+		
+		//마크 지우기 메서드
+		function removeMarker() {
+		    for ( var i = 0; i < markers.length; i++ ) {
+		        markers[i].setMap(null);
+		    }   
+		    markers = [];
+		}
+		
 		
 		//map 초기 화면에 리뷰 리스트와 마커 뿌려주기
 		var myEetsReview = 	${reviews};	
 		console.dir("json잘 받아왔나?");
 		console.dir(myEetsReview);
+		
+		
+		
+		
+		
+		//그룹 리뷰 리스트 출력
 		
 	</script>
 	<script type="text/javascript" src="/resources/js/map/Geolocation.js"></script>
