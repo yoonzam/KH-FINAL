@@ -151,11 +151,7 @@ public class MyeatsController {
 				nickName = member.getNickname(); 
 				nickNames.add(i,nickName);
 				i++;
-				System.out.println(nickNames);
-				
 			}
-			System.out.println(nickNames.get(0));
-			
 			 Map<String,Object> map = new HashMap<String,Object>();
 				map = Map.of("groups", groups, "nickNames", nickNames);
 			//model.addAttribute("nickName", nickNames);
