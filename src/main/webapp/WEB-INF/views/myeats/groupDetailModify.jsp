@@ -11,7 +11,7 @@
 
 /* css 상태 보고 추후에 이동 예정 */
 .form-control{
-    width: 83.5%;
+    width: 88.4%;
     padding: 13px;
     border-radius: 5px;
     border: 1px solid #aaa;
@@ -65,6 +65,16 @@ li, input {
     margin-right: 10px;
 }
 
+.btn-edit-profile {
+    background-color: #ccc;
+    border-radius: 5px;
+    padding: 14px;
+    transition-duration: 0.5s;
+    color: #fff;
+    border: none;
+    font-size: 16px;
+}
+
 </style>
 
 </head>
@@ -73,9 +83,6 @@ li, input {
 <section>
 	<div class="container-wrap">
 		<div class="container">
-			
-			
-			
 			<div class="group-view">
 			<c:forEach items="${groups}" var="groups">
 			<form role = "form" action="/myeats/groupDetailModify" method="post" enctype="multipart/form-data">	
@@ -84,10 +91,11 @@ li, input {
 				<div class="group-info">
 					<div class="group-profile">
 						<div class="group-img">
-							<img src="${!empty groups.thumUrl ? groups.thumUrl : '/resources/img/common/upload-logo.png'}" name="thumUrl"
+							<img id="target_img" src="${!empty groups.thumUrl ? groups.thumUrl : '/resources/img/common/upload-logo.png'}" name="thumUrl"
 							value="${groups.thumUrl}">
 						</div>
 					</div>
+	            
 					<div class="group-menu">
 						<div class="group-title"><i class="fas fa-bell"></i>
 						<input type="text" class="form-control" name="groupName"
@@ -99,6 +107,9 @@ li, input {
 							<button class="main-btn">잇츠맵 바로가기</button>
 							<button class="complete-btn">완료</button>
 							<button class="delete-btn">삭제</button>
+							<label for="profile" class="btn-edit-profile">이미지 수정</label>
+							<!-- name = thumurl작업해야함 -->
+							 <input type="file" id="profile" style="display: none;">
 						</div>
 					</div>
 				</div>
@@ -264,6 +275,33 @@ $(document).ready(function(){
 		frmObj.submit();
 		});
 	
+	//이미지 수정
+		document.querySelector('#profile').addEventListener('change', (e) => {
+		
+		//e.preventDefault();	 
+		let files = document.getElementById('profile').files;
+		
+		for (let file of files) {
+			if(validFileType(file)){
+				document.getElementById('target_img').src = URL.createObjectURL(file);
+			}
+		}
+		
+		});
+		   
+		let fileTypes = [
+		   "image/gif",
+		   "image/jpeg",
+		   "image/pjpeg",
+		   "image/png",
+		   "image/tiff",
+		   "image/webp",
+		   "image/x-icon"
+		 ];
+		 
+		function validFileType(file) {
+		   return fileTypes.includes(file.type);
+		 }
 	
 	
 });
