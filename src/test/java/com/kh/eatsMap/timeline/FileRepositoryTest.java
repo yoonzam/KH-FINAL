@@ -9,7 +9,10 @@ import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -60,5 +63,21 @@ public class FileRepositoryTest {
 		fileInfo.setSavePath("2021/11/27/");
 		fileInfo.setRenameFileName("4f2a6749-83f1-430d-8886-6d20031635c4.jpg");
 		fileRepository.deleteBySavePathAndRenameFileName(fileInfo.getSavePath(), fileInfo.getRenameFileName());
+	}
+	
+	@Test //file 업데이트
+	public void updateFile() {
+		Fileinfo fileInfo = new Fileinfo();
+		fileInfo.setTypeId(new ObjectId("61a9cf0e250ff37f9ef43384"));
+		fileInfo.setSavePath("2021/11/27/");
+		fileInfo.setRenameFileName("5f2a6749-83f1-430d-8886-6d20031635c4.jpg");
+		fileRepository.save(fileInfo);
+	}
+	
+	@Test
+	public void deleteFileMongto() {
+		Query query = new Query();
+		query = query.addCriteria(Criteria.where("typeId").in(new ObjectId("61a9da068c3f5568d074376e")));
+		mongoTemplate.remove(query, com.kh.eatsMap.common.util.Fileinfo.class);
 	}
 }

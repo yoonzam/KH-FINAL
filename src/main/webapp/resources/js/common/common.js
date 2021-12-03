@@ -74,12 +74,14 @@ $("#map_reviewBtn").click(function(){
 });
 
 let uploadReview = (reviewId) => {
+	let groupInfo;
 //	그룹불러오기
 	$.ajax({
 		type: 'POST',
 		url: '/timeline/group',
 		dataType: 'json',
 		success: (data) => {
+			groupInfo = data;
 			html = '';
 			for(var i = 0; i < data.length; i++){
 				html += '<option value="' + data[i].id + '"> '+ data[i].name +' </option>';
@@ -196,11 +198,10 @@ let uploadReview = (reviewId) => {
 				}
 				
 				//그룹&공개범위
-				if(data.review.group == null) {
-					//$('#pop-review-form select[name="privacy"]').val("'+data.review.privacy+'").prop("selected", true);
-				} else {
-					//$('#pop-review-form select[name="group"]').val("'+data.review.group+'").prop("selected", true);
-					//$('#pop-review-form select[name="privacy"]').prop('disabled',true);
+				$('#pop-review-form select[name="group"]').val(data.review.group).prop("selected", true);
+				$('#pop-review-form select[name="privacy"]').val(data.review.privacy).prop("selected", true);
+				if(data.review.group != 'my') {
+					$('#pop-review-form select[name="privacy"]').prop('disabled',true);
 				}
 			},
 			error: function (e) {
@@ -312,7 +313,7 @@ let uploadReview = (reviewId) => {
 	
 	//그룹&공개범위
 	$('#pop-review-form select[name="group"]').on('change',function(e){
-		if(e.target.value != ""){
+		if(e.target.value != "my"){
 			$('#pop-review-form select[name="privacy"]').prop('disabled',true);
 			$('#pop-review-form select[name="privacy"]').val('0').prop("selected", true);
 		} else{
@@ -513,7 +514,7 @@ let viewTimeline = (reviewId) => {
 	});
 }
 
-//사진 슬라이드
+/* 사진 슬라이드 */
 let movePhoto = () => {
 	$('#pop-review-detail .dot-btn > div').removeClass('selected');
 	$('#pop-review-detail .dot-btn > div[data-num="'+photoReviewCnt+'"]').addClass('selected');
@@ -537,7 +538,7 @@ let prevPhoto = (length) => {
 	$('#pop-review-detail .slide-btn i.fa-arrow-circle-right').show();
 }
 
-//리뷰수정&삭제
+/* 리뷰수정&삭제 */
 let editReview = (reviewId) => {
 	$('#pop-review-detail').hide();
 	editFlag = true;
@@ -561,7 +562,7 @@ let deleteReview = (reviewId) => {
 	});
 }
 
-//잇찜
+/* 잇찜 */
 let likeReview = (reviewId) => {
 	$.ajax({
 		type: 'POST',
@@ -596,7 +597,7 @@ let unlikeReview = (reviewId) => {
 	});
 }
 
-//잇친
+/* 잇친 */
 let follow = (followingId) => {
 	$.ajax({
 		type: 'POST',
@@ -629,6 +630,7 @@ let unfollow = (followingId) => {
 	});
 }
 
+/* 캘린더 저장 */
 let makeMySchedule = (resName, x, y) => {
 	$('#pop-review-detail').hide();
 	$('input[name="resName"]').val(resName);
