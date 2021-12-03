@@ -27,6 +27,8 @@ public interface MapRepository extends MongoRepository<Review, String>{
 
 	List<Review> findByMemberIdAndPrivacy(ObjectId followingId, int privacy);
 
+	List<Review> findByGroup(String groupId);
+
 	
 
 }

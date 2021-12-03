@@ -114,11 +114,28 @@ public class MapController {
 	
 	@ResponseBody
 	@GetMapping("group")
-	public List<HashMap<String, Object>> groupMember(String groupId){
+	public HashMap<String,List<HashMap<String, Object>>> groupMember(Model model,String groupId) throws JsonProcessingException{
+		HashMap<String,List<HashMap<String, Object>>> reviewMap = new HashMap<String, List<HashMap<String,Object>>>();
+		//그룹 리뷰
+		List<HashMap<String, Object>> groupReviewList = mapService.findGroupReview(groupId);
+		ObjectMapper mapper = new ObjectMapper();
+		String groupReview = mapper.writeValueAsString(groupReviewList);
+		if (groupReviewList.isEmpty()) {
+			System.out.println("비었습니다.");
+		}else {
+			reviewMap.put("groupReview", groupReviewList);
+		}
+		System.out.println(groupReview);
 		
+		
+		//검색을 위한 그룹 멤버 
 		List<HashMap<String, Object>> memberList = mapService.findMemberList(groupId);
 		
-		return memberList;
+
+		reviewMap.put("memberList", memberList);
+		
+		
+		return reviewMap;
 	}
 	
 
