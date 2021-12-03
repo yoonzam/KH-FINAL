@@ -36,8 +36,13 @@
     		/* themeSystem: 'bootstrap', */
     		height: 800,
     		initialView: 'dayGridMonth',
+    		fixedWeekCount: false,
     		selectable: true,
     		locale: 'ko',
+    		/* eventLimit: true,
+    		views: {
+    			month : {eventLimit : 5}
+    		}, */
 	    	
     		headerToolbar: {
 	    		left: 'custom',
@@ -124,7 +129,7 @@
 		 				})
 		 				
 		 				$('#sch-delete-btn').click(e => {
-		 					
+		 					$('#pop-schedule-detail').hide();
 		 					$.ajax({
 						 			url : '/calendar/delete',
 						 			type: 'post',
@@ -133,7 +138,12 @@
 						 			
 						 			success: (data) => {
 						 				alert('일정이 삭제되었습니다.');
-						 				$('#pop-schedule-detail').hide();
+						 				location.reload();
+						 				// 성공이 안되고 있는데...
+						 			},
+						 			error: () => {
+						 				alert("삭제 실패")
+						 				location.reload();
 						 			}
 		 					})
 		 				
