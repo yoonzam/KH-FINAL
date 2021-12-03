@@ -312,6 +312,14 @@ public class MemberServiceImpl implements MemberService{
 				memberList.add(Map.of("memberId", info.getId().toString(), "member", info));
 			}
 		}		
+		
+		//filter를 사용해서 서로이웃이 아닌 객체를 구하자! set 메서드 참조(차집합)
+		//서로이웃인 멤버 출력 먼저
+		//이후 차집합 멤버 출력
+		logger.debug("memberList");
+		memberList.forEach(e -> logger.debug(e.toString()));
+		logger.debug("followEachOther");
+		followEachOther.forEach(e -> logger.debug(e.toString()));
 		return Map.of("memberInfo", memberList, "followEachOther", followEachOtherId);
 	}
 

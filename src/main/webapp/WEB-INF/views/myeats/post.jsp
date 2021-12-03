@@ -146,6 +146,7 @@ let viewFollowing = (memberId) => {
 };
 
 let viewFollower = (memberId) => {
+	
 	$('.wrap-list-follower').empty();
 
 	let data = {id : memberId};
@@ -165,38 +166,60 @@ let viewFollower = (memberId) => {
 	 	}
 	}).then(data => {
 		let html = '';
-		let followEachOther = data.followEachOther; //Follower
-		let followerInfo = data.memberInfo;	//List<Map>
+		let followEachOther = data.followEachOther; //Follower 서로 친구인 멤버의 id를 담은 리스트
+		let followerInfo = data.memberInfo;			//List<Map>
+		
 		if(data.length == 0){
 			html += '<h3 style="text-align:center; padding-top:15px;">나를 팔로우한 잇친이 없습니다.</h3>';
+			$('.wrap-list-follower').append(html);
 		}
 		
 		if(followerInfo.length > 0){
+			
 			for (var i = 0; i < followerInfo.length; i++) {	//팔로워
-				for (var j = 0; j < followEachOther.length; j++) {	//서로이웃인 팔로워 정보
-					
-					
-					
+				
+				let list = document.createElement('li');
+				let aNickname = document.createElement('a');
+				
+				list.id = followerInfo[i].memberId;
+				$('.wrap-list-follower').append(list);
+				
+				aNickname.href='/member/follow/' + followerInfo[i].member.nickname;
+				aNickname.innerHTML = followerInfo[i].member.nickname;
+				
+				$('#' + followerInfo[i].memberId).append(aNickname);				
+				
+				document.querySelector('#follower-pop').style.display = 'flex';
+				
+			}
+			
+			//forEach문 사용할것!
+			for ( var j = 0; j < followEachOther.length; j++) {	//서로이웃인 팔로워 정보 만큼 돌면서 일치 아이디 조회
+				for (var i = 0; i < followerInfo.length; i++) {
+					let aBtn = '';
 					if (followerInfo[i].memberId == followEachOther[j].memberId) {
-						console.dir('일치했다');
-						html += '<li id="' + followerInfo[i].memberId + '">'
-							  + '	<a href="/member/follow/' + followerInfo[i].member.nickname + '">'+ followerInfo[i].member.nickname +'</a>'
-							  + '	<a onclick="popUnfollow(\''+ followerInfo[i].memberId+'\')" class="btn-pop unfollow">잇친끊기</a>'
-							  + '</li>'						
+						aBtn = document.createElement('a');				
+						aBtn.className = 'btn-pop unfollow';
+						aBtn.innerHTML = '잇친 끊기';
+						$('#' + followerInfo[i].memberId ).append($(aBtn));
+						$('#' + followerInfo[i].memberId + ' a:nth-child(2)').attr('onclick', 'popUnfollow('+ followerInfo[i].memberId +')');	//
+						
+						//$('#' + followerInfo[i].memberId + ' a:nth-child(2)').attr('onclick', 'popUnfollow('+ followerInfo[i].memberId +')');
 					}else{
-						html += '<li id="' + followerInfo[i].memberId + '">'
-							  + '	<a href="/member/follow/' + followerInfo[i].member.nickname + '">'+ followerInfo[i].member.nickname +'</a>'
-							  + '	<a onclick="popfollow(\''+ followerInfo[i].memberId+'\')" class="btn-pop follow">잇친맺기</a>'
-							  + '</li>'						
-					}					
+						aBtn = document.createElement('a');				
+						aBtn.className = 'btn-pop follow';
+						aBtn.innerHTML = '잇친 맺기';
+						$('#' + followerInfo[i].memberId ).append($(aBtn));
+						$('#' + followerInfo[i].memberId + ' a:nth-child(2)').attr('onclick', 'popfollow('+ followerInfo[i].memberId +')');
+						
+						//$('#' + followerInfo[i].memberId + ' a:nth-child(2)').attr('onclick', 'popfollow('+ followerInfo[i].memberId +')');
+					}
+						
 				}
-			}	
 		
+			}
+			
 		}
-		
-		console.dir(html);
-		document.querySelector('#follower-pop').style.display = 'flex';
-		$('.wrap-list-follower').append(html);
 		
 		console.dir(data);
 		console.dir(followEachOther);
@@ -226,8 +249,35 @@ let popUnfollow = (followingId) => {
 	});
 }
 
+let popfollow = (followingId) => {	//팔로우할 아이디
+	$.ajax({
+		type: 'POST',
+		url: '/member/follow',
+		data: JSON.stringify({ followingId : followingId }),
+		contentType: 'application/json',
+		cache: false,
+		success: (memberId) => {
+			$('#' + memberId + ' a:nth-child(2)').attr('class',"btn-pop unfollow");
+			$('#' + memberId + ' a:nth-child(2)').attr('onclick', 'popUnfollow('+ followerInfo[i].memberId +')');
+		},
+		error: (e) => {
+			alert("실패");
+		}
+	});	
+}
 
-
+/* 						
+html += '<li id="' + followerInfo[i].memberId + '">'
+	  + '	<a href="/member/follow/' + followerInfo[i].member.nickname + '">'+ followerInfo[i].member.nickname +'</a>'
+	  + '	<a onclick="popUnfollow(\''+ followerInfo[i].memberId+'\')" class="btn-pop unfollow">잇친끊기</a>'
+	  + '</li>'						
+}else{
+html += '<li id="' + followerInfo[i].memberId + '">'
+	  + '	<a href="/member/follow/' + followerInfo[i].member.nickname + '">'+ followerInfo[i].member.nickname +'</a>'
+	  + '	<a onclick="popfollow(\''+ followerInfo[i].memberId+'\')" class="btn-pop follow">잇친맺기</a>'
+	  + '</li>'						
+}	 
+*/	
 
 </script>
 </body>
