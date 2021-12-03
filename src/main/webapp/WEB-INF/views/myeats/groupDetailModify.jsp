@@ -84,8 +84,8 @@ li, input {
 	<div class="container-wrap">
 		<div class="container">
 			<div class="group-view">
-			<c:forEach items="${groups}" var="groups">
 			<form role = "form" action="/myeats/groupDetailModify" method="post" enctype="multipart/form-data">	
+			<c:forEach items="${groups}" var="groups">
 				<input type="hidden"  name="id" value="${groups.id}" />
 				
 				<div class="group-info">
@@ -108,8 +108,7 @@ li, input {
 							<button class="complete-btn">완료</button>
 							<button class="delete-btn">삭제</button>
 							<label for="profile" class="btn-edit-profile">이미지 수정</label>
-							<!-- name = thumurl작업해야함 -->
-							 <input type="file" id="profile" style="display: none;">
+							 <input type="file" name = "photos" id="profile" >
 						</div>
 					</div>
 				</div>
@@ -302,6 +301,9 @@ $(document).ready(function(){
 		function validFileType(file) {
 		   return fileTypes.includes(file.type);
 		 }
+		
+		
+		$('#profile').css('display','none');
 	
 	
 });

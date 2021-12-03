@@ -1,5 +1,6 @@
 package com.kh.eatsMap.myeats.model.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -20,6 +21,7 @@ import com.kh.eatsMap.common.util.Fileinfo;
 import com.kh.eatsMap.common.util.FindCriteria;
 import com.kh.eatsMap.common.util.PageObject;
 import com.kh.eatsMap.member.model.dto.Member;
+import com.kh.eatsMap.member.model.dto.Notice;
 import com.kh.eatsMap.myeats.model.dto.Group;
 import com.kh.eatsMap.myeats.model.repository.GroupRepository;
 import com.kh.eatsMap.timeline.model.repository.FileRepository;
@@ -125,6 +127,8 @@ public class GroupDAO {
 	
 	public void update(Group group,List<MultipartFile> photos, Member member,ObjectId delNickName,ObjectId newNickNameOne) throws Exception{
 		
+		System.out.println("1"+photos);
+		
 		group.setMemberId(member.getId());
 		
 		Query query = new Query();
@@ -141,9 +145,32 @@ public class GroupDAO {
 		 ObjectId[] newItem = new ObjectId[]{newNickNameOne};
 	    update = new Update();
 	    update.push("participants").each(newItem);
-	    //update.set("thumUrl", group.getThumUrl());
-	    mongoTemplate.updateFirst(query, update, Group.class);   
+	    
+	     mongoTemplate.updateFirst(query, update, Group.class);  
+	     
+
+
+		Query fileDelQuery = new Query();
+		//fileDelQuery.addCriteria(Criteria.where("typeId").in(new ObjectId("61a9da068c3f5568d074376e")));
+		fileDelQuery.addCriteria(Criteria.where("typeId").is(group.getId()));
+		mongoTemplate.remove(fileDelQuery, com.kh.eatsMap.common.util.Fileinfo.class);
+	     
+	     //fileRepository.deleteByTypeId(group.getId());
 		
+		FileUtil fileUtil = new FileUtil();
+		for (MultipartFile photo : photos) {
+			//System.out.println("2"+photo);
+			//System.out.println("3"+!photo.isEmpty());
+			
+			if(!photo.isEmpty()) {
+				Fileinfo fileInfo = fileUtil.fileUpload(photo);
+				fileInfo.setTypeId(group.getId());
+				mongoTemplate.save(fileInfo);
+			}
+		}
+	    
+	    
+
 		
 		}
 	
