@@ -146,9 +146,17 @@ public class MyeatsController {
 			
 			model.addAllAttributes(map);
 	}
+	@RequestMapping(value="/delete", method=RequestMethod.GET)
+	public String deleteGet(@RequestParam("id") String id, RedirectAttributes reAttr)throws Exception{ 
+		
+		groupService.remove(id);
+		reAttr.addFlashAttribute("result", "success");	
+		
+		return "redirect:/myeats/group";
+	}
 	
 	@RequestMapping(value="/delete", method=RequestMethod.POST)
-	public String delete(@RequestParam("id") String id, RedirectAttributes reAttr)throws Exception{ 
+	public String deletePost(@RequestParam("id") String id, RedirectAttributes reAttr)throws Exception{ 
 		
 		groupService.remove(id);
 		reAttr.addFlashAttribute("result", "success");	

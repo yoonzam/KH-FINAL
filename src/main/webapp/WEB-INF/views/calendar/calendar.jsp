@@ -34,11 +34,13 @@
     	var calendar = new FullCalendar.Calendar(calendarEl, {
     		
     		/* themeSystem: 'bootstrap', */
+    		contentHeight: 100,
     		height: 800,
     		initialView: 'dayGridMonth',
     		fixedWeekCount: false,
     		selectable: true,
     		locale: 'ko',
+    		
     		/* eventLimit: true,
     		views: {
     			month : {eventLimit : 5}
@@ -54,6 +56,7 @@
 	    		custom:{
 	    			text: '일정 만들기',
 	    			click: function(){
+	    				
 	    				viewCalendarForm();
 	    			}
 	    		}
@@ -97,10 +100,10 @@
 		 					$('#participant-tit').remove();
 						}
 		 				
-		 				/* for (var i = 0; i < data.participant.length; i++) {
+		 				for (var i = 0; i < data.participant.length; i++) {
 		 					text += data.participant[i].nickname + ' ';
 						}
-		 				$('#detail-participant').text(text); */
+		 				$('#detail-participant').text(text);
 		 				
 		 				
 		 				
@@ -110,23 +113,21 @@
 		 				
 		 				$('#sch-change-btn').click(e => {
 		 					
-		 					alert('일정을 수정합니다');
 		 					$('#pop-schedule-detail').hide();
 		 					$('#pop-schedule-form').show();
 		 					$('#save-event').text('수정완료');
+		 					viewCalendarForm();
 		 					
 		 					for (var i = 0; i < data.participant.length; i++) {
 			 					text += data.participant[i].nickname + ' ';
 							}
-			 				$('#detail-participant').text(text);
-		 					
 		 					
 		 					$('#scheduleId').val(data.calendarId);
-							$('#title').val(data.calendar.title);
-							$('#date').val(data.calendar.date);
-							$('#time').val(data.calendar.time);
-							$('#location').val(data.calendar.resName);
-							$('#participant').val(data.calendar.participant);
+							$('#scheduleForm-title').val(data.calendar.title);
+							$('#scheduleForm-date').val(data.calendar.date);
+							$('#scheduleForm-time').val(data.calendar.time);
+							$('#scheduleForm-location').val(data.calendar.resName);
+							//$('#participant').val(data.calendar.participant);
 							$('input[name="latitude"]').val(data.calendar.location.coordinates[1]);
 							$('input[name="longitude"]').val(data.calendar.location.coordinates[0]);
 							
