@@ -42,6 +42,7 @@ let viewCalendarForm = (resName, y, x) => {
         url: '/calendar/memberList',
         dataType: 'json',
         success:function(data){
+        	/* console.dir("멤버들: " + data); */
         	if(data != null){
           		let html = '';
           		let textNode = '';
@@ -55,13 +56,11 @@ let viewCalendarForm = (resName, y, x) => {
         	}
         }
     });
-    
     if(scheduleFlag){
     	$('input[name="resName"]').val(resName);
         $('input[name="latitude"]').val(y);
         $('input[name="longitude"]').val(x);
     }
-    
     $('#pop-schedule-form').css({'display': 'flex'});
 }
 
