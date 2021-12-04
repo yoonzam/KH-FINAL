@@ -147,7 +147,8 @@ public class GroupDAO {
 	public void update(Group group,List<MultipartFile> photos, Member member,
 			ObjectId delNickNameOne,ObjectId delNickNameTwo,ObjectId delNickNameThree,
 			ObjectId delNickNameFour,ObjectId delNickNameFive,ObjectId delNickNameSix,
-			ObjectId newNickNameOne) throws Exception{
+			ObjectId newNickNameOne,ObjectId newNickNameTwo,ObjectId newNickNameThree,
+			ObjectId newNickNameFour,ObjectId newNickNameFive,ObjectId newNickNameSix) throws Exception{
 		
 		//System.out.println("1"+photos);
 		
@@ -175,11 +176,45 @@ public class GroupDAO {
 		mongoTemplate.updateFirst(query, update, Group.class);
 		
 		//데이터를 추가
-//		 ObjectId[] newItem = new ObjectId[]{newNickNameOne};
+//		 ObjectId[] newItem = new ObjectId[]{newNickNameOne,newNickNameTwo,newNickNameThree,
+//					newNickNameFour,newNickNameFive,newNickNameSix};
 //	    update = new Update();
 //	    update.push("participants").each(newItem);
-//	    
 //	     mongoTemplate.updateFirst(query, update, Group.class);  
+		
+		//null값 잡기, null아니어도 다른문장 실행되어야 해서 따로 잡음
+		if(newNickNameOne != null) {
+			update = new Update();
+		    update.push("participants").each(newNickNameOne);
+		    mongoTemplate.updateFirst(query, update, Group.class);  
+			}
+		if(newNickNameTwo != null) {
+			update = new Update();
+		    update.push("participants").each(newNickNameTwo);
+		    mongoTemplate.updateFirst(query, update, Group.class);  
+			}
+		if(newNickNameThree != null) {
+			update = new Update();
+		    update.push("participants").each(newNickNameThree);
+		    mongoTemplate.updateFirst(query, update, Group.class);  
+			}
+		if(newNickNameFour != null) {
+			update = new Update();
+		    update.push("participants").each(newNickNameFour);
+		    mongoTemplate.updateFirst(query, update, Group.class);  
+			}
+		if(newNickNameFive != null) {
+			update = new Update();
+		    update.push("participants").each(newNickNameFive);
+		    mongoTemplate.updateFirst(query, update, Group.class);  
+			}
+		if(newNickNameSix != null) {
+			update = new Update();
+		    update.push("participants").each(newNickNameSix);
+		    mongoTemplate.updateFirst(query, update, Group.class);  
+			}
+		
+		 
 	     
 
 

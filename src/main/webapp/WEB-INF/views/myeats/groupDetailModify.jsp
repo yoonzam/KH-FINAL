@@ -15,7 +15,9 @@
     border-radius: 5px;
     border: 1px solid #aaa;
 }
-.invited-input {
+
+
+.show-input {
     color: #333;
     padding: 13px;
     border: 1px solid #ddd;
@@ -24,6 +26,12 @@
     background-color: #ffead6;
     margin-left: 20px;
 }
+.invited-input {
+   display: none;
+}
+
+
+
 #addButton {
     background-color: var(--red-color);
     width: 25px;
@@ -100,56 +108,56 @@ li, input {
 				<div class="group-member">
 					<h4>함께하는 잇친 리스트</h4>
 					<ul> 
-					<li>
-						<span>초대하기</span>
-						<div class="friend-list"> 
-							<select id="invited-select" name="participant" onchange="addList()"></select>
-							<input id="inviteButton" type='button' value='초대'/>
-							<ul id='nickNames'>
-							</ul>
-						</div>
-					</li>
+						<li>
+							<span>초대하기</span>
+							<div class="friend-list"> 
+								<select id="invited-select" name="participant" onchange="addList()"></select>
+								<input id="inviteButton" type='button' value='초대'/>
+								<ul id='nickNames'>
+								</ul>
+							</div>
+						</li>
 					</ul>
-					 <ul id='nickNames'>
-					 <c:forEach items="${groups}" var="groups">
-							<c:forEach items="${nickNames}" var="nickNames" begin="0" end="0" >
-		          				<li id="nickOne"><i class="fas fa-user"></i>&nbsp;
-		          				<input value="${nickNames}">
-		          				<input id="delOne" value="${groups.participants[0]}">
-		          				<a id="fasOne" ><i class="fas fa-times" ></i>삭제</a></li>
-		          			</c:forEach>
-		          			<c:forEach items="${nickNames}" var="nickNames" begin="1" end="1" >
-		          				<li id="nickTwo"><i class="fas fa-user"></i>&nbsp;
-		          				<input value="${nickNames}">
-		          				<input id="delTwo"value="${groups.participants[1]}">
-		          				<a id="fasTwo" ><i class="fas fa-times"></i>삭제</a></li>
-		          			</c:forEach>
-		          			<c:forEach items="${nickNames}" var="nickNames" begin="2" end="2" >
-		          				<li id="nickThree"><i class="fas fa-user"></i>&nbsp;
-		          				<input value="${nickNames}">
-		          				<input id="delThree"value="${groups.participants[2]}">
-		          				<a id="fasThree"><i class="fas fa-times"></i>삭제</a></li>
-		          			</c:forEach>
-		          			<c:forEach items="${nickNames}" var="nickNames" begin="3" end="3" >
-		          				<li id="nickFour"><i class="fas fa-user"></i>&nbsp;
-		          				<input value="${nickNames}">
-		          				<input id="delFour"value="${groups.participants[3]}">
-		          				<a id="fasFour"><i class="fas fa-times"></i>삭제</a></li>
-		          			</c:forEach>
-		          			<c:forEach items="${nickNames}" var="nickNames" begin="4" end="4" >
-		          				<li id="nickFive"><i class="fas fa-user"></i>&nbsp;
-		          				<input value="${nickNames}">
-		          				<input id="delFive"value="${groups.participants[4]}">
-		          				<a id="fasFive"><i class="fas fa-times"></i>삭제</a></li>
-		          			</c:forEach>
-		          			<c:forEach items="${nickNames}" var="nickNames" begin="5" end="5" >
-		          				<li id="nickSix"><i class="fas fa-user"></i>&nbsp;
-		          				<input value="${nickNames}">
-		          				<input id="delSix"value="${groups.participants[5]}">
-		          				<a id="fasSix"><i class="fas fa-times"></i>삭제</a></li>
-		          			</c:forEach>
-		          		</c:forEach>	
-						</ul>
+					<ul id='nickNames'>
+					<c:forEach items="${groups}" var="groups">
+						<c:forEach items="${nickNames}" var="nickNames" begin="0" end="0" >
+	          				<li id="nickOne"><i class="fas fa-user"></i>&nbsp;
+	          				<input value="${nickNames}">
+	          				<input type="hidden" id="delOne" value="${groups.participants[0]}">
+	          				<a id="fasOne" ><i class="fas fa-times" ></i>삭제</a></li>
+		          		</c:forEach>
+	          			<c:forEach items="${nickNames}" var="nickNames" begin="1" end="1" >
+	          				<li id="nickTwo"><i class="fas fa-user"></i>&nbsp;
+	          				<input value="${nickNames}">
+	          				<input type="hidden" id="delTwo"value="${groups.participants[1]}">
+	          				<a id="fasTwo" ><i class="fas fa-times"></i>삭제</a></li>
+	          			</c:forEach>
+	          			<c:forEach items="${nickNames}" var="nickNames" begin="2" end="2" >
+	          				<li id="nickThree"><i class="fas fa-user"></i>&nbsp;
+	          				<input value="${nickNames}">
+	          				<input type="hidden" id="delThree"value="${groups.participants[2]}">
+	          				<a id="fasThree"><i class="fas fa-times"></i>삭제</a></li>
+	          			</c:forEach>
+	          			<c:forEach items="${nickNames}" var="nickNames" begin="3" end="3" >
+	          				<li id="nickFour"><i class="fas fa-user"></i>&nbsp;
+	          				<input value="${nickNames}">
+	          				<input type="hidden" id="delFour"value="${groups.participants[3]}">
+	          				<a id="fasFour"><i class="fas fa-times"></i>삭제</a></li>
+	          			</c:forEach>
+	          			<c:forEach items="${nickNames}" var="nickNames" begin="4" end="4" >
+	          				<li id="nickFive"><i class="fas fa-user"></i>&nbsp;
+	          				<input value="${nickNames}">
+	          				<input type="hidden" id="delFive"value="${groups.participants[4]}">
+	          				<a id="fasFive"><i class="fas fa-times"></i>삭제</a></li>
+	          			</c:forEach>
+	          			<c:forEach items="${nickNames}" var="nickNames" begin="5" end="5" >
+	          				<li id="nickSix"><i class="fas fa-user"></i>&nbsp;
+	          				<input value="${nickNames}">
+	          				<input type="hidden" id="delSix"value="${groups.participants[5]}">
+	          				<a id="fasSix"><i class="fas fa-times"></i>삭제</a></li>
+	          			</c:forEach>
+		          	</c:forEach>	
+					</ul>
 				</div>
 				</form>
 				<a href = "group"><button class="btn-list">그룹 목록으로 돌아가기</button></a>
@@ -159,9 +167,8 @@ li, input {
 </section>     
 
 <%@ include file="/WEB-INF/views/include/footer.jsp" %>
-
 <script>
-
+//초대하기 클릭시
 $("#inviteButton").click(function(){  
     var url="/info/memberInfo";  
     $.ajax({      
@@ -181,40 +188,54 @@ $("#inviteButton").click(function(){
     });  
 });  
 
+//초대버튼 클릭시 리스트나열 함수
 function addList()  {
 	 let select = document.querySelector('#invited-select');
 	 const text = select.options[select.selectedIndex].text;
 	const addedValue = select.options[select.selectedIndex].value;
 	
+	//id 값(실제 name값 가짐) css에서 안보이게 처리
 	var addValue = $("#invited-select").val();
 	 var li = document.createElement("input");
 	 	li.setAttribute('class', "invited-input");
 		li.setAttribute('id', addValue);
-		li.setAttribute("name", "newNickNameOne");
-		li.setAttribute("value", text);//value는 텍스트
-	  
+		/* li.setAttribute("name", "newNickNameOne"); */
+	  	li.setAttribute("value", addValue);
+	//name 값 보여줌  
+	var show = document.createElement("input");
+		show.setAttribute('class', "show-input");
+		show.setAttribute('id', addValue);
+		show.setAttribute("value", text);
+		
+		
 	 var textNode = document.createTextNode(addValue);
 		li.appendChild(textNode);
+		show.appendChild(textNode);
 	  
 	 var icon = document.createElement("i");
 		 icon.setAttribute('class', "fas fa-times");
 		
-	  document.getElementById("nickNames").append(li,icon);
-	}
-	
-
-
-/* function deleteList()  {
-	var div = document.getElementId('nickOne');
-	 div.remove();
-	var li = document.createElement("input");
-	 	li.setAttribute('class', "delNickName");
+	  document.getElementById("nickNames").append(show,icon,li);
 	  
-	  document.getElementByClassName("fas fa-times").append(li);
+	  //초대할 그룹에 name부여
+	  var $ids = null;
+		$ids = $(".invited-input");
+		var $idone = $ids.eq(0);
+		var $idtwo = $ids.eq(1);
+		var $idtwo = $ids.eq(2);
+		var $idtwo = $ids.eq(3);
+		var $idtwo = $ids.eq(4);
+		var $idtwo = $ids.eq(5);
+		$ids.eq(0).attr("name","newNickNameOne");
+		$ids.eq(1).attr("name","newNickNameTwo");
+		$ids.eq(2).attr("name","newNickNameThree");
+		$ids.eq(3).attr("name","newNickNameFour");
+		$ids.eq(4).attr("name","newNickNameFive");
+		$ids.eq(5).attr("name","newNickNameSix");
+	  
 	}
- */
 
-
+//문서시작시
 $(document).ready(function(){
 	var frmObj = $("form[role='form']");
 	
@@ -255,47 +276,42 @@ $(document).ready(function(){
          $("#nickSix").hide();  
     	 }); 
         
-        
-
-        
 	 
 	//수정처리 페이지 이동
-		$(".complete-btn").on("click", function(){
-		frmObj.attr("action", "/myeats/groupDetailModify");
-		formObj.attr("method", "post");
-		frmObj.submit();
-		});
-	
+	$(".complete-btn").on("click", function(){
+	frmObj.attr("action", "/myeats/groupDetailModify");
+	formObj.attr("method", "post");
+	frmObj.submit();
+	});
+
 	//이미지 수정
-		document.querySelector('#profile').addEventListener('change', (e) => {
-		
-		//e.preventDefault();	 
-		let files = document.getElementById('profile').files;
-		
-		for (let file of files) {
-			if(validFileType(file)){
-				document.getElementById('target_img').src = URL.createObjectURL(file);
-			}
+	document.querySelector('#profile').addEventListener('change', (e) => {
+	
+	//e.preventDefault();	 
+	let files = document.getElementById('profile').files;
+	
+	for (let file of files) {
+		if(validFileType(file)){
+			document.getElementById('target_img').src = URL.createObjectURL(file);
 		}
-		
-		});
-		   
-		let fileTypes = [
-		   "image/gif",
-		   "image/jpeg",
-		   "image/pjpeg",
-		   "image/png",
-		   "image/tiff",
-		   "image/webp",
-		   "image/x-icon"
-		 ];
-		 
-		function validFileType(file) {
-		   return fileTypes.includes(file.type);
-		 }
-		
-		
-		$('#profile').css('display','none');
+	}
+	});
+	   
+	let fileTypes = [
+	   "image/gif",
+	   "image/jpeg",
+	   "image/pjpeg",
+	   "image/png",
+	   "image/tiff",
+	   "image/webp",
+	   "image/x-icon"
+	 ];
+	 
+	function validFileType(file) {
+	   return fileTypes.includes(file.type);
+	 }
+	//파일업로드 input 숨김처리
+	$('#profile').css('display','none');
 	
 	
 });

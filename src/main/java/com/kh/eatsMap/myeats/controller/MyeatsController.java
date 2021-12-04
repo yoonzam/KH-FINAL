@@ -203,15 +203,25 @@ public class MyeatsController {
 				@RequestParam(value="delNickNameFour", required = false) ObjectId delNickNameFour,
 				@RequestParam(value="delNickNameFive", required = false) ObjectId delNickNameFive,
 				@RequestParam(value="delNickNameSix", required = false) ObjectId delNickNameSix,
-				@RequestParam(value ="newNickNameOne",required = false)ObjectId newNickNameOne) throws Exception{
+				@RequestParam(value ="newNickNameOne",required = false)ObjectId newNickNameOne,
+				@RequestParam(value ="newNickNameTwo",required = false)ObjectId newNickNameTwo,
+				@RequestParam(value ="newNickNameThree",required = false)ObjectId newNickNameThree,
+				@RequestParam(value ="newNickNameFour",required = false)ObjectId newNickNameFour,
+				@RequestParam(value ="newNickNameFive",required = false)ObjectId newNickNameFive,
+				@RequestParam(value ="newNickNameSix",required = false)ObjectId newNickNameSix) throws Exception{
 			//System.out.println(photos);
+//			System.out.println(delNickNameOne+ ","+ delNickNameTwo+ ","+delNickNameThree+ ","
+//					+ delNickNameFour+ ","+ delNickNameFive+ ","+ ","+ delNickNameSix
+//					+newNickNameOne+ ","+ group+ ","+ member);
 			System.out.println(delNickNameOne+ ","+ delNickNameTwo+ ","+delNickNameThree+ ","
-					+ delNickNameFour+ ","+ delNickNameFive+ ","+ ","+ delNickNameSix
-					+newNickNameOne+ ","+ group+ ","+ member);
+					+ delNickNameFour+ ","+ delNickNameFive+ ","+ delNickNameSix+ "//"
+					+ newNickNameOne+ ","+ newNickNameTwo + ","+newNickNameThree+ ","
+					+ newNickNameFour + ","+ newNickNameFive + ","+newNickNameSix);
 			groupService.modify(group,photos,member,
 					delNickNameOne,delNickNameTwo,delNickNameThree,
 					delNickNameFour,delNickNameFive,delNickNameSix,
-					newNickNameOne);
+					newNickNameOne,newNickNameTwo,newNickNameThree,
+					newNickNameFour,newNickNameFive,newNickNameSix);
 			return "redirect:/myeats/groupDetail?id="+group.getId();
 		}
 	
