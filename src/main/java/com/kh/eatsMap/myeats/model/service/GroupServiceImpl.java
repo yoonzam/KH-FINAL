@@ -125,8 +125,8 @@ public class GroupServiceImpl implements GroupService{
 	
 	//수정하기
 	@Override
-	public void modify(Group group,List<MultipartFile> photos, Member member,ObjectId delNickName,ObjectId newNickNameOne) throws Exception{
-		dao.update(group,photos,member,delNickName,newNickNameOne);
+	public void modify(Group group,List<MultipartFile> photos, Member member,ObjectId delOneId,ObjectId newNickNameOne) throws Exception{
+		dao.update(group,photos,member,delOneId,newNickNameOne);
 	}
 	
 	@Override

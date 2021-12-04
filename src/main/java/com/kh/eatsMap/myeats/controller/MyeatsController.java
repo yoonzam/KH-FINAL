@@ -196,9 +196,10 @@ public class MyeatsController {
 	@RequestMapping(value="/groupDetailModify", method=RequestMethod.POST)
 	public String modifyPOST(Group group,
 			List<MultipartFile> photos, Member member,
-			@RequestParam(value="delNickName", required = false) ObjectId delNickName,@RequestParam(value ="newNickNameOne",required = false)ObjectId newNickNameOne) throws Exception{
+			@RequestParam(value="delOneId", required = false) ObjectId delOneId,
+			@RequestParam(value ="newNickNameOne",required = false)ObjectId newNickNameOne) throws Exception{
 		//System.out.println(photos);
-		groupService.modify(group,photos,member,delNickName,newNickNameOne);
+		groupService.modify(group,photos,member,delOneId,newNickNameOne);
 		
 		return "redirect:/myeats/groupDetail?id="+group.getId();
 	}

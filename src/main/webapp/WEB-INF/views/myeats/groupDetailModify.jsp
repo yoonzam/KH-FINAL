@@ -96,7 +96,6 @@ li, input {
 						</div>
 					</div>
 				</div>
-				</c:forEach>
 				<div class="group-member">
 					<h4>함께하는 잇친 리스트</h4>
 					<ul> 
@@ -113,36 +112,43 @@ li, input {
 					 <ul id='nickNames'>
 							<c:forEach items="${nickNames}" var="nickNames" begin="0" end="0" >
 		          				<li id="nickOne"><i class="fas fa-user"></i>&nbsp;
-		          				<input id="delOne" value="${nickNames}">
+		          				<input value="${nickNames}"><!-- delOneNickName 안 쓰임 삭제 예정-->
+		          				<input id="delOneId" value="${groups.participants[0]}">
 		          				<a id="fasOne" ><i class="fas fa-times" ></i>삭제</a></li>
 		          			</c:forEach>
 		          			<c:forEach items="${nickNames}" var="nickNames" begin="1" end="1" >
 		          				<li id="nickTwo"><i class="fas fa-user"></i>&nbsp;
-		          				<input id="delTwo" value="${nickNames}">
+		          				<input value="${nickNames}">
+		          				<input id="delTwoId" value="${groups.participants[1]}">
 		          				<a id="fasTwo" ><i class="fas fa-times"></i>삭제</a></li>
 		          			</c:forEach>
 		          			<c:forEach items="${nickNames}" var="nickNames" begin="2" end="2" >
 		          				<li id="nickThree"><i class="fas fa-user"></i>&nbsp;
-		          				<input id="delThree" value="${nickNames}">
+		          				<input value="${nickNames}">
+		          				<input id="delThreeId" value="${groups.participants[2]}">
 		          				<a id="fasThree"><i class="fas fa-times"></i>삭제</a></li>
 		          			</c:forEach>
 		          			<c:forEach items="${nickNames}" var="nickNames" begin="3" end="3" >
 		          				<li id="nickFour"><i class="fas fa-user"></i>&nbsp;
-		          				<input id="delFour" value="${nickNames}">
+		          				<input value="${nickNames}">
+		          				<input id="delFourId" value="${groups.participants[3]}">
 		          				<a id="fasFour"><i class="fas fa-times"></i>삭제</a></li>
 		          			</c:forEach>
 		          			<c:forEach items="${nickNames}" var="nickNames" begin="4" end="4" >
 		          				<li id="nickFive"><i class="fas fa-user"></i>&nbsp;
-		          				<input id="delFive" value="${nickNames}">
+		          				<input value="${nickNames}">
+		          				<input id="delFiveId" value="${groups.participants[4]}">
 		          				<a id="fasFive"><i class="fas fa-times"></i>삭제</a></li>
 		          			</c:forEach>
 		          			<c:forEach items="${nickNames}" var="nickNames" begin="5" end="5" >
 		          				<li id="nickSix"><i class="fas fa-user"></i>&nbsp;
-		          				<input id="delSix" value="${nickNames}">
+		          				<input id="delSixNickName" value="${nickNames}">
+		          				<input id="delSixId" value="${groups.participants[5]}">
 		          				<a id="fasSix"><i class="fas fa-times"></i>삭제</a></li>
 		          			</c:forEach>
 						</ul>
 				</div>
+				</c:forEach>
 				</form>
 				<a href = "group"><button class="btn-list">그룹 목록으로 돌아가기</button></a>
 			</div>
@@ -183,8 +189,10 @@ function addList()  {
 	 	li.setAttribute('class', "invited-input");
 		li.setAttribute('id', addValue);
 		li.setAttribute("name", "newNickNameOne");
-		li.setAttribute("value", text);//value는 텍스트
-	  
+		//li.setAttribute("value", text);//value는 텍스트
+		li.setAttribute("value", addValue);//id를 받아야 udate처리할 수 있음
+		
+		
 	 var textNode = document.createTextNode(addValue);
 		li.appendChild(textNode);
 	  
@@ -192,18 +200,19 @@ function addList()  {
 		 icon.setAttribute('class', "fas fa-times");
 		
 	  document.getElementById("nickNames").append(li,icon);
+	  console.log(select,text,addedValue);
 	}
 	
 
 
-function deleteList()  {
+/* function deleteList()  {
 	var div = document.getElementId('nickOne');
 	 div.remove();
 	var li = document.createElement("input");
 	 	li.setAttribute('class', "delNickName");
 	  
 	  document.getElementByClassName("fas fa-times").append(li);
-	}
+	} */
 
 
 
@@ -217,33 +226,33 @@ $(document).ready(function(){
 	}); 
 	 //개별삭제
 	 $("#fasOne").click(function(){
-		 var delOne = document.getElementById("delOne")
-			delOne.setAttribute('name',"delNickNameOne");
+		 var delOne = document.getElementById("delOneId")
+			delOne.setAttribute('name',"delOneId");
            $("#nickOne").hide();  
        }); 
 	 $("#fasTwo").click(function(){
-		 var delTwo = document.getElementById("delTwo")
-			delTwo.setAttribute('name',"delNickNameTwo");
+		 var delTwo = document.getElementById("delTwoId")
+			delTwo.setAttribute('name',"delTwoId");
             $("#nickTwo").hide();  
         }); 
 	 $("#fasThree").click(function(){
-		 var delThree = document.getElementById("delThree")
-			delThree.setAttribute('name',"delNickNameThree");
+		 var delThree = document.getElementById("delThreeId")
+			delThree.setAttribute('name',"delThreeId");
             $("#nickThree").hide();  
         }); 
 	 $("#fasFour").click(function(){
-		 var delFour = document.getElementById("delFour")
-			delFour.setAttribute('name',"delNickNameFour");
+		 var delFour = document.getElementById("delFourId")
+			delFour.setAttribute('name',"delFourId");
          $("#nickFour").hide();  
      });
 	 $("#fasFive").click(function(){
-		 var delFive = document.getElementById("delFive")
-			delFive.setAttribute('name',"delNickNameFive");
+		 var delFive = document.getElementById("delFiveId")
+			delFive.setAttribute('name',"delFiveId");
          $("#nickFive").hide();  
     	 }); 
 	 $("#fasSix").click(function(){
-		 var delSix = document.getElementById("delSix")
-			delSix.setAttribute('name',"delNickNameSix");
+		 var delSix = document.getElementById("delSixId")
+			delSix.setAttribute('name',"delSixId");
          $("#nickSix").hide();  
     	 }); 
         
