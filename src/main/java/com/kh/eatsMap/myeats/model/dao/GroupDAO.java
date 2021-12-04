@@ -144,7 +144,10 @@ public class GroupDAO {
 	
 
 	
-	public void update(Group group,List<MultipartFile> photos, Member member,ObjectId delOneId,ObjectId newNickNameOne) throws Exception{
+	public void update(Group group,List<MultipartFile> photos, Member member,
+			ObjectId delNickNameOne,ObjectId delNickNameTwo,ObjectId delNickNameThree,
+			ObjectId delNickNameFour,ObjectId delNickNameFive,ObjectId delNickNameSix,
+			ObjectId newNickNameOne) throws Exception{
 		
 		//System.out.println("1"+photos);
 		
@@ -154,18 +157,29 @@ public class GroupDAO {
 		query.addCriteria(Criteria.where("id").is(group.getId()));
 		Update update = new Update();
 		update.set("groupName", group.getGroupName());
+		mongoTemplate.updateFirst(query, update, Group.class);
 		
 		//데이터를 제거
 		//update.pull("participants", new ObjectId("619f82ad35d7987fdb82f440"));  
-//		update.pull("participants", delOneId); 
-//		mongoTemplate.updateFirst(query, update, Group.class);
+		update.pull("participants", delNickNameOne); 
+		mongoTemplate.updateFirst(query, update, Group.class);
+		update.pull("participants", delNickNameTwo); 
+		mongoTemplate.updateFirst(query, update, Group.class);
+		update.pull("participants", delNickNameThree); 
+		mongoTemplate.updateFirst(query, update, Group.class);
+		update.pull("participants", delNickNameFour); 
+		mongoTemplate.updateFirst(query, update, Group.class);
+		update.pull("participants", delNickNameFive); 
+		mongoTemplate.updateFirst(query, update, Group.class);
+		update.pull("participants", delNickNameSix); 
+		mongoTemplate.updateFirst(query, update, Group.class);
 		
 		//데이터를 추가
-		 ObjectId[] newItem = new ObjectId[]{newNickNameOne};
-	    update = new Update();
-	    update.push("participants").each(newItem);
-	    
-	     mongoTemplate.updateFirst(query, update, Group.class);  
+//		 ObjectId[] newItem = new ObjectId[]{newNickNameOne};
+//	    update = new Update();
+//	    update.push("participants").each(newItem);
+//	    
+//	     mongoTemplate.updateFirst(query, update, Group.class);  
 	     
 
 

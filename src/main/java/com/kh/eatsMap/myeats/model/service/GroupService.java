@@ -37,7 +37,10 @@ public interface GroupService {
 	
 	public void remove(String id);
 	
-	public void modify(Group group,List<MultipartFile> photos, Member member,ObjectId delOneId,ObjectId newNickNameOne) throws Exception;
+	public void modify(Group group,List<MultipartFile> photos, Member member,
+			ObjectId delNickNameOne,ObjectId delNickNameTwo,ObjectId delNickNameThree,
+			ObjectId delNickNameFour,ObjectId delNickNameFive,ObjectId delNickNameSix,
+			ObjectId newNickNameOne) throws Exception;
 	
 	public Member findMemberById(ObjectId id);
 	 

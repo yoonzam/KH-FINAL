@@ -192,17 +192,28 @@ public class MyeatsController {
 					
 					model.addAllAttributes(map);
 	}
+	
 	//수정처리
-	@RequestMapping(value="/groupDetailModify", method=RequestMethod.POST)
-	public String modifyPOST(Group group,
-			List<MultipartFile> photos, Member member,
-			@RequestParam(value="delOneId", required = false) ObjectId delOneId,
-			@RequestParam(value ="newNickNameOne",required = false)ObjectId newNickNameOne) throws Exception{
-		//System.out.println(photos);
-		groupService.modify(group,photos,member,delOneId,newNickNameOne);
-		
-		return "redirect:/myeats/groupDetail?id="+group.getId();
-	}
+		@RequestMapping(value="/groupDetailModify", method=RequestMethod.POST)
+		public String modifyPOST(Group group,
+				List<MultipartFile> photos, Member member,
+				@RequestParam(value="delNickNameOne", required = false) ObjectId delNickNameOne,
+				@RequestParam(value="delNickNameTwo", required = false) ObjectId delNickNameTwo,
+				@RequestParam(value="delNickNameThree", required = false) ObjectId delNickNameThree,
+				@RequestParam(value="delNickNameFour", required = false) ObjectId delNickNameFour,
+				@RequestParam(value="delNickNameFive", required = false) ObjectId delNickNameFive,
+				@RequestParam(value="delNickNameSix", required = false) ObjectId delNickNameSix,
+				@RequestParam(value ="newNickNameOne",required = false)ObjectId newNickNameOne) throws Exception{
+			//System.out.println(photos);
+			System.out.println(delNickNameOne+ ","+ delNickNameTwo+ ","+delNickNameThree+ ","
+					+ delNickNameFour+ ","+ delNickNameFive+ ","+ ","+ delNickNameSix
+					+newNickNameOne+ ","+ group+ ","+ member);
+			groupService.modify(group,photos,member,
+					delNickNameOne,delNickNameTwo,delNickNameThree,
+					delNickNameFour,delNickNameFive,delNickNameSix,
+					newNickNameOne);
+			return "redirect:/myeats/groupDetail?id="+group.getId();
+		}
 	
 		
 	//유진 11/30
