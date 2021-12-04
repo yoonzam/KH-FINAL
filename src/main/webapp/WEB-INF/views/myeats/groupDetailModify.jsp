@@ -174,24 +174,25 @@ $("#inviteButton").click(function(){
 });  
 
 function addList()  {
+	 let select = document.querySelector('#invited-select');
+	 const text = select.options[select.selectedIndex].text;//텍스트가져옴
+	 var addValue = $("#invited-select").val();
+	 var li = document.createElement("input");
+	 	li.setAttribute('class', "invited-input");
+		li.setAttribute('id', addValue);
+		li.setAttribute("name", "newNickNameOne");
+		li.setAttribute("value", text);//value는 텍스트
+	  
+	 var textNode = document.createTextNode(addValue);
+		li.appendChild(textNode);
+	  
+	 var icon = document.createElement("i");
+		 icon.setAttribute('class', "fas fa-times");
+		
+	  document.getElementById("nickNames").append(li,icon);
+	  
+	}
 	
- var addValue = $("#invited-select").val();
- var li = document.createElement("input");
- 	li.setAttribute('class', "invited-input");
-	li.setAttribute('id', addValue);
-	li.setAttribute("name", "newNickNameOne");
-	li.setAttribute("value", addValue);
-  
- var textNode = document.createTextNode(addValue);
-	li.appendChild(textNode);
-  
- var icon = document.createElement("i");
-	 icon.setAttribute('class', "fas fa-times");
-	
-  /* document.getElementById("nickNames").appendChild(li); */
-  document.getElementById("nickNames").append(li,icon);
-}
-
 
 
 function deleteList()  {
