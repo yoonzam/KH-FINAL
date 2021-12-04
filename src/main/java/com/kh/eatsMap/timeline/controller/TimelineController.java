@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.google.common.collect.Lists;
 import com.kh.eatsMap.common.util.PageObject;
 import com.kh.eatsMap.member.model.dto.Member;
 import com.kh.eatsMap.myeats.model.dto.Group;
@@ -46,7 +47,7 @@ public class TimelineController {
 	
 	@PostMapping("/")
 	@ResponseBody
-	public List<HashMap<String, Object>> timelinePaging(Model model, int page, @SessionAttribute("authentication") Member member) {
+	public List<HashMap<String, Object>> timelinePaging(int page, @SessionAttribute("authentication") Member member) {
 		PageObject pageObject = new PageObject(page, 8);
 		return timelineService.findReviewsForPaging(pageObject, member);
 	}
@@ -128,9 +129,20 @@ public class TimelineController {
 		}
 		
 		PageObject pageObject = new PageObject(1, 8);
-		List<Review> searchedReviewList = timelineService.searchReview(keyword, area, category, hashtag, member, pageObject);
+		List<Review> searchedReviewList = timelineService.searchReview(model, keyword, area, category, hashtag, member, pageObject);
+		
+//		model.addAttribute("originalReviews", searchedReviewList);
+//		if(searchedReviewList.size() > 8) searchedReviewList = Lists.newArrayList(searchedReviewList.subList(0, 8)); //컷팅
 		
 		model.addAttribute("reviews", searchedReviewList);
 		model.addAttribute("keyword", keyword_);
 	}
+	
+	@PostMapping("search")
+	@ResponseBody
+	public List<HashMap<String, Object>> searchPaging(Model model, int page, @SessionAttribute("authentication") Member member) {
+		return null;
+
+	}
+	
 }

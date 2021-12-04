@@ -174,24 +174,26 @@ $("#inviteButton").click(function(){
 });  
 
 function addList()  {
+	 let select = document.querySelector('#invited-select');
+	 const text = select.options[select.selectedIndex].text;
+	const addedValue = select.options[select.selectedIndex].value;
 	
- var addValue = $("#invited-select").val();
- var li = document.createElement("input");
- 	li.setAttribute('class', "invited-input");
-	li.setAttribute('id', addValue);
-	li.setAttribute("name", "newNickNameOne");
-	li.setAttribute("value", addValue);
-  
- var textNode = document.createTextNode(addValue);
-	li.appendChild(textNode);
-  
- var icon = document.createElement("i");
-	 icon.setAttribute('class', "fas fa-times");
+	var addValue = $("#invited-select").val();
+	 var li = document.createElement("input");
+	 	li.setAttribute('class', "invited-input");
+		li.setAttribute('id', addValue);
+		li.setAttribute("name", "newNickNameOne");
+		li.setAttribute("value", text);//value는 텍스트
+	  
+	 var textNode = document.createTextNode(addValue);
+		li.appendChild(textNode);
+	  
+	 var icon = document.createElement("i");
+		 icon.setAttribute('class', "fas fa-times");
+		
+	  document.getElementById("nickNames").append(li,icon);
+	}
 	
-  /* document.getElementById("nickNames").appendChild(li); */
-  document.getElementById("nickNames").append(li,icon);
-}
-
 
 
 function deleteList()  {
@@ -216,32 +218,32 @@ $(document).ready(function(){
 	 //개별삭제
 	 $("#fasOne").click(function(){
 		 var delOne = document.getElementById("delOne")
-			delOne.setAttribute('name',"delNickName");
+			delOne.setAttribute('name',"delNickNameOne");
            $("#nickOne").hide();  
        }); 
 	 $("#fasTwo").click(function(){
 		 var delTwo = document.getElementById("delTwo")
-			delTwo.setAttribute('name',"delNickName");
+			delTwo.setAttribute('name',"delNickNameTwo");
             $("#nickTwo").hide();  
         }); 
 	 $("#fasThree").click(function(){
 		 var delThree = document.getElementById("delThree")
-			delThree.setAttribute('name',"delNickName");
+			delThree.setAttribute('name',"delNickNameThree");
             $("#nickThree").hide();  
         }); 
 	 $("#fasFour").click(function(){
 		 var delFour = document.getElementById("delFour")
-			delFour.setAttribute('name',"delNickName");
+			delFour.setAttribute('name',"delNickNameFour");
          $("#nickFour").hide();  
      });
 	 $("#fasFive").click(function(){
 		 var delFive = document.getElementById("delFive")
-			delFive.setAttribute('name',"delNickName");
+			delFive.setAttribute('name',"delNickNameFive");
          $("#nickFive").hide();  
     	 }); 
 	 $("#fasSix").click(function(){
 		 var delSix = document.getElementById("delSix")
-			delSix.setAttribute('name',"delNickName");
+			delSix.setAttribute('name',"delNickNameSix");
          $("#nickSix").hide();  
     	 }); 
         

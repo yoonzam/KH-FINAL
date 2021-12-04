@@ -55,7 +55,6 @@
 	    			text: '일정 만들기',
 	    			click: function(){
 	    				viewCalendarForm();
-	    				$('#pop-schedule-form').css({'display': 'flex'});
 	    			}
 	    		}
     		},
@@ -98,10 +97,10 @@
 		 					$('#participant-tit').remove();
 						}
 		 				
-		 				for (var i = 0; i < data.participant.length; i++) {
+		 				/* for (var i = 0; i < data.participant.length; i++) {
 		 					text += data.participant[i].nickname + ' ';
 						}
-		 				$('#detail-participant').text(text);
+		 				$('#detail-participant').text(text); */
 		 				
 		 				
 		 				
@@ -115,6 +114,11 @@
 		 					$('#pop-schedule-detail').hide();
 		 					$('#pop-schedule-form').show();
 		 					$('#save-event').text('수정완료');
+		 					
+		 					for (var i = 0; i < data.participant.length; i++) {
+			 					text += data.participant[i].nickname + ' ';
+							}
+			 				$('#detail-participant').text(text);
 		 					
 		 					
 		 					$('#scheduleId').val(data.calendarId);
@@ -136,13 +140,11 @@
 						 			data:{'id': data.calendarId},
 						 			dataType: 'json',
 						 			
-						 			success: (data) => {
+						 			success: () => {
 						 				alert('일정이 삭제되었습니다.');
 						 				location.reload();
-						 				// 성공이 안되고 있는데...
 						 			},
 						 			error: () => {
-						 				alert("삭제 실패")
 						 				location.reload();
 						 			}
 		 					})

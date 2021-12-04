@@ -38,3 +38,56 @@ $('.filter-menu input:checkbox').click((e)=>{
     let label = e.currentTarget.parentNode;
     label.classList.toggle('checked');
 });
+
+//페이징
+let timelinePageCnt = 1;
+document.addEventListener('scroll', function() {
+    if((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
+    	$.ajax({
+			type: 'POST',
+			url: '/timeline/search',
+			data: { page:timelinePageCnt+1 },
+			dataType: 'json',
+		 	cache:false,
+			success: (data) => {
+				if(data.length == 0) return;
+				timelinePageCnt++;
+				let html = '';
+				for(let i = 0; i < data.length; i++) {
+		    		html += '<li onclick="viewTimeline(\'' + data[i].reviewId + '\')">'
+		    			  + '	<div class="eats-list">'
+		    			  + '		<div class="thum">'
+		    			  + '			<img src="'+ data[i].review.thumUrl +'">'
+		    			  + '		</div>'
+		    			  + '		<div class="info">'
+		    			  + '			<div class="eats-location">'
+		    			  + 				data[i].review.addr.split(' ')[0] + data[i].review.addr.split(' ')[1]
+		    			  + 				' > ' + data[i].review.category
+		    			  + '</div>'
+		    			  + '			<div class="eats-name">' + data[i].review.resName;
+		    		if(data[i].review.like > 0) {
+		    			html += '			<i data-like="' + data[i].reviewId + '" class="eats-like fas fa-heart"></i>';
+		    		} else{
+		    			html += '			<i data-like="' + data[i].reviewId + '" class="eats-like far fa-heart"></i>';
+		    		}
+		    		html += '			</div>'
+		    			  + '			<div class="eats-tag">';
+	    		 	for(let j = 0; j < data[i].review.hashtag.length; j++) {
+	    		 		html += '				<span>#' + data[i].review.hashtag[j] + '</span>';
+	    		 	}
+		    		html += '			</div>'
+		    			  + '		<div class="eats-score">'
+		    			  + '			<i class="fas fa-star"></i>' + ((data[i].review.taste+data[i].review.clean+data[i].review.service)/3).toFixed(1)
+		    			  + '		</div>'
+		    			  + '	</div>'
+		    			  + '</li>';
+		    	} //for-end
+				$('.timeline-brd').append(html);
+				resizeImg();
+			},
+			error: (e) => {
+				alert("실패");
+			}
+		});
+    }
+});
