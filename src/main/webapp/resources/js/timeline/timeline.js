@@ -45,7 +45,7 @@ document.addEventListener('scroll', function() {
     if((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
     	$.ajax({
 			type: 'POST',
-			url: '/timeline',
+			url: '/timeline/',
 			data: { page:timelinePageCnt+1 },
 			dataType: 'json',
 		 	cache:false,
@@ -85,6 +85,12 @@ document.addEventListener('scroll', function() {
 				$('.timeline-brd').append(html);
 				resizeImg();
 			},
+			beforeSend:function(){
+		        $('#loadingImg').removeClass('display-none');
+		    }
+		    ,complete:function(){
+		        $('#loadingImg').addClass('display-none');
+		    },
 			error: (e) => {
 				alert("실패");
 			}

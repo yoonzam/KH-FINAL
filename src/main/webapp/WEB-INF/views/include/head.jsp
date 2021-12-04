@@ -20,4 +20,9 @@
 <!-- firebase -->
 <script src="https://apis.google.com/js/api.js"></script>
 <script defer src="/resources/js/member/push-messaging.js"></script>
+<script>
+window.onload = function(){
+	$('#loadingImg').addClass('display-none');
+}
+</script>
 		
