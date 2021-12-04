@@ -109,8 +109,6 @@ public class MyeatsController {
 		//System.out.println(memberService.findMemberByNickname("geoTest1").toString());
 	}
 	
-
-	
 	//그룹생성 처리/createGroup.jsp
 //	@RequestMapping(value="/createGroup", method = RequestMethod.POST)
 //	public String writePost(Group group, RedirectAttributes reAttr, PageObject pageObject,List<MultipartFile> photos, @SessionAttribute("authentication") Member member) throws Exception{
@@ -130,16 +128,7 @@ public class MyeatsController {
 			List<Fileinfo> files = groupService.findFiles(group.getId());
 			if(files.size() > 0) group.setThumUrl(files.get(0).getDownloadURL());
 		}
-//		 Map<String,Object> map = new HashMap<String,Object>();
-//		List<Member> members = groupService.findMember();
-//		map = Map.of("members", members, "groups", groups);
-//		
-//		model.addAllAttributes(map);
-		
-		
-		/////그룹타입 반환의 그룹에서 getObjectid를 한다.
-		//위 id에 해당하는 멤버타입 반환의 멤버를 조회한다.
-		//멤버객체서 닉네임을 얻는다.
+		//Groupid로 Member nickName찾기
 		Group currentGroup = groupService.findGroupById(id);
 		ObjectId[] currentParticipants = currentGroup.getParticipants();
 		Member member = new Member();
@@ -154,7 +143,6 @@ public class MyeatsController {
 			}
 			 Map<String,Object> map = new HashMap<String,Object>();
 				map = Map.of("groups", groups, "nickNames", nickNames);
-			//model.addAttribute("nickName", nickNames);
 			
 			model.addAllAttributes(map);
 	}
@@ -176,8 +164,25 @@ public class MyeatsController {
 			List<Fileinfo> files = groupService.findFiles(group.getId());
 			if(files.size() > 0) group.setThumUrl(files.get(0).getDownloadURL());
 		}
-		model.addAttribute("groups", groups);
+//		model.addAttribute("groups", groups);
 		
+		//Groupid로 Member nickName찾기
+				Group currentGroup = groupService.findGroupById(id);
+				ObjectId[] currentParticipants = currentGroup.getParticipants();
+				Member member = new Member();
+				String nickName = null;
+				List<String> nickNames =  new ArrayList<String>(); 
+				int i = 0;
+					for (ObjectId currentParticipant : currentParticipants) {
+						member = groupService.findMemberById(currentParticipant);
+						nickName = member.getNickname(); 
+						nickNames.add(i,nickName);
+						i++;
+					}
+					 Map<String,Object> map = new HashMap<String,Object>();
+						map = Map.of("groups", groups, "nickNames", nickNames);
+					
+					model.addAllAttributes(map);
 	}
 	//수정처리
 	@RequestMapping(value="/groupDetailModify", method=RequestMethod.POST)
@@ -190,20 +195,6 @@ public class MyeatsController {
 		return "redirect:/myeats/groupDetail?id="+group.getId();
 	}
 	
-
-
-//	@RequestMapping(value="/post", method=RequestMethod.GET)
-//	public String postList(Model model) {
-//		logger.info("postGET()........");
-//		model.addAttribute("allReviews",timelineService.findAllReviews()); 
-//		return "myeats/post";
-//	}
-	
-//	@RequestMapping(value="/detail", method=RequestMethod.GET)	
-//	public String detailList(Model model) {
-//		model.addAttribute("allReviews",timelineService.findAllReviews()); 
-//		return "myeats/detail";
-//	}
 		
 	//유진 11/30
 	@GetMapping("post")
