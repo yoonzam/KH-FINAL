@@ -97,10 +97,10 @@
 		 					$('#participant-tit').remove();
 						}
 		 				
-		 				for (var i = 0; i < data.participant.length; i++) {
+		 				/* for (var i = 0; i < data.participant.length; i++) {
 		 					text += data.participant[i].nickname + ' ';
 						}
-		 				$('#detail-participant').text(text);
+		 				$('#detail-participant').text(text); */
 		 				
 		 				
 		 				
@@ -114,6 +114,11 @@
 		 					$('#pop-schedule-detail').hide();
 		 					$('#pop-schedule-form').show();
 		 					$('#save-event').text('수정완료');
+		 					
+		 					for (var i = 0; i < data.participant.length; i++) {
+			 					text += data.participant[i].nickname + ' ';
+							}
+			 				$('#detail-participant').text(text);
 		 					
 		 					
 		 					$('#scheduleId').val(data.calendarId);

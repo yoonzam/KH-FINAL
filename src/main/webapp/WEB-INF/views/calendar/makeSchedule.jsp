@@ -21,7 +21,7 @@
 					<input class="hidden" type="text" name="scheduleId" id= "scheduleId" style="display: none">
 					<div class="btn-wrap">
 						<button type="button" class="submit" id="save-event" onclick="makeNewSchedule();">확인</button>
-						<button type="button" class="cancel" id="cancel-btn" onclick="closePopup();">취소</button>
+						<button type="button" class="cancel" id="cancel-btn">취소</button>
 					</div>
 				</div>
 			</form>
@@ -29,42 +29,40 @@
 	</div>
 	
 	<a class="close-btn" onclick="closePopup();"><i class="fas fa-times"></i></a>
-<script type="text/javascript">
 
-let viewCalendarForm = (resName, y, x) => {
-	$('input[type=text]').val = '';
-	$('input[type=date]').val = '';
-	$('input[type=time]').val = '';
-	$('#participant').empty = '';
+
+	<script type="text/javascript">
+	let viewCalendarForm = () => {
+		$('input[type=text]').val = '';
+		$('input[type=date]').val = '';
+		$('input[type=time]').val = '';
+		/* $('#participant').empty = ''; */
+		$('#participant').val = '';
+		
+	    $.ajax({
+	        type:"GET",
+	        url: '/calendar/memberList',
+	        dataType: 'json',
+	        success:function(data){
+	        	/* console.dir("멤버들: " + data); */
+	        	if(data != null){
+	          		let html = '';
+	          		let textNode = '';
+	          		
+	    	      	for (var i = 0; i < data.length; i++){
+	    	      		let option = document.createElement("option");
+	    	      		option.value = data[i].memberId;
+	    	      		option.innerHTML = data[i].member.nickname;
+	    				document.querySelector('#participant').appendChild(option);
+	    	      	}
+	        	}
+	        }
+	    });
+	}
+	</script>
 	
-    $.ajax({
-        type:"GET",
-        url: '/calendar/memberList',
-        dataType: 'json',
-        success:function(data){
-        	/* console.dir("멤버들: " + data); */
-        	if(data != null){
-          		let html = '';
-          		let textNode = '';
-          		
-    	      	for (var i = 0; i < data.length; i++){
-    	      		let option = document.createElement("option");
-    	      		option.value = data[i].memberId;
-    	      		option.innerHTML = data[i].member.nickname;
-    				document.querySelector('#participant').appendChild(option);
-    	      	}
-        	}
-        }
-    });
-    if(scheduleFlag){
-    	$('input[name="resName"]').val(resName);
-        $('input[name="latitude"]').val(y);
-        $('input[name="longitude"]').val(x);
-    }
-    $('#pop-schedule-form').css({'display': 'flex'});
-}
-
-</script>
+	
+	
 </div>
 
 <script>
@@ -123,20 +121,5 @@ let makeNewSchedule = () => {
 	});
 }
 
-/* let deleteSchedule = () => {
-	$('#pop-schedule-detail').hide();
-	$.ajax({
-		type: "POST",
-		url: "/calendar",
-	 	cache:false,
-		success: () => {
-			alert("삭제 성공")
-			location.reload();
-		},
-		error: () => {
-			alert("삭제 실패")
-		}
-	});
-}  */
 
 </script>
