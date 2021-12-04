@@ -101,9 +101,9 @@ public class CalendarController {
 	//	--> calendarRepository.delete(객체); 로 전달하면 몽고db가 삭제해줌
 	
 	@PostMapping("delete")
-	public String deleteSchedule(String id) {
+	@ResponseBody
+	public void deleteSchedule(String id) {
 		calendarService.deleteSchedule(id);
-		return "redirect:/calendar/";
 	}
 	
 	//유진12/02
