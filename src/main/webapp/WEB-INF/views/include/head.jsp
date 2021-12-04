@@ -4,8 +4,8 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%-- el태그 활용 --%>
 <meta charset="UTF-8">
-
-<link rel="shortcut icon" href="#">
+<link rel=" shortcut icon" href="/resources/img/common/favicon.ico">
+<link rel="icon" href="/resources/img/common/favicon.ico">
 <link rel="stylesheet" type="text/css" href="/resources/css/common/all.css" />
 <link rel="stylesheet" type="text/css" href="/resources/css/common/common.css" />
 <!-- fontawesome -->
@@ -20,9 +20,4 @@
 <!-- firebase -->
 <script src="https://apis.google.com/js/api.js"></script>
 <script defer src="/resources/js/member/push-messaging.js"></script>
-<script>
-window.onload = function(){
-	$('#loadingImg').addClass('display-none');
-}
-</script>
 		

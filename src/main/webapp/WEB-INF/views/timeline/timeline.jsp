@@ -11,7 +11,6 @@
 <script defer type="text/javascript" src="/resources/js/timeline/timeline.js"></script>
 </head>
 <body>
-<div id="loadingImg" class="loading-img"><img src="/resources/img/common/loading.png"></div>
 <%@ include file="/WEB-INF/views/include/header.jsp" %>
 	<section>
 		<div class="section">
