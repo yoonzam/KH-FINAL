@@ -62,7 +62,6 @@ public class CalendarController {
 	@PostMapping("upload")
 	@ResponseBody
 	public void makeSchedule(Calendar calendar, String scheduleId, double latitude, double longitude, @SessionAttribute("authentication") Member member){
-		
 		if(scheduleId.equals("")) {
 			calendar.setMemberId(member.getId());
 			calendar.setLocation(new GeoJsonPoint(longitude, latitude));
@@ -71,6 +70,7 @@ public class CalendarController {
 			Calendar originCalendar = calendarService.findCalendarById(scheduleId);
 			originCalendar.setTitle(calendar.getTitle());
 			originCalendar.setDate(calendar.getDate());
+			originCalendar.setTime(calendar.getTime());
 			originCalendar.setResName(calendar.getResName());
 			originCalendar.setParticipants(calendar.getParticipants());
 			originCalendar.setLocation(new GeoJsonPoint(longitude, latitude));		
