@@ -109,8 +109,6 @@ public class MyeatsController {
 		//System.out.println(memberService.findMemberByNickname("geoTest1").toString());
 	}
 	
-
-	
 	//그룹생성 처리/createGroup.jsp
 //	@RequestMapping(value="/createGroup", method = RequestMethod.POST)
 //	public String writePost(Group group, RedirectAttributes reAttr, PageObject pageObject,List<MultipartFile> photos, @SessionAttribute("authentication") Member member) throws Exception{
@@ -130,11 +128,23 @@ public class MyeatsController {
 			List<Fileinfo> files = groupService.findFiles(group.getId());
 			if(files.size() > 0) group.setThumUrl(files.get(0).getDownloadURL());
 		}
-		 Map<String,Object> map = new HashMap<String,Object>();
-		List<Member> members = groupService.findMember();
-		map = Map.of("members", members, "groups", groups);
-		
-		model.addAllAttributes(map);
+		//Groupid로 Member nickName찾기
+		Group currentGroup = groupService.findGroupById(id);
+		ObjectId[] currentParticipants = currentGroup.getParticipants();
+		Member member = new Member();
+		String nickName = null;
+		List<String> nickNames =  new ArrayList<String>(); 
+		int i = 0;
+			for (ObjectId currentParticipant : currentParticipants) {
+				member = groupService.findMemberById(currentParticipant);
+				nickName = member.getNickname(); 
+				nickNames.add(i,nickName);
+				i++;
+			}
+			 Map<String,Object> map = new HashMap<String,Object>();
+				map = Map.of("groups", groups, "nickNames", nickNames);
+			
+			model.addAllAttributes(map);
 	}
 	
 	@RequestMapping(value="/delete", method=RequestMethod.POST)
@@ -149,39 +159,42 @@ public class MyeatsController {
 	//수정조회
 	@RequestMapping(value="/groupDetailModify", method=RequestMethod.GET)
 	public void modifyGet(@RequestParam("id") ObjectId id, Model model) throws Exception{
-		
 		List<Group> groups = groupService.read(id);
 		for (Group group : groups) {
 			List<Fileinfo> files = groupService.findFiles(group.getId());
 			if(files.size() > 0) group.setThumUrl(files.get(0).getDownloadURL());
 		}
-		model.addAttribute("groups", groups);
+//		model.addAttribute("groups", groups);
 		
+		//Groupid로 Member nickName찾기
+				Group currentGroup = groupService.findGroupById(id);
+				ObjectId[] currentParticipants = currentGroup.getParticipants();
+				Member member = new Member();
+				String nickName = null;
+				List<String> nickNames =  new ArrayList<String>(); 
+				int i = 0;
+					for (ObjectId currentParticipant : currentParticipants) {
+						member = groupService.findMemberById(currentParticipant);
+						nickName = member.getNickname(); 
+						nickNames.add(i,nickName);
+						i++;
+					}
+					 Map<String,Object> map = new HashMap<String,Object>();
+						map = Map.of("groups", groups, "nickNames", nickNames);
+					
+					model.addAllAttributes(map);
 	}
 	//수정처리
 	@RequestMapping(value="/groupDetailModify", method=RequestMethod.POST)
-	public String modifyPOST(Group group,List<MultipartFile> photos, Member member,
+	public String modifyPOST(Group group,
+			List<MultipartFile> photos, Member member,
 			@RequestParam(value="delNickName", required = false) ObjectId delNickName,@RequestParam(value ="newNickNameOne",required = false)ObjectId newNickNameOne) throws Exception{
+		//System.out.println(photos);
 		groupService.modify(group,photos,member,delNickName,newNickNameOne);
-		
 		
 		return "redirect:/myeats/groupDetail?id="+group.getId();
 	}
 	
-
-
-//	@RequestMapping(value="/post", method=RequestMethod.GET)
-//	public String postList(Model model) {
-//		logger.info("postGET()........");
-//		model.addAttribute("allReviews",timelineService.findAllReviews()); 
-//		return "myeats/post";
-//	}
-	
-//	@RequestMapping(value="/detail", method=RequestMethod.GET)	
-//	public String detailList(Model model) {
-//		model.addAttribute("allReviews",timelineService.findAllReviews()); 
-//		return "myeats/detail";
-//	}
 		
 	//유진 11/30
 	@GetMapping("post")
@@ -198,7 +211,9 @@ public class MyeatsController {
    @PostMapping("createGroup")
    public String createGroup(Group group, PageObject pageObject,List<MultipartFile> photos
                      , @SessionAttribute("authentication") Member member, RedirectAttributes reAttr ) {
-      groupService.write(group,photos,member);
+     
+	   //System.out.println(photos);
+	   groupService.write(group,photos,member);
       
       for (int i = 0; i < group.getParticipants().length; i++) {
     	  Member to = memberService.findMemberById(group.getParticipants()[i]);
@@ -206,7 +221,7 @@ public class MyeatsController {
     	  memberService.updateNotice("group", notice);
     	  push.push(to);
       }
-      
+      //System.out.println(photos);
       reAttr.addFlashAttribute("list", groupService.list(pageObject,member));
       reAttr.addFlashAttribute("result", "success");
       return "redirect:/myeats/group";

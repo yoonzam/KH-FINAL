@@ -24,11 +24,16 @@
     margin: 40px auto;
 }
 
+.schedule-list .list{
+	vertical-align: middle;
+}
+
+.schedule-list .list select{
+	height: 100px;
+}
 
 
-/* .open{
-	display:block;
-} */
+/*  */
 
 .fc-event-title.fc-sticky {
     color: #fff !important;

@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import com.kh.eatsMap.calendar.model.dto.Calendar;
 import com.kh.eatsMap.calendar.model.repository.CalendarRepository;
 import com.kh.eatsMap.member.model.dto.Member;
+import com.kh.eatsMap.member.model.repository.MemberRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -23,7 +24,8 @@ public class CalendarServiceImpl implements CalendarService{
 	
 	@Autowired
 	private CalendarRepository calendarRepository;
-
+	@Autowired
+	private MemberRepository memberRepository;
 	
 	@Override public void makeSchedule(Calendar calendar) {
 		calendarRepository.save(calendar); 
@@ -47,11 +49,18 @@ public class CalendarServiceImpl implements CalendarService{
 
 	@Override
 	public Map<String, Object> detailSchedule(String id) {
+		List<Member> participantInfoList = new ArrayList<Member>();
 		Map<String, Object> map = new HashMap<String, Object>();
 		Calendar calendar = calendarRepository.findById(id).get();
+		ObjectId[] participants = calendar.getParticipants();
 		
+		for (int i = 0; i < participants.length; i++) {
+			 Member member = memberRepository.findById(participants[i]);
+			 participantInfoList.add(member);
+		}
 		map.put("calendar", calendar);
 		map.put("calendarId", calendar.getId().toString());
+		map.put("participant", participantInfoList);
 		
 		return map;
 	}
@@ -67,6 +76,10 @@ public class CalendarServiceImpl implements CalendarService{
 	public void deleteSchedule(String id) {
 		calendarRepository.deleteById(id);
 	}
+
+
+
+
 
 
 }

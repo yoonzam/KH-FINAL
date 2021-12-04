@@ -21,6 +21,4 @@ public interface CalendarService {
 	Map<String, Object> detailSchedule(String id);
 
 	void deleteSchedule(String id);
-
-
 }

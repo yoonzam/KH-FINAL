@@ -36,6 +36,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.context.WebApplicationContext;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.kh.eatsMap.common.util.Fileinfo;
 import com.kh.eatsMap.common.util.PageObject;
 import com.kh.eatsMap.member.model.dto.Member;
 import com.kh.eatsMap.member.model.repository.MemberRepository;
@@ -226,5 +227,13 @@ public class RepositoryTest {
 				    update.push("participants").each(newItem);
 				    mongoTemplate.updateFirst(query, update, Group.class);    
 				}
-    
+				
+				@Test
+				public void del(){
+				
+				Query fileDelQuery = new Query();
+				fileDelQuery.addCriteria(Criteria.where("typeId").is("61a9d5ae1ba5a378dc0a7d7f"));
+				mongoTemplate.remove(fileDelQuery, com.kh.eatsMap.common.util.Fileinfo.class);
+ 
+				}
 }

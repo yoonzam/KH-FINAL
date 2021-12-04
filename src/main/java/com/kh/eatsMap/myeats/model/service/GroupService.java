@@ -43,5 +43,7 @@ public interface GroupService {
 	 
 	public  List<Member> findMember() throws Exception;
 	
+	public  List<Member> findMemberlistById(ObjectId id) throws Exception;
 	
+	public Group findGroupById(ObjectId id) throws Exception;
 }

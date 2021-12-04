@@ -49,6 +49,7 @@ import com.kh.eatsMap.member.model.dto.Notice;
 import com.kh.eatsMap.member.model.repository.FollowingRepository;
 import com.kh.eatsMap.member.model.repository.MemberRepository;
 import com.kh.eatsMap.member.model.repository.NoticeRepository;
+import com.kh.eatsMap.member.model.service.MemberService;
 import com.kh.eatsMap.timeline.model.dto.Review;
 
 
@@ -68,6 +69,8 @@ public class MemberRepositoryTest {
     private NoticeRepository noticeRepository;
     @Autowired
     private FollowingRepository followingRepository;
+	@Autowired
+	private MemberService memberService;
     @Autowired
     private MongoTemplate mongoTemplate;
     
@@ -368,6 +371,12 @@ public class MemberRepositoryTest {
     	Member member = repository.findByNickname("자몽");	//61a497d313f7451f784f869d(불일치)
     	logger.debug(member.getId().toString());
     	logger.debug("팔로우 찾아라 " + followingRepository.findOptionalByMemberIdAndFollowingId(loginUser.getId(),member.getId()).orElse(new Follow()));
+    }
+    @Test
+    public void findAllFollowerToMapTest() {
+    	Member member = repository.findByNickname("잇츠잇츠");
+    	memberService.findAllFollowerToMap(member);
+
     }
     
 }

@@ -36,8 +36,13 @@
     		/* themeSystem: 'bootstrap', */
     		height: 800,
     		initialView: 'dayGridMonth',
+    		fixedWeekCount: false,
     		selectable: true,
     		locale: 'ko',
+    		/* eventLimit: true,
+    		views: {
+    			month : {eventLimit : 5}
+    		}, */
 	    	
     		headerToolbar: {
 	    		left: 'custom',
@@ -49,6 +54,7 @@
 	    		custom:{
 	    			text: '일정 만들기',
 	    			click: function(){
+	    				viewCalendarForm();
 	    				$('#pop-schedule-form').css({'display': 'flex'});
 	    			}
 	    		}
@@ -82,19 +88,26 @@
 		 			data:{'id': info.event.id},
 		 			dataType: 'json',
 		 			success: (data) => {
-		 			
+		 				let text = '';
 		 				$('#detail-title').text(data.calendar.title);
 		 				$('#detail-date').text(data.calendar.date);
 		 				$('#detail-time').text(data.calendar.time);
 		 				$('#detail-place').text(data.calendar.resName);
 		 				
-		 				/* ObjectId[] participants = request.getParameterValues("participants[]");
-		 				for(int i = 0, len = participants.length; i<len ; i++){
-		 					Object participants = participants[i];
-		 				} */
+		 				if (data.participant.length == 0) {
+		 					$('#participant-tit').remove();
+						}
 		 				
-		 				/* $('#detail-participant').text(data.calendar.participant); */
-		 				$('#detail-participant').text(data.calendar.participants);
+		 				for (var i = 0; i < data.participant.length; i++) {
+		 					text += data.participant[i].nickname + ' ';
+						}
+		 				$('#detail-participant').text(text);
+		 				
+		 				
+		 				
+		 				//$('#detail-participant').text(data.calendar.participant.nickname);
+		 				
+		 				
 		 				
 		 				$('#sch-change-btn').click(e => {
 		 					
@@ -103,7 +116,6 @@
 		 					$('#pop-schedule-form').show();
 		 					$('#save-event').text('수정완료');
 		 					
-		 					console.dir(data.calendar);
 		 					
 		 					$('#scheduleId').val(data.calendarId);
 							$('#title').val(data.calendar.title);
@@ -117,9 +129,7 @@
 		 				})
 		 				
 		 				$('#sch-delete-btn').click(e => {
-		 					//비동기 통신 필요 url : /calendar/delete (post)
-		 					//같이 보낼 데이터 : id -> data.calendarId
-		 					//success 이후 과정은 다른 코드 참조(복붙)
+		 					$('#pop-schedule-detail').hide();
 		 					$.ajax({
 						 			url : '/calendar/delete',
 						 			type: 'post',
@@ -128,7 +138,12 @@
 						 			
 						 			success: (data) => {
 						 				alert('일정이 삭제되었습니다.');
-						 				$('#pop-schedule-detail').hide();
+						 				location.reload();
+						 				// 성공이 안되고 있는데...
+						 			},
+						 			error: () => {
+						 				alert("삭제 실패")
+						 				location.reload();
 						 			}
 		 					})
 		 				

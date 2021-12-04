@@ -58,6 +58,10 @@ public interface MemberService {
 
 	List<Map<String, Object>> findAllFollowingToMap(Member member);
 
+	Member findByStringId(String memberId);
+
+	Map<String, Object> findAllFollowerToMap(Member member);
+
 	
 
 }

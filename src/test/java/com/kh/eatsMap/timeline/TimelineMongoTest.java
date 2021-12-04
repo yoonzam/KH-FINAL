@@ -3,10 +3,9 @@ package com.kh.eatsMap.timeline;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
-import org.bson.Document;
 import org.bson.types.ObjectId;
 import org.junit.Before;
 import org.junit.Test;
@@ -25,15 +24,15 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.context.WebApplicationContext;
 
-import com.kh.eatsMap.common.util.Fileinfo;
+import com.kh.eatsMap.common.util.PageObject;
 import com.kh.eatsMap.member.model.dto.Member;
-import com.kh.eatsMap.myeats.model.dto.Group;
 import com.kh.eatsMap.myeats.model.dto.Like;
 import com.kh.eatsMap.myeats.model.repository.GroupRepository;
 import com.kh.eatsMap.myeats.model.repository.LikeRepository;
 import com.kh.eatsMap.timeline.model.dto.Review;
 import com.kh.eatsMap.timeline.model.repository.FileRepository;
 import com.kh.eatsMap.timeline.model.repository.TimelineRepository;
+import com.kh.eatsMap.timeline.model.service.TimelineService;
 
 @WebAppConfiguration
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -51,6 +50,9 @@ public class TimelineMongoTest {
 	
 	@Autowired
 	GroupRepository groupRepository;
+	
+	@Autowired
+	TimelineService timelineService;
 	
 	@Autowired
 	private MongoTemplate mongoTemplate;
@@ -135,7 +137,7 @@ public class TimelineMongoTest {
 	}
 	
 	@Test //카테고리서치 테스트
-	public void categorySearchTest() {
+	public void categorySearch() {
 		Query query = new Query();
 	    Criteria criteria = new Criteria();
 	    
@@ -153,7 +155,7 @@ public class TimelineMongoTest {
 	}
 	
 	@Test //카테고리 검색 테스트
-	public void areaSearchTest() {
+	public void areaSearch() {
 		Query query = new Query();
 		Criteria criteria = new Criteria();
 		
@@ -168,6 +170,35 @@ public class TimelineMongoTest {
 		
 		List<Review> rsult = mongoTemplate.find(query, Review.class, "review");
 		rsult.forEach(System.out::println);
+	}
+	
+	@Test //리뷰출력 테스트
+	public void review() {
+		Member member = new Member();
+		member.setId(new ObjectId("619e26bba6d62426e2e2aaf0")); //알파카
+		PageObject pageObject = new PageObject(1, 8);
+		List<Review> reviews = timelineService.findAllReviews(pageObject, member);
+		
+		for (Review hashMap : reviews) {
+			System.out.println(hashMap.getMemberId()+","+hashMap.getPrivacy());
+		}
+	}
+	
+	@Test //리뷰검색 출력 테스트
+	public void reviewSearch() {
+		Member member = new Member();
+		member.setId(new ObjectId("619e26bba6d62426e2e2aaf0")); //알파카
+		String[] area = {"02","032","031"};
+		String[] category = {"cg01","cg02","cg02"};
+		String[] hashtag = {"md01","md02","md03","md04"};
+		String keyword = "";
+
+		PageObject pageObject = new PageObject(1, 8);
+		List<Review> reviews = timelineService.searchReview(keyword, area, category, hashtag, member, pageObject);
+		System.out.println(reviews.isEmpty());
+		for (Review hashMap : reviews) {
+			System.out.println(hashMap.getResName() + ",	" + hashMap.getAddr() + ",	" + hashMap.getCategory().toString() + ",	" + hashMap.getHashtag().toString() + ",	" + hashMap.getPrivacy());
+		}
 	}
 
 }

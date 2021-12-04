@@ -2,6 +2,7 @@ package com.kh.eatsMap.member.model.service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -208,7 +209,7 @@ public class MemberServiceImpl implements MemberService{
 			List<Fileinfo> files = fileRepository.findByTypeId(review.getId());
 			if(files.size() > 0) review.setThumUrl(files.get(0).getDownloadURL());
 		}
-		return Map.of("reviews", reviews, "member", member, "followCnt", followCnt, "followerCnt",followerCnt);
+		return Map.of("reviews", reviews, "member", member,"memberId", member.getId().toString(), "followCnt", followCnt, "followerCnt",followerCnt);
 	}
 
 	@Override
@@ -249,7 +250,7 @@ public class MemberServiceImpl implements MemberService{
 		
 		if(!likes.isEmpty()) {
 			for (Like like : likes) {
-				reviews.add(reviewRepository.findById(like.getRevId()).get());
+				reviews.add(reviewRepository.findById(like.getRevId()).orElse(new Review()));
 			}
 		}
 		return reviews;
@@ -270,6 +271,56 @@ public class MemberServiceImpl implements MemberService{
 			}
 		}
 		return memberList;
+	}
+
+	@Override
+	public Member findByStringId(String memberId) {
+		return memberRepository.findById(memberId).orElse(new Member());
+	}
+
+	@Override
+	public Map<String, Object> findAllFollowerToMap(Member member) {
+		
+		List<Map<String,Object>> memberList = new ArrayList<Map<String,Object>>();
+		List<Map<String, Object>> followEachOtherId = new ArrayList<Map<String, Object>>();
+		List<Member> followerInfo = new ArrayList<Member>();
+		List<Follower> followEachOther = new ArrayList<Follower>();
+		
+		List<Follower> followers = followerRepository.findByMemberId(member.getId()).orElse(List.of());
+		List<Follow> followings = followingRepository.findByMemberId(member.getId()).orElse(List.of());	
+		
+		if(!followers.isEmpty()) {
+			//내 팔로워 중 내가 팔로우하지 않은 유저 조회
+			if(!followings.isEmpty()) {
+				for (Follower follower : followers) {
+					for (Follow following : followings) {
+						if(following.getFollowingId().equals(follower.getFollowerId())) {
+							followEachOther.add(follower);
+						}
+					}
+				}
+				
+				for (Follower follow : followEachOther) {
+					followEachOtherId.add(Map.of("memberId", follow.getFollowerId().toString()));
+				}
+			}
+			
+			for (Follower follower : followers) {
+				followerInfo.add(memberRepository.findById(follower.getFollowerId()));
+			}	
+			for (Member info : followerInfo) {
+				memberList.add(Map.of("memberId", info.getId().toString(), "member", info));
+			}
+		}		
+		
+		//filter를 사용해서 서로이웃이 아닌 객체를 구하자! set 메서드 참조(차집합)
+		//서로이웃인 멤버 출력 먼저
+		//이후 차집합 멤버 출력
+		logger.debug("memberList");
+		memberList.forEach(e -> logger.debug(e.toString()));
+		logger.debug("followEachOther");
+		followEachOther.forEach(e -> logger.debug(e.toString()));
+		return Map.of("memberInfo", memberList, "followEachOther", followEachOtherId);
 	}
 
 

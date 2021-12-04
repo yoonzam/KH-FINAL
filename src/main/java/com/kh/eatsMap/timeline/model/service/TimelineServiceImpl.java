@@ -14,18 +14,22 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.geo.GeoJsonPoint;
 import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.CriteriaDefinition;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.util.Streamable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.google.common.collect.Lists;
 import com.kh.eatsMap.common.code.ErrorCode;
 import com.kh.eatsMap.common.exception.HandlableException;
 import com.kh.eatsMap.common.util.FileUtil;
 import com.kh.eatsMap.common.util.Fileinfo;
 import com.kh.eatsMap.common.util.PageObject;
 import com.kh.eatsMap.member.model.dto.Follow;
+import com.kh.eatsMap.member.model.dto.Follower;
 import com.kh.eatsMap.member.model.dto.Member;
+import com.kh.eatsMap.member.model.repository.FollowerRepository;
 import com.kh.eatsMap.member.model.repository.FollowingRepository;
 import com.kh.eatsMap.member.model.repository.MemberRepository;
 import com.kh.eatsMap.member.model.service.MemberService;
@@ -84,9 +88,31 @@ public class TimelineServiceImpl implements TimelineService{
 	
 	@Override
 	public List<Review> findAllReviews(PageObject pageObject, Member member) {
+		
+		Optional<List<Follow>> followings = followingRepository.findByMemberId(member.getId());
+		List<String> followingIds = new ArrayList<String>();
+		if(followings.isPresent()) {
+			for (Follow following : followings.get()) followingIds.add(following.getFollowingId().toString());
+		}
+		
 		Query query = new Query();
+		if(followingIds.size() > 0) {
+			Criteria citeria = new Criteria();
+			Criteria citeriaArr[] = new Criteria[followingIds.size()+1];
+			
+			for(int i = 0; i < followingIds.size()+1; i++){
+				if(i < followingIds.size()) {
+					citeriaArr[i] = Criteria.where("memberId").is(new ObjectId(followingIds.get(i))).and("privacy").is(1);
+				} else {
+					citeriaArr[i] = Criteria.where("privacy").is(0);
+				}
+			}
+			query.addCriteria(citeria.orOperator(citeriaArr));
+		} else {
+			query.addCriteria(Criteria.where("privacy").is(0));
+		}
+
 		query = query.with(Sort.by(Sort.Direction.DESC, "id"));
-		query.addCriteria(Criteria.where("privacy").in(0));
 		query.skip((pageObject.getPage()-1) * pageObject.getPerPageNum());
 		query.limit((int)pageObject.getPerPageNum());
 		List<Review> reviews = mongoTemplate.find(query, com.kh.eatsMap.timeline.model.dto.Review.class);
@@ -230,21 +256,37 @@ public class TimelineServiceImpl implements TimelineService{
 	}
 	
 	@Override
-	public List<Review> searchReview(String keyword, String[] area, String[] category, String[] hashtag, Member member) {
-		List<Review> reviews = new ArrayList<Review>();
-		String[] areaName = getAreaName(area);
+	public List<Review> searchReview(String keyword, String[] area, String[] category, String[] hashtag, Member member, PageObject pageObject) {
+		Query query = new Query();
 		
-		if(area.length == 17 && category.length == 8 && hashtag.length == 11) {
-			reviews = timelineRepository.findByResNameIgnoreCaseContaining(keyword);
+		Optional<List<Follow>> followings = followingRepository.findByMemberId(member.getId());
+		List<String> followingIds = new ArrayList<String>();
+		if(followings.isPresent()) for (Follow following : followings.get()) followingIds.add(following.getFollowingId().toString());
+		
+		Criteria followingCriteria = new Criteria();
+		Criteria followingArr[] = new Criteria[followingIds.size()+1];
+		if(followingIds.size() > 0) {
+			for(int i = 0; i < followingIds.size()+1; i++){
+				if(i < followingIds.size()) {
+					followingArr[i] = Criteria.where("memberId").is(new ObjectId(followingIds.get(i))).and("privacy").is(1);
+				} else {
+					followingArr[i] = Criteria.where("privacy").is(0);
+				}
+			}
+			query.addCriteria(followingCriteria.orOperator(followingArr));
 		} else {
-			List<Review> margeReviews = new ArrayList<Review>();
-			List<Review> searchArea = new ArrayList<Review>();
-			List<Review> searchCategory = new ArrayList<Review>();
-			List<Review> searchHashtag = new ArrayList<Review>();
-			
+			query.addCriteria(Criteria.where("privacy").is(0));
+		}
+
+		query = query.with(Sort.by(Sort.Direction.DESC, "id"));
+		List<Review> reviews = mongoTemplate.find(query, com.kh.eatsMap.timeline.model.dto.Review.class);
+		
+		if(area.length < 17 || category.length < 8 || hashtag.length < 11) {
 			//지역으로 검색
+			String[] areaName = getAreaName(area);
+			List<Review> searchArea = new ArrayList<Review>();
 			if(areaName.length > 0) {
-				Query query = new Query();
+				query = new Query();
 				Criteria criteria = new Criteria();
 				Criteria areaArr[] = new Criteria[areaName.length];
 				
@@ -255,13 +297,14 @@ public class TimelineServiceImpl implements TimelineService{
 				
 				query = query.with(Sort.by(Sort.Direction.DESC, "id"));
 				query.addCriteria(criteria.orOperator(areaArr));
-				query.addCriteria(Criteria.where("privacy").in(0));
 				searchArea = mongoTemplate.find(query, Review.class, "review");
+				reviews.retainAll(searchArea);
 			}
 			
 			//카테고리로 검색
+			List<Review> searchCategory = new ArrayList<Review>();
 			if(category.length > 0) {
-				Query query = new Query();
+				query = new Query();
 				Criteria criteria = new Criteria();
 				Criteria categoryArr[] = new Criteria[category.length];
 				
@@ -272,39 +315,27 @@ public class TimelineServiceImpl implements TimelineService{
 				
 				query = query.with(Sort.by(Sort.Direction.DESC, "id"));
 				query.addCriteria(criteria.orOperator(categoryArr));
-				query.addCriteria(Criteria.where("privacy").in(0));
 				searchCategory = mongoTemplate.find(query, Review.class, "review");
+				reviews.retainAll(searchCategory);
 			}
 			
 			//해시태그로 검색
+			List<Review> searchHashtag = new ArrayList<Review>();
 			if(hashtag.length > 0) {
-				searchHashtag = timelineRepository.findByHashtagLikeAndPrivacy(hashtag, 0);
+				searchHashtag = timelineRepository.findByHashtagLike(hashtag);
+				reviews.retainAll(searchHashtag);
 			}
 			
-			if(area.length > 0) {
-				margeReviews = searchArea;
-				if(category.length > 0) margeReviews.retainAll(searchCategory);
-				if(hashtag.length > 0) margeReviews.retainAll(searchHashtag);
-			} else if(category.length > 0){
-				margeReviews = searchCategory;
-				if(hashtag.length > 0) margeReviews.retainAll(searchHashtag);
-			} else {
-				margeReviews = searchHashtag;
-			}
-			
-			//키워드로 가려내기
+			//키워드로 검색
+			List<Review> searchKeyword = new ArrayList<Review>();
 			if(!keyword.equals("")) {
-				for (Review review : margeReviews) {
-					if(review.getResName().toLowerCase().contains(keyword.toLowerCase())) {
-						reviews.add(review);
-					}
-				}
-			} else {
-				reviews = margeReviews;
+				searchKeyword = timelineRepository.findByResNameIgnoreCaseContaining(keyword);
+				reviews.retainAll(searchKeyword);
 			}
 		}
 		
 		//리뷰 가공
+		//if(reviews.size() > 8) reviews = Lists.newArrayList(reviews.subList(0, 8)); //컷팅
 		List<Like> likes = likeRepository.findByMemberId(member.getId());
 		for (Review review : reviews) {
 			List<Fileinfo> files = fileRepository.findByTypeId(review.getId());
@@ -312,6 +343,7 @@ public class TimelineServiceImpl implements TimelineService{
 			for (Like like : likes) if(like.getRevId().equals(review.getId())) review.setLike(1);
 			review.toString();
 		}
+		
 		return reviews;
 	}
 	

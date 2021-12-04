@@ -30,13 +30,19 @@
 	
 	<a class="close-btn" onclick="closePopup();"><i class="fas fa-times"></i></a>
 <script type="text/javascript">
-$(document).ready(() => {
+
+let viewCalendarForm = () => {
+	$('input[type=text]').val = '';
+	$('input[type=date]').val = '';
+	$('input[type=time]').val = '';
+	$('#participant').empty = '';
+	
     $.ajax({
         type:"GET",
         url: '/calendar/memberList',
         dataType: 'json',
         success:function(data){
-        	console.dir(data);
+        	/* console.dir("멤버들: " + data); */
         	if(data != null){
           		let html = '';
           		let textNode = '';
@@ -50,7 +56,7 @@ $(document).ready(() => {
         	}
         }
     });
-});
+}
 
 </script>
 </div>
@@ -91,15 +97,6 @@ $('.locationList').click(function (e) {
     $('.locationList').hide();
 })
 
-
-$('#sch-delete-btn').on('click', function () {
-
-    /*$('#sch-delete-btn').unbind();
-    calendar.fullCalendar('removeEvents', $(this).data('id'));
-    // delete ?*/
-    $('#pop-schedule-detail').hide();
-})
-
 //업로드
 let makeNewSchedule = () => {
 	let form = $('#frmSchedule')[0];
@@ -119,5 +116,21 @@ let makeNewSchedule = () => {
 		}
 	});
 }
+
+/* let deleteSchedule = () => {
+	$('#pop-schedule-detail').hide();
+	$.ajax({
+		type: "POST",
+		url: "/calendar",
+	 	cache:false,
+		success: () => {
+			alert("삭제 성공")
+			location.reload();
+		},
+		error: () => {
+			alert("삭제 실패")
+		}
+	});
+}  */
 
 </script>

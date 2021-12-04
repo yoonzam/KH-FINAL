@@ -103,9 +103,8 @@ public class TimelineController {
 	
 	@GetMapping("search")
 	public void search(String keyword_, String[] area_, String[] category_, String[] hashtag_, Model model, @SessionAttribute("authentication") Member member) {
-		System.out.println(Arrays.toString(area_));
 		String keyword = keyword_ == null ? "" : keyword_;
-	
+		
 		String[] category = new String[0];
 		if(category_ != null) {
 			category = new String[category_.length];		
@@ -127,7 +126,9 @@ public class TimelineController {
 				area[i] = area_[i];
 			}	
 		}
-		List<Review> searchedReviewList = timelineService.searchReview(keyword, area, category, hashtag, member);
+		
+		PageObject pageObject = new PageObject(1, 8);
+		List<Review> searchedReviewList = timelineService.searchReview(keyword, area, category, hashtag, member, pageObject);
 		
 		model.addAttribute("reviews", searchedReviewList);
 		model.addAttribute("keyword", keyword_);
