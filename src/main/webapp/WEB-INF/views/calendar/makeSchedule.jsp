@@ -21,7 +21,7 @@
 					<input class="hidden" type="text" name="scheduleId" id= "scheduleId" style="display: none">
 					<div class="btn-wrap">
 						<button type="button" class="submit" id="save-event" onclick="makeNewSchedule();">확인</button>
-						<button type="button" class="cancel" id="cancel-btn">취소</button>
+						<button type="button" class="cancel" id="cancel-btn" onclick="closePopup();">취소</button>
 					</div>
 				</div>
 			</form>
@@ -31,7 +31,7 @@
 	<a class="close-btn" onclick="closePopup();"><i class="fas fa-times"></i></a>
 <script type="text/javascript">
 
-let viewCalendarForm = () => {
+let viewCalendarForm = (resName, y, x) => {
 	$('input[type=text]').val = '';
 	$('input[type=date]').val = '';
 	$('input[type=time]').val = '';
@@ -42,7 +42,6 @@ let viewCalendarForm = () => {
         url: '/calendar/memberList',
         dataType: 'json',
         success:function(data){
-        	/* console.dir("멤버들: " + data); */
         	if(data != null){
           		let html = '';
           		let textNode = '';
@@ -56,6 +55,14 @@ let viewCalendarForm = () => {
         	}
         }
     });
+    
+    if(scheduleFlag){
+    	$('input[name="resName"]').val(resName);
+        $('input[name="latitude"]').val(y);
+        $('input[name="longitude"]').val(x);
+    }
+    
+    $('#pop-schedule-form').css({'display': 'flex'});
 }
 
 </script>

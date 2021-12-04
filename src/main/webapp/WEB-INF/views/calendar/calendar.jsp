@@ -55,7 +55,6 @@
 	    			text: '일정 만들기',
 	    			click: function(){
 	    				viewCalendarForm();
-	    				$('#pop-schedule-form').css({'display': 'flex'});
 	    			}
 	    		}
     		},
