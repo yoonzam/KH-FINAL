@@ -13,7 +13,7 @@
 				</div>
 				<div class="btn-wrap">
 						<button class="change" id="sch-change-btn">수정</button>
-						<button class="delete" id="sch-delete-btn">삭제</button>
+						<button class="delete" id="sch-delete-btn" onclick="deleteSchedule();">삭제</button>
 				</div>
 		</div>
 	</div>

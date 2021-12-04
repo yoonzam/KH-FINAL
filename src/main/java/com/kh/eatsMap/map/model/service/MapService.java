@@ -34,6 +34,9 @@ public interface MapService {
 	List<HashMap<String, Object>> findMemberList(String groupId);
 
 
+	List<HashMap<String, Object>> findGroupReview(String groupId);
+
+
 
 
 }

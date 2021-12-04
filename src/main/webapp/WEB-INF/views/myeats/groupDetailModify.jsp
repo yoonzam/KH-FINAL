@@ -8,7 +8,6 @@
 <%@ include file="/WEB-INF/views/include/head.jsp" %>
 <link rel="stylesheet" type="text/css" href="/resources/css/myeats/myeats.css" />
 <style type="text/css">
-
 /* css 상태 보고 추후에 이동 예정 */
 .form-control{
     width: 88.4%;
@@ -16,7 +15,6 @@
     border-radius: 5px;
     border: 1px solid #aaa;
 }
-
 .invited-input {
     color: #333;
     padding: 13px;
@@ -25,9 +23,7 @@
     margin-right: -17px;
     background-color: #ffead6;
     margin-left: 20px;
-       
 }
-
 #addButton {
     background-color: var(--red-color);
     width: 25px;
@@ -37,7 +33,6 @@
     color: #fff;
     border: none;
 }
-
 #inviteButton {
     background-color: var(--main-color);
     width: 25px;
@@ -47,24 +42,17 @@
     color: #fff;
     border: none;
 }
-
 #invited-select {
 	margin-top:8px;
     width: 30%;
     padding: 2px;
     border-radius: 5px;
     border: 1px solid #aaa;
-    
 }
 
 li, input {
     border-style: none;
 }
-
-.fa-user {
-    margin-right: 10px;
-}
-
 .btn-edit-profile {
     background-color: #ccc;
     border-radius: 5px;
@@ -87,21 +75,17 @@ li, input {
 			<form role = "form" action="/myeats/groupDetailModify" method="post" enctype="multipart/form-data">	
 			<c:forEach items="${groups}" var="groups">
 				<input type="hidden"  name="id" value="${groups.id}" />
-				
 				<div class="group-info">
 					<div class="group-profile">
 						<div class="group-img">
-							<img id="target_img" src="${!empty groups.thumUrl ? groups.thumUrl : '/resources/img/common/upload-logo.png'}" name="thumUrl"
-							value="${groups.thumUrl}">
+							<img id="target_img" src="${!empty groups.thumUrl ? groups.thumUrl : '/resources/img/common/upload-logo.png'}" name="thumUrl">
 						</div>
 					</div>
-	            
 					<div class="group-menu">
 						<div class="group-title"><i class="fas fa-bell"></i>
 						<input type="text" class="form-control" name="groupName"
 								placeholder="${groups.groupName}"	value="${groups.groupName}"
 								maxlength="8" required >
-						
 						</div>
 						<div class="group-service">
 							<button class="main-btn">잇츠맵 바로가기</button>
@@ -115,13 +99,8 @@ li, input {
 				</c:forEach>
 				<div class="group-member">
 					<h4>함께하는 잇친 리스트</h4>
-					
-					
-					
-				<c:forEach items="${groups}" var="groups" varStatus="status"  begin="0">
-					 <c:if test="${status.first}"><ul id='nickNames'></c:if>
-					 
-					 	<li>
+					<ul> 
+					<li>
 						<span>초대하기</span>
 						<div class="friend-list"> 
 							<select id="invited-select" name="participant" onchange="addList()"></select>
@@ -130,41 +109,44 @@ li, input {
 							</ul>
 						</div>
 					</li>
-					
-					
-						<c:choose>
-							<c:when test="true">
-							<c:if test="${groups.participants[0]!= null}">
-		          				<li id="nickOne"><i class="fas fa-user"></i><input id="delOne" value="${groups.participants[0]}"><a id="fasOne" ><i class="fas fa-times" ></i>삭제</a></li>
-		          			</c:if>
-		          			<c:if test="${groups.participants[1]!= null}">
-		          				<li id="nickTwo"><i class="fas fa-user"></i><input id="delTwo" value="${groups.participants[1]}"><a id="fasTwo" ><i class="fas fa-times"></i>삭제</a></li>
-		          			</c:if>
-		          			<c:if test="${groups.participants[2]!= null}">
-		          				<li id="nickThree"><i class="fas fa-user"></i><input id="delThree" value="${groups.participants[2]}"><a id="fasThree"><i class="fas fa-times"></i>삭제</a></li>
-		          			</c:if>
-		          			<c:if test="${groups.participants[3]!= null}">
-		          				<li id="nickFour"><i class="fas fa-user"></i><input id="delFour" value="${groups.participants[3]}"><a id="fasFour"><i class="fas fa-times"></i>삭제</a></li>
-		          			</c:if>
-		          			<c:if test="${groups.participants[4]!= null}">
-		          				<li id="nickFive"><i class="fas fa-user"></i><input id="delFive" value="${groups.participants[4]}"><a id="fasFive"><i class="fas fa-times"></i>삭제</a></li>
-		          			</c:if>
-		          			<c:if test="${groups.participants[5]!= null}">
-		          				<li id="nickSix"><i class="fas fa-user"></i><input id="delSix" value="${groups.participants[5]}"><a id="fasSix"><i class="fas fa-times"></i>삭제</a></li>
-		          			</c:if>
-		          			</c:when>
-							</c:choose> 
-					<c:if test="${status.last}"></ul></c:if> 
-				</c:forEach>	
+					</ul>
+					 <ul id='nickNames'>
+							<c:forEach items="${nickNames}" var="nickNames" begin="0" end="0" >
+		          				<li id="nickOne"><i class="fas fa-user"></i>&nbsp;
+		          				<input id="delOne" value="${nickNames}">
+		          				<a id="fasOne" ><i class="fas fa-times" ></i>삭제</a></li>
+		          			</c:forEach>
+		          			<c:forEach items="${nickNames}" var="nickNames" begin="1" end="1" >
+		          				<li id="nickTwo"><i class="fas fa-user"></i>&nbsp;
+		          				<input id="delTwo" value="${nickNames}">
+		          				<a id="fasTwo" ><i class="fas fa-times"></i>삭제</a></li>
+		          			</c:forEach>
+		          			<c:forEach items="${nickNames}" var="nickNames" begin="2" end="2" >
+		          				<li id="nickThree"><i class="fas fa-user"></i>&nbsp;
+		          				<input id="delThree" value="${nickNames}">
+		          				<a id="fasThree"><i class="fas fa-times"></i>삭제</a></li>
+		          			</c:forEach>
+		          			<c:forEach items="${nickNames}" var="nickNames" begin="3" end="3" >
+		          				<li id="nickFour"><i class="fas fa-user"></i>&nbsp;
+		          				<input id="delFour" value="${nickNames}">
+		          				<a id="fasFour"><i class="fas fa-times"></i>삭제</a></li>
+		          			</c:forEach>
+		          			<c:forEach items="${nickNames}" var="nickNames" begin="4" end="4" >
+		          				<li id="nickFive"><i class="fas fa-user"></i>&nbsp;
+		          				<input id="delFive" value="${nickNames}">
+		          				<a id="fasFive"><i class="fas fa-times"></i>삭제</a></li>
+		          			</c:forEach>
+		          			<c:forEach items="${nickNames}" var="nickNames" begin="5" end="5" >
+		          				<li id="nickSix"><i class="fas fa-user"></i>&nbsp;
+		          				<input id="delSix" value="${nickNames}">
+		          				<a id="fasSix"><i class="fas fa-times"></i>삭제</a></li>
+		          			</c:forEach>
+						</ul>
 				</div>
 				</form>
-				
 				<a href = "group"><button class="btn-list">그룹 목록으로 돌아가기</button></a>
-				
 			</div>
-			
 		</div>
-		
 	</div>
 </section>     
 
