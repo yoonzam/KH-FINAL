@@ -248,6 +248,20 @@ public class GroupDAO {
 	        Member member = mongoTemplate.findOne(query, Member.class, "member");
 	        return member;
 	    }
+	//회원의 그룹나가기
+	 public void groupLeaveById(Group group,ObjectId id) throws Exception{
+			
+			Query query = new Query();
+			query.addCriteria(Criteria.where("id").is(group.getId()));
+			Update update = new Update();
+			
+			//데이터를 제거
+			//update.pull("participants", new ObjectId("61a4a78a421834204011fc49"));  
+			update.pull("participants", id); 
+			mongoTemplate.updateFirst(query, update, Group.class);
+			
+			
+			}
 	
 	
 }

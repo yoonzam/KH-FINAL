@@ -105,6 +105,11 @@
 							<a href="/myeats/delete?id=${groups.id}">삭제</a> 
 						</div>
 						</c:if>
+						<c:if test="${authentication.id != groups.memberId }">
+						<div class="controller">
+							<a href="groupDetail?id=${groups.id}" class="group-menu">그룹보기</a>
+						</div>
+						</c:if>
 					</li>
 					</c:when>
 				</c:choose> 

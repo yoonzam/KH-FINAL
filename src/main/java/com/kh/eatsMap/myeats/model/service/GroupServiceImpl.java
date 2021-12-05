@@ -161,6 +161,12 @@ public class GroupServiceImpl implements GroupService{
 		return group;
 	}
 	
+	//회원의 그룹나가기
+	@Override
+	public void groupLeave(Group group,ObjectId id) throws Exception{
+		dao.groupLeaveById(group,id);
+	}
+	
 
 
 

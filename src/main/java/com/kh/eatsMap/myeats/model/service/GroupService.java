@@ -50,4 +50,7 @@ public interface GroupService {
 	public  List<Member> findMemberlistById(ObjectId id) throws Exception;
 	
 	public Group findGroupById(ObjectId id) throws Exception;
+	
+	//회원의 그룹나가기
+	public void groupLeave(Group group,ObjectId id) throws Exception;
 }

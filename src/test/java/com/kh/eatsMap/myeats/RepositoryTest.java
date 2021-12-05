@@ -236,4 +236,19 @@ public class RepositoryTest {
 				mongoTemplate.remove(fileDelQuery, com.kh.eatsMap.common.util.Fileinfo.class);
  
 				}
+				
+				//회원아이디로 그룹나가기
+				@Test
+				 public void groupLeaveById() throws Exception{
+						
+						
+						Query query = new Query();
+						query.addCriteria(Criteria.where("id").is("61a7a2e3fa88ce4903312932"));
+						Update update = new Update();
+						
+						update.pull("participants", new ObjectId("61a4a78a421834204011fc49")); 
+						mongoTemplate.updateFirst(query, update, Group.class);
+						
+						
+						}
 }

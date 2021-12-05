@@ -224,6 +224,13 @@ public class MyeatsController {
 					newNickNameFour,newNickNameFive,newNickNameSix);
 			return "redirect:/myeats/groupDetail?id="+group.getId();
 		}
+		
+		//그룹 나가기
+				@RequestMapping(value="/groupLeave", method=RequestMethod.POST)
+				public String groupLeavePost(Group group,@SessionAttribute("authentication") Member member)throws Exception{ 
+					groupService.groupLeave(group,member.getId());
+					return "redirect:/myeats/group";
+				}	
 	
 		
 	//유진 11/30
