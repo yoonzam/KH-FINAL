@@ -25,6 +25,7 @@
     margin-right: -17px;
     background-color: #ffead6;
     margin-left: 20px;
+    
 }
 .invited-input {
    display: none;
@@ -204,7 +205,8 @@ function addList()  {
 	//name 값 보여줌  
 	var show = document.createElement("input");
 		show.setAttribute('class', "show-input");
-		show.setAttribute('id', addValue);
+		//
+		show.setAttribute('id', text);
 		show.setAttribute("value", text);
 		
 		
@@ -214,6 +216,8 @@ function addList()  {
 	  
 	 var icon = document.createElement("i");
 		 icon.setAttribute('class', "fas fa-times");
+		 //
+		 icon.setAttribute('id', text);
 		
 	  document.getElementById("nickNames").append(show,icon,li);
 	  
@@ -232,6 +236,15 @@ function addList()  {
 		$ids.eq(3).attr("name","newNickNameFour");
 		$ids.eq(4).attr("name","newNickNameFive");
 		$ids.eq(5).attr("name","newNickNameSix");
+		
+		//
+		icon.onclick=function(){
+			alert('test');
+			document.getElementById(addValue).removeAttribute("name");
+			document.getElementById(addValue).style.display  = 'none';
+			document.getElementById(addValue).remove("input");
+			document.getElementById(text).remove("i");
+			};
 	  
 	}
 
