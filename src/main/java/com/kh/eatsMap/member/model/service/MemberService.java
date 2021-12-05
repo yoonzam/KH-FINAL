@@ -43,7 +43,7 @@ public interface MemberService {
 	void updateNotice(String noticeId, Notice notice);
 	void updateNoticeForDel(String id, Notice notice);
 
-	Map<String,Object> findMemberAndReviewByMemberId(ObjectId memberId);
+	Map<String,Object> findMemberAndReviewByMemberId(ObjectId memberId, Member member);
 
 	Follow findFollowByMemberId(ObjectId memberId, ObjectId id);
 
@@ -62,5 +62,7 @@ public interface MemberService {
 	Map<String, Object> findAllFollowerToMap(Member member);
 
 	Notice findNoticeByMemberId(ObjectId memberId);
+
+	boolean quitImpl(Member member);
 
 }

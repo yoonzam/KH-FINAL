@@ -249,8 +249,8 @@ public class MemberController {
 	@PostMapping("quit")
 	@ResponseBody
 	public String quitImpl(@RequestBody Member member) {
-		
-		if(!memberService.findMemberByNickname(member.getNickname()).getPassword().equals(member.getPassword())) {
+
+		if(!memberService.quitImpl(member)) {
 			return "error";
 		}
 		return "quit";
@@ -294,12 +294,9 @@ public class MemberController {
 			return "redirect:/myeats/post";
 		}
 		Member writer = memberService.findMemberByNickname(nickname);
-		Follow follow = memberService.findFollowByMemberId(writer.getId(), member.getId());
-		Map<String,Object> commandMap = memberService.findMemberAndReviewByMemberId(writer.getId());
+		Map<String,Object> commandMap = memberService.findMemberAndReviewByMemberId(writer.getId(), member);
 
-		model.addAllAttributes(commandMap)
-			.addAttribute("follow",follow); 
-		
+		model.addAllAttributes(commandMap);
 		return "member/follow";
 	}
 	
@@ -322,12 +319,6 @@ public class MemberController {
 		memberService.updateNoticeForDel("follow", memberService.findNoticeByMemberId(followUser.getFollowingId()));
 		
 		return memberService.findMemberById(followUser.getFollowingId()).getId().toString();
-	}
-	
-	@GetMapping("post")
-	public String post(@SessionAttribute("authentication") Member member,Model model) {
-		model.addAllAttributes(memberService.findMemberAndReviewByMemberId(member.getId()));
-		return "myeats/post";
 	}
 	
 	@PostMapping("follow-pop")

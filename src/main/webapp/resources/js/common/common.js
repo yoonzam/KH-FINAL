@@ -504,6 +504,8 @@ let viewTimeline = (reviewId) => {
 			if(data.memberId == data.myId) {
 				$('#pop-review-detail .pop-btn-edit').show();
 				$('#pop-review-detail .pop-btn-delete').show();
+				$('#pop-review-detail .follow').hide();
+				$('#pop-review-detail .unfollow').hide();
 				$('#pop-review-detail .pop-btn-edit').attr('onclick','editReview(\''+reviewId+'\');');
 				$('#pop-review-detail .pop-btn-delete').attr('onclick','deleteReview(\''+reviewId+'\');');
 			} else{

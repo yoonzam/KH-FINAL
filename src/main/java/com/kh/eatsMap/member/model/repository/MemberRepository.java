@@ -12,6 +12,7 @@ import org.springframework.data.mongodb.repository.Query;
 import org.springframework.data.util.Streamable;
 
 import com.kh.eatsMap.member.model.dto.Member;
+import com.kh.eatsMap.member.model.dto.Notice;
 import com.kh.eatsMap.timeline.model.dto.Review;
 
 public interface MemberRepository extends MongoRepository<Member, String>{	//Repository, CrudRepository, PagingAndSortiRepository
@@ -66,6 +67,8 @@ public interface MemberRepository extends MongoRepository<Member, String>{	//Rep
 	Member findByNickname(String nickname);
 
 	Member findById(ObjectId memberId);
+
+	Optional<Member> findByKakaoIdAndIsLeave(String kakaoId, int i);
 
 
 }

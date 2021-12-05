@@ -41,8 +41,20 @@
               <input type="text" name="nickname" id="nickname" value="${authentication.nickname }" disabled>
 
               <label for="password">비밀번호</label>
-              <input type="password" name="password" id="password">
-              <span class="message">보안을 위해 닉네임 및 비밀번호를 확인 합니다.</span>
+              <input type="password" name="password" id="password"
+              	<c:if test="${not empty authentication.kakaoId }">
+              	 disabled="disabled" placeholder="간편 로그인 회원은 비밀번호 인증을 생략합니다."
+              	</c:if>
+              />
+              <input type="hidden" name="id" id="id" value="${authentication.id }"/>
+              <span class="message">
+	              <c:if test="${empty authentication.kakaoId }">
+	              	보안을 위해 닉네임 및 비밀번호를 확인 합니다.
+	              </c:if>
+	              <c:if test="${not empty authentication.kakaoId }">
+	              	보안을 위해 닉네임을 확인 합니다.
+	              </c:if>
+              </span>
               <div class="wrap-btn">
                 <button id="btn-quit">본인확인 및 탈퇴</button>
                 <a href="/member/edit-profile" class="btn-cancel">취소하기</a>

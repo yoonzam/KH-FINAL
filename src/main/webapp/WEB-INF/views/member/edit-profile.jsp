@@ -45,7 +45,7 @@
 		                <input type="button" value="중복확인" id="check_nick">
 		              </div>
 		              <label for="password">비밀번호</label><form:errors cssClass="valid-msg" path="password"/>
-		              <input type="password" name="password" id="password"/>
+		              <input type="password" name="password" id="password" placeholder="비밀번호 변경을 원하지 않으시면 기존 비밀번호를 입력하세요."/>
 		              <label for="chk-password">비밀번호 확인</label><form:errors cssClass="valid-msg" path="chkPassword"/>
 		              <input type="password" name="chkPassword" id="chkPassword"/>
 		              <div class="wrap-btn">
