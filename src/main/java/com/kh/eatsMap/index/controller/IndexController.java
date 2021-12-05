@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.kh.eatsMap.common.util.Fileinfo;
+import com.kh.eatsMap.common.util.PageObject;
 import com.kh.eatsMap.index.model.service.IndexService;
 import com.kh.eatsMap.member.model.dto.Member;
 import com.kh.eatsMap.timeline.model.dto.Review;
@@ -58,98 +59,76 @@ public class IndexController {
 		if(member.getLocation() != null) {	
 			//*위치기반 잇친픽 출력 
 			reviews = indexService.localReview(member);	
-			logger.debug(reviews.toString());
+//			logger.debug(reviews.toString());
 		}
+
 		return reviews;
 	}
 	
 	//메인화면 
+	//hashtag픽
 	@GetMapping("/")
-	public String index(
-			@SessionAttribute("authentication") Member member ,Model model) throws Exception {
-
-//hashtag픽(잇친아님) 
+	public String index(@SessionAttribute("authentication") Member member ,Model model) throws Exception {
 		
 		Map<String,Object> reviewsAndHashtag = indexService.findAllReview(member);
-//		logger.debug(reviewsAndHashtag.get("reviews").toString());
-//		logger.debug("가장 많은 해시태그와두번째많은해시 : " + reviewsAndHashtag.get("maxHash1"));
-//		logger.debug("가장 많은 해시태그와두번째많은해시 : " + reviewsAndHashtag.get("maxHash2"));
 		model.addAttribute("reviewsAndHashtag", reviewsAndHashtag);
-
 		
-		
-		
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////		
-//사용자 위치 받아오기 
-		
-//		if(longitude_ != null && latitude_ != null) {
-//			
-//			double longitude = Double.parseDouble(longitude_);
-//			double latitude = Double.parseDouble(latitude_);
-//			
-//			//GeoJsonPoint : (경도, 위도) 
-//			GeoJsonPoint location = new GeoJsonPoint(longitude, latitude);		
-//		
-//
-//			//member 테이블에 location 추가 
-//			indexService.updateLocation(member, location);
-////			logger.debug(member.getLocation().toString());
-//			
-//			List<Review> locationReviewList = new ArrayList<Review>();
-//			if(member.getLocation() != null) {	
-//				//*위치기반 잇친픽 출력 
-//				//locationReviewList = indexService.localReview(member);	
-//			}
-//			logger.debug("위치기반 잇친픽 출력********************"+ locationReviewList.toString());
-//			model.addAttribute("locationReviewList", locationReviewList);
-//		}
-	
 		return "main/main";
 	}
 
 	
-
 ///////////////////////////////////////////////////////////////////////////////////////////////////////	
 	
-	@PostMapping("/search")
+	@GetMapping("/search")
 	public String searchImpl(
-							String keyword_ 
-							,String[] category_ 
-							,String[] hashtag_ 
-							,Model model
-//							,RedirectAttributes rttr
+							String keyword_
+							, String[] area_
+							, String[] category_
+							, String[] hashtag_
+							, PageObject pageObject
+							, Model model
+							, @SessionAttribute("authentication") Member member
 							) {
 		
 		String keyword = keyword_ == null ? "" : keyword_;
-		System.out.println("keyword : " + keyword);
-	
 		
 		String[] category = new String[0];
 		if(category_ != null) {
 			category = new String[category_.length];		
 			for (int i = 0; i < category_.length; i++) {
 				category[i] = category_[i];
-//				System.out.println("category : " + category[i]);
-			}	
+			}
 		}
-		
-
 		String[] hashtag = new String[0];
 		if(hashtag_ != null) {
 			hashtag = new String[hashtag_.length];		
 			for (int i = 0; i < hashtag_.length; i++) {
 				hashtag[i] = hashtag_[i];
-//				System.out.println("hashtag : " + hashtag[i]);
 			}	
 		}
+		String[] area = new String[0];
+		if(area_ != null) {
+			area = new String[area_.length];		
+			for (int i = 0; i < area_.length; i++) {
+				area[i] = area_[i];
+			}	
+		}
+		
+		pageObject.setPerPageNum(8);
+		pageObject.setPerGroupPageNum(8);
+		// 데이터 건수를 세팅
+		long count = indexService.count(keyword, area, category, hashtag, member);
+		
+		pageObject.setTotalRow(count);
+		
+		List<Review> searchedReviewList = indexService.searchReview(keyword, area, category, hashtag, member, pageObject);
+		
+//		System.out.println(pageObject);
+		
+		model.addAttribute("reviews", searchedReviewList);
+		model.addAttribute("keyword", keyword_);
+		model.addAttribute("pageObject", pageObject);
 
-
-		//검색 결과 요청
-		List<Review> searchedReviewList = indexService.searchReview(keyword, category, hashtag);	//searchReviewList : 항목들로 서치된 리뷰데이터  
-		model.addAttribute("searchedReviewList", searchedReviewList);	
-
-//		rttr.addFlashAttribute("searchedReviewList", searchedReviewList);
-//		return "redirect:/main/search";
 		return "main/search";
 	}
 	

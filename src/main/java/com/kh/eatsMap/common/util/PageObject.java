@@ -175,9 +175,11 @@ public class PageObject {
 		// 리스트 화면 하단 부분에 나타내는 페이지를 처리하기 위한 데이터들을 계산
 		// 전체 페이지를 계산할 수 있다.
 		totalPage = (totalRow-1)/perPageNum + 1;
+		
 		// startPage, endPage
 		startPage 
 		= (page - 1) / perGroupPageNum * perGroupPageNum + 1;
+		
 		endPage = startPage + perGroupPageNum - 1;
 		// endPage 가 총 페이지 수를 넘을 수 없다.
 		if(endPage > totalPage) endPage = totalPage;

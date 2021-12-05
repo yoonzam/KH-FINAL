@@ -17,21 +17,30 @@ import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.geo.Distance;
 import org.springframework.data.geo.Metrics;
 import org.springframework.data.geo.Point;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.geo.GeoJsonPoint;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
 import com.kh.eatsMap.common.util.Fileinfo;
+import com.kh.eatsMap.common.util.PageObject;
 import com.kh.eatsMap.index.model.repository.IndexFileRepository;
+import com.kh.eatsMap.index.model.repository.IndexFollowRepository;
 import com.kh.eatsMap.index.model.repository.IndexLikeRepository;
 import com.kh.eatsMap.index.model.repository.IndexRepository;
 import com.kh.eatsMap.index.model.repository.ReviewRepository;
 import com.kh.eatsMap.member.model.dto.Follow;
 import com.kh.eatsMap.member.model.dto.Member;
+import com.kh.eatsMap.member.model.repository.FollowingRepository;
+import com.kh.eatsMap.member.model.repository.MemberRepository;
 import com.kh.eatsMap.myeats.model.dto.Like;
 import com.kh.eatsMap.timeline.model.dto.Review;
+import com.kh.eatsMap.timeline.model.repository.TimelineRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -51,6 +60,11 @@ public class IndexServiceImpl implements IndexService{
 	@Autowired
 	private final IndexLikeRepository likeRepository;
 	
+	@Autowired
+	private final IndexFollowRepository followRepository;
+	
+	@Autowired
+	private final MongoTemplate mongoTemplate;
 	Logger logger = LoggerFactory.getLogger(this.getClass());
 
 
@@ -78,10 +92,7 @@ public class IndexServiceImpl implements IndexService{
 		}
 		reviews.toString();
 		String[] hashTags = hashToString(hashtags);
-		
-//		logger.debug("hashtag!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!hashTags[0]" + hashTags[0]);
-//		logger.debug("hashtag!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!hashTags[1]" + hashTags[1]);
-		
+	
 		return Map.of("reviews", reviews, "maxHash1", hashTags[0], "maxHash2", hashTags[1]);
 	}  
 	
@@ -102,8 +113,6 @@ public class IndexServiceImpl implements IndexService{
 		//이 로거 지우면 안나옴
 		logger.debug(reviews.toString());
 		for (Review review : reviews) {
-			
-//			logger.debug("hashtag" + review.getHashtag().toString());
 			
 			for (int i = 0; i < review.getHashtag().length; i++) {
 				switch (review.getHashtag()[i]) {
@@ -169,8 +178,7 @@ public class IndexServiceImpl implements IndexService{
 			case 10: hashtags[i] = "pr05"; break;
 			}
 		}
-//		System.out.println("hashtags[0]"+ hashtags[0]);
-//		System.out.println("hashtags[1]"+ hashtags[1]);
+
 		return hashtags;
 	}
 
@@ -193,8 +201,7 @@ public class IndexServiceImpl implements IndexService{
 			case "pr05": hashtags[i] = "3만원 이상"; break;
 			}
 		}
-//		System.out.println("hashtags[0]"+ hashtags[0]);
-//		System.out.println("hashtags[1]"+ hashtags[1]);
+
 		return hashtags;
 	}
 	
@@ -222,81 +229,242 @@ public class IndexServiceImpl implements IndexService{
 
 		List<Review> locationReviewList = new ArrayList<Review>();
 				
-				if(locationReviewList_.size() > 0) {
-					for (int i = 0; i < locationReviewList_.size(); i++) {
-						if (!(locationReviewList_.get(i).getMemberId().toString().equals(member.getId().toString())) ) {
-							locationReviewList.add(locationReviewList_.get(i));
-						}
-					}			
-				}
-
+			if(locationReviewList_.size() > 0) {
+				for (int i = 0; i < locationReviewList_.size(); i++) {
+					if (!(locationReviewList_.get(i).getMemberId().toString().equals(member.getId().toString())) ) {
+						locationReviewList.add(locationReviewList_.get(i));
+					}
+				}			
+			}
+			
+		locationReviewList.toString();
 		
 		for (Review review : locationReviewList) {
 			HashMap<String, Object> map = new HashMap<String, Object>();
 			
 			List<Fileinfo> files = fileRepository.findByTypeId(review.getId());
+			
 			if(files.size() > 0) review.setThumUrl(files.get(0).getDownloadURL());
-			map.put("reviewId", review.getId());
+			
+			map.put("reviewId", review.getId().toString());
 			map.put("reviews", review);
 			reviews.add(map);
 		}
 		return reviews;
 	}
 
-	
-	
-	//리뷰 검색 
+
+
 	@Override
-	public List<Review> searchReview(String keyword, String[] category, String[] hashtag) {
+	public List<Review> searchReview(String keyword, String[] area, String[] category, String[] hashtag, Member member,
+			PageObject pageObject) {
 		
-
-		List<Review> searchKeyword = new ArrayList<Review>();
-		List<Review> searchCategory = new ArrayList<Review>();
-		List<Review> searchHashtag = new ArrayList<Review>();
+		Query query = new Query();
 		
+		Optional<List<Follow>> followings = followRepository.findByMemberId(member.getId());
+		List<String> followingIds = new ArrayList<String>();
+		if(followings.isPresent()) for (Follow following : followings.get()) followingIds.add(following.getFollowingId().toString());
 		
-		if(!keyword.equals("")) {
-			searchKeyword = reviewRepository.findReviewByResNameContaining(keyword);
-		}
-		
-		if(category.length > 0) {
-			searchCategory = reviewRepository.findReviewByCategoryLike(category);
-		}
-			for (int i = 0; i < searchCategory.size(); i++) {
-				System.out.println("카테고리  검색결과 : "+searchCategory.get(i).getResName());
+		Criteria followingCriteria = new Criteria();
+		Criteria followingArr[] = new Criteria[followingIds.size()+1];
+		if(followingIds.size() > 0) {
+			for(int i = 0; i < followingIds.size()+1; i++){
+				if(i < followingIds.size()) {
+					followingArr[i] = Criteria.where("memberId").is(new ObjectId(followingIds.get(i))).and("privacy").is(1);	//팔로우공개
+				} else {
+					followingArr[i] = Criteria.where("privacy").is(0);//전체공개 
 				}
-		//카테고리 검색 문제ㅇ 
-			
-			
-			
-		
-		if(hashtag.length > 0) {
-			searchHashtag = reviewRepository.findReviewByHashtagLike(hashtag);
+			}
+			query.addCriteria(followingCriteria.orOperator(followingArr));
+		} else {
+			query.addCriteria(Criteria.where("privacy").is(0));	//전체공개 
 		}
-			for (int i = 0; i < searchHashtag.size(); i++) {
-				System.out.println("해시 검색결과 : "+searchHashtag.get(i).getResName());			
-				}
 
+		query.with(Sort.by(Sort.Direction.DESC, "id"));
 		
-		List<Review> searchReview_ = new ArrayList<Review>();
-		searchReview_.addAll(searchKeyword);
-		searchReview_.addAll(searchCategory);
-		searchReview_.addAll(searchHashtag);		
+		query.skip((pageObject.getPage()-1) * pageObject.getPerPageNum());
+		System.out.println("몇 건씩 ? " + (int)pageObject.getPerPageNum());
 		
-		Set<Review> searchReviewSet = new HashSet<Review>(searchReview_);	//중복제거 
-		List<Review> searchReview = new ArrayList<Review>(searchReviewSet);
+		query.limit((int)pageObject.getPerPageNum());
 		
-		for (Review review : searchReview) {
+		List<Review> reviews = mongoTemplate.find(query, com.kh.eatsMap.timeline.model.dto.Review.class);
+		
+		if(area.length < 17 || category.length < 8 || hashtag.length < 11) {
+			//지역으로 검색
+			String[] areaName = getAreaName(area);
+			List<Review> searchArea = new ArrayList<Review>();
+			if(areaName.length > 0) {
+				query = new Query();
+				Criteria criteria = new Criteria();
+				Criteria areaArr[] = new Criteria[areaName.length];
+				
+				for(int i = 0; i < areaName.length; i++){
+					String question = areaName[i];
+					areaArr[i] = Criteria.where("addr").regex(question);
+				}
+				
+				query.with(Sort.by(Sort.Direction.DESC, "id"));
+				query.addCriteria(criteria.orOperator(areaArr));
+				searchArea = mongoTemplate.find(query, Review.class, "review");
+				reviews.retainAll(searchArea);
+			}
+			
+			//카테고리로 검색
+			List<Review> searchCategory = new ArrayList<Review>();
+			if(category.length > 0) {
+				query = new Query();
+				Criteria criteria = new Criteria();
+				Criteria categoryArr[] = new Criteria[category.length];
+				
+				for(int i = 0; i < category.length; i++){
+					String question = category[i];
+					categoryArr[i] = Criteria.where("category").regex(question);
+				}
+				
+				query.with(Sort.by(Sort.Direction.DESC, "id"));
+				query.addCriteria(criteria.orOperator(categoryArr));
+				searchCategory = mongoTemplate.find(query, Review.class, "review");
+				reviews.retainAll(searchCategory);
+			}
+			
+			//해시태그로 검색
+			List<Review> searchHashtag = new ArrayList<Review>();
+			if(hashtag.length > 0) {
+				searchHashtag = reviewRepository.findByHashtagLike(hashtag);
+				reviews.retainAll(searchHashtag);
+			}
+			
+			//키워드로 검색
+			List<Review> searchKeyword = new ArrayList<Review>();
+			if(!keyword.equals("")) {
+				searchKeyword = reviewRepository.findByResNameIgnoreCaseContaining(keyword);
+				reviews.retainAll(searchKeyword);
+			}
+		}
+		
+		//리뷰 가공
+		List<Like> likes = likeRepository.findByMemberId(member.getId());
+		for (Review review : reviews) {
 			List<Fileinfo> files = fileRepository.findByTypeId(review.getId());
 			if(files.size() > 0) review.setThumUrl(files.get(0).getDownloadURL());
+			for (Like like : likes) if(like.getRevId().equals(review.getId())) review.setLike(1);
+			review.toString();
 		}
-		searchReview.toString();
-		return searchReview;
 		
+		return reviews;
 	}
 
+	
+	private String[] getAreaName(String areaNum[]) {
+		String[] areaName = new String[areaNum.length];
+		for (int i = 0; i < areaNum.length; i++) {
+			switch (areaNum[i]) {
+				case "02": areaName[i] = "서울"; break;
+				case "032": areaName[i] = "인천"; break;
+				case "031": areaName[i] = "경기"; break;
+				case "033": areaName[i] = "강원"; break;
+				case "044": areaName[i] = "세종"; break;
+				case "043": areaName[i] = "충북"; break;
+				case "041": areaName[i] = "충남"; break;
+				case "042": areaName[i] = "대전"; break;
+				case "062": areaName[i] = "광주"; break;
+				case "063": areaName[i] = "전북"; break;
+				case "061": areaName[i] = "전남"; break;
+				case "053": areaName[i] = "대구"; break;
+				case "054": areaName[i] = "경북"; break;
+				case "055": areaName[i] = "경남"; break;
+				case "052": areaName[i] = "울산"; break;
+				case "051": areaName[i] = "부산"; break;
+				case "064": areaName[i] = "제주"; break;
+				default: areaName[i] = ""; break;
+			}
+		}
+		return areaName;
+	}
 
-/////////////////////////////////////////////////////////////////////////////////////////	
+	@Override
+	public long count(String keyword, String[] area, String[] category, String[] hashtag, Member member) {
+		
+		Query query = new Query();
+		
+		Optional<List<Follow>> followings = followRepository.findByMemberId(member.getId());
+		List<String> followingIds = new ArrayList<String>();
+		if(followings.isPresent()) for (Follow following : followings.get()) followingIds.add(following.getFollowingId().toString());
+		
+		Criteria followingCriteria = new Criteria();
+		Criteria followingArr[] = new Criteria[followingIds.size()+1];
+		if(followingIds.size() > 0) {
+			for(int i = 0; i < followingIds.size()+1; i++){
+				if(i < followingIds.size()) {
+					followingArr[i] = Criteria.where("memberId").is(new ObjectId(followingIds.get(i))).and("privacy").is(1);	//팔로우공개
+				} else {
+					followingArr[i] = Criteria.where("privacy").is(0);//전체공개 
+				}
+			}
+			query.addCriteria(followingCriteria.orOperator(followingArr));
+		} else {
+			query.addCriteria(Criteria.where("privacy").is(0));	//전체공개 
+		}
 
+		query.with(Sort.by(Sort.Direction.DESC, "id"));
+		
+		List<Review> reviews = mongoTemplate.find(query, com.kh.eatsMap.timeline.model.dto.Review.class);
+		
+		if(area.length < 17 || category.length < 8 || hashtag.length < 11) {
+			//지역으로 검색
+			String[] areaName = getAreaName(area);
+			List<Review> searchArea = new ArrayList<Review>();
+			if(areaName.length > 0) {
+				query = new Query();
+				Criteria criteria = new Criteria();
+				Criteria areaArr[] = new Criteria[areaName.length];
+				
+				for(int i = 0; i < areaName.length; i++){
+					String question = areaName[i];
+					areaArr[i] = Criteria.where("addr").regex(question);
+				}
+				
+				query.with(Sort.by(Sort.Direction.DESC, "id"));
+				query.addCriteria(criteria.orOperator(areaArr));
+				searchArea = mongoTemplate.find(query, Review.class, "review");
+				reviews.retainAll(searchArea);
+			}
+			
+			//카테고리로 검색
+			List<Review> searchCategory = new ArrayList<Review>();
+			if(category.length > 0) {
+				query = new Query();
+				Criteria criteria = new Criteria();
+				Criteria categoryArr[] = new Criteria[category.length];
+				
+				for(int i = 0; i < category.length; i++){
+					String question = category[i];
+					categoryArr[i] = Criteria.where("category").regex(question);
+				}
+				
+				query.with(Sort.by(Sort.Direction.DESC, "id"));
+				query.addCriteria(criteria.orOperator(categoryArr));
+				searchCategory = mongoTemplate.find(query, Review.class, "review");
+				reviews.retainAll(searchCategory);
+			}
+			
+			//해시태그로 검색
+			List<Review> searchHashtag = new ArrayList<Review>();
+			if(hashtag.length > 0) {
+				searchHashtag = reviewRepository.findByHashtagLike(hashtag);
+				reviews.retainAll(searchHashtag);
+			}
+			
+			//키워드로 검색
+			List<Review> searchKeyword = new ArrayList<Review>();
+			if(!keyword.equals("")) {
+				searchKeyword = reviewRepository.findByResNameIgnoreCaseContaining(keyword);
+				reviews.retainAll(searchKeyword);
+			}
+		}
+		int count = reviews.size();
+		
+		return count;
+	}
 
 }
