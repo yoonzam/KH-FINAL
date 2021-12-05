@@ -182,33 +182,28 @@ public class GroupDAO {
 //	    update.push("participants").each(newItem);
 //	     mongoTemplate.updateFirst(query, update, Group.class);  
 		
-		//null값 잡기, null아니어도 다른문장 실행되어야 해서 따로 잡음
+		//null값 잡기
 		if(newNickNameOne != null) {
 			update = new Update();
 		    update.push("participants").each(newNickNameOne);
 		    mongoTemplate.updateFirst(query, update, Group.class);  
-			}
-		if(newNickNameTwo != null) {
+			}else if(newNickNameTwo != null) {
 			update = new Update();
 		    update.push("participants").each(newNickNameTwo);
 		    mongoTemplate.updateFirst(query, update, Group.class);  
-			}
-		if(newNickNameThree != null) {
+			}else if(newNickNameThree != null) {
 			update = new Update();
 		    update.push("participants").each(newNickNameThree);
 		    mongoTemplate.updateFirst(query, update, Group.class);  
-			}
-		if(newNickNameFour != null) {
+			}else if(newNickNameFour != null) {
 			update = new Update();
 		    update.push("participants").each(newNickNameFour);
 		    mongoTemplate.updateFirst(query, update, Group.class);  
-			}
-		if(newNickNameFive != null) {
+			}else if(newNickNameFive != null) {
 			update = new Update();
 		    update.push("participants").each(newNickNameFive);
 		    mongoTemplate.updateFirst(query, update, Group.class);  
-			}
-		if(newNickNameSix != null) {
+			}else if(newNickNameSix != null) {
 			update = new Update();
 		    update.push("participants").each(newNickNameSix);
 		    mongoTemplate.updateFirst(query, update, Group.class);  
