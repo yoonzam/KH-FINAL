@@ -197,6 +197,8 @@ function addList()  {
 	
 	//id 값(실제 name값 가짐) css에서 안보이게 처리
 	var addValue = $("#invited-select").val();
+	//첫번째 id처리막기 위한 두번째 변수
+	var addValueTwo = $("#invited-select").val();
 	 var li = document.createElement("input");
 	 	li.setAttribute('class', "invited-input");
 		li.setAttribute('id', addValue);
@@ -217,7 +219,7 @@ function addList()  {
 	 var icon = document.createElement("i");
 		 icon.setAttribute('class', "fas fa-times");
 		 //
-		 icon.setAttribute('id', text);
+		 icon.setAttribute('id', addValueTwo);
 		
 	  document.getElementById("nickNames").append(show,icon,li);
 	  
@@ -241,9 +243,9 @@ function addList()  {
 		icon.onclick=function(){
 			alert('test');
 			document.getElementById(addValue).removeAttribute("name");
-			document.getElementById(addValue).style.display  = 'none';
+			document.getElementById(text).style.display  = 'none';
 			document.getElementById(addValue).remove("input");
-			document.getElementById(text).remove("i");
+			document.getElementById(addValueTwo).remove("i");
 			};
 	  
 	}
