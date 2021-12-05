@@ -187,23 +187,28 @@ public class GroupDAO {
 			update = new Update();
 		    update.push("participants").each(newNickNameOne);
 		    mongoTemplate.updateFirst(query, update, Group.class);  
-			}else if(newNickNameTwo != null) {
+			}
+		if(newNickNameTwo != null) {
 			update = new Update();
 		    update.push("participants").each(newNickNameTwo);
 		    mongoTemplate.updateFirst(query, update, Group.class);  
-			}else if(newNickNameThree != null) {
+			}
+		if(newNickNameThree != null) {
 			update = new Update();
 		    update.push("participants").each(newNickNameThree);
 		    mongoTemplate.updateFirst(query, update, Group.class);  
-			}else if(newNickNameFour != null) {
+			}
+		if(newNickNameFour != null) {
 			update = new Update();
 		    update.push("participants").each(newNickNameFour);
 		    mongoTemplate.updateFirst(query, update, Group.class);  
-			}else if(newNickNameFive != null) {
+			}
+		if(newNickNameFive != null) {
 			update = new Update();
 		    update.push("participants").each(newNickNameFive);
 		    mongoTemplate.updateFirst(query, update, Group.class);  
-			}else if(newNickNameSix != null) {
+			}
+		if(newNickNameSix != null) {
 			update = new Update();
 		    update.push("participants").each(newNickNameSix);
 		    mongoTemplate.updateFirst(query, update, Group.class);  
