@@ -133,13 +133,14 @@ function addList()  {
 	
 function removeItem()  {
 	  
-	  const ul = document
-	    .getElementById('nickNames');
+	  const ul = document.getElementById('nickNames');
 	  
 	  const items = ul.getElementsByTagName('li');
+	  const inputValues = ul.getElementsByTagName('input');
 	  
 	  if(items.length > 0)  {
 	    items[0].remove();
+	    inputValues[0].remove();
 	  }
 	  
 	}
