@@ -59,11 +59,13 @@ public class MapController {
 		ObjectMapper mapper = new ObjectMapper();
 		String jsonReview = mapper.writeValueAsString(reviews);
 		String jsonId = mapper.writeValueAsString(member.getId());
+		String jsonFollow = mapper.writeValueAsString(follows);
 		
 		//view단에 사용하기 위해 model에 데이터 담기
 		model.addAttribute("reviews",jsonReview);
 		model.addAttribute("groups",groups);
 		model.addAttribute("myObjectId",jsonId);
+		model.addAttribute("jsonFollow",jsonFollow);
 		
 		//hashmap에서 데이터 추출후 분리 저장
 		List<Review> saveReview = new ArrayList();
@@ -96,19 +98,20 @@ public class MapController {
 		return "map/map";
 	}
 
-	@ResponseBody
-	@GetMapping("search")
-	public List<HashMap<String, Object>> searchReview(String keyword) {
-		System.out.println(keyword);
-
-		System.out.println("출력 되는중? " + keyword);
-
-		List<HashMap<String, Object>> reviewList = mapService.reviewList();
-
-		System.out.println(reviewList.toString());
-
-		return reviewList;
-	}
+	/*
+	 * @ResponseBody
+	 * 
+	 * @GetMapping("search") public List<HashMap<String, Object>>
+	 * searchReview(String keyword) { System.out.println(keyword);
+	 * 
+	 * System.out.println("출력 되는중? " + keyword);
+	 * 
+	 * List<HashMap<String, Object>> reviewList = mapService.reviewList();
+	 * 
+	 * System.out.println(reviewList.toString());
+	 * 
+	 * return reviewList; }
+	 */
 	
 	@ResponseBody
 	@GetMapping("group")
