@@ -2,37 +2,29 @@ package com.kh.eatsMap.timeline.model.service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 import org.bson.types.ObjectId;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.geo.GeoJsonPoint;
 import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.CriteriaDefinition;
 import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.data.util.Streamable;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.google.common.collect.Lists;
 import com.kh.eatsMap.common.code.ErrorCode;
 import com.kh.eatsMap.common.exception.HandlableException;
 import com.kh.eatsMap.common.util.FileUtil;
 import com.kh.eatsMap.common.util.Fileinfo;
 import com.kh.eatsMap.common.util.PageObject;
 import com.kh.eatsMap.member.model.dto.Follow;
-import com.kh.eatsMap.member.model.dto.Follower;
 import com.kh.eatsMap.member.model.dto.Member;
-import com.kh.eatsMap.member.model.repository.FollowerRepository;
 import com.kh.eatsMap.member.model.repository.FollowingRepository;
 import com.kh.eatsMap.member.model.repository.MemberRepository;
-import com.kh.eatsMap.member.model.service.MemberService;
 import com.kh.eatsMap.myeats.model.dto.Group;
 import com.kh.eatsMap.myeats.model.dto.Like;
 import com.kh.eatsMap.myeats.model.repository.GroupRepository;
@@ -256,7 +248,7 @@ public class TimelineServiceImpl implements TimelineService{
 	}
 	
 	@Override
-	public List<Review> searchReview(String keyword, String[] area, String[] category, String[] hashtag, Member member, PageObject pageObject) {
+	public List<Review> searchReview(Model model, String keyword, String[] area, String[] category, String[] hashtag, Member member) {
 		Query query = new Query();
 		
 		Optional<List<Follow>> followings = followingRepository.findByMemberId(member.getId());
@@ -278,7 +270,7 @@ public class TimelineServiceImpl implements TimelineService{
 			query.addCriteria(Criteria.where("privacy").is(0));
 		}
 
-		query = query.with(Sort.by(Sort.Direction.DESC, "id"));
+		query.with(Sort.by(Sort.Direction.DESC, "id"));
 		List<Review> reviews = mongoTemplate.find(query, com.kh.eatsMap.timeline.model.dto.Review.class);
 		
 		if(area.length < 17 || category.length < 8 || hashtag.length < 11) {
@@ -295,7 +287,7 @@ public class TimelineServiceImpl implements TimelineService{
 					areaArr[i] = Criteria.where("addr").regex(question);
 				}
 				
-				query = query.with(Sort.by(Sort.Direction.DESC, "id"));
+				query.with(Sort.by(Sort.Direction.DESC, "id"));
 				query.addCriteria(criteria.orOperator(areaArr));
 				searchArea = mongoTemplate.find(query, Review.class, "review");
 				reviews.retainAll(searchArea);
@@ -313,7 +305,7 @@ public class TimelineServiceImpl implements TimelineService{
 					categoryArr[i] = Criteria.where("category").regex(question);
 				}
 				
-				query = query.with(Sort.by(Sort.Direction.DESC, "id"));
+				query.with(Sort.by(Sort.Direction.DESC, "id"));
 				query.addCriteria(criteria.orOperator(categoryArr));
 				searchCategory = mongoTemplate.find(query, Review.class, "review");
 				reviews.retainAll(searchCategory);
@@ -335,7 +327,6 @@ public class TimelineServiceImpl implements TimelineService{
 		}
 		
 		//리뷰 가공
-		//if(reviews.size() > 8) reviews = Lists.newArrayList(reviews.subList(0, 8)); //컷팅
 		List<Like> likes = likeRepository.findByMemberId(member.getId());
 		for (Review review : reviews) {
 			List<Fileinfo> files = fileRepository.findByTypeId(review.getId());
@@ -343,7 +334,6 @@ public class TimelineServiceImpl implements TimelineService{
 			for (Like like : likes) if(like.getRevId().equals(review.getId())) review.setLike(1);
 			review.toString();
 		}
-		
 		return reviews;
 	}
 	

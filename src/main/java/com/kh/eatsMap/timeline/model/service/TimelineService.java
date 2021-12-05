@@ -3,6 +3,8 @@ package com.kh.eatsMap.timeline.model.service;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.springframework.ui.Model;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.kh.eatsMap.common.util.PageObject;
@@ -30,7 +32,7 @@ public interface TimelineService {
 
 	void deleteLike(String revId, Member member);
 
-	List<Review> searchReview(String keyword, String[] area, String[] category, String[] hashtag, Member member, PageObject pageObject);
+	List<Review> searchReview(Model model, String keyword, String[] area, String[] category, String[] hashtag, Member member);
 
 	List<Map<String, String>> findGroup(Member member);
 

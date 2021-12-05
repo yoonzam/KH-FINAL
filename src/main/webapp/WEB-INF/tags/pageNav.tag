@@ -13,12 +13,12 @@
 	 			pageObject= "페이지 객체" query="댓글 페이지, 검색등 뒤에 붙이는 쿼리" />
    */ %>
 
-<% request.setAttribute("noLinkColor", "#999"); %>
+<%-- <% request.setAttribute("noLinkColor", "#999"); %>
 <% request.setAttribute("tooltip", " data-toggle=\"tooltip\" data-placement=\"top\" "); %>
-<% request.setAttribute("noMove", " title=\"no move page!\" "); %>
+<% request.setAttribute("noMove", " title=\"no move page!\" "); %> --%>
 
 <ul class="pagination">
-  	<li data-page=1>
+  	<%-- <li data-page=1>
 		<c:if test="${pageObject.page > 1 }">
 	  		<a href="${listURI }?page=1&perPageNum=${pageObject.perPageNum}${query}"
 	  		  title="click to move first page!" ${tooltip } >
@@ -47,7 +47,7 @@
 	  			<i class="glyphicon glyphicon-step-backward" style="color: ${noLinkColor};"></i>
 	  		</a>
 	  	</c:if>
-  	</li>
+  	</li> --%>
 	<c:forEach begin="${pageObject.startPage }" end="${pageObject.endPage }" var="cnt">
   	<li ${(pageObject.page == cnt)?"class=\"active\"":"" } 
   	 data-page=${cnt }>
@@ -63,7 +63,7 @@
   		</c:if>
   	</li>
 	</c:forEach>
-	<c:if test="${pageObject.endPage < pageObject.totalPage }">
+<%-- 	<c:if test="${pageObject.endPage < pageObject.totalPage }">
 	  	<li data-page=${pageObject.endPage + 1 }>
 	  		<a href="${listURI }?page=${pageObject.endPage + 1 }&perPageNum=${pageObject.perPageNum}${query}"
 	  		  title="click to move next page group!" ${tooltip } >
@@ -94,14 +94,14 @@
 		  		<i class="glyphicon glyphicon-fast-forward" style="color: ${noLinkColor};"></i>
 	  		</a>
 	  	</li>
-  	</c:if>
+  	</c:if> --%>
 </ul> 
 
-<script>
+<!-- <script>
 $(document).ready(function(){
   $('[data-toggle="tooltip"]').tooltip();
   $(".pagination").mouseover(function(){
 //   		$(".tooltip > *:last").css({"background-color": "red", "border": "1px dotted #444"});   
 	});
 });
-</script>
+</script> -->

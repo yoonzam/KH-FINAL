@@ -46,13 +46,13 @@
 	      if (currentToken) {
 	    	  console.dir('token : ' + currentToken);
 	    	  clientToken = currentToken;	//execute()실행시 담길 값
-/* 	    	  fetch('/member/saveToken/' + clientToken)
+	    	  fetch('/member/saveToken/' + clientToken)
 	    	  	.then(response => {
 	    	  		if(response.ok) console.dir('성공');
 	    	  		else throw new Error(response.status);	
 	    		}).catch((error) => {
 	    			  console.error('Error', error);
-	    		}) */
+	    		}) 
 	    	  
 	        //sendTokenToServer(currentToken);
 	        updateUIForPushEnabled(currentToken);

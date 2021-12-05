@@ -17,13 +17,18 @@ import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.geo.Distance;
 import org.springframework.data.geo.Metrics;
 import org.springframework.data.geo.Point;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.geo.GeoJsonPoint;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
 import com.kh.eatsMap.common.util.Fileinfo;
+import com.kh.eatsMap.common.util.PageObject;
 import com.kh.eatsMap.index.model.repository.IndexFileRepository;
 import com.kh.eatsMap.index.model.repository.IndexFollowRepository;
 import com.kh.eatsMap.index.model.repository.IndexLikeRepository;
@@ -31,8 +36,11 @@ import com.kh.eatsMap.index.model.repository.IndexRepository;
 import com.kh.eatsMap.index.model.repository.ReviewRepository;
 import com.kh.eatsMap.member.model.dto.Follow;
 import com.kh.eatsMap.member.model.dto.Member;
+import com.kh.eatsMap.member.model.repository.FollowingRepository;
+import com.kh.eatsMap.member.model.repository.MemberRepository;
 import com.kh.eatsMap.myeats.model.dto.Like;
 import com.kh.eatsMap.timeline.model.dto.Review;
+import com.kh.eatsMap.timeline.model.repository.TimelineRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -42,9 +50,6 @@ public class IndexServiceImpl implements IndexService{
 	
 	@Autowired
 	private final IndexRepository indexRepository;
-
-	@Autowired
-	private final IndexFollowRepository followRepository;
 	
 	@Autowired
 	private final ReviewRepository reviewRepository;
@@ -55,6 +60,11 @@ public class IndexServiceImpl implements IndexService{
 	@Autowired
 	private final IndexLikeRepository likeRepository;
 	
+	@Autowired
+	private final IndexFollowRepository followRepository;
+	
+	@Autowired
+	private final MongoTemplate mongoTemplate;
 	Logger logger = LoggerFactory.getLogger(this.getClass());
 
 
@@ -64,8 +74,17 @@ public class IndexServiceImpl implements IndexService{
 		List<Review> reviews_ = reviewRepository.findByMemberId(member.getId());
 		int[] cnt = hashtagCnt(reviews_);
 		String[] hashtags = maxOfHashtag(cnt);
-		List<Review> reviews = reviewRepository.findReviewByPrivacyAndHashtagLike(0,hashtags);
+		List<Review> hashReviews  = reviewRepository.findReviewByPrivacyAndHashtagLike(0,hashtags);
 //		debug(reviews.toString());
+		
+		List<Review> reviews = new ArrayList<Review>();
+		if(hashReviews.size() > 0) {
+			for (int i = 0; i < hashReviews.size(); i++) {
+				if (!(hashReviews.get(i).getMemberId().toString().equals(member.getId().toString())) ) {
+					reviews.add(hashReviews.get(i));
+				}
+			}			
+		}
 		
 		for (Review review : reviews) {
 			List<Fileinfo> files = fileRepository.findByTypeId(review.getId());
@@ -73,10 +92,7 @@ public class IndexServiceImpl implements IndexService{
 		}
 		reviews.toString();
 		String[] hashTags = hashToString(hashtags);
-		
-//		logger.debug("hashtag!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!hashTags[0]" + hashTags[0]);
-//		logger.debug("hashtag!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!hashTags[1]" + hashTags[1]);
-		
+	
 		return Map.of("reviews", reviews, "maxHash1", hashTags[0], "maxHash2", hashTags[1]);
 	}  
 	
@@ -98,8 +114,6 @@ public class IndexServiceImpl implements IndexService{
 		logger.debug(reviews.toString());
 		for (Review review : reviews) {
 			
-//			logger.debug("hashtag" + review.getHashtag().toString());
-			
 			for (int i = 0; i < review.getHashtag().length; i++) {
 				switch (review.getHashtag()[i]) {
 				case "친근함":md01++; break;
@@ -119,13 +133,14 @@ public class IndexServiceImpl implements IndexService{
 		int[] cntArr = { md01,md02,md03,md04,md05,md06,pr01,pr02,pr03,pr04,pr05 };
 		int max = cntArr[0];	//제일 많이나온 해시태그 카운트 수 
 		int maxIndex = 0;		//제일 많이나온 해시태그 인덱스 
-		int max2 = cntArr[1];	//두번째로 많이나온 해시태그 카운트 수 
+		int max2 = cntArr[0];	//두번째로 많이나온 해시태그 카운트 수 
 		int maxIndex2 = 0;		//두번째로 많이나온 해시태그 인덱스 
 		
 		for (int i = 0; i < cntArr.length; i++) {
 			if (cntArr[i] > max) {
 				max2 = max;
 				max = cntArr[i];
+				maxIndex2 = maxIndex;
 				maxIndex = i;
 			}else if(cntArr[i] > max2) {
 				max2 = cntArr[i];
@@ -145,83 +160,48 @@ public class IndexServiceImpl implements IndexService{
 	
 	
 	public String[] maxOfHashtag(int[] cnt){
-		
-		String hashtag1 = "";
-		String hashtag2 = "";
-		
-		switch (cnt[0]) {
-		case 0: hashtag1 = "md01"; break;
-		case 1: hashtag1 = "md02"; break;
-		case 2: hashtag1 = "md03"; break;
-		case 3: hashtag1 = "md04"; break;
-		case 4: hashtag1 = "md05"; break;
-		case 5: hashtag1 = "md06"; break;
-		case 6: hashtag1 = "pr01"; break;
-		case 7: hashtag1 = "pr02"; break;
-		case 8: hashtag1 = "pr03"; break;
-		case 9: hashtag1 = "pr04"; break;
-		case 10: hashtag1 = "pr05"; break;
+		String[] hashtags = new String[cnt.length];
+
+		for (int i = 0; i < cnt.length; i++) {
+
+			switch (cnt[i]) {
+			case 0: hashtags[i] = "md01"; break;
+			case 1: hashtags[i] = "md02"; break;
+			case 2: hashtags[i] = "md03"; break;
+			case 3: hashtags[i] = "md04"; break;
+			case 4: hashtags[i] = "md05"; break;
+			case 5: hashtags[i] = "md06"; break;
+			case 6: hashtags[i] = "pr01"; break;
+			case 7: hashtags[i] = "pr02"; break;
+			case 8: hashtags[i] = "pr03"; break;
+			case 9: hashtags[i] = "pr04"; break;
+			case 10: hashtags[i] = "pr05"; break;
+			}
 		}
-		
-		switch (cnt[1]) {
-		case 0: hashtag2 = "md01"; break;
-		case 1: hashtag2 = "md02"; break;
-		case 2: hashtag2 = "md03"; break;
-		case 3: hashtag2 = "md04"; break;
-		case 4: hashtag2 = "md05"; break;
-		case 5: hashtag2 = "md06"; break;
-		case 6: hashtag2 = "pr01"; break;
-		case 7: hashtag2 = "pr02"; break;
-		case 8: hashtag2 = "pr03"; break;
-		case 9: hashtag2 = "pr04"; break;
-		case 10: hashtag2 = "pr05"; break;
-		}
-		
-		
-		String[] hashtags = new String[]{hashtag1, hashtag2};
-//		System.out.println("hashtags[0]"+ hashtags[0]);
-//		System.out.println("hashtags[1]"+ hashtags[1]);
+
 		return hashtags;
 	}
 
 
 	public String[] hashToString(String[] hashTags_){
 		
-		String hashtag1 = "";
-		String hashtag2 = "";
-		
-		switch (hashTags_[0]) {
-		case "md01": hashtag1 = "친근함"; break;
-		case "md02": hashtag1 = "고급짐"; break;
-		case "md03": hashtag1 = "가족"; break;
-		case "md04": hashtag1 = "데이트"; break;
-		case "md05": hashtag1 = "혼밥"; break;
-		case "md06": hashtag1 = "회식"; break;
-		case "pr01": hashtag1 = "가성비"; break;
-		case "pr02": hashtag1 = "가심비"; break;
-		case "pr03": hashtag1 = "1~2만원대"; break;
-		case "pr04": hashtag1 = "2~3만원대"; break;
-		case "pr05": hashtag1 = "3만원 이상"; break;
+		String[] hashtags = new String[hashTags_.length];
+		for (int i = 0; i < hashTags_.length; i++) {
+			switch (hashTags_[i]) {
+			case "md01": hashtags[i] = "친근함"; break;
+			case "md02": hashtags[i] = "고급짐"; break;
+			case "md03": hashtags[i] = "가족"; break;
+			case "md04": hashtags[i] = "데이트"; break;
+			case "md05": hashtags[i] = "혼밥"; break;
+			case "md06": hashtags[i] = "회식"; break;
+			case "pr01": hashtags[i] = "가성비"; break;
+			case "pr02": hashtags[i] = "가심비"; break;
+			case "pr03": hashtags[i] = "1~2만원대"; break;
+			case "pr04": hashtags[i] = "2~3만원대"; break;
+			case "pr05": hashtags[i] = "3만원 이상"; break;
+			}
 		}
-		
-		switch (hashTags_[1]) {
-		case "md01": hashtag2 = "친근함"; break;
-		case "md02": hashtag2 = "고급짐"; break;
-		case "md03": hashtag2 = "가족"; break;
-		case "md04": hashtag2 = "데이트"; break;
-		case "md05": hashtag2 = "혼밥"; break;
-		case "md06": hashtag2 = "회식"; break;
-		case "pr01": hashtag2 = "가성비"; break;
-		case "pr02": hashtag2 = "가심비"; break;
-		case "pr03": hashtag2 = "1~2만원대"; break;
-		case "pr04": hashtag2 = "2~3만원대"; break;
-		case "pr05": hashtag2 = "3만원 이상"; break;
-		}
-		
-		
-		String[] hashtags = new String[]{hashtag1, hashtag2};
-//		System.out.println("hashtags[0]"+ hashtags[0]);
-//		System.out.println("hashtags[1]"+ hashtags[1]);
+
 		return hashtags;
 	}
 	
@@ -244,75 +224,247 @@ public class IndexServiceImpl implements IndexService{
 		List<HashMap<String, Object>> reviews = new ArrayList<HashMap<String,Object>>();
 		
 		//내 반경 5키로 미터 이내의 공개된 모든 식당 리뷰 조회
-		List<Review> locationReviewList = 
+		List<Review> locationReviewList_ = 
 				reviewRepository.findByPrivacyAndLocationNear(0, member.getLocation(), new Distance(50, Metrics.KILOMETERS));
+
+		List<Review> locationReviewList = new ArrayList<Review>();
+				
+			if(locationReviewList_.size() > 0) {
+				for (int i = 0; i < locationReviewList_.size(); i++) {
+					if (!(locationReviewList_.get(i).getMemberId().toString().equals(member.getId().toString())) ) {
+						locationReviewList.add(locationReviewList_.get(i));
+					}
+				}			
+			}
+			
+		locationReviewList.toString();
 		
 		for (Review review : locationReviewList) {
 			HashMap<String, Object> map = new HashMap<String, Object>();
 			
 			List<Fileinfo> files = fileRepository.findByTypeId(review.getId());
+			
 			if(files.size() > 0) review.setThumUrl(files.get(0).getDownloadURL());
-			map.put("reviewId", review.getId());
+			
+			map.put("reviewId", review.getId().toString());
 			map.put("reviews", review);
 			reviews.add(map);
 		}
 		return reviews;
 	}
 
-	
-	
-	//리뷰 검색 
+
+
 	@Override
-	public List<Review> searchReview(String keyword, String[] category, String[] hashtag) {
+	public List<Review> searchReview(String keyword, String[] area, String[] category, String[] hashtag, Member member,
+			PageObject pageObject) {
 		
-
-		List<Review> searchKeyword = new ArrayList<Review>();
-		List<Review> searchCategory = new ArrayList<Review>();
-		List<Review> searchHashtag = new ArrayList<Review>();
+		Query query = new Query();
 		
+		Optional<List<Follow>> followings = followRepository.findByMemberId(member.getId());
+		List<String> followingIds = new ArrayList<String>();
+		if(followings.isPresent()) for (Follow following : followings.get()) followingIds.add(following.getFollowingId().toString());
 		
-		if(!keyword.equals("")) {
-			searchKeyword = reviewRepository.findReviewByResNameContaining(keyword);
-		}
-		
-		if(category.length > 0) {
-			searchCategory = reviewRepository.findReviewByCategoryLike(category);
-		}
-			for (int i = 0; i < searchCategory.size(); i++) {
-				System.out.println("카테고리  검색결과 : "+searchCategory.get(i).getResName());
+		Criteria followingCriteria = new Criteria();
+		Criteria followingArr[] = new Criteria[followingIds.size()+1];
+		if(followingIds.size() > 0) {
+			for(int i = 0; i < followingIds.size()+1; i++){
+				if(i < followingIds.size()) {
+					followingArr[i] = Criteria.where("memberId").is(new ObjectId(followingIds.get(i))).and("privacy").is(1);	//팔로우공개
+				} else {
+					followingArr[i] = Criteria.where("privacy").is(0);//전체공개 
 				}
-		//카테고리 검색 문제ㅇ 
-			
-			
-			
-		
-		if(hashtag.length > 0) {
-			searchHashtag = reviewRepository.findReviewByHashtagLike(hashtag);
+			}
+			query.addCriteria(followingCriteria.orOperator(followingArr));
+		} else {
+			query.addCriteria(Criteria.where("privacy").is(0));	//전체공개 
 		}
-			for (int i = 0; i < searchHashtag.size(); i++) {
-				System.out.println("해시 검색결과 : "+searchHashtag.get(i).getResName());			
-				}
 
+		query.with(Sort.by(Sort.Direction.DESC, "id"));
 		
-		List<Review> searchReview_ = new ArrayList<Review>();
-		searchReview_.addAll(searchKeyword);
-		searchReview_.addAll(searchCategory);
-		searchReview_.addAll(searchHashtag);		
+		query.skip((pageObject.getPage()-1) * pageObject.getPerPageNum());
+		System.out.println("몇 건씩 ? " + (int)pageObject.getPerPageNum());
 		
-		Set<Review> searchReviewSet = new HashSet<Review>(searchReview_);	//중복제거 
-		List<Review> searchReview = new ArrayList<Review>(searchReviewSet);
+		query.limit((int)pageObject.getPerPageNum());
 		
-		for (Review review : searchReview) {
+		List<Review> reviews = mongoTemplate.find(query, com.kh.eatsMap.timeline.model.dto.Review.class);
+		
+		if(area.length < 17 || category.length < 8 || hashtag.length < 11) {
+			//지역으로 검색
+			String[] areaName = getAreaName(area);
+			List<Review> searchArea = new ArrayList<Review>();
+			if(areaName.length > 0) {
+				query = new Query();
+				Criteria criteria = new Criteria();
+				Criteria areaArr[] = new Criteria[areaName.length];
+				
+				for(int i = 0; i < areaName.length; i++){
+					String question = areaName[i];
+					areaArr[i] = Criteria.where("addr").regex(question);
+				}
+				
+				query.with(Sort.by(Sort.Direction.DESC, "id"));
+				query.addCriteria(criteria.orOperator(areaArr));
+				searchArea = mongoTemplate.find(query, Review.class, "review");
+				reviews.retainAll(searchArea);
+			}
+			
+			//카테고리로 검색
+			List<Review> searchCategory = new ArrayList<Review>();
+			if(category.length > 0) {
+				query = new Query();
+				Criteria criteria = new Criteria();
+				Criteria categoryArr[] = new Criteria[category.length];
+				
+				for(int i = 0; i < category.length; i++){
+					String question = category[i];
+					categoryArr[i] = Criteria.where("category").regex(question);
+				}
+				
+				query.with(Sort.by(Sort.Direction.DESC, "id"));
+				query.addCriteria(criteria.orOperator(categoryArr));
+				searchCategory = mongoTemplate.find(query, Review.class, "review");
+				reviews.retainAll(searchCategory);
+			}
+			
+			//해시태그로 검색
+			List<Review> searchHashtag = new ArrayList<Review>();
+			if(hashtag.length > 0) {
+				searchHashtag = reviewRepository.findByHashtagLike(hashtag);
+				reviews.retainAll(searchHashtag);
+			}
+			
+			//키워드로 검색
+			List<Review> searchKeyword = new ArrayList<Review>();
+			if(!keyword.equals("")) {
+				searchKeyword = reviewRepository.findByResNameIgnoreCaseContaining(keyword);
+				reviews.retainAll(searchKeyword);
+			}
+		}
+		
+		//리뷰 가공
+		List<Like> likes = likeRepository.findByMemberId(member.getId());
+		for (Review review : reviews) {
 			List<Fileinfo> files = fileRepository.findByTypeId(review.getId());
 			if(files.size() > 0) review.setThumUrl(files.get(0).getDownloadURL());
+			for (Like like : likes) if(like.getRevId().equals(review.getId())) review.setLike(1);
+			review.toString();
 		}
-		searchReview.toString();
-		return searchReview;
 		
+		return reviews;
 	}
 
+	
+	private String[] getAreaName(String areaNum[]) {
+		String[] areaName = new String[areaNum.length];
+		for (int i = 0; i < areaNum.length; i++) {
+			switch (areaNum[i]) {
+				case "02": areaName[i] = "서울"; break;
+				case "032": areaName[i] = "인천"; break;
+				case "031": areaName[i] = "경기"; break;
+				case "033": areaName[i] = "강원"; break;
+				case "044": areaName[i] = "세종"; break;
+				case "043": areaName[i] = "충북"; break;
+				case "041": areaName[i] = "충남"; break;
+				case "042": areaName[i] = "대전"; break;
+				case "062": areaName[i] = "광주"; break;
+				case "063": areaName[i] = "전북"; break;
+				case "061": areaName[i] = "전남"; break;
+				case "053": areaName[i] = "대구"; break;
+				case "054": areaName[i] = "경북"; break;
+				case "055": areaName[i] = "경남"; break;
+				case "052": areaName[i] = "울산"; break;
+				case "051": areaName[i] = "부산"; break;
+				case "064": areaName[i] = "제주"; break;
+				default: areaName[i] = ""; break;
+			}
+		}
+		return areaName;
+	}
 
-/////////////////////////////////////////////////////////////////////////////////////////	
+	@Override
+	public long count(String keyword, String[] area, String[] category, String[] hashtag, Member member) {
+		
+		Query query = new Query();
+		
+		Optional<List<Follow>> followings = followRepository.findByMemberId(member.getId());
+		List<String> followingIds = new ArrayList<String>();
+		if(followings.isPresent()) for (Follow following : followings.get()) followingIds.add(following.getFollowingId().toString());
+		
+		Criteria followingCriteria = new Criteria();
+		Criteria followingArr[] = new Criteria[followingIds.size()+1];
+		if(followingIds.size() > 0) {
+			for(int i = 0; i < followingIds.size()+1; i++){
+				if(i < followingIds.size()) {
+					followingArr[i] = Criteria.where("memberId").is(new ObjectId(followingIds.get(i))).and("privacy").is(1);	//팔로우공개
+				} else {
+					followingArr[i] = Criteria.where("privacy").is(0);//전체공개 
+				}
+			}
+			query.addCriteria(followingCriteria.orOperator(followingArr));
+		} else {
+			query.addCriteria(Criteria.where("privacy").is(0));	//전체공개 
+		}
 
+		query.with(Sort.by(Sort.Direction.DESC, "id"));
+		
+		List<Review> reviews = mongoTemplate.find(query, com.kh.eatsMap.timeline.model.dto.Review.class);
+		
+		if(area.length < 17 || category.length < 8 || hashtag.length < 11) {
+			//지역으로 검색
+			String[] areaName = getAreaName(area);
+			List<Review> searchArea = new ArrayList<Review>();
+			if(areaName.length > 0) {
+				query = new Query();
+				Criteria criteria = new Criteria();
+				Criteria areaArr[] = new Criteria[areaName.length];
+				
+				for(int i = 0; i < areaName.length; i++){
+					String question = areaName[i];
+					areaArr[i] = Criteria.where("addr").regex(question);
+				}
+				
+				query.with(Sort.by(Sort.Direction.DESC, "id"));
+				query.addCriteria(criteria.orOperator(areaArr));
+				searchArea = mongoTemplate.find(query, Review.class, "review");
+				reviews.retainAll(searchArea);
+			}
+			
+			//카테고리로 검색
+			List<Review> searchCategory = new ArrayList<Review>();
+			if(category.length > 0) {
+				query = new Query();
+				Criteria criteria = new Criteria();
+				Criteria categoryArr[] = new Criteria[category.length];
+				
+				for(int i = 0; i < category.length; i++){
+					String question = category[i];
+					categoryArr[i] = Criteria.where("category").regex(question);
+				}
+				
+				query.with(Sort.by(Sort.Direction.DESC, "id"));
+				query.addCriteria(criteria.orOperator(categoryArr));
+				searchCategory = mongoTemplate.find(query, Review.class, "review");
+				reviews.retainAll(searchCategory);
+			}
+			
+			//해시태그로 검색
+			List<Review> searchHashtag = new ArrayList<Review>();
+			if(hashtag.length > 0) {
+				searchHashtag = reviewRepository.findByHashtagLike(hashtag);
+				reviews.retainAll(searchHashtag);
+			}
+			
+			//키워드로 검색
+			List<Review> searchKeyword = new ArrayList<Review>();
+			if(!keyword.equals("")) {
+				searchKeyword = reviewRepository.findByResNameIgnoreCaseContaining(keyword);
+				reviews.retainAll(searchKeyword);
+			}
+		}
+		int count = reviews.size();
+		
+		return count;
+	}
 
 }

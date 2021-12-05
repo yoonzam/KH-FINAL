@@ -56,11 +56,11 @@ public class IndexMongoTest {
 		findReviewByLocationNear.forEach(e -> logger.debug(e.getResName()));
 	}
 	
-	@Test
-	public void searchKeywordTest() {
-		List<Review> searchKeyword = reviewRepository.findReviewByResNameContaining("그슬");
-		searchKeyword.forEach(e -> logger.debug("여기를보세요!!!!!!!!!!!!!!"+e.getResName()));
-	}
+//	@Test
+//	public void searchKeywordTest() {
+//		List<Review> searchKeyword = reviewRepository.findReviewByResNameContaining("그슬");
+//		searchKeyword.forEach(e -> logger.debug("여기를보세요!!!!!!!!!!!!!!"+e.getResName()));
+//	}
 	
 	@Test
 	public void findAllTest() {
@@ -68,11 +68,11 @@ public class IndexMongoTest {
 		findAll.forEach(e -> logger.debug(e.getResName()));
 	}
 	
-	@Test
-	public void findCategoryTest() {
-		List<Review> findCategory = reviewRepository.findReviewByCategoryLike(new String[] {"cg04"});
-		findCategory.forEach(e -> logger.debug("여기를보세요!!!!!!!!!!!!!!"+e.getResName()));
-	}
+//	@Test
+//	public void findCategoryTest() {
+//		List<Review> findCategory = reviewRepository.findReviewByCategoryLike(new String[] {"cg04"});
+//		findCategory.forEach(e -> logger.debug("여기를보세요!!!!!!!!!!!!!!"+e.getResName()));
+//	}
 	@Test
 	public void findHashtagTest() {
 		List<Review> findHash = reviewRepository.findReviewByPrivacyAndHashtagLike(0, new String[] {"md03", "md04"});

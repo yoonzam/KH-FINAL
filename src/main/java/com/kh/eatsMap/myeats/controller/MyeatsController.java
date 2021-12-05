@@ -89,8 +89,13 @@ public class MyeatsController {
 	}
 
 	
-	@RequestMapping(value="/group", method=RequestMethod.GET)
-	public void groupGet(Model model, PageObject pageObject,@SessionAttribute("authentication") Member member) throws Exception{
+	@RequestMapping(value="/group", method=RequestMethod.GET)	//유진 12/06
+	public void groupGet(Model model, PageObject pageObject,@SessionAttribute("authentication") Member member 
+						, @SessionAttribute("noticeCnt") int noticeCnt, @SessionAttribute("notice") Notice notice) throws Exception{
+		
+		notice = memberService.findNoticeByMemberId(member.getId());
+		noticeCnt = notice.getCalendarNotice() + notice.getGroupNotice() + notice.getParticipantNotice() + notice.getFollowNotice();
+		
 		List<Group> groups = groupService.list(pageObject,member);
 		for (Group group : groups) {
 			List<Fileinfo> files = groupService.findFiles(group.getId());
@@ -146,9 +151,17 @@ public class MyeatsController {
 			
 			model.addAllAttributes(map);
 	}
+	@RequestMapping(value="/delete", method=RequestMethod.GET)
+	public String deleteGet(@RequestParam("id") String id, RedirectAttributes reAttr)throws Exception{ 
+		
+		groupService.remove(id);
+		reAttr.addFlashAttribute("result", "success");	
+		
+		return "redirect:/myeats/group";
+	}
 	
 	@RequestMapping(value="/delete", method=RequestMethod.POST)
-	public String delete(@RequestParam("id") String id, RedirectAttributes reAttr)throws Exception{ 
+	public String deletePost(@RequestParam("id") String id, RedirectAttributes reAttr)throws Exception{ 
 		
 		groupService.remove(id);
 		reAttr.addFlashAttribute("result", "success");	
@@ -184,16 +197,45 @@ public class MyeatsController {
 					
 					model.addAllAttributes(map);
 	}
+	
 	//수정처리
-	@RequestMapping(value="/groupDetailModify", method=RequestMethod.POST)
-	public String modifyPOST(Group group,
-			List<MultipartFile> photos, Member member,
-			@RequestParam(value="delNickName", required = false) ObjectId delNickName,@RequestParam(value ="newNickNameOne",required = false)ObjectId newNickNameOne) throws Exception{
-		//System.out.println(photos);
-		groupService.modify(group,photos,member,delNickName,newNickNameOne);
+		@RequestMapping(value="/groupDetailModify", method=RequestMethod.POST)
+		public String modifyPOST(Group group,
+				List<MultipartFile> photos, Member member,
+				@RequestParam(value="delNickNameOne", required = false) ObjectId delNickNameOne,
+				@RequestParam(value="delNickNameTwo", required = false) ObjectId delNickNameTwo,
+				@RequestParam(value="delNickNameThree", required = false) ObjectId delNickNameThree,
+				@RequestParam(value="delNickNameFour", required = false) ObjectId delNickNameFour,
+				@RequestParam(value="delNickNameFive", required = false) ObjectId delNickNameFive,
+				@RequestParam(value="delNickNameSix", required = false) ObjectId delNickNameSix,
+				@RequestParam(value ="newNickNameOne",required = false)ObjectId newNickNameOne,
+				@RequestParam(value ="newNickNameTwo",required = false)ObjectId newNickNameTwo,
+				@RequestParam(value ="newNickNameThree",required = false)ObjectId newNickNameThree,
+				@RequestParam(value ="newNickNameFour",required = false)ObjectId newNickNameFour,
+				@RequestParam(value ="newNickNameFive",required = false)ObjectId newNickNameFive,
+				@RequestParam(value ="newNickNameSix",required = false)ObjectId newNickNameSix) throws Exception{
+			//System.out.println(photos);
+//			System.out.println(delNickNameOne+ ","+ delNickNameTwo+ ","+delNickNameThree+ ","
+//					+ delNickNameFour+ ","+ delNickNameFive+ ","+ ","+ delNickNameSix
+//					+newNickNameOne+ ","+ group+ ","+ member);
+			System.out.println(delNickNameOne+ ","+ delNickNameTwo+ ","+delNickNameThree+ ","
+					+ delNickNameFour+ ","+ delNickNameFive+ ","+ delNickNameSix+ "//"
+					+ newNickNameOne+ ","+ newNickNameTwo + ","+newNickNameThree+ ","
+					+ newNickNameFour + ","+ newNickNameFive + ","+newNickNameSix);
+			groupService.modify(group,photos,member,
+					delNickNameOne,delNickNameTwo,delNickNameThree,
+					delNickNameFour,delNickNameFive,delNickNameSix,
+					newNickNameOne,newNickNameTwo,newNickNameThree,
+					newNickNameFour,newNickNameFive,newNickNameSix);
+			return "redirect:/myeats/groupDetail?id="+group.getId();
+		}
 		
-		return "redirect:/myeats/groupDetail?id="+group.getId();
-	}
+		//그룹 나가기
+				@RequestMapping(value="/groupLeave", method=RequestMethod.POST)
+				public String groupLeavePost(Group group,@SessionAttribute("authentication") Member member)throws Exception{ 
+					groupService.groupLeave(group,member.getId());
+					return "redirect:/myeats/group";
+				}	
 	
 		
 	//유진 11/30

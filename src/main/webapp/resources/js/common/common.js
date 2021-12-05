@@ -17,20 +17,26 @@ $(window).resize(() => {
     resizeSlideImgHeight();
 });
 
+window.onload  = function() {
+	$('#loadingImg').addClass('display-none');
+};
+
 /** 후기 **/
 let uploadStep;
 let placeFlag;
 let searchPlaces;
 let photoCount;
-let reviewBtn = false;	//맵Flag
-let editFlag = false;	//리뷰수정Flag
+let reviewBtn = false;	  //맵Flag
+let editFlag = false;	  //리뷰수정Flag
+let scheduleFlag = false; //스케줄추가Flag
 
 /* 팝업 제어 */
 let closePopup = () => $('.dimmed-wrap').fadeOut(200);
 $('.dimmed').click(()=>{
     closePopup();
-    reviewBtn = false;	//맵Flag
-    editFlag = false;	//리뷰수정Flag
+    reviewBtn = false;
+    editFlag = false;
+    scheduleFlag = false;
 });
 
 /* 후기 디테일 버튼 이름 표시 */
@@ -632,9 +638,7 @@ let unfollow = (followingId) => {
 
 /* 캘린더 저장 */
 let makeMySchedule = (resName, x, y) => {
+	scheduleFlag = true;
 	$('#pop-review-detail').hide();
-	$('input[name="resName"]').val(resName);
-    $('input[name="latitude"]').val(y);
-    $('input[name="longitude"]').val(x);
-	$('#pop-schedule-form').show();
+	viewCalendarForm(resName, x, y);
 }

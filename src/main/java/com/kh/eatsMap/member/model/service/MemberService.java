@@ -62,6 +62,6 @@ public interface MemberService {
 
 	Map<String, Object> findAllFollowerToMap(Member member);
 
-	
+	Notice findNoticeByMemberId(ObjectId memberId);
 
 }

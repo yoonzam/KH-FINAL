@@ -22,6 +22,18 @@
 	font-size: 1em;
 	}
 	
+/* 그룹생성 */	
+.btn-area {
+    text-align: end;
+}
+
+.btn-area button {
+    cursor: pointer;
+    font-weight: 8;
+    font-size: 15px;
+    padding: 10px 15px;
+}
+
 /* 페이징 가운데 정렬 */	
 .page{
   text-align: center;  
@@ -39,20 +51,6 @@
   display: inline;
   text-align: center;
   }
-  
-  
-  
-/* 그룹생성 */	
-.btn-area {
-    text-align: end;
-}
-
-.btn-area button {
-    cursor: pointer;
-    font-weight: 8;
-    font-size: 15px;
-    padding: 10px 15px;
-}
 
 /* 페이징 */
 .pagination {
@@ -61,14 +59,18 @@
 
 .pagination a {
   color: black;
-  float: left;
   padding: 8px 16px;
-  text-decoration: none;
+  margin-right: 3px;
+  width: 15px;
+  font: bold 12px tahoma;
+  cursor: pointer;
 }
 
-.pagination a:active{
-	background-color: #eee;
-
+.pagination a:active,.pagination a:hover,.pagination a:focus{
+	background-color: #ccc;
+	color:#fff;
+	border:1px solid #ccc;
+	border-radius: 5px;
 }
 
 </style>
@@ -98,21 +100,18 @@
 									<fmt:formatDate pattern="yyyy/MM/dd" value="${groups.groupcreatedate}"/>
 								</p>
 						</div>
+						<c:if test="${authentication.id == groups.memberId }">
 						<div class="controller">
 							<a href="groupDetail?id=${groups.id}" class="group-menu">그룹관리</a>
 							<a href="groupDetail?id=${groups.id}">수정</a>
-							
-							<!-- 폼태그 스타일 유지 위해 div로 display: none 줌 -->
-							<div style="display: none;">
-								<!--js에서 delete/post로 넘김 -->
-								<form role="form" method="post">
-								<c:if test="${status.last}">  <!-- 추후 삭제해야하는 기능 -->
-									<input type="hidden" id="id" name="id" value="${groups.id}" />
-								</c:if>
-								</form>
-							</div>
-							<a><button type="submit" class="delete">삭제</button></a> 
+							<a href="/myeats/delete?id=${groups.id}">삭제</a> 
 						</div>
+						</c:if>
+						<c:if test="${authentication.id != groups.memberId }">
+						<div class="controller">
+							<a href="groupDetail?id=${groups.id}" class="group-menu">그룹보기</a>
+						</div>
+						</c:if>
 					</li>
 					</c:when>
 				</c:choose> 
@@ -137,16 +136,5 @@
 
 <%@ include file="/WEB-INF/views/include/footer.jsp" %>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-<script>
- 	$(document).ready(function(){
- 		var frmObj = $("form[role='form']");
- 		
- 		 $(".delete").on("click", function(){ 
-			frmObj.attr("action", "/myeats/delete");
-			frmObj.submit();
- 		}); 
- 	});
-
-</script>
 </body>
 </html>

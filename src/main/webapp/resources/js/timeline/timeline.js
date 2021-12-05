@@ -45,10 +45,9 @@ document.addEventListener('scroll', function() {
     if((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
     	$.ajax({
 			type: 'POST',
-			url: '/timeline/?page='+(timelinePageCnt+1),
+			url: '/timeline/',
+			data: { page:timelinePageCnt+1 },
 			dataType: 'json',
-			contentType: false,
-			processData: false,
 		 	cache:false,
 			success: (data) => {
 				if(data.length == 0) return;
@@ -86,6 +85,12 @@ document.addEventListener('scroll', function() {
 				$('.timeline-brd').append(html);
 				resizeImg();
 			},
+			beforeSend:function(){
+		        $('#loadingImg').removeClass('display-none');
+		    }
+		    ,complete:function(){
+		        $('#loadingImg').addClass('display-none');
+		    },
 			error: (e) => {
 				alert("실패");
 			}

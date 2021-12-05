@@ -29,8 +29,13 @@
 						<div class="group-title"><i class="fas fa-bell"></i> ${groups.groupName}</div>
 						<div class="group-service">
 							<button class="main-btn">잇츠맵 바로가기</button>
-							<a href="groupDetailModify?id=${groups.id}"><button class = "modifybtn">수정</button></a>
-							<button class="deletebtn">삭제</button>
+							<c:if test="${authentication.id == groups.memberId }">
+								<a href="groupDetailModify?id=${groups.id}"><button class = "modifybtn">수정</button></a>
+								<button class="deletebtn">삭제</button>
+							</c:if>
+							<c:if test="${authentication.id != groups.memberId }">
+								<button class="leavebtn">그룹 나가기</button>
+							</c:if>
 						</div>
 					</div>
 				</div>
@@ -55,6 +60,12 @@
 $(document).ready(function(){
 	var frmObj = $("form[role='form']");
 	console.log("group.jsp지정된 폼태그..");
+	
+	 $(".leavebtn").on("click", function(){
+			frmObj.attr("action", "/myeats/groupLeave");
+			frmObj.attr("method", "post");
+			frmObj.submit();
+			});
 	
 	 $(".deletebtn").on("click", function(){
 		frmObj.attr("action", "/myeats/delete");

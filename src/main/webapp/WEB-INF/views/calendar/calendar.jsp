@@ -26,6 +26,10 @@
 <script>
 	 /* $(document).ready(function() {  */
 	 document.addEventListener('DOMContentLoaded', function() {
+		 
+		 
+		 
+	 
 
     	let schedules = [];
 
@@ -34,11 +38,13 @@
     	var calendar = new FullCalendar.Calendar(calendarEl, {
     		
     		/* themeSystem: 'bootstrap', */
+    		contentHeight: 100,
     		height: 800,
     		initialView: 'dayGridMonth',
     		fixedWeekCount: false,
     		selectable: true,
     		locale: 'ko',
+    		
     		/* eventLimit: true,
     		views: {
     			month : {eventLimit : 5}
@@ -54,8 +60,8 @@
 	    		custom:{
 	    			text: '일정 만들기',
 	    			click: function(){
+	    				
 	    				viewCalendarForm();
-	    				$('#pop-schedule-form').css({'display': 'flex'});
 	    			}
 	    		}
     		},
@@ -111,18 +117,21 @@
 		 				
 		 				$('#sch-change-btn').click(e => {
 		 					
-		 					alert('일정을 수정합니다');
 		 					$('#pop-schedule-detail').hide();
-		 					$('#pop-schedule-form').show();
+		 					//$('#pop-schedule-form').show();
 		 					$('#save-event').text('수정완료');
+		 					viewCalendarForm();
 		 					
+		 					for (var i = 0; i < data.participant.length; i++) {
+			 					text += data.participant[i].nickname + ' ';
+							}
 		 					
 		 					$('#scheduleId').val(data.calendarId);
-							$('#title').val(data.calendar.title);
-							$('#date').val(data.calendar.date);
-							$('#time').val(data.calendar.time);
-							$('#location').val(data.calendar.resName);
-							$('#participant').val(data.calendar.participant);
+							$('#scheduleForm-title').val(data.calendar.title);
+							$('#scheduleForm-date').val(data.calendar.date);
+							$('#scheduleForm-time').val(data.calendar.time);
+							$('#scheduleForm-location').val(data.calendar.resName);
+							//$('#participant').val(data.calendar.participant);
 							$('input[name="latitude"]').val(data.calendar.location.coordinates[1]);
 							$('input[name="longitude"]').val(data.calendar.location.coordinates[0]);
 							
@@ -136,13 +145,11 @@
 						 			data:{'id': data.calendarId},
 						 			dataType: 'json',
 						 			
-						 			success: (data) => {
+						 			success: () => {
 						 				alert('일정이 삭제되었습니다.');
 						 				location.reload();
-						 				// 성공이 안되고 있는데...
 						 			},
 						 			error: () => {
-						 				alert("삭제 실패")
 						 				location.reload();
 						 			}
 		 					})

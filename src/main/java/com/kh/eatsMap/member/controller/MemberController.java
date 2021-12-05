@@ -230,8 +230,6 @@ public class MemberController {
 		memberService.updateMemberProfile(member,modifyForm,photo);
 		
 		return "redirect:/myeats/post";
-		
-		
 	}
 	
 	

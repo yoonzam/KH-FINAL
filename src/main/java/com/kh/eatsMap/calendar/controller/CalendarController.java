@@ -47,8 +47,11 @@ public class CalendarController {
 	Logger logger = LoggerFactory.getLogger(this.getClass());
 	private PushMessaging push = PushMessaging.getInstance();
 
-	@GetMapping("/")
-	public String calendar() {
+	@GetMapping("/")	//유진 12/06
+	public String calendar(@SessionAttribute("noticeCnt") int noticeCnt, @SessionAttribute("notice") Notice notice
+							, @SessionAttribute("authentication") Member member) {
+		notice = memberService.findNoticeByMemberId(member.getId());
+		noticeCnt = notice.getCalendarNotice() + notice.getGroupNotice() + notice.getParticipantNotice() + notice.getFollowNotice();
 		return "calendar/calendar";
 	}
 	
@@ -62,7 +65,6 @@ public class CalendarController {
 	@PostMapping("upload")
 	@ResponseBody
 	public void makeSchedule(Calendar calendar, String scheduleId, double latitude, double longitude, @SessionAttribute("authentication") Member member){
-		
 		if(scheduleId.equals("")) {
 			calendar.setMemberId(member.getId());
 			calendar.setLocation(new GeoJsonPoint(longitude, latitude));
@@ -71,6 +73,7 @@ public class CalendarController {
 			Calendar originCalendar = calendarService.findCalendarById(scheduleId);
 			originCalendar.setTitle(calendar.getTitle());
 			originCalendar.setDate(calendar.getDate());
+			originCalendar.setTime(calendar.getTime());
 			originCalendar.setResName(calendar.getResName());
 			originCalendar.setParticipants(calendar.getParticipants());
 			originCalendar.setLocation(new GeoJsonPoint(longitude, latitude));		
@@ -101,9 +104,9 @@ public class CalendarController {
 	//	--> calendarRepository.delete(객체); 로 전달하면 몽고db가 삭제해줌
 	
 	@PostMapping("delete")
-	public String deleteSchedule(String id) {
+	@ResponseBody
+	public void deleteSchedule(String id) {
 		calendarService.deleteSchedule(id);
-		return "redirect:/calendar/";
 	}
 	
 	//유진12/02

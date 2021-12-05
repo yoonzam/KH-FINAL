@@ -15,7 +15,6 @@ $(document).ready(()=>{
 	
     resizeImg();
     resizeImg2();
-    
 
 });
 
@@ -28,11 +27,10 @@ function setLocation(obj){
 	    type: "json",
 	    data: obj,
 	    success: function(data) {
-
 			console.dir(data);
 			let html = "";
 			for(i = 0; i < data.length; i++){
-				html += '<div class="eats-list">'
+				html += '<div class="eats-list" onclick="viewTimeline(\'' + data[i].reviewId + '\')">'
 					 +  '<div class="thum1">'
 					 +  '<img src="'+ data[i].reviews.thumUrl +'">'
 					 +  '</div>'
@@ -58,9 +56,6 @@ function setLocation(obj){
 	    			  + '</div>'
 	    			  + '</div>'
 					  + '</div>';
-//				console.dir(data[i].reviewId);
-//				console.dir(data[i].reviews.resName);
-//				console.dir(data[i].reviews.hashtag);
 			}
 			
 		$('.visual2').append(html);
@@ -99,8 +94,6 @@ function setLocation(obj){
 		  ]
 		});
 			
-
-
 		 }
 		 
 //		error: console.log("위치값 전송 실패")
@@ -167,8 +160,6 @@ let resizeImg2 = () => {
 }
 
 
-
-
 $('.visual').slick({
   centerMode: true,
   centerPadding: '60px',
@@ -194,7 +185,4 @@ $('.visual').slick({
     }
   ]
 });
-	
-
-
 

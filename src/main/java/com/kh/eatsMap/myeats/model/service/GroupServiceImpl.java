@@ -125,8 +125,16 @@ public class GroupServiceImpl implements GroupService{
 	
 	//수정하기
 	@Override
-	public void modify(Group group,List<MultipartFile> photos, Member member,ObjectId delNickName,ObjectId newNickNameOne) throws Exception{
-		dao.update(group,photos,member,delNickName,newNickNameOne);
+	public void modify(Group group,List<MultipartFile> photos, Member member,
+			ObjectId delNickNameOne,ObjectId delNickNameTwo,ObjectId delNickNameThree,
+			ObjectId delNickNameFour,ObjectId delNickNameFive,ObjectId delNickNameSix,
+			ObjectId newNickNameOne,ObjectId newNickNameTwo,ObjectId newNickNameThree,
+			ObjectId newNickNameFour,ObjectId newNickNameFive,ObjectId newNickNameSix) throws Exception{
+		dao.update(group,photos,member,
+				delNickNameOne,delNickNameTwo,delNickNameThree,
+				delNickNameFour,delNickNameFive,delNickNameSix,
+				newNickNameOne,newNickNameTwo,newNickNameThree,
+				newNickNameFour,newNickNameFive,newNickNameSix);
 	}
 	
 	@Override
@@ -151,6 +159,12 @@ public class GroupServiceImpl implements GroupService{
 		Group group = new Group();
 		group = dao.findGroupById(id);
 		return group;
+	}
+	
+	//회원의 그룹나가기
+	@Override
+	public void groupLeave(Group group,ObjectId id) throws Exception{
+		dao.groupLeaveById(group,id);
 	}
 	
 

@@ -194,11 +194,11 @@ public class TimelineMongoTest {
 		String keyword = "";
 
 		PageObject pageObject = new PageObject(1, 8);
-		List<Review> reviews = timelineService.searchReview(keyword, area, category, hashtag, member, pageObject);
-		System.out.println(reviews.isEmpty());
-		for (Review hashMap : reviews) {
-			System.out.println(hashMap.getResName() + ",	" + hashMap.getAddr() + ",	" + hashMap.getCategory().toString() + ",	" + hashMap.getHashtag().toString() + ",	" + hashMap.getPrivacy());
-		}
+		//List<Review> reviews = timelineService.searchReview(keyword, area, category, hashtag, member, pageObject);
+//		System.out.println(reviews.isEmpty());
+//		for (Review hashMap : reviews) {
+//			System.out.println(hashMap.getResName() + ",	" + hashMap.getAddr() + ",	" + hashMap.getCategory().toString() + ",	" + hashMap.getHashtag().toString() + ",	" + hashMap.getPrivacy());
+//		}
 	}
 
 }
