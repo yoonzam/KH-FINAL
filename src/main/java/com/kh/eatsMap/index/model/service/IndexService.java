@@ -7,8 +7,10 @@ import java.util.Map;
 import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.geo.GeoJsonPoint;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 
 import com.kh.eatsMap.common.util.Fileinfo;
+import com.kh.eatsMap.common.util.PageObject;
 import com.kh.eatsMap.member.model.dto.Member;
 import com.kh.eatsMap.timeline.model.dto.Review;
 
@@ -23,11 +25,12 @@ public interface IndexService {
 
 	//해쉬태그 기반 리뷰리스트 
 	Map<String,Object> findAllReview(Member member);
-	
-	//리뷰 검색 
-	List<Review> searchReview(String keyword, String[] category, String[] hashtag);
 
+	//검색 
+	List<Review> searchReview(String keyword, String[] area, String[] category, String[] hashtag, Member member,
+			PageObject pageObject);
 
-
+	// 리뷰 개수 조회
+	long count(String keyword, String[] area, String[] category, String[] hashtag, Member member);
 
 }

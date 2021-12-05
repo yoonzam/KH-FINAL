@@ -48,6 +48,7 @@ public class TimelineController {
 	@PostMapping("/")
 	@ResponseBody
 	public List<HashMap<String, Object>> timelinePaging(int page, @SessionAttribute("authentication") Member member) {
+		System.out.println(1);
 		PageObject pageObject = new PageObject(page, 8);
 		return timelineService.findReviewsForPaging(pageObject, member);
 	}
@@ -128,21 +129,9 @@ public class TimelineController {
 			}	
 		}
 		
-		PageObject pageObject = new PageObject(1, 8);
-		List<Review> searchedReviewList = timelineService.searchReview(model, keyword, area, category, hashtag, member, pageObject);
-		
-//		model.addAttribute("originalReviews", searchedReviewList);
-//		if(searchedReviewList.size() > 8) searchedReviewList = Lists.newArrayList(searchedReviewList.subList(0, 8)); //컷팅
-		
+		List<Review> searchedReviewList = timelineService.searchReview(model, keyword, area, category, hashtag, member);
 		model.addAttribute("reviews", searchedReviewList);
 		model.addAttribute("keyword", keyword_);
-	}
-	
-	@PostMapping("search")
-	@ResponseBody
-	public List<HashMap<String, Object>> searchPaging(Model model, int page, @SessionAttribute("authentication") Member member) {
-		return null;
-
 	}
 	
 }

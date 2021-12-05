@@ -17,6 +17,10 @@ $(window).resize(() => {
     resizeSlideImgHeight();
 });
 
+window.onload  = function() {
+	$('#loadingImg').addClass('display-none');
+};
+
 /** 후기 **/
 let uploadStep;
 let placeFlag;

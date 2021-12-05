@@ -1,8 +1,10 @@
 package com.kh.eatsMap.map.model.service;
 
+import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
@@ -11,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import com.kh.eatsMap.common.util.Fileinfo;
 import com.kh.eatsMap.map.model.dto.Map;
 import com.kh.eatsMap.map.model.repository.MapRepository;
 import com.kh.eatsMap.map.model.repository.myMapRepository;
@@ -21,6 +24,7 @@ import com.kh.eatsMap.member.model.repository.MemberRepository;
 import com.kh.eatsMap.myeats.model.dto.Group;
 import com.kh.eatsMap.myeats.model.repository.GroupRepository;
 import com.kh.eatsMap.timeline.model.dto.Review;
+import com.kh.eatsMap.timeline.model.repository.FileRepository;
 import com.kh.eatsMap.timeline.model.repository.TimelineRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -46,19 +50,27 @@ public class MapServiceImpl implements MapService {
 	
 	@Autowired
 	private final MemberRepository memberRepository;
+	
+	@Autowired
+	private final FileRepository fileRepository;
 
 	@Override
 	public List<HashMap<String, Object>> reviewList() {
 		List<HashMap<String, Object>> mapList = new ArrayList<>();
 
 		List<Review> reviews = mapRepository.findAll();
+		
+		
 		for (Review review : reviews) {
 			HashMap<String, Object> hashmap = new HashMap<>();
+			
+			List<Fileinfo> fileInfos = fileRepository.findByTypeId(review.getId());
+			if(fileInfos.size() > 0) review.setThumUrl(fileInfos.get(0).getDownloadURL());
 			hashmap.put("review", review);
 			hashmap.put("reviewId", review.getId().toString());
 			mapList.add(hashmap);
 		}
-
+		
 		return mapList;
 
 	}
@@ -107,6 +119,8 @@ public class MapServiceImpl implements MapService {
 
 		for (Review review : reviews) {
 			HashMap<String, Object> hashmap = new HashMap<>();
+			List<Fileinfo> fileInfos = fileRepository.findByTypeId(review.getId());
+			if(fileInfos.size() > 0) review.setThumUrl(fileInfos.get(0).getDownloadURL());
 			hashmap.put("review", review);
 			hashmap.put("reviewId", review.getId().toString());
 			mapList.add(hashmap);
@@ -180,6 +194,23 @@ public class MapServiceImpl implements MapService {
 			groupReview.add(hashmap);
 		}
 		return groupReview;
+	}
+
+	@Override
+	public List<HashMap<String, Object>> findByGroupIdAndMemberId(String groupId, String memberId) {
+		List<HashMap<String, Object>> groupMemberReview = new ArrayList<>();
+		ObjectId id = new ObjectId(groupId);
+		
+		List<Review> reviews = mapRepository.findByGroupAndMemberId(id,memberId);
+		System.out.println("그룹 내 멤버 리뷰");
+		System.out.println(reviews);
+		for (Review review : reviews) {
+			HashMap<String, Object> hashmap = new HashMap<>();
+			hashmap.put("review", review);
+			hashmap.put("reviewId", review.getId().toString());
+			groupMemberReview.add(hashmap);
+		}
+		return groupMemberReview;
 	}
 
 }
