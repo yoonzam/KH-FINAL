@@ -32,14 +32,14 @@
 <script type="text/javascript">
 
 let viewCalendarForm = (resName, y, x) => {
-   $('#scheduleForm-title').val = '';
-   $('#scheduleForm-date').val = '';
-   $('#scheduleForm-time').val = '';
-   $('#scheduleForm-location').val = '';
-   $('#scheduleForm-title').text = '';
-   $('#scheduleForm-date').text = '';
-   $('#scheduleForm-time').text = '';
-   $('#scheduleForm-location').text = '';
+   $('#scheduleId').val('');
+   $('#scheduleForm-title').val('');
+   $('#scheduleForm-date').val('');
+   $('#scheduleForm-time').val('');
+   $('#scheduleForm-location').val('');
+   $('input[name="latitude"]').val('');
+   $('input[name="longitude"]').val('');
+   $('#save-event').text('확인');
    $('#participant').empty();
    $('#participant').html('<option value="" id="default-option">---함께할 잇친을 추가하세요---</option>');
    

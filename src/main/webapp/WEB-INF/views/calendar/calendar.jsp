@@ -26,6 +26,10 @@
 <script>
 	 /* $(document).ready(function() {  */
 	 document.addEventListener('DOMContentLoaded', function() {
+		 
+		 
+		 
+	 
 
     	let schedules = [];
 
@@ -114,7 +118,7 @@
 		 				$('#sch-change-btn').click(e => {
 		 					
 		 					$('#pop-schedule-detail').hide();
-		 					$('#pop-schedule-form').show();
+		 					//$('#pop-schedule-form').show();
 		 					$('#save-event').text('수정완료');
 		 					viewCalendarForm();
 		 					
