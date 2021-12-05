@@ -1,11 +1,8 @@
 package com.kh.eatsMap.member.model.service;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 import org.bson.types.ObjectId;
 import org.slf4j.Logger;
@@ -100,12 +97,17 @@ public class MemberServiceImpl implements MemberService{
 		Member storedMember = memberRepository.findByEmailAndIsLeave(member.getEmail(), 0);
 	
 		if(storedMember != null  && passwordEncoder.matches(member.getPassword(), storedMember.getPassword())) {
-			Notice notice = noticeRepository.findByMemberId(storedMember.getId());
+			Notice notice = findNoticeByMemberId(storedMember.getId());
 			int noticeCnt = notice.getCalendarNotice() + notice.getGroupNotice() + notice.getParticipantNotice() + notice.getFollowNotice();
 			
 			return Map.of("noticeCnt", noticeCnt, "notice", notice, "member",storedMember);
 		}		
 		return null;
+	}
+
+	@Override	
+	public Notice findNoticeByMemberId(ObjectId memberId) {
+		return noticeRepository.findByMemberId(memberId);
 	}
 
 	@Override
@@ -161,8 +163,6 @@ public class MemberServiceImpl implements MemberService{
 			Fileinfo fileInfo = fileUtil.fileUpload(photo);
 			fileInfo.setTypeId(memberRepository.findById(member.getId()).getId());
 			fileRepository.save(fileInfo);
-			
-			logger.debug(fileInfo.toString());
 			
 			member.setProfile(fileInfo);
 		}
@@ -286,7 +286,6 @@ public class MemberServiceImpl implements MemberService{
 		List<Map<String, Object>> followDiffId = new ArrayList<Map<String, Object>>();
 		List<Member> followerInfo = new ArrayList<Member>();
 		List<Follower> followEachOther = new ArrayList<Follower>();
-		List<Follower> followDiff = new ArrayList<Follower>();
 		
 		List<Follower> followers = followerRepository.findByMemberId(member.getId()).orElse(List.of());
 		List<Follow> followings = followingRepository.findByMemberId(member.getId()).orElse(List.of());	

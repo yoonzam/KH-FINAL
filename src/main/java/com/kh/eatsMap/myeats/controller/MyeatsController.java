@@ -89,8 +89,13 @@ public class MyeatsController {
 	}
 
 	
-	@RequestMapping(value="/group", method=RequestMethod.GET)
-	public void groupGet(Model model, PageObject pageObject,@SessionAttribute("authentication") Member member) throws Exception{
+	@RequestMapping(value="/group", method=RequestMethod.GET)	//유진 12/06
+	public void groupGet(Model model, PageObject pageObject,@SessionAttribute("authentication") Member member 
+						, @SessionAttribute("noticeCnt") int noticeCnt, @SessionAttribute("notice") Notice notice) throws Exception{
+		
+		notice = memberService.findNoticeByMemberId(member.getId());
+		noticeCnt = notice.getCalendarNotice() + notice.getGroupNotice() + notice.getParticipantNotice() + notice.getFollowNotice();
+		
 		List<Group> groups = groupService.list(pageObject,member);
 		for (Group group : groups) {
 			List<Fileinfo> files = groupService.findFiles(group.getId());

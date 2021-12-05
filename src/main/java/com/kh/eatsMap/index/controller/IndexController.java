@@ -22,6 +22,8 @@ import com.kh.eatsMap.common.util.Fileinfo;
 import com.kh.eatsMap.common.util.PageObject;
 import com.kh.eatsMap.index.model.service.IndexService;
 import com.kh.eatsMap.member.model.dto.Member;
+import com.kh.eatsMap.member.model.dto.Notice;
+import com.kh.eatsMap.member.model.service.MemberService;
 import com.kh.eatsMap.timeline.model.dto.Review;
 
 
@@ -32,10 +34,12 @@ public class IndexController {
 	Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	private IndexService indexService;
+	private MemberService memberService;
 	
-	public IndexController (IndexService indexService) {
+	public IndexController (IndexService indexService, MemberService memberService) {
 		super();
 		this.indexService = indexService;
+		this.memberService = memberService;
 	}
 
 	@GetMapping("setLocation")
@@ -68,7 +72,10 @@ public class IndexController {
 	//메인화면 
 	//hashtag픽
 	@GetMapping("/")
-	public String index(@SessionAttribute("authentication") Member member ,Model model) throws Exception {
+	public String index(@SessionAttribute("authentication") Member member ,Model model
+						, @SessionAttribute("noticeCnt") int noticeCnt, @SessionAttribute("notice") Notice notice) {	//유진 12/06
+		notice = memberService.findNoticeByMemberId(member.getId());
+		noticeCnt = notice.getCalendarNotice() + notice.getGroupNotice() + notice.getParticipantNotice() + notice.getFollowNotice();
 		
 		Map<String,Object> reviewsAndHashtag = indexService.findAllReview(member);
 		model.addAttribute("reviewsAndHashtag", reviewsAndHashtag);

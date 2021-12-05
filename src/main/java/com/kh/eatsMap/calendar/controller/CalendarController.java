@@ -47,8 +47,11 @@ public class CalendarController {
 	Logger logger = LoggerFactory.getLogger(this.getClass());
 	private PushMessaging push = PushMessaging.getInstance();
 
-	@GetMapping("/")
-	public String calendar() {
+	@GetMapping("/")	//유진 12/06
+	public String calendar(@SessionAttribute("noticeCnt") int noticeCnt, @SessionAttribute("notice") Notice notice
+							, @SessionAttribute("authentication") Member member) {
+		notice = memberService.findNoticeByMemberId(member.getId());
+		noticeCnt = notice.getCalendarNotice() + notice.getGroupNotice() + notice.getParticipantNotice() + notice.getFollowNotice();
 		return "calendar/calendar";
 	}
 	
