@@ -199,6 +199,7 @@ function addList()  {
 	var addValue = $("#invited-select").val();
 	//첫번째 id처리막기 위한 두번째 변수
 	var addValueTwo = $("#invited-select").val();
+	var addValueThree = $("#invited-select").val();
 	 var li = document.createElement("input");
 	 	li.setAttribute('class', "invited-input");
 		li.setAttribute('id', addValue);
@@ -242,9 +243,9 @@ function addList()  {
 		//
 		icon.onclick=function(){
 			alert('test');
-			document.getElementById(addValue).removeAttribute("name");
+			document.getElementById(addValueThree).removeAttribute("name");
 			document.getElementById(text).style.display  = 'none';
-			document.getElementById(addValue).remove("input");
+			document.getElementById(addValueThree).remove("input");
 			document.getElementById(addValueTwo).remove("i");
 			};
 	  
