@@ -22,6 +22,18 @@
 	font-size: 1em;
 	}
 	
+/* 그룹생성 */	
+.btn-area {
+    text-align: end;
+}
+
+.btn-area button {
+    cursor: pointer;
+    font-weight: 8;
+    font-size: 15px;
+    padding: 10px 15px;
+}
+
 /* 페이징 가운데 정렬 */	
 .page{
   text-align: center;  
@@ -39,20 +51,6 @@
   display: inline;
   text-align: center;
   }
-  
-  
-  
-/* 그룹생성 */	
-.btn-area {
-    text-align: end;
-}
-
-.btn-area button {
-    cursor: pointer;
-    font-weight: 8;
-    font-size: 15px;
-    padding: 10px 15px;
-}
 
 /* 페이징 */
 .pagination {
@@ -61,14 +59,18 @@
 
 .pagination a {
   color: black;
-  float: left;
   padding: 8px 16px;
-  text-decoration: none;
+  margin-right: 3px;
+  width: 15px;
+  font: bold 12px tahoma;
+  cursor: pointer;
 }
 
-.pagination a:active{
-	background-color: #eee;
-
+.pagination a:active,.pagination a:hover,.pagination a:focus{
+	background-color: #ccc;
+	color:#fff;
+	border:1px solid #ccc;
+	border-radius: 5px;
 }
 
 </style>
