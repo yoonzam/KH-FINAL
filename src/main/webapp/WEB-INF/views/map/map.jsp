@@ -108,6 +108,43 @@
 .search-option{
 	align-self: center;
 }
+.noSearch{
+	width: 100%;
+	align-self: center;
+    text-align: center;
+}
+.review-create-btn{
+    top: 9px;
+    left: 9px;
+    width: 120px;
+    border: 1px solid #ddd;
+    background-color: #fff;
+    padding: 10px;
+    text-align: center;
+    cursor: pointer;
+    color: #fa8633;
+    font-weight: 900;
+}
+.review-create-btn:hover {
+    border: 1px solid #fa8633;
+}
+.no_review_wrap{
+	margin-bottom: 10px;
+    margin-top: 10px;
+    width: 98%;
+    height: 25%;
+    display: flex;
+    border-radius: 8px;
+    border: 1px;
+    background-color: white;
+    box-shadow: 2px 2px 4px rgb(0 0 0 / 30%);
+}
+.noSearch div{
+	font-size: 20px;
+    padding: 6px 15px;
+    font-weight: 700;
+    margin-top: 10px;
+}
 </style>
 </head>
 <body>
@@ -123,7 +160,7 @@
 					</div>
 					<div class="search-option">
 						<a id="search" class="search-btn" onclick="myEatsMap()">마이잇츠맵</a>
-						<a id="search" class="search-btn">소셜맵</a>
+						<a id="search" class="search-btn" onclick="myFollowMap()">소셜맵</a>
 					</div>
 					<div class="select-bar">
 						
@@ -144,24 +181,7 @@
 				</div>
 			</div>
 			<div class="map-review">
-				<div class="review_wrap" onclick="">
-					<div class="img-box">
-						<img class="image-thumbnail" src="/resources/img/upload/01.jpg">
-					</div>
-					<div class="info">
-						<div class="title-wrap">
-							<div class="eats-name">스시 아루히</div>
-							<div class="icons">
-								<i onclick="clickLock(this);" class="fas fa-unlock"></i>
-							</div>
-						</div>
-
-						<div class="eats-location">서울 영등포구</div>
-						<div class="eats-tag">
-							<span>#가성비</span> <span>#친근함</span> <span>#1~2만원대</span>
-						</div>
-					</div>
-				</div>
+				
 
 			</div>
 			<div class="eatsMap">
@@ -191,10 +211,7 @@
 		document.querySelector('#pop-review-form').style.display='flex';
 	})
 	
-	document.querySelector('.review_wrap').addEventListener('click',()=>{
-		console.dir("동작중");
-		document.querySelector('#pop-review-detail').style.display='flex';
-	})
+
 	
 		let clickLock = (e) =>{
 			
@@ -220,6 +237,7 @@
 		};
 		var map = new kakao.maps.Map(container, options); //지도 생성 및 객체 리턴
 		
+			
 		
 		document.querySelector('#search').addEventListener('click', (e) => {
 		    let keyword = document.querySelector('.keyword').value;
@@ -239,29 +257,29 @@
 		
 		/*비동기로 백으로 값보내기 */
 		let searchKeyword = (keyword) =>{
+			let reviews = ${reviews};
 			
-			fetch("/map/search?keyword=" + keyword)
-			  .then(response => {
-				  if(response.ok){	//통신 성공시
-					  return response.json();
-				  }else{
-					  throw new Error(response.status);
-				  }
-			  }).then(json => {	//promise객체의 json
-				console.dir(json);
-			  	//마크 찍어주기
-			  	removeMarker();
-			  	removeOverlay();
-			  	let imgLink = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png";
-				markerCreate(json,imgLink);
-			  	
-				searchMap(keyword,json);
-				  
-				divCreate(json);
-					  
-			  }).catch(error => {
-				  alert("실패");
-			  });
+			console.dir("키워드 필터전");
+			console.dir(reviews);
+			
+			let filterdKeyword = reviews.filter((review)=>{
+				if (review.review.resName == keyword) {
+					return true;
+				}
+				return false;	
+			});
+			console.dir("키워드 필터후");
+			console.dir(filterdKeyword);
+		  	//마크 찍어주기
+		  	removeMarker();
+		  	removeOverlay();
+		  	
+			markerCreate(filterdKeyword);
+		  	
+			searchMap(keyword,filterdKeyword);		  
+				
+			
+				
 		}
 		//이전 검색 삭제
 		function removeAllChildNodes() {
@@ -275,14 +293,25 @@
 		let divCreate = (data) => {
 			
 			removeAllChildNodes();
-			for (var i = 0; i < data.length; i++) {
-				  let returnDiv = takeReview(data[i].reviewId,data[i].review.addr,data[i].review.resName,data[i].review.hashtag,data[i].review.thumUrl);
-				  
-				  var $div = $(returnDiv);
+			if (data.length == 0) {
+				let noSearchDiv = '<div class="no_review_wrap">'
+					+'<div class="noSearch">'
+					+'<div>검색 된 후기가 존재하지 않습니다</div>'
+					+'<div><a id="search" class="review-create-btn" onclick="uploadReview();">후기 등록</a></div></div></div>'
+				var $div = $(noSearchDiv);
 				  $('.map-review').append($div);
+			}else{
+				for (var i = 0; i < data.length; i++) {
+					  let returnDiv = takeReview(data[i].reviewId,data[i].review.addr,data[i].review.resName,data[i].review.hashtag,data[i].review.thumUrl);
+					  
+					  var $div = $(returnDiv);
+					  $('.map-review').append($div);
+				}
 			}
+			
 		}
 		
+		//
 		
 		//리뷰검색 마크 생성
 		let markerCreate = (reviews,Id) =>{
@@ -303,11 +332,11 @@
 				console.dir(Id);
 				console.dir("필터 확인");
 				console.dir(filterdMap);
-				divCreate(filterdMap);
+				
 			}else{
 				filterdMap = reviews;
 			}
-			
+			divCreate(filterdMap);
 			
 			
 			for (var i = 0; i < filterdMap.length; i++) {
@@ -426,7 +455,7 @@
 		
 	
 		/* 맵에 표시된 가게의 json정보를 담는 변수 */
-		let markerInfo;
+		let markerInfo;	
 				
 		let searchMap = (keyword,markerData) =>{
 			
@@ -446,8 +475,10 @@
 			        let processingData = processingMarker(data,markerData);
 			        console.dir("확인");
 			        console.dir(processingData);
-			        
-			        
+			        if (processingData.length == 0) {
+						return;
+					}
+			        console.dir("확인");
 			        for (var i=0; i<processingData.length; i++) {
 			        	
 			            displayMarker(processingData[i]);    
@@ -571,7 +602,8 @@
 					removeAllChildNodes();
 				}else{
 					//그룹 리스트 출력
-					divCreate(json.groupReview);
+					
+					
 					//원래 있는 지도에 마커 지우기
 					removeOverlay();
 					removeMarker();
@@ -645,6 +677,43 @@
 		  	
 			markerCreate(myEetsMap,myId);
 		}
+		
+		//내 팔로워맵 불러오기
+		let myFollowMap = () => {
+			let myEetsMap = ${reviews};
+			let following = ${jsonFollow};
+			console.dir("팔로우 리스트")
+			console.dir(following);
+			removeMarker();
+		  	removeOverlay();
+		  	let filterdMap = filterFollowMap(myEetsMap,following);
+		  	console.dir(filterdMap);
+			markerCreate(filterdMap); 
+		}
+		
+		let filterFollowMap = (review,follows) =>{
+			let filterdMap = review.filter((review)=>{
+				for (var i = 0; i < follows.length; i++) {
+					if (review.review.memberId.date == follows[i].followingId.date 
+							&& review.review.memberId.timestamp == follows[i].followingId.timestamp) {
+						return true;
+					}
+				}
+				return false;
+				
+			});
+			
+			return filterdMap;
+		}
+		
+		//loadMap
+		//처음 로딩 리뷰 리스트 마커 출력
+		let loadMap = () =>{
+			let myEetsMap = ${reviews};
+			markerCreate(myEetsMap);
+		}
+		
+		loadMap();
 	
 	
 		
