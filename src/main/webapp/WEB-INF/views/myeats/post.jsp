@@ -166,10 +166,13 @@ let viewFollower = (memberId) => {
 	 	}
 	}).then(data => {
 		let html = '';
-		let followEachOther = data.followEachOther; //Follower 서로 친구인 멤버의 id를 담은 리스트
-		let followerInfo = data.memberInfo;			//List<Map>
+		let followEachOther = new Array();
+		let followerInfo = new Array();
+		followEachOther = data.followEachOther; //Follower 서로 친구인 멤버의 id를 담은 리스트
+		followerInfo = data.memberInfo;			//List<Map>\
+		followDiffId = data.followDiffId;
 		
-		if(data.length == 0){
+		if(followerInfo.length == 0){
 			html += '<h3 style="text-align:center; padding-top:15px;">나를 팔로우한 잇친이 없습니다.</h3>';
 			$('.wrap-list-follower').append(html);
 		}
@@ -188,42 +191,58 @@ let viewFollower = (memberId) => {
 				aNickname.innerHTML = followerInfo[i].member.nickname;
 				
 				$('#' + followerInfo[i].memberId).append(aNickname);				
-				
-				document.querySelector('#follower-pop').style.display = 'flex';
-				
 			}
 			
-			//forEach문 사용할것!
-			for ( var j = 0; j < followEachOther.length; j++) {	//서로이웃인 팔로워 정보 만큼 돌면서 일치 아이디 조회
-				for (var i = 0; i < followerInfo.length; i++) {
-					let aBtn = '';
-					if (followerInfo[i].memberId == followEachOther[j].memberId) {
-						aBtn = document.createElement('a');				
-						aBtn.className = 'btn-pop unfollow';
-						aBtn.innerHTML = '잇친 끊기';
-						$('#' + followerInfo[i].memberId ).append($(aBtn));
-						$('#' + followerInfo[i].memberId + ' a:nth-child(2)').attr('onclick', 'popUnfollow('+ followerInfo[i].memberId +')');	//
-						
-						//$('#' + followerInfo[i].memberId + ' a:nth-child(2)').attr('onclick', 'popUnfollow('+ followerInfo[i].memberId +')');
-					}else{
-						aBtn = document.createElement('a');				
-						aBtn.className = 'btn-pop follow';
-						aBtn.innerHTML = '잇친 맺기';
-						$('#' + followerInfo[i].memberId ).append($(aBtn));
-						$('#' + followerInfo[i].memberId + ' a:nth-child(2)').attr('onclick', 'popfollow('+ followerInfo[i].memberId +')');
-						
-						//$('#' + followerInfo[i].memberId + ' a:nth-child(2)').attr('onclick', 'popfollow('+ followerInfo[i].memberId +')');
-					}
-						
+			document.querySelector('#follower-pop').style.display = 'flex';
+			
+			//필터 안됨! Object로 넘어오는 문제 (forEach도 안됨!)
+			function filterBySameId(obj) {
+				let res = new Array();
+				
+				for (var i = 0; i < followEachOther.length; i++) {
+					for (var j = 0; j < obj.length; j++) {
+						if(followEachOther[i].memberId == obj[j].memberId) {
+							res.push(followEachOther[i].memberId);								
+						}
+					}					
 				}
-		
+				return res;
+			}
+			function filterByDiffId(obj) {
+				let res = new Array();
+				
+				for (var i = 0; i < followEachOther.length; i++) {
+					for (var j = 0; j < obj.length; j++) {
+						if(followEachOther[i].memberId != obj[j].memberId) {
+							res.push(followEachOther[i].memberId);							
+						}
+					}					
+				}
+				return res;
+			}
+			//let arrEachOther = followerInfo.filter(filterBySameId);
+			//let arrDiff = followerInfo.filter(filterByDiffId);
+			
+			let aBtn = '';
+			
+			for (var i = 0; i < followEachOther.length; i++) {
+				aBtn = document.createElement('a');				
+				aBtn.className = 'btn-pop unfollow';
+				aBtn.innerHTML = '잇친 끊기';
+				$('#' + followEachOther[i].memberId ).append($(aBtn));
+				$('#' + followEachOther[i].memberId + ' a:nth-child(2)').attr('onclick', "popUnfollow('"+ followEachOther[i].memberId +"')");
+			}
+
+			for (var i = 0; i < followDiffId.length; i++) {
+				aBtn = document.createElement('a');				
+				aBtn.className = 'btn-pop follow';
+				aBtn.innerHTML = '잇친 맺기';
+				$('#' + followDiffId[i].memberId ).append($(aBtn));
+				$('#' + followDiffId[i].memberId + ' a:nth-child(2)').attr('onclick', "popfollow('"+ followDiffId[i].memberId +"')");	
 			}
 			
 		}
-		
-		console.dir(data);
-		console.dir(followEachOther);
-		console.dir(followerInfo);
+
 	
 	}).catch((error) => {
 		  console.error('Error', error);
@@ -258,7 +277,8 @@ let popfollow = (followingId) => {	//팔로우할 아이디
 		cache: false,
 		success: (memberId) => {
 			$('#' + memberId + ' a:nth-child(2)').attr('class',"btn-pop unfollow");
-			$('#' + memberId + ' a:nth-child(2)').attr('onclick', 'popUnfollow('+ followerInfo[i].memberId +')');
+			$('#' + memberId + ' a:nth-child(2)').attr('onclick', 'popUnfollow('+ memberId +')');
+			$('#' + memberId + ' a:nth-child(2)').text('잇친 끊기');
 		},
 		error: (e) => {
 			alert("실패");

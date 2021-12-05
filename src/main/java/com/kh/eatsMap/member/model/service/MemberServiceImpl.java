@@ -283,8 +283,10 @@ public class MemberServiceImpl implements MemberService{
 		
 		List<Map<String,Object>> memberList = new ArrayList<Map<String,Object>>();
 		List<Map<String, Object>> followEachOtherId = new ArrayList<Map<String, Object>>();
+		List<Map<String, Object>> followDiffId = new ArrayList<Map<String, Object>>();
 		List<Member> followerInfo = new ArrayList<Member>();
 		List<Follower> followEachOther = new ArrayList<Follower>();
+		List<Follower> followDiff = new ArrayList<Follower>();
 		
 		List<Follower> followers = followerRepository.findByMemberId(member.getId()).orElse(List.of());
 		List<Follow> followings = followingRepository.findByMemberId(member.getId()).orElse(List.of());	
@@ -311,16 +313,15 @@ public class MemberServiceImpl implements MemberService{
 			for (Member info : followerInfo) {
 				memberList.add(Map.of("memberId", info.getId().toString(), "member", info));
 			}
+			//차집합
+			followers.removeAll(followEachOther);
+			
+			for (Follower follow : followers) {
+				followDiffId.add(Map.of("memberId", follow.getFollowerId().toString()));
+			}
 		}		
-		
-		//filter를 사용해서 서로이웃이 아닌 객체를 구하자! set 메서드 참조(차집합)
-		//서로이웃인 멤버 출력 먼저
-		//이후 차집합 멤버 출력
-		logger.debug("memberList");
-		memberList.forEach(e -> logger.debug(e.toString()));
-		logger.debug("followEachOther");
-		followEachOther.forEach(e -> logger.debug(e.toString()));
-		return Map.of("memberInfo", memberList, "followEachOther", followEachOtherId);
+
+		return Map.of("memberInfo", memberList, "followEachOther", followEachOtherId, "followDiffId", followDiffId);
 	}
 
 

@@ -8,14 +8,12 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-import org.bson.types.ObjectId;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -26,9 +24,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.TypedSort;
-import org.springframework.data.geo.Distance;
-import org.springframework.data.geo.Metrics;
-import org.springframework.data.geo.Point;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.util.Streamable;
@@ -40,7 +35,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.context.WebApplicationContext;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.kh.eatsMap.calendar.model.dto.Calendar;
 import com.kh.eatsMap.calendar.model.repository.CalendarRepository;
 import com.kh.eatsMap.index.model.repository.ReviewRepository;
 import com.kh.eatsMap.member.model.dto.Follow;
@@ -51,6 +45,7 @@ import com.kh.eatsMap.member.model.repository.MemberRepository;
 import com.kh.eatsMap.member.model.repository.NoticeRepository;
 import com.kh.eatsMap.member.model.service.MemberService;
 import com.kh.eatsMap.timeline.model.dto.Review;
+import com.kh.eatsMap.timeline.model.service.TimelineService;
 
 
 @WebAppConfiguration
@@ -71,6 +66,8 @@ public class MemberRepositoryTest {
     private FollowingRepository followingRepository;
 	@Autowired
 	private MemberService memberService;
+	@Autowired
+	private TimelineService timelineService;
     @Autowired
     private MongoTemplate mongoTemplate;
     
@@ -361,7 +358,6 @@ public class MemberRepositoryTest {
     	Follow follow = followingRepository.findByMemberIdAndFollowingId(loginUser.getId(), member.getId()).get();
     	
     	logger.debug(follow.toString());
-    	
     }
     
     @Test
