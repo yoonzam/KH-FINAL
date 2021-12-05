@@ -19,5 +19,4 @@
 <script defer type="text/javascript" src="/resources/js/common/common.js"></script>
 <!-- firebase -->
 <script src="https://apis.google.com/js/api.js"></script>
-<script defer src="/resources/js/member/push-messaging.js"></script>
 		

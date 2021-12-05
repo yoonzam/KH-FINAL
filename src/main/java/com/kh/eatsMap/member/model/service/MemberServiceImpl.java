@@ -107,7 +107,7 @@ public class MemberServiceImpl implements MemberService{
 
 	@Override	
 	public Notice findNoticeByMemberId(ObjectId memberId) {
-		return noticeRepository.findByMemberId(memberId);
+		return noticeRepository.findByMemberId(memberId).get();
 	}
 
 	@Override
@@ -118,16 +118,9 @@ public class MemberServiceImpl implements MemberService{
 		member.setRegDate();
 		member.setNickname(form.getNickname());
 		member.setIsLeave(0);
-		memberRepository.save(member);
+		Member joinUser = memberRepository.save(member);
 
-		Notice notice = new Notice();
-		Member joinUser = memberRepository.findById(member.getId());
-		notice.setMemberId(joinUser.getId());
-		notice.setCalendarNotice(0);
-		notice.setGroupNotice(0);
-		notice.setParticipantNotice(0);
-		notice.setFollowNotice(0);
-		noticeRepository.save(notice);
+		saveNoticeWhenJoin(joinUser);
 	}
 
 
@@ -140,12 +133,34 @@ public class MemberServiceImpl implements MemberService{
 
 	@Override
 	public Member findKakaoMember(String kakaoId) {
-		return memberRepository.findByKakaoId(kakaoId);
+		return memberRepository.findByKakaoId(kakaoId).orElse(new Member());
 	}
 
 	@Override
 	public void saveMember(Member member) {
 		memberRepository.save(member);
+	}
+	
+	@Override
+	public void saveMemberBySocial(Member member) {
+		member.setRegDate();
+		member.setIsLeave(0);
+		Member joinUser = memberRepository.save(member);
+		
+		saveNoticeWhenJoin(joinUser);
+	}
+	
+	public void saveNoticeWhenJoin(Member member) {
+		Notice notice = findNoticeByMemberId(member.getId());
+		
+		if(notice.getId() == null) {
+			notice.setMemberId(member.getId());
+			notice.setCalendarNotice(0);
+			notice.setGroupNotice(0);
+			notice.setParticipantNotice(0);
+			notice.setFollowNotice(0);			
+		}
+		noticeRepository.save(notice);
 	}
 
 	@Override
@@ -155,8 +170,10 @@ public class MemberServiceImpl implements MemberService{
 
 	@Override
 	public void updateMemberProfile(Member member, ModifyForm form, MultipartFile photo) {
-		member.setNickname(form.getNickname());
-		member.setPassword(passwordEncoder.encode(form.getPassword()));
+		if(form != null) {
+			member.setNickname(form.getNickname());
+			member.setPassword(passwordEncoder.encode(form.getPassword()));
+		}
 		
 		if(!photo.isEmpty()) {
 			FileUtil fileUtil = new FileUtil();
@@ -237,10 +254,6 @@ public class MemberServiceImpl implements MemberService{
 			.ifPresent(e -> followerRepository.delete(e));
 	}
 
-	@Override
-	public Notice findNotice(ObjectId followingId) {
-		return noticeRepository.findByMemberId(followingId);
-	}
 
 	@Override
 	public List<Review> findLikedByMemberId(Member member) {

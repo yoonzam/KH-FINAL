@@ -30,7 +30,8 @@ public interface MemberService {
 
 	Member findKakaoMember(String kakaoId);
 
-	//카카오용 임시메서드
+	void saveMemberBySocial(Member member);
+	
 	void saveMember(Member member);
 
 	Member findMemberByNickname(String nickname);
@@ -49,8 +50,6 @@ public interface MemberService {
 	void followMember(ObjectId memberId, Follow followUser);
 
 	void followCancel(ObjectId id, Follow followUser);
-
-	Notice findNotice(ObjectId followingId);
 
 	Member findMemberById(ObjectId followingId);
 

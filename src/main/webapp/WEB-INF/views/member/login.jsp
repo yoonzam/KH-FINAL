@@ -20,7 +20,7 @@
        <div class="box-logo">
          <img src="/resources/img/common/gif_logo.gif" alt="/resources/img/common/EatsMap_logo.png">
        </div>
-       <form action="/member/login" method="post" class="login-form" name="login-form">
+       <form action="/member/login" method="post" class="login-form" name="loginForm">
          <h2 class="tit-login">로그인</h2>
          <c:if test="${not empty joinMsg}">
          	<h3 class="color-m" style="text-align: center; padding: 10px 0;">${joinMsg}</h3>
@@ -32,7 +32,7 @@
          <input type="password" name="password" id="password" placeholder="비밀번호를 입력해주세요">
 
          
-         <button onclick="execute()">로그인</button>
+         <button id="btn-login">로그인</button>
          <a onclick="kakaoLogin()" class="btn-kakao">
          	<img src="/resources/img/common/kakao-logo.png">
          	<span>카카오 로그인</span>

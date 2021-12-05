@@ -61,7 +61,7 @@ public interface MemberRepository extends MongoRepository<Member, String>{	//Rep
 	@Query("select m from Member m")	//안되는 코드임! BsonType에러
 	Stream<Member> findMemberByQuery();
 
-	Member findByKakaoId(String kakaoId);
+	Optional<Member> findByKakaoId(String kakaoId);
 
 	Member findByNickname(String nickname);
 

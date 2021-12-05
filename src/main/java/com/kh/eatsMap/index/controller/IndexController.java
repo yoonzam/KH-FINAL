@@ -6,6 +6,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.mongodb.core.geo.GeoJsonPoint;
@@ -72,10 +74,11 @@ public class IndexController {
 	//메인화면 
 	//hashtag픽
 	@GetMapping("/")
-	public String index(@SessionAttribute("authentication") Member member ,Model model
-						, @SessionAttribute("noticeCnt") int noticeCnt, @SessionAttribute("notice") Notice notice) {	//유진 12/06
-		notice = memberService.findNoticeByMemberId(member.getId());
-		noticeCnt = notice.getCalendarNotice() + notice.getGroupNotice() + notice.getParticipantNotice() + notice.getFollowNotice();
+	public String index(@SessionAttribute("authentication") Member member ,Model model ,HttpSession session) {	//유진 12/06
+		Notice notice = memberService.findNoticeByMemberId(member.getId());
+		int noticeCnt = notice.getCalendarNotice() + notice.getGroupNotice() + notice.getParticipantNotice() + notice.getFollowNotice();
+		session.setAttribute("notice", notice);
+		session.setAttribute("noticeCnt", noticeCnt);
 		
 		Map<String,Object> reviewsAndHashtag = indexService.findAllReview(member);
 		model.addAttribute("reviewsAndHashtag", reviewsAndHashtag);
