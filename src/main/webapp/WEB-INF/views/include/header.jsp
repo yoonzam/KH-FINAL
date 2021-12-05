@@ -5,9 +5,10 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>잇츠맵 나만의 맛집 지도</title>
 </head>
 <body>
+<div id="loadingImg" class="loading-img"><img src="/resources/img/common/loading.png"></div>
 <div class="wrap">
 	<header>
 		<div class="header pc">

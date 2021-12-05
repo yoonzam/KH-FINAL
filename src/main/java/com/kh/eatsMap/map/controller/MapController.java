@@ -58,11 +58,12 @@ public class MapController {
 		//js 에서 사용하기 위해 json으로 변환
 		ObjectMapper mapper = new ObjectMapper();
 		String jsonReview = mapper.writeValueAsString(reviews);
-		//String jsonGroup = mapper.writeValueAsString(groups);
+		String jsonId = mapper.writeValueAsString(member.getId());
 		
 		//view단에 사용하기 위해 model에 데이터 담기
 		model.addAttribute("reviews",jsonReview);
 		model.addAttribute("groups",groups);
+		model.addAttribute("myObjectId",jsonId);
 		
 		//hashmap에서 데이터 추출후 분리 저장
 		List<Review> saveReview = new ArrayList();
@@ -90,9 +91,6 @@ public class MapController {
 			//없으면 생성
 			mapService.insertMap(myMap);
 		}
-		
-		
-		
 		
 
 		return "map/map";
@@ -136,6 +134,15 @@ public class MapController {
 		
 		
 		return reviewMap;
+	}
+	
+	@ResponseBody
+	@GetMapping("group-member")
+	public List<HashMap<String, Object>> groupMemberReview(String groupId,String memberId){
+		System.out.println("멤머 리뷰 동작중?");
+		List<HashMap<String, Object>> memberReview = mapService.findByGroupIdAndMemberId(groupId,memberId);
+		
+		return memberReview;
 	}
 	
 
