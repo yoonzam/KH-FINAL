@@ -47,9 +47,12 @@
     		
     		/* eventLimit: true,
     		views: {
-    			month : {eventLimit : 5}
+    			day : {eventLimit : 5}
     		}, */
 	    	
+	    	dayMaxEvents: 1,
+    		
+    		
     		headerToolbar: {
 	    		left: 'custom',
 	    		center: 'title',
