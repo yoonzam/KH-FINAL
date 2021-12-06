@@ -95,9 +95,7 @@
 			
 			<!-- 페이징 -->
 			<div class="page">
-	      		<ul class="pagination">
-	       		 <li><pageNav:pageNav listURI="detail" pageObject="${pageObject}"></pageNav:pageNav></li>
-	      		</ul>
+	       		 <pageNav:pageNav listURI="detail" pageObject="${pageObject}"></pageNav:pageNav>
 	  		 </div>
 	  		 
 		</div><!-- container -->

@@ -76,17 +76,24 @@ let viewFollower = (memberId) => {
 		}
 		
 		if(followerInfo.length > 0){
-			for (var i = 0; i < followerInfo.length; i++) {	//팔로워
-				
+			
+			//서로 잇친 x
+			for (var i = 0; i < followDiffId.length; i++) {	
 				let list = document.createElement('li');
-				let aNickname = document.createElement('a');
-				
-				list.id = followerInfo[i].memberId;
+				list.id = followDiffId[i].memberId;
 				$('.wrap-list-follower').append(list);
-				
+			}
+			//서로 잇친
+			for (var i = 0; i < followEachOther.length; i++) {	
+				let list = document.createElement('li');
+				list.id = followEachOther[i].memberId;
+				$('.wrap-list-follower').append(list);
+			}
+			//닉네임 출력
+			for (var i = 0; i < followerInfo.length; i++) {	//팔로워
+				let aNickname = document.createElement('a');
 				aNickname.href='/member/follow/' + followerInfo[i].member.nickname;
 				aNickname.innerHTML = followerInfo[i].member.nickname;
-				
 				$('#' + followerInfo[i].memberId).append(aNickname);				
 			}
 			

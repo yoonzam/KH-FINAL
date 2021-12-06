@@ -28,10 +28,10 @@
 					<div class="group-menu">
 						<div class="group-title"><i class="fas fa-bell"></i> ${groups.groupName}</div>
 						<div class="group-service">
-							<button class="main-btn">잇츠맵 바로가기</button>
+							<button type="button" class="main-btn">잇츠맵 바로가기</button>
 							<c:if test="${authentication.id == groups.memberId }">
-								<a href="/myeats/groupDetailModify?id=${groups.id}"><button class = "modifybtn">수정</button></a>
-								<button class="deletebtn">삭제</button>
+								<a href="/myeats/groupDetailModify?id=${groups.id}"><button type="button" class="modifybtn">수정</button></a>
+								<button type="submit" class="deletebtn">삭제</button>
 							</c:if>
 							<c:if test="${authentication.id != groups.memberId }">
 								<button class="leavebtn">그룹 나가기</button>

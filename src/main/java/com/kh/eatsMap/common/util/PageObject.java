@@ -45,7 +45,6 @@ public class PageObject {
 		
 		// JSP 하단 부분에 몇개의 페이지를 표시할지 정한다.
 		perGroupPageNum = 10;
-		System.out.println("PageObject(페이지,페이지 당 글수)");
 	}
 	
 	// Spring에서는 파라메터 값을 전달 받을때 기본 생성자와 setter()를 이용해서 데이터를 전달 받는다.
@@ -85,9 +84,6 @@ public class PageObject {
 		pageObject.setKey(request.getParameter("key"));
 		pageObject.setWord(request.getParameter("word"));
 		
-		// PageObject - 확인
-		System.out.println("PageObject.getInstance() [pageObject = " + pageObject + " ]");
-
 		return pageObject;
 	}
 	
@@ -110,12 +106,7 @@ public class PageObject {
 		// 검색을 위한 데이터 전달
 		pageObject.setKey(request.getParameter("key"));
 		pageObject.setWord(request.getParameter("word"));
-		
-		// PageObject - 확인
-		System.out.println("PageObject.getInstance() [pageName = " + pageName + " ]");
-		System.out.println("PageObject.getInstance() [perPageNumName = " + perPageNumName + " ]");
-		System.out.println("PageObject.getInstance() [pageObject = " + pageObject + " ]");
-		
+				
 		return pageObject;
 	}
 	

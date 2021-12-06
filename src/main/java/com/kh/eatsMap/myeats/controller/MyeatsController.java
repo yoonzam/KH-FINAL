@@ -13,6 +13,9 @@ import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -32,6 +35,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.kh.eatsMap.common.code.ErrorCode;
+import com.kh.eatsMap.common.exception.HandlableException;
 import com.kh.eatsMap.common.util.Fileinfo;
 import com.kh.eatsMap.common.util.FindCriteria;
 import com.kh.eatsMap.common.util.PageObject;
@@ -186,22 +191,22 @@ public class MyeatsController {
 //		model.addAttribute("groups", groups);
 		
 		//Groupid로 Member nickName찾기
-				Group currentGroup = groupService.findGroupById(id);
-				ObjectId[] currentParticipants = currentGroup.getParticipants();
-				Member member = new Member();
-				String nickName = null;
-				List<String> nickNames =  new ArrayList<String>(); 
-				int i = 0;
-					for (ObjectId currentParticipant : currentParticipants) {
-						member = groupService.findMemberById(currentParticipant);
-						nickName = member.getNickname(); 
-						nickNames.add(i,nickName);
-						i++;
-					}
-					 Map<String,Object> map = new HashMap<String,Object>();
-						map = Map.of("groups", groups, "nickNames", nickNames);
-					
-					model.addAllAttributes(map);
+		Group currentGroup = groupService.findGroupById(id);
+		ObjectId[] currentParticipants = currentGroup.getParticipants();
+		Member member = new Member();
+		String nickName = null;
+		List<String> nickNames =  new ArrayList<String>(); 
+		int i = 0;
+		for (ObjectId currentParticipant : currentParticipants) {
+			member = groupService.findMemberById(currentParticipant);
+			nickName = member.getNickname(); 
+			nickNames.add(i,nickName);
+			i++;
+		}
+		Map<String,Object> map = new HashMap<String,Object>();
+		map = Map.of("groups", groups, "nickNames", nickNames);
+		
+		model.addAllAttributes(map);
 	}
 	
 	//수정처리
@@ -263,44 +268,49 @@ public class MyeatsController {
 		model.addAttribute("totalCount", groupService.getTotalCountBymemberId(member.getId()));	
 		model.addAttribute("pageObject", pageObject);	
 	}	
-	
-//	@GetMapping("detail")
-//	public void likedReview(@SessionAttribute("authentication") Member member, Model model) {
-//		model.addAttribute("reviews",memberService.findLikedByMemberId(member));
-//	}
-	
-	//이슬 12/07
+	//유진 12/07
 	@GetMapping("detail")
-	public void likedReview(@SessionAttribute("authentication") Member member,Model model, PageObject pageObject,@ModelAttribute("fCri") FindCriteria fCri) {
-		
-		model.addAttribute("reviews",groupService.findLikedByMemberId(pageObject,member));
-		
-		model.addAllAttributes(groupService.findMemberAndReviewByMemberIdPage(pageObject,member.getId()));
-		
+	public void likedReview(@SessionAttribute("authentication") Member member, Model model, PageObject pageObject, @ModelAttribute("fCri") FindCriteria fCri) {
+		int cnt = memberService.countLikedReview(member);
+
 		pageObject.setPage(fCri.getPage());
 		pageObject.setPerPageNum(fCri.getPerPageNum());
-		
-		pageObject.setTotalRow(groupService.getTotalCountBymemberId(member.getId()));
-		
-		model.addAttribute("totalCount", groupService.getTotalCountBymemberId(member.getId()));	
-		model.addAttribute("pageObject", pageObject);	
-	}	
+		pageObject.setTotalRow(cnt);
+		Pageable page = PageRequest.of((int)pageObject.getPage()-1, 8, Sort.by("id").descending());
+		model.addAttribute("reviews",memberService.findLikedByMemberIdWithPage(page, member));
+	}
+	
+	//이슬 12/07
+//	@GetMapping("detail")
+//	public void likedReview(@SessionAttribute("authentication") Member member,Model model, PageObject pageObject,@ModelAttribute("fCri") FindCriteria fCri) {
+//		
+//		model.addAttribute("reviews",groupService.findLikedByMemberId(pageObject,member));
+//		
+//		//model.addAllAttributes(groupService.findMemberAndReviewByMemberIdPage(pageObject,member.getId()));
+//		
+//		pageObject.setPage(fCri.getPage());
+//		pageObject.setPerPageNum(fCri.getPerPageNum());
+//		pageObject.setTotalRow(groupService.getTotalCountBymemberId(member.getId()));
+//		
+//		model.addAttribute("pageObject", pageObject);	
+//	}	
 	
    //유진 12/02
    @PostMapping("createGroup")
    public String createGroup(Group group, PageObject pageObject,List<MultipartFile> photos
-                     , @SessionAttribute("authentication") Member member, RedirectAttributes reAttr ) {
+                     , @SessionAttribute("authentication") Member member, RedirectAttributes reAttr, Model model ) {
      
-	   //System.out.println(photos);
+	   if(group.getParticipants() == null) {
+		   throw new HandlableException(ErrorCode.NULL_OF_PARTICIPANT);
+	   }
 	   groupService.write(group,photos,member);
-      
+	   
       for (int i = 0; i < group.getParticipants().length; i++) {
     	  Member to = memberService.findMemberById(group.getParticipants()[i]);
     	  Notice notice = memberService.findNoticeByMemberId(to.getId());
     	  memberService.updateNotice("group", notice);
     	  push.push(to);
       }
-      //System.out.println(photos);
       reAttr.addFlashAttribute("list", groupService.list(pageObject,member));
       reAttr.addFlashAttribute("result", "success");
       return "redirect:/myeats/group";

@@ -3,6 +3,7 @@ package com.kh.eatsMap.calendar.controller;
 import java.net.URI;
 import java.net.URLEncoder;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -85,14 +86,34 @@ public class CalendarController {
 		}
 		//유진 12/02 알람
 		if(calendar.getParticipants().length > 0) {
+			Calendar yourCalendar = new Calendar();
+			
 			for (int i = 0; i < calendar.getParticipants().length; i++) {
 		    	  Member to = memberService.findMemberById(calendar.getParticipants()[i]);
 		    	  Notice notice = memberService.findNoticeByMemberId(to.getId());
 		    	  memberService.updateNotice("calendar", notice);
 		    	  push.push(to);
-			}			
+		    	  
+		    	  //유진 12/07 상대 일정 등록
+		    	  if(scheduleId.equals("")) {
+			    	  yourCalendar.setMemberId(calendar.getParticipants()[i]);
+			    	  yourCalendar.setResName(calendar.getResName());
+			    	  yourCalendar.setTitle(calendar.getTitle());
+			    	  yourCalendar.setTime(calendar.getTime());
+			    	  yourCalendar.setDate(calendar.getDate());
+			    	  yourCalendar.setLocation(new GeoJsonPoint(longitude, latitude));		
+		    	  }
+			}
+		    	  
+		    	  ObjectId[] friends = new ObjectId[calendar.getParticipants().length + 1];
+		    	  friends[0] = calendar.getMemberId();
+		    	  
+	    		  for (int i = 0; i < calendar.getParticipants().length; i++) {
+					friends[i+1] = calendar.getParticipants()[i];
+	    		  }
+		    	  yourCalendar.setParticipants(friends);
+		    	  calendarService.makeSchedule(yourCalendar);	
 		}
-		//return "redirect:/calendar/";
 	}
 	
 	@GetMapping("detail")

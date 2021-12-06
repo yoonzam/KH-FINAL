@@ -23,9 +23,7 @@
 <%@ include file="/WEB-INF/views/calendar/schedule.jsp" %>
 <script>
 	 document.addEventListener('DOMContentLoaded', function() {
-		 
-    	let schedules = [];
-
+    	
     	var calendarEl = document.getElementById('calendar');
     	var calendar = new FullCalendar.Calendar(calendarEl, {
     		
@@ -43,8 +41,6 @@
     		}, */
 	    	
 	    	dayMaxEvents: 1,
-    		
-    		
     		headerToolbar: {
 	    		left: 'custom',
 	    		center: 'title',
@@ -55,7 +51,6 @@
 	    		custom:{
 	    			text: '일정 만들기',
 	    			click: function(){
-	    				
 	    				viewCalendarForm();
 	    			}
 	    		}
@@ -67,7 +62,7 @@
     		 			url : '/calendar/getSchedule',
     		 			dataType: 'json',
     		 			success: function(datas){
-    		 			
+    		 				let schedules = [];
     		 				for (var i = 0; i < datas.length; i++) {
     		 					let obj = {
     		 						'id' : datas[i].calendarId,
@@ -89,6 +84,8 @@
 		 			data:{'id': info.event.id},
 		 			dataType: 'json',
 		 			success: (data) => {
+		 				$('#fc-dom-25').hide();
+		 				
 		 				let text = '';
 		 				$('#detail-title').text(data.calendar.title);
 		 				$('#detail-date').text(data.calendar.date);
@@ -98,7 +95,6 @@
 		 				if (data.participant.length == 0) {
 		 					$('#participant-tit').remove();
 						}
-		 				
 		 				for (var i = 0; i < data.participant.length; i++) {
 		 					text += data.participant[i].nickname + ' ';
 						}
@@ -106,21 +102,15 @@
 		 				
 		 				
 		 				
-		 				//$('#detail-participant').text(data.calendar.participant.nickname);
-		 				
-		 				
-		 				
 		 				$('#sch-change-btn').click(e => {
-		 					
 		 					$('#pop-schedule-detail').hide();
-		 					//$('#pop-schedule-form').show();
+		 					
 		 					$('#save-event').text('수정완료');
 		 					viewCalendarForm();
 		 					
 		 					for (var i = 0; i < data.participant.length; i++) {
 			 					text += data.participant[i].nickname + ' ';
 							}
-		 					
 		 					$('#scheduleId').val(data.calendarId);
 							$('#scheduleForm-title').val(data.calendar.title);
 							$('#scheduleForm-date').val(data.calendar.date);
@@ -129,7 +119,6 @@
 							//$('#participant').val(data.calendar.participant);
 							$('input[name="latitude"]').val(data.calendar.location.coordinates[1]);
 							$('input[name="longitude"]').val(data.calendar.location.coordinates[0]);
-							
 		 				})
 		 				
 		 				$('#sch-delete-btn').click(e => {
@@ -148,7 +137,6 @@
 						 				location.reload();
 						 			}
 		 					})
-		 				
 		 				})
 		 			}
     			})
