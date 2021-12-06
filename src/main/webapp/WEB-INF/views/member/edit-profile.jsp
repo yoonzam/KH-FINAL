@@ -77,14 +77,14 @@
 		            </div> 
 		          </div>
 		          <div class="wrap-form">
-		              <label for="nickname">닉네임</label><span class="valid-msg" id="alert_nick"></span><form:errors cssClass="valid-msg" path="nickname"/>
+		              <label for="nickname">닉네임</label><span class="valid-msg" id="alert_nick"></span>
 		              <div class="wrap-nickname">
 		                <input type="text" name="nickname" id="nickname" value="${authentication.nickname }">
 		                <input type="button" value="중복확인" id="check_nick">
 		              </div>
-		              <label for="password">비밀번호</label><form:errors cssClass="valid-msg" path="password"/>
+		              <label for="password">비밀번호</label>
 		              <input type="password" name="password" id="password" disabled="disabled" placeholder="간편 로그인 회원은 비밀번호를 변경할 수 없습니다."/>
-		              <label for="chk-password">비밀번호 확인</label><form:errors cssClass="valid-msg" path="chkPassword"/>
+		              <label for="chk-password">비밀번호 확인</label>
 		              <input type="password" name="chkPassword" id="chkPassword" disabled="disabled" placeholder="간편 로그인 회원은 비밀번호를 변경할 수 없습니다."/>
 		              <div class="wrap-btn">
 		                <button id="btn-edit">수정하기</button>
