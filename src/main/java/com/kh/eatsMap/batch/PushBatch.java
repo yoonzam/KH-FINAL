@@ -44,7 +44,7 @@ public class PushBatch {
 				Date date = format.parse(e.getDate());
 				
 				Member member = memberRepository.findById(e.getMemberId());
-				Notice notice = noticeRepository.findByMemberId(member.getId());
+				Notice notice = noticeRepository.findByMemberId(member.getId()).get();
 				
 				//현재시간보다 이후면서, 24h 이내
 				if(date.after(new Date()) && (date.getTime() - new Date().getTime()) / 3600000 < 24) {

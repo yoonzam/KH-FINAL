@@ -74,13 +74,10 @@
 
 	<h2><i class="fas fa-utensils color-m"></i>   내 주변 <span class="color-m">잇친</span>이 추천한 맛집이에요!</h2>
 	
-	<section class="visual2">
-
-	</section>
-	
-	
-
-
-	<%@ include file="/WEB-INF/views/include/footer.jsp"%>
+<section class="visual2"></section>
+<%@ include file="/WEB-INF/views/include/footer.jsp"%>
+<script type="text/javascript">
+resetUI();
+</script>
 </body>
 </html>

@@ -30,7 +30,8 @@ public interface MemberService {
 
 	Member findKakaoMember(String kakaoId);
 
-	//카카오용 임시메서드
+	void saveMemberBySocial(Member member);
+	
 	void saveMember(Member member);
 
 	Member findMemberByNickname(String nickname);
@@ -42,15 +43,13 @@ public interface MemberService {
 	void updateNotice(String noticeId, Notice notice);
 	void updateNoticeForDel(String id, Notice notice);
 
-	Map<String,Object> findMemberAndReviewByMemberId(ObjectId memberId);
+	Map<String,Object> findMemberAndReviewByMemberId(ObjectId memberId, Member member);
 
 	Follow findFollowByMemberId(ObjectId memberId, ObjectId id);
 
 	void followMember(ObjectId memberId, Follow followUser);
 
 	void followCancel(ObjectId id, Follow followUser);
-
-	Notice findNotice(ObjectId followingId);
 
 	Member findMemberById(ObjectId followingId);
 
@@ -63,5 +62,7 @@ public interface MemberService {
 	Map<String, Object> findAllFollowerToMap(Member member);
 
 	Notice findNoticeByMemberId(ObjectId memberId);
+
+	boolean quitImpl(Member member);
 
 }

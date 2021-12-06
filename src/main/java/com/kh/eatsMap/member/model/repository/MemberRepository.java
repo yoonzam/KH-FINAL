@@ -12,6 +12,7 @@ import org.springframework.data.mongodb.repository.Query;
 import org.springframework.data.util.Streamable;
 
 import com.kh.eatsMap.member.model.dto.Member;
+import com.kh.eatsMap.member.model.dto.Notice;
 import com.kh.eatsMap.timeline.model.dto.Review;
 
 public interface MemberRepository extends MongoRepository<Member, String>{	//Repository, CrudRepository, PagingAndSortiRepository
@@ -61,11 +62,13 @@ public interface MemberRepository extends MongoRepository<Member, String>{	//Rep
 	@Query("select m from Member m")	//안되는 코드임! BsonType에러
 	Stream<Member> findMemberByQuery();
 
-	Member findByKakaoId(String kakaoId);
+	Optional<Member> findByKakaoId(String kakaoId);
 
 	Member findByNickname(String nickname);
 
 	Member findById(ObjectId memberId);
+
+	Optional<Member> findByKakaoIdAndIsLeave(String kakaoId, int i);
 
 
 }

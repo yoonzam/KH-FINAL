@@ -18,42 +18,82 @@
           <li class="selected">회원정보 수정</li>
         </ul>
         <h2 class="tit-edit-profile">회원정보 수정</h2>
-        <form:form modelAttribute="modifyForm" action="/member/edit-profile" method="post" class="edit-profile-form" name="editForm" enctype="multipart/form-data">
-	        <div class="profile">
-	          <div class="wrap-profile-img">
-	            <div class="wrap-img">
-	            <div class="profile-img">
-		          <c:if test="${not empty authentication and not empty authentication.profile}">
-		          	<img id="target_img" src="http://localhost:9090/file/${authentication.profile}">
-		          </c:if>
-		          <c:if test="${not empty authentication and empty authentication.profile}">
-		            <img id="target_img" src="/resources/img/member/user.png">
-		          </c:if>   
-	            </div>
-	            </div>
-	            
-	            <div class="wrap-file">
-	              <label for="profile" class="btn-edit-profile">Edit Profile</label>
-	              <input type="file" name="profile" id="profile" style="display: none;">
-	            </div> 
-	          </div>
-	          <div class="wrap-form">
-	              <label for="nickname">닉네임</label><span class="valid-msg" id="alert_nick"></span><form:errors cssClass="valid-msg" path="nickname"/>
-	              <div class="wrap-nickname">
-	                <input type="text" name="nickname" id="nickname" value="${authentication.nickname }">
-	                <input type="button" value="중복확인" id="check_nick">
-	              </div>
-	              <label for="password">비밀번호</label><form:errors cssClass="valid-msg" path="password"/>
-	              <input type="password" name="password" id="password">
-	              <label for="chk-password">비밀번호 확인</label><form:errors cssClass="valid-msg" path="chkPassword"/>
-	              <input type="password" name="chkPassword" id="chkPassword">
-	              <div class="wrap-btn">
-	                <button id="btn-edit">수정하기</button>
-	                <a href="/myeats/post" class="btn-cancel">취소하기</a>
-	              </div>
-	          </div>
-	        </div>  
-        </form:form>
+        <c:if test="${empty authentication.kakaoId }">
+	        <form:form modelAttribute="modifyForm" action="/member/edit-profile" method="post" class="edit-profile-form" name="editForm" enctype="multipart/form-data">
+		        <div class="profile">
+		          <div class="wrap-profile-img">
+		            <div class="wrap-img">
+		            <div class="profile-img">
+			          <c:if test="${not empty authentication and not empty authentication.profile}">
+			          	<img id="target_img" src="http://localhost:9090/file/${authentication.profile}">
+			          </c:if>
+			          <c:if test="${not empty authentication and empty authentication.profile}">
+			            <img id="target_img" src="/resources/img/member/user.png">
+			          </c:if>   
+		            </div>
+		            </div>
+		            
+		            <div class="wrap-file">
+		              <label for="profile" class="btn-edit-profile">Edit Profile</label>
+		              <input type="file" name="profile" id="profile" style="display: none;">
+		            </div> 
+		          </div>
+		          <div class="wrap-form">
+		              <label for="nickname">닉네임</label><span class="valid-msg" id="alert_nick"></span><form:errors cssClass="valid-msg" path="nickname"/>
+		              <div class="wrap-nickname">
+		                <input type="text" name="nickname" id="nickname" value="${authentication.nickname }">
+		                <input type="button" value="중복확인" id="check_nick">
+		              </div>
+		              <label for="password">비밀번호</label><form:errors cssClass="valid-msg" path="password"/>
+		              <input type="password" name="password" id="password" placeholder="비밀번호 변경을 원하지 않으시면 기존 비밀번호를 입력하세요."/>
+		              <label for="chk-password">비밀번호 확인</label><form:errors cssClass="valid-msg" path="chkPassword"/>
+		              <input type="password" name="chkPassword" id="chkPassword"/>
+		              <div class="wrap-btn">
+		                <button id="btn-edit">수정하기</button>
+		                <a href="/myeats/post" class="btn-cancel">취소하기</a>
+		              </div>
+		          </div>
+		        </div>  
+	        </form:form>        
+        </c:if>
+        <c:if test="${not empty authentication.kakaoId }">
+	        <form action="/member/social-edit-profile" method="post" class="edit-profile-form" name="editForm" enctype="multipart/form-data">
+		        <div class="profile">
+		          <div class="wrap-profile-img">
+		            <div class="wrap-img">
+		            <div class="profile-img">
+			          <c:if test="${not empty authentication and not empty authentication.profile}">
+			          	<img id="target_img" src="http://localhost:9090/file/${authentication.profile}">
+			          </c:if>
+			          <c:if test="${not empty authentication and empty authentication.profile}">
+			            <img id="target_img" src="/resources/img/member/user.png">
+			          </c:if>   
+		            </div>
+		            </div>
+		            
+		            <div class="wrap-file">
+		              <label for="profile" class="btn-edit-profile">Edit Profile</label>
+		              <input type="file" name="profile" id="profile" style="display: none;">
+		            </div> 
+		          </div>
+		          <div class="wrap-form">
+		              <label for="nickname">닉네임</label><span class="valid-msg" id="alert_nick"></span>
+		              <div class="wrap-nickname">
+		                <input type="text" name="nickname" id="nickname" value="${authentication.nickname }">
+		                <input type="button" value="중복확인" id="check_nick">
+		              </div>
+		              <label for="password">비밀번호</label>
+		              <input type="password" name="password" id="password" disabled="disabled" placeholder="간편 로그인 회원은 비밀번호를 변경할 수 없습니다."/>
+		              <label for="chk-password">비밀번호 확인</label>
+		              <input type="password" name="chkPassword" id="chkPassword" disabled="disabled" placeholder="간편 로그인 회원은 비밀번호를 변경할 수 없습니다."/>
+		              <div class="wrap-btn">
+		                <button id="btn-edit">수정하기</button>
+		                <a href="/myeats/post" class="btn-cancel">취소하기</a>
+		              </div>
+		          </div>
+		        </div>  
+	        </form>        
+        </c:if>
         <div class="wrap-quit">
           <span class="quit">탈퇴를 원하시면 우측 버튼을 클릭하세요</span>
           <a href="/member/quit" class="btn-quit">탈퇴하기</a>
@@ -64,13 +104,12 @@
 
 <%@ include file="/WEB-INF/views/include/footer.jsp" %>
 
-<script type="text/javascript">
-(() => {    	/* authentication에 접근하므로 분리x */
-	  let confirmNick = '';
+<script type="text/javascript">	/* authentication에 접근하므로 분리x */
+(() => {    
+	let confirmNick = '';
 	  
 	  document.querySelector('#check_nick').addEventListener('click', ()=>{
 		  let nickname = document.querySelector('#nickname').value;
-
 		  if(nickname === "" || nickname == null){
 			document.querySelector('#alert_nick').innerHTML = '닉네임을 입력하지 않았습니다.';
 			return;
@@ -98,25 +137,21 @@
 		  });
 		  
 	  });
-	  
-	  document.querySelector('#btn-edit').addEventListener('click', e => {
-			e.preventDefault();
-			
-			if(nickname.defaultValue == `${authentication.nickname}`){
-				document.editForm.submit();
-			}
-			
-			if(nickname.defaultValue != `${authentication.nickname}` && confirmNick == ""){
-				document.querySelector('#alert_nick').style.color = 'var(--red-color)';
-				document.querySelector('#alert_nick').innerHTML = '중복확인을 하지 않았습니다.';
-				return;
-			}else{
-				document.editForm.submit();
-			}
-		})
-
+	
+	
+	document.querySelector('#btn-edit').addEventListener('click', e => {
+		e.preventDefault();
+		let nickname = document.querySelector('#nickname');
+		
+		if(confirmNick == "" && nickname.value != nickname.defaultValue){
+			document.querySelector('#alert_nick').style.color = 'var(--red-color)';
+			document.querySelector('#alert_nick').innerHTML = '중복확인을 하지 않았습니다.';
+			return;
+		}	
+		document.editForm.submit();
+	
+	})
 })();
-
 
 document.querySelector('#nickname').addEventListener('keydown',e => {
 	  if (e.keyCode === 13) {

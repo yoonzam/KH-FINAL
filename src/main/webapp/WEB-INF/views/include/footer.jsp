@@ -25,28 +25,34 @@
 	
 	const noticeDiv = 'bell-list';
 	const noticeLi = 'notice';
-	var clientToken = '';
 	
-	resetUI();
-
-	messaging.onMessage((payload) => {
-    console.log('Message received. ', payload);
+	
+ 	messaging.onMessage((payload) => {
+    
+	    console.log('[firebase-messaging-sw.js] Received foreground message ', payload);
+	    // Customize notification here
+	    const notificationTitle = '[on]잇츠맵에서 알립니다!!';
+	    const notificationOptions = {
+	      body: '방문일정 D-DAY가 하루 남았어요',
+	      icon: '/resources/img/member/user.png',
+	  	  onclick: "location.href='http://localhost:9090/calendar/'"    
+	    };
+	
+	    self.registration.showNotification(notificationTitle, notificationOptions);
+    
     // Update the UI to include the received message.
     //appendMessage(payload);
-	});
-	
+	}); 
 	
 	function resetUI() {
-    //showToken('loading...');
-    
 	    // Get registration token. Initially this makes a network call, once retrieved
 	    // subsequent calls to getToken will return from cache.
 	    messaging.getToken({vapidKey: 'BDaUhaUUutwgMI44dAQhkANJgRcgHHWWlEI05fvaQswJf5RmJrupDaTIiSGM1h9xxeaZcR13_lzGKZpTi07ahCs'})
 	    .then((currentToken) => {
 	      if (currentToken) {
 	    	  console.dir('token : ' + currentToken);
-	    	  clientToken = currentToken;	//execute()실행시 담길 값
-	    	  fetch('/member/saveToken/' + clientToken)
+	    	  //clientToken = currentToken;	//execute()실행시 담길 값
+	    	  fetch('http://localhost:9090/member/saveToken/' + currentToken)
 	    	  	.then(response => {
 	    	  		if(response.ok) console.dir('성공');
 	    	  		else throw new Error(response.status);	
@@ -54,11 +60,12 @@
 	    			  console.error('Error', error);
 	    		}) 
 	    	  
-	        //sendTokenToServer(currentToken);
-	        updateUIForPushEnabled(currentToken);
+	        sendTokenToServer(currentToken);
+	        //updateUIForPushEnabled(currentToken);
 	      } else {
-	        // Show permission request.
 	        console.log('No registration token available. Request permission to generate one.');
+		    // Show permission request.
+	        requestPermission();
 	        // Show permission UI.
 	        updateUIForPushPermissionRequired();
 	        setTokenSentToServer(false);
@@ -101,7 +108,7 @@
     }
   }
 	  
-  function requestPermission() {
+   function requestPermission() {
 	    console.log('Requesting permission...');
 	    Notification.requestPermission().then((permission) => {
 	      if (permission === 'granted') {
@@ -115,7 +122,7 @@
 	      }
 	    });
 	  }
-  
+
   
   function deleteToken() {
 	    // Delete registration token.

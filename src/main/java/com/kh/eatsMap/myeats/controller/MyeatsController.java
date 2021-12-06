@@ -7,6 +7,7 @@ import java.util.Map;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.bson.types.ObjectId;
 import org.slf4j.Logger;
@@ -91,10 +92,12 @@ public class MyeatsController {
 	
 	@RequestMapping(value="/group", method=RequestMethod.GET)	//유진 12/06
 	public void groupGet(Model model, PageObject pageObject,@SessionAttribute("authentication") Member member 
-						, @SessionAttribute("noticeCnt") int noticeCnt, @SessionAttribute("notice") Notice notice) throws Exception{
+							,HttpSession session) throws Exception{
 		
-		notice = memberService.findNoticeByMemberId(member.getId());
-		noticeCnt = notice.getCalendarNotice() + notice.getGroupNotice() + notice.getParticipantNotice() + notice.getFollowNotice();
+		Notice notice = memberService.findNoticeByMemberId(member.getId());
+		int noticeCnt = notice.getCalendarNotice() + notice.getGroupNotice() + notice.getParticipantNotice() + notice.getFollowNotice();
+		session.setAttribute("notice", notice);
+		session.setAttribute("noticeCnt", noticeCnt);
 		
 		List<Group> groups = groupService.list(pageObject,member);
 		for (Group group : groups) {
@@ -241,7 +244,7 @@ public class MyeatsController {
 	//유진 11/30
 	@GetMapping("post")
 	public void group(@SessionAttribute("authentication") Member member,Model model) {
-		model.addAllAttributes(memberService.findMemberAndReviewByMemberId(member.getId()));
+		model.addAllAttributes(memberService.findMemberAndReviewByMemberId(member.getId(), member));
 	}
 	
 	@GetMapping("detail")
@@ -259,7 +262,7 @@ public class MyeatsController {
       
       for (int i = 0; i < group.getParticipants().length; i++) {
     	  Member to = memberService.findMemberById(group.getParticipants()[i]);
-    	  Notice notice = memberService.findNotice(to.getId());
+    	  Notice notice = memberService.findNoticeByMemberId(to.getId());
     	  memberService.updateNotice("group", notice);
     	  push.push(to);
       }

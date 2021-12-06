@@ -191,9 +191,9 @@ public class MemberController {
 	@ResponseBody
 	public String kakaoLoginImpl(@RequestBody Member member, HttpSession session) {
 		Member kakaoMember = memberService.findKakaoMember(member.getKakaoId());
-						
-		if(kakaoMember != null) {
-			session.setAttribute("authentication", member);
+		
+		if(kakaoMember.getId() != null) {
+			session.setAttribute("authentication", kakaoMember);
 			return "kakaoLogin";
 		}else {
 			return "kakaoJoin";
@@ -204,9 +204,10 @@ public class MemberController {
 	public void kakaoJoin() {}
 	
 	@PostMapping("kakao-join")
-	public String kakaoJoinImpl(Member member) {		
-		memberService.saveMember(member);
+	public String kakaoJoinImpl(Member member, RedirectAttributes redirectAttr) {		
+		memberService.saveMemberBySocial(member);
 		
+		redirectAttr.addFlashAttribute("message", "환영합니다. 회원님");
 		return "redirect:/member/login";
 	}
 	
@@ -231,7 +232,16 @@ public class MemberController {
 		
 		return "redirect:/myeats/post";
 	}
-	
+	@PostMapping("social-edit-profile")
+	public String socialeditProfileImpl(@RequestParam(name = "profile", required = false) MultipartFile photo
+								,@RequestParam(name = "nickname") String nickname
+								,@SessionAttribute("authentication") Member member
+								,Model model) {
+		member.setNickname(nickname);
+		memberService.updateMemberProfile(member,null,photo);
+		
+		return "redirect:/myeats/post";
+	}	
 	
 	@GetMapping("quit")
 	public void quit() {}
@@ -239,8 +249,8 @@ public class MemberController {
 	@PostMapping("quit")
 	@ResponseBody
 	public String quitImpl(@RequestBody Member member) {
-		
-		if(!memberService.findMemberByNickname(member.getNickname()).getPassword().equals(member.getPassword())) {
+
+		if(!memberService.quitImpl(member)) {
 			return "error";
 		}
 		return "quit";
@@ -263,16 +273,15 @@ public class MemberController {
 		
 		if(cnt == 0) {
 			session.removeAttribute("notice");
-			session.removeAttribute("noticeCnt");
 		}
 		session.setAttribute("noticeCnt", cnt);
 	}
 	
-	@GetMapping("saveToken/{clientToken}")	
+	@GetMapping("saveToken/{currentToken}")	
 	@ResponseBody
-	public void saveToken(@PathVariable String clientToken, @SessionAttribute("authentication") Member member) {
-		logger.debug("token받아오기 : " + clientToken);
-		member.setToken(clientToken);
+	public void saveToken(@PathVariable String currentToken, @SessionAttribute("authentication") Member member) {
+		logger.debug("token받아오기 : " + currentToken);
+		member.setToken(currentToken);
 		memberService.saveMember(member);
 	}
 	
@@ -285,12 +294,9 @@ public class MemberController {
 			return "redirect:/myeats/post";
 		}
 		Member writer = memberService.findMemberByNickname(nickname);
-		Follow follow = memberService.findFollowByMemberId(writer.getId(), member.getId());
-		Map<String,Object> commandMap = memberService.findMemberAndReviewByMemberId(writer.getId());
+		Map<String,Object> commandMap = memberService.findMemberAndReviewByMemberId(writer.getId(), member);
 
-		model.addAllAttributes(commandMap)
-			.addAttribute("follow",follow); 
-		
+		model.addAllAttributes(commandMap);
 		return "member/follow";
 	}
 	
@@ -298,7 +304,7 @@ public class MemberController {
 	@ResponseBody
 	public String followImpl(@RequestBody Follow followUser, @SessionAttribute("authentication") Member member) {
 		memberService.followMember( member.getId(), followUser);
-		memberService.updateNotice("follow", memberService.findNotice(followUser.getFollowingId()));
+		memberService.updateNotice("follow", memberService.findNoticeByMemberId(followUser.getFollowingId()));
 		
 		Member to = memberService.findMemberById(followUser.getFollowingId());
 		push.push(to);
@@ -310,15 +316,9 @@ public class MemberController {
 	@ResponseBody
 	public String followCancel(@RequestBody Follow followUser, @SessionAttribute("authentication") Member member) {
 		memberService.followCancel(member.getId(), followUser);
-		memberService.updateNoticeForDel("follow", memberService.findNotice(followUser.getFollowingId()));
+		memberService.updateNoticeForDel("follow", memberService.findNoticeByMemberId(followUser.getFollowingId()));
 		
 		return memberService.findMemberById(followUser.getFollowingId()).getId().toString();
-	}
-	
-	@GetMapping("post")
-	public String post(@SessionAttribute("authentication") Member member,Model model) {
-		model.addAllAttributes(memberService.findMemberAndReviewByMemberId(member.getId()));
-		return "myeats/post";
 	}
 	
 	@PostMapping("follow-pop")

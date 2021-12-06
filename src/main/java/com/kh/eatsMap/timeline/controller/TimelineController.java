@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,10 +43,11 @@ public class TimelineController {
 	private final MemberService memberService;
     
 	@GetMapping("/")
-	public String timeline(Model model, @SessionAttribute("authentication") Member member
-							, @SessionAttribute("noticeCnt") int noticeCnt, @SessionAttribute("notice") Notice notice) {	//유진 12/06
-		notice = memberService.findNoticeByMemberId(member.getId());
-		noticeCnt = notice.getCalendarNotice() + notice.getGroupNotice() + notice.getParticipantNotice() + notice.getFollowNotice();
+	public String timeline(Model model, @SessionAttribute("authentication") Member member ,HttpSession session) {	//유진 12/06
+		Notice notice = memberService.findNoticeByMemberId(member.getId());
+		int noticeCnt = notice.getCalendarNotice() + notice.getGroupNotice() + notice.getParticipantNotice() + notice.getFollowNotice();
+		session.setAttribute("notice", notice);
+		session.setAttribute("noticeCnt", noticeCnt);
 		
 		PageObject pageObject = new PageObject(1, 8);
 		List<Review> reviews = timelineService.findAllReviews(pageObject, member);

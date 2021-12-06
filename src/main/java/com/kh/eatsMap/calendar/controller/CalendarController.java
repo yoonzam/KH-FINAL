@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import org.bson.types.ObjectId;
 import org.jose4j.json.internal.json_simple.JSONArray;
 import org.slf4j.Logger;
@@ -48,10 +50,12 @@ public class CalendarController {
 	private PushMessaging push = PushMessaging.getInstance();
 
 	@GetMapping("/")	//유진 12/06
-	public String calendar(@SessionAttribute("noticeCnt") int noticeCnt, @SessionAttribute("notice") Notice notice
-							, @SessionAttribute("authentication") Member member) {
-		notice = memberService.findNoticeByMemberId(member.getId());
-		noticeCnt = notice.getCalendarNotice() + notice.getGroupNotice() + notice.getParticipantNotice() + notice.getFollowNotice();
+	public String calendar(@SessionAttribute("authentication") Member member, HttpSession session) {
+		Notice notice = memberService.findNoticeByMemberId(member.getId());
+		int noticeCnt = notice.getCalendarNotice() + notice.getGroupNotice() + notice.getParticipantNotice() + notice.getFollowNotice();
+		session.setAttribute("notice", notice);
+		session.setAttribute("noticeCnt", noticeCnt);
+		
 		return "calendar/calendar";
 	}
 	
@@ -83,7 +87,7 @@ public class CalendarController {
 		if(calendar.getParticipants().length > 0) {
 			for (int i = 0; i < calendar.getParticipants().length; i++) {
 		    	  Member to = memberService.findMemberById(calendar.getParticipants()[i]);
-		    	  Notice notice = memberService.findNotice(to.getId());
+		    	  Notice notice = memberService.findNoticeByMemberId(to.getId());
 		    	  memberService.updateNotice("calendar", notice);
 		    	  push.push(to);
 			}			

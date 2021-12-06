@@ -4,8 +4,9 @@
 	  
 	  let nickname = document.querySelector('#nickname').value;
 	  let password = document.querySelector('#password').value;
+	  let id = document.querySelector('#id').value;
   	  
-	  let data = {nickname : nickname, password : password};
+	  let data = {id : id, nickname : nickname, password : password};
 	  let header = new Headers();
 	  header.append('Content-Type', 'application/json;charset=UTF-8 ')
 	  

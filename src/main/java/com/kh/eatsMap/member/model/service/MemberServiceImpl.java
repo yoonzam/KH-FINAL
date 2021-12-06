@@ -13,6 +13,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -91,6 +92,13 @@ public class MemberServiceImpl implements MemberService{
 		String htmlText = template.exchange(request, String.class).getBody();
 		mailSender.sendEmail(form.getEmail(), "[Eat's Map] 임시 비밀번호입니다.", htmlText);
 	}
+	
+	@Override
+	public void updatePassword(String email, String tmpPassword) {
+		Member member = memberRepository.findByEmail(email);
+		member.setPassword(passwordEncoder.encode(tmpPassword));
+		memberRepository.save(member);
+	}
 
 	@Override
 	public Map<String,Object> authenticateUser(Member member) {
@@ -107,7 +115,7 @@ public class MemberServiceImpl implements MemberService{
 
 	@Override	
 	public Notice findNoticeByMemberId(ObjectId memberId) {
-		return noticeRepository.findByMemberId(memberId);
+		return noticeRepository.findByMemberId(memberId).orElse(new Notice());
 	}
 
 	@Override
@@ -118,34 +126,42 @@ public class MemberServiceImpl implements MemberService{
 		member.setRegDate();
 		member.setNickname(form.getNickname());
 		member.setIsLeave(0);
-		memberRepository.save(member);
+		Member joinUser = memberRepository.save(member);
 
-		Notice notice = new Notice();
-		Member joinUser = memberRepository.findById(member.getId());
-		notice.setMemberId(joinUser.getId());
-		notice.setCalendarNotice(0);
-		notice.setGroupNotice(0);
-		notice.setParticipantNotice(0);
-		notice.setFollowNotice(0);
-		noticeRepository.save(notice);
+		saveNoticeWhenJoin(joinUser);
 	}
 
-
-	@Override
-	public void updatePassword(String email, String tmpPassword) {
-		Member member = memberRepository.findByEmail(email);
-		member.setPassword(tmpPassword);
-		memberRepository.save(member);
-	}
 
 	@Override
 	public Member findKakaoMember(String kakaoId) {
-		return memberRepository.findByKakaoId(kakaoId);
+		return memberRepository.findByKakaoIdAndIsLeave(kakaoId, 0).orElse(new Member());
 	}
 
 	@Override
 	public void saveMember(Member member) {
 		memberRepository.save(member);
+	}
+	
+	@Override
+	public void saveMemberBySocial(Member member) {
+		member.setRegDate();
+		member.setIsLeave(0);
+		Member joinUser = memberRepository.save(member);
+		
+		saveNoticeWhenJoin(joinUser);
+	}
+	
+	public void saveNoticeWhenJoin(Member member) {
+		Notice notice = findNoticeByMemberId(member.getId());
+		
+		if(notice.getId() == null) {
+			notice.setMemberId(member.getId());
+			notice.setCalendarNotice(0);
+			notice.setGroupNotice(0);
+			notice.setParticipantNotice(0);
+			notice.setFollowNotice(0);			
+		}
+		noticeRepository.save(notice);
 	}
 
 	@Override
@@ -155,8 +171,10 @@ public class MemberServiceImpl implements MemberService{
 
 	@Override
 	public void updateMemberProfile(Member member, ModifyForm form, MultipartFile photo) {
-		member.setNickname(form.getNickname());
-		member.setPassword(passwordEncoder.encode(form.getPassword()));
+		if(form != null) {
+			member.setNickname(form.getNickname());
+			member.setPassword(passwordEncoder.encode(form.getPassword()));
+		}
 		
 		if(!photo.isEmpty()) {
 			FileUtil fileUtil = new FileUtil();
@@ -198,18 +216,28 @@ public class MemberServiceImpl implements MemberService{
 	}
 
 	@Override
-	public Map<String,Object> findMemberAndReviewByMemberId(ObjectId memberId) {
-		
+	public Map<String,Object> findMemberAndReviewByMemberId(ObjectId memberId, Member loginUser) {
+		List<Review> reviews = new ArrayList<Review>();
 		Member member = memberRepository.findById(memberId);
 		long followCnt = followingRepository.countByMemberId(memberId);
 		long followerCnt = followerRepository.countByMemberId(memberId);
+		Follow follow = findFollowByMemberId(memberId, loginUser.getId());
 		
-		List<Review> reviews = reviewRepository.findOptionalByMemberIdOrderByIdDesc(memberId).orElse(List.of());
+		if (memberId.equals(loginUser.getId())) {
+			reviews = reviewRepository.findOptionalByMemberIdOrderByIdDesc(memberId).orElse(List.of());
+		}else {
+			if (follow != null) {
+				reviews = reviewRepository.findOptionalByMemberIdAndPrivacyNotOrderByIdDesc(memberId , -1).orElse(List.of());
+			}else {
+				reviews = reviewRepository.findOptionalByMemberIdAndPrivacyOrderByIdDesc(memberId , 0).orElse(List.of());
+			}			
+		}
+		
 		for (Review review : reviews) {
 			List<Fileinfo> files = fileRepository.findByTypeId(review.getId());
 			if(files.size() > 0) review.setThumUrl(files.get(0).getDownloadURL());
 		}
-		return Map.of("reviews", reviews, "member", member,"memberId", member.getId().toString(), "followCnt", followCnt, "followerCnt",followerCnt);
+		return Map.of("reviews", reviews, "member", member,"memberId", member.getId().toString(),"follow", follow, "followCnt", followCnt, "followerCnt",followerCnt);
 	}
 
 	@Override
@@ -237,10 +265,6 @@ public class MemberServiceImpl implements MemberService{
 			.ifPresent(e -> followerRepository.delete(e));
 	}
 
-	@Override
-	public Notice findNotice(ObjectId followingId) {
-		return noticeRepository.findByMemberId(followingId);
-	}
 
 	@Override
 	public List<Review> findLikedByMemberId(Member member) {
@@ -321,6 +345,15 @@ public class MemberServiceImpl implements MemberService{
 		}		
 
 		return Map.of("memberInfo", memberList, "followEachOther", followEachOtherId, "followDiffId", followDiffId);
+	}
+
+	@Override
+	public boolean quitImpl(Member member) {
+		Member authUser = findMemberById(member.getId());
+		if (!authUser.getNickname().equals(member.getNickname())) return false;
+		if (!member.getPassword().equals("") && member.getPassword() != null) return passwordEncoder.matches(member.getPassword(), authUser.getPassword());
+		
+		return true;
 	}
 
 

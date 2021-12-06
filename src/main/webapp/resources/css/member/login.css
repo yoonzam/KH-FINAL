@@ -70,6 +70,7 @@ button:hover{
 }
 .box-btn span{
   border: 1px solid #ccc;
+  background-color: #ccc;
 }
 .search-pw, .join, .btn-kakao{
   padding: 0 10px;
