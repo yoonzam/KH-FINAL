@@ -263,10 +263,27 @@ public class MyeatsController {
 		model.addAttribute("pageObject", pageObject);	
 	}	
 	
+//	@GetMapping("detail")
+//	public void likedReview(@SessionAttribute("authentication") Member member, Model model) {
+//		model.addAttribute("reviews",memberService.findLikedByMemberId(member));
+//	}
+	
+	//이슬 12/07
 	@GetMapping("detail")
-	public void likedReview(@SessionAttribute("authentication") Member member, Model model) {
-		model.addAttribute("reviews",memberService.findLikedByMemberId(member));
-	}
+	public void likedReview(@SessionAttribute("authentication") Member member,Model model, PageObject pageObject,@ModelAttribute("fCri") FindCriteria fCri) {
+		
+		model.addAttribute("reviews",groupService.findLikedByMemberId(pageObject,member));
+		
+		model.addAllAttributes(groupService.findMemberAndReviewByMemberIdPage(pageObject,member.getId()));
+		
+		pageObject.setPage(fCri.getPage());
+		pageObject.setPerPageNum(fCri.getPerPageNum());
+		
+		pageObject.setTotalRow(groupService.getTotalCountBymemberId(member.getId()));
+		
+		model.addAttribute("totalCount", groupService.getTotalCountBymemberId(member.getId()));	
+		model.addAttribute("pageObject", pageObject);	
+	}	
 	
    //유진 12/02
    @PostMapping("createGroup")

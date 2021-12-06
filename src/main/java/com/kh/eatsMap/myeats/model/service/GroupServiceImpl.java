@@ -2,6 +2,7 @@ package com.kh.eatsMap.myeats.model.service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -33,11 +34,14 @@ import com.kh.eatsMap.member.model.dto.Member;
 import com.kh.eatsMap.member.model.repository.FollowerRepository;
 import com.kh.eatsMap.member.model.repository.FollowingRepository;
 import com.kh.eatsMap.member.model.repository.MemberRepository;
+import com.kh.eatsMap.member.model.repository.MemberReviewRepository;
 import com.kh.eatsMap.member.validator.EmailForm;
 import com.kh.eatsMap.member.validator.JoinForm;
 import com.kh.eatsMap.myeats.model.dao.GroupDAO;
 import com.kh.eatsMap.myeats.model.dto.Group;
+import com.kh.eatsMap.myeats.model.dto.Like;
 import com.kh.eatsMap.myeats.model.repository.GroupRepository;
+import com.kh.eatsMap.myeats.model.repository.LikeRepository;
 import com.kh.eatsMap.timeline.model.dto.Review;
 import com.kh.eatsMap.timeline.model.repository.FileRepository;
 import com.kh.eatsMap.timeline.model.repository.TimelineRepository;
@@ -59,6 +63,9 @@ public class GroupServiceImpl implements GroupService{
 	private final MemberRepository memberRepository;
 	private final FollowingRepository followingRepository;
 	private final FollowerRepository followerRepository;
+	//detail페이징
+	private final LikeRepository likeRepository;
+	private final MemberReviewRepository reviewRepository;
 	
 	 @Autowired
 	 private MongoTemplate mongoTemplate;
@@ -229,6 +236,30 @@ public class GroupServiceImpl implements GroupService{
 		return (int)mongoTemplate.count(query, "group"); 
 		
 		
+	}
+	
+	//Detail Paging 처리
+	@Override
+	public List<Review> findLikedByMemberId(PageObject pageObject,Member member) {
+		List<Like> likes = new ArrayList<Like>();
+		List<Review> reviews = new ArrayList<Review>();
+		likes = likeRepository.findByMemberId(member.getId());
+		
+		if(!likes.isEmpty()) {
+			for (Like like : likes) {
+				reviews.add(reviewRepository.findById(like.getRevId()).orElse(new Review()));
+			}
+		}
+		
+		Query query = new Query();
+		query.with(Sort.by(Sort.Direction.DESC,"id"));
+		query.addCriteria(Criteria.where("memberId").is(member.getId()));
+		
+		query.skip((pageObject.getPage()-1) * pageObject.getPerPageNum());
+		query.limit((int)pageObject.getPerPageNum());
+		
+		reviews = mongoTemplate.find(query,com.kh.eatsMap.timeline.model.dto.Review.class);
+		return reviews;
 	}
 
 

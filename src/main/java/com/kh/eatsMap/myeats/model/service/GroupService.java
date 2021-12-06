@@ -61,4 +61,7 @@ public interface GroupService {
 	Integer getTotalCountBymemberId(ObjectId memberId); 
 	
 	Integer getTotalCountGroupBymemberId(ObjectId memberId); 
+	
+	//Dtail Paging 처리
+	List<Review> findLikedByMemberId(PageObject pageObject,Member member);
 }
