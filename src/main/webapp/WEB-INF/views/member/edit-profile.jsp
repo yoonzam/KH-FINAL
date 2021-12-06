@@ -105,54 +105,53 @@
 <%@ include file="/WEB-INF/views/include/footer.jsp" %>
 
 <script type="text/javascript">	/* authentication에 접근하므로 분리x */
-
-let confirmNick = '';
-  
-  document.querySelector('#check_nick').addEventListener('click', ()=>{
-	  let nickname = document.querySelector('#nickname').value;
-	  if(nickname === "" || nickname == null){
-		document.querySelector('#alert_nick').innerHTML = '닉네임을 입력하지 않았습니다.';
-		return;
-	  }
+(() => {    
+	let confirmNick = '';
 	  
-	  fetch("/member/nickname-check?nickname=" + nickname)
-	  .then(response => {
-		  if(response.ok){	//통신 성공시
-			  return response.text();
-		  }else{
-			  throw new Error(response.status);
+	  document.querySelector('#check_nick').addEventListener('click', ()=>{
+		  let nickname = document.querySelector('#nickname').value;
+		  if(nickname === "" || nickname == null){
+			document.querySelector('#alert_nick').innerHTML = '닉네임을 입력하지 않았습니다.';
+			return;
 		  }
-	  }).then(text => {	//promise객체의 text
-		  if(text == 'available'){
-			  confirmNick = nickname;
-			  
-			  document.querySelector('#alert_nick').style.color = 'var(--main-color)';
-			  document.querySelector('#alert_nick').innerHTML = '사용 가능한 닉네임입니다.';
-		  }else{
-			  document.querySelector('#alert_nick').style.color = 'var(--red-color)';
-			  document.querySelector('#alert_nick').innerHTML = '사용 불가능한 닉네임입니다.';
-		  }
-	  }).catch(error => {
-		  document.querySelector('#alert_nick').innerHTML = '응답에 실패하였습니다.';
+		  
+		  fetch("/member/nickname-check?nickname=" + nickname)
+		  .then(response => {
+			  if(response.ok){	//통신 성공시
+				  return response.text();
+			  }else{
+				  throw new Error(response.status);
+			  }
+		  }).then(text => {	//promise객체의 text
+			  if(text == 'available'){
+				  confirmNick = nickname;
+				  
+				  document.querySelector('#alert_nick').style.color = 'var(--main-color)';
+				  document.querySelector('#alert_nick').innerHTML = '사용 가능한 닉네임입니다.';
+			  }else{
+				  document.querySelector('#alert_nick').style.color = 'var(--red-color)';
+				  document.querySelector('#alert_nick').innerHTML = '사용 불가능한 닉네임입니다.';
+			  }
+		  }).catch(error => {
+			  document.querySelector('#alert_nick').innerHTML = '응답에 실패하였습니다.';
+		  });
+		  
 	  });
-	  
-  });
-
-
-document.querySelector('#btn-edit').addEventListener('click', e => {
-	e.preventDefault();
-	let nickname = document.querySelector('#nickname');
 	
-	if(confirmNick == "" && nickname.value != nickname.defaultValue){
-		document.querySelector('#alert_nick').style.color = 'var(--red-color)';
-		document.querySelector('#alert_nick').innerHTML = '중복확인을 하지 않았습니다.';
-		return;
-	}	
-	if(confirmNick == "" && nickname.value == nickname.defaultValue && nickname.value == `${authentication.nickname}`){
+	
+	document.querySelector('#btn-edit').addEventListener('click', e => {
+		e.preventDefault();
+		let nickname = document.querySelector('#nickname');
+		
+		if(confirmNick == "" && nickname.value != nickname.defaultValue){
+			document.querySelector('#alert_nick').style.color = 'var(--red-color)';
+			document.querySelector('#alert_nick').innerHTML = '중복확인을 하지 않았습니다.';
+			return;
+		}	
 		document.editForm.submit();
-	}
-
-})
+	
+	})
+})();
 
 document.querySelector('#nickname').addEventListener('keydown',e => {
 	  if (e.keyCode === 13) {
