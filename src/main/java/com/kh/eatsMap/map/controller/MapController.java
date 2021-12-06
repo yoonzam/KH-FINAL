@@ -94,6 +94,8 @@ public class MapController {
 			mapService.insertMap(myMap);
 		}
 		
+		//
+		
 
 		return "map/map";
 	}

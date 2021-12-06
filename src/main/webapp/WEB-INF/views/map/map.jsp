@@ -210,27 +210,20 @@
 	document.querySelector('.btn').addEventListener('click',() => {
 		document.querySelector('#pop-review-form').style.display='flex';
 	})
-	
-
-	
-		let clickLock = (e) =>{
-			
-			if (e.className.match("fas fa-unlock")) {
-				e.className = "fas fa-lock";
-				e.stopPropagation();
-				
-			}else{
-				e.className = "fas fa-unlock";
-				e.stopPropagation();
-			}
-			
-			
+	let clickLock = (e) =>{	
+		if (e.className.match("fas fa-unlock")) {
+			e.className = "fas fa-lock";
+			e.stopPropagation();
+		}else{
+			e.className = "fas fa-unlock";
+			e.stopPropagation();
 		}
+	}
 		//마커 담을 배열
 		var markers = [];
 		var overlays = [];
-		  var container = document.getElementById('map'); //지도를 담을 영역의 DOM 레퍼런스
-		  var options = { //지도를 생성할 때 필요한 기본 옵션
+		var container = document.getElementById('map'); //지도를 담을 영역의 DOM 레퍼런스
+		var options = { //지도를 생성할 때 필요한 기본 옵션
 			center : new kakao.maps.LatLng(37.54699, 127.09598), //지도의 중심좌표.
 			level : 3
 		//지도의 레벨(확대, 축소 정도)
@@ -278,8 +271,6 @@
 		  	
 			searchMap(keyword,filterdKeyword);		  
 				
-			
-				
 		}
 		//이전 검색 삭제
 		function removeAllChildNodes() {
@@ -296,7 +287,7 @@
 			if (data.length == 0) {
 				let noSearchDiv = '<div class="no_review_wrap">'
 					+'<div class="noSearch">'
-					+'<div>검색 된 후기가 존재하지 않습니다</div>'
+					+'<div>후기가 존재하지 않습니다</div>'
 					+'<div><a id="search" class="review-create-btn" onclick="uploadReview();">후기 등록</a></div></div></div>'
 				var $div = $(noSearchDiv);
 				  $('.map-review').append($div);
@@ -311,10 +302,9 @@
 			
 		}
 		
-		//
-		
 		//리뷰검색 마크 생성
 		let markerCreate = (reviews,Id) =>{
+			
 			var positions = [];
 			var bounds = new kakao.maps.LatLngBounds();
 			let filterdMap;
@@ -328,14 +318,16 @@
 						return false;
 					} 
 				});
-				console.dir("ID");
-				console.dir(Id);
-				console.dir("필터 확인");
-				console.dir(filterdMap);
+				if (filterdMap.length == 0) {
+					return alert("내가 작성한 후기글이 없습니다.");
+				}
 				
 			}else{
 				filterdMap = reviews;
 			}
+			removeMarker();
+		  	removeOverlay();
+			
 			divCreate(filterdMap);
 			
 			
@@ -349,8 +341,6 @@
 				 }
 				positions.push(mark);
 			}
-			console.dir("dede");
-			console.dir(positions);
 
 			
 			positions.forEach(function(position, idx) {
@@ -404,8 +394,6 @@
 				//팝업창에 내용 기입
 				document.querySelector('#place-name').innerHTML = placeName;
 				document.querySelector('#road-address').innerHTML = roadAddress;
-				
-				
 			});
 			
 			
@@ -491,6 +479,8 @@
 			
 		}
 		
+		
+		
 		// 지도에 마커를 표시하는 함수입니다
 		function displayMarker(place,markerImage) {
 		    
@@ -506,8 +496,7 @@
 		    // 마커에 클릭이벤트를 등록합니다
 		    kakao.maps.event.addListener(marker, 'click', function() {
 		    	restInfo(marker.getPosition().getLat(),marker.getPosition().getLng(),marker.getTitle());
-				
-		    	
+				    	
 			});
 		}
 		
@@ -539,8 +528,6 @@
 		    });
 		    overlays.push(customOverlay);	
 		    
-		   
-		    console.dir("문제");
 		    
 		    // 마커에 클릭이벤트를 등록합니다
 		    
@@ -620,8 +607,6 @@
 			
 		}
 		
-		
-		
 		let groupFilterMap = (groupId) => {
 			let filteredMap = myEetsReview.filter((data)=>{
 				console.dir(data.review);
@@ -660,8 +645,6 @@
 		console.dir("authentication");
 		console.dir(); 
 		
-		
-		
 		let changeMemberSelect = (groupId) => {
 			let check = document.getElementById("friendList");
 			findGroupMember(check.options[check.selectedIndex].value);
@@ -672,8 +655,7 @@
 		let myEatsMap = () => {
 			let myEetsMap = ${reviews};
 			let myId = ${myObjectId};
-			removeMarker();
-		  	removeOverlay();
+			
 		  	
 			markerCreate(myEetsMap,myId);
 		}
@@ -684,8 +666,9 @@
 			let following = ${jsonFollow};
 			console.dir("팔로우 리스트")
 			console.dir(following);
-			removeMarker();
-		  	removeOverlay();
+			if (following.length == 0) {	
+				return alert("내가 팔로워한 잇친이들이 없습니다.");
+			}
 		  	let filterdMap = filterFollowMap(myEetsMap,following);
 		  	console.dir(filterdMap);
 			markerCreate(filterdMap); 
@@ -705,7 +688,7 @@
 			
 			return filterdMap;
 		}
-		
+		let myEetsMap = ${reviews};
 		//loadMap
 		//처음 로딩 리뷰 리스트 마커 출력
 		let loadMap = () =>{
@@ -714,13 +697,8 @@
 		}
 		
 		loadMap();
-	
-	
-		
-		
 	</script>
 	<script type="text/javascript" src="/resources/js/map/Geolocation.js"></script>
-
 
 </body>
 </html>
