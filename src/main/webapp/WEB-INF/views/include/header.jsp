@@ -14,10 +14,10 @@
 		<div class="header pc">
 			<h1 onclick="location.href='/main/'"><img src="/resources/img/common/logo_ver1.png"></h1>
 			<ul class="gnb">
-				<li onclick="location.href='/map/'">잇츠맵</li>
-				<li onclick="location.href='/calendar/'">잇츠캘린더</li>
-				<li onclick="location.href='/timeline/'">타임라인</li>
-				<li onclick="location.href='/myeats/group'">마이잇츠</li>
+				<li class="gnb-map" onclick="location.href='/map/'">잇츠맵</li>
+				<li class="gnb-calendar" onclick="location.href='/calendar/'">잇츠캘린더</li>
+				<li class="gnb-timeline" onclick="location.href='/timeline/'">타임라인</li>
+				<li class="gnb-myeats" onclick="location.href='/myeats/group'">마이잇츠</li>
 			</ul>
 			<div class="util">
 				<div onclick="location.href='/member/logout'" class="btn-logout">로그아웃</div>

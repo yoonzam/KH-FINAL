@@ -37,7 +37,7 @@ header{width: 100%; position: fixed; background-color: #fff; z-index: 100; borde
 .bell-list ul li:hover{ background-color:#eee;}
 .btn-logout{font-size:15px;}
 .gnb li{display: inline-block; cursor:pointer; color:#333; font-size:20px; padding:6px 15px; font-weight: 700; transition-duration:0.3s;}
-.gnb li:hover{color:#fa8633;}
+.gnb li:hover, .gnb li:visited{color:#fa8633;}
 .util.m{display:none;}
 
 /* header-member */

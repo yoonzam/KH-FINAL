@@ -21,6 +21,9 @@ window.onload  = function() {
 	$('#loadingImg').addClass('display-none');
 };
 
+let currentUrl = (window.location.pathname).split('/');
+$('.gnb > li.gnb-'+currentUrl[1]).css('color','#fa8633');
+
 /** 후기 **/
 let uploadStep;
 let placeFlag;
