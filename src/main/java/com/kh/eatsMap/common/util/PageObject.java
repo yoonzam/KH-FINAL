@@ -53,11 +53,11 @@ public class PageObject {
 		// 처음 리스트로 들어올 때는 데이터가 안 넘어 오므로 초기값을 1페이지에
 		// 한페이당 10개의 글을 보이도록 셋팅한다.
 		this.page = 1;
-		this.perPageNum = 10;
+		this.perPageNum = 8;
 		// JSP 하단 부분에 몇개의 페이지를 표시할지 정한다.
 		this.startPage = 1;
 		this.endPage = 1;
-		this.perGroupPageNum = 10;
+		this.perGroupPageNum = 8;
 		// service 프로그램에서 setTotalRow(DB의데이터갯수) 호출을 해야만 한다. 그래야 자동 계산이 된다.
 		
 		// 기본적으로 찾는 공지 분류 - 현재 공지 :pre

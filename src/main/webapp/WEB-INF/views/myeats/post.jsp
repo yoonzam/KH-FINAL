@@ -15,6 +15,49 @@
 <link rel="stylesheet" type="text/css" href="/resources/css/member/following-list.css" />
 <script defer type="text/javascript" src="/resources/js/member/follow.js"></script>
 <script defer type="text/javascript" src="/resources/js/myeats/detail.js"></script>
+<style type="text/css">
+
+
+/* 페이징 가운데 정렬 */	
+.page{
+  text-align: center;  
+  width: 100%;
+  }
+
+.pagination {
+  list-style: none;
+  display: inline-block;
+  padding: 0;
+  margin-top: 20px;
+  }
+
+.pagination li {
+  display: inline;
+  text-align: center;
+  }
+
+/* 페이징 */
+.pagination {
+  display: inline-block;
+}
+
+.pagination a {
+  color: black;
+  padding: 8px 16px;
+  margin-right: 3px;
+  width: 15px;
+  font: bold 12px tahoma;
+  cursor: pointer;
+}
+
+.pagination a:active,.pagination a:hover,.pagination a:focus{
+	background-color: #ccc;
+	color:#fff;
+	border:1px solid #ccc;
+	border-radius: 5px;
+}
+
+</style>
 </head>
 <body>
 <%@ include file="/WEB-INF/views/include/header.jsp" %>
@@ -41,7 +84,8 @@
 	            <div class="wrap-profile-info">
 					<div class="postCnt">
 						<h3 class="postCnt-txt">게시물</h3>
-						<span class="cnt">${fn:length(reviews)}</span>
+						<%-- <span class="cnt">${fn:length(reviews)}</span> --%>
+						<span class="cnt">${totalCount}</span>
 					</div>
 					<div class="followCnt">
 						<h3 class="postCnt-txt" ><a onclick="viewFollowing('${memberId}')">내 잇친</a></h3>
@@ -86,11 +130,11 @@
 		</div><!-- section -->
 		
 		<!-- 페이징 -->
-		<%-- <div class="page">
+		<div class="page">
       		<ul class="pagination">
        		 <li><pageNav:pageNav listURI="post" pageObject="${pageObject}"></pageNav:pageNav></li>
       		</ul>
-  		 </div> --%>
+  		 </div>
   		 
 	</div><!-- container -->
 </div><!-- container-wrap -->

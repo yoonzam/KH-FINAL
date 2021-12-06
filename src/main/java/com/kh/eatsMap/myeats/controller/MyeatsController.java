@@ -104,6 +104,8 @@ public class MyeatsController {
 			List<Fileinfo> files = groupService.findFiles(group.getId());
 			if(files.size() > 0) group.setThumUrl(files.get(0).getDownloadURL());
 		}
+		
+		pageObject.setTotalRow(groupService.getTotalCountGroupBymemberId(member.getId()));
 		model.addAttribute("groups", groups);
 		
 		//model.addAttribute("list", groupService.list(pageObject));
@@ -242,10 +244,24 @@ public class MyeatsController {
 	
 		
 	//유진 11/30
+//	@GetMapping("post")
+//	public void group(@SessionAttribute("authentication") Member member,Model model) {
+//		model.addAllAttributes(memberService.findMemberAndReviewByMemberId(member.getId(), member));
+//	}
+	//이슬 12/06
 	@GetMapping("post")
-	public void group(@SessionAttribute("authentication") Member member,Model model) {
-		model.addAllAttributes(memberService.findMemberAndReviewByMemberId(member.getId(), member));
-	}
+	public void group(@SessionAttribute("authentication") Member member,Model model, PageObject pageObject,@ModelAttribute("fCri") FindCriteria fCri) {
+		
+		model.addAllAttributes(groupService.findMemberAndReviewByMemberIdPage(pageObject,member.getId()));
+		
+		pageObject.setPage(fCri.getPage());
+		pageObject.setPerPageNum(fCri.getPerPageNum());
+		
+		pageObject.setTotalRow(groupService.getTotalCountBymemberId(member.getId()));
+		
+		model.addAttribute("totalCount", groupService.getTotalCountBymemberId(member.getId()));	
+		model.addAttribute("pageObject", pageObject);	
+	}	
 	
 	@GetMapping("detail")
 	public void likedReview(@SessionAttribute("authentication") Member member, Model model) {
