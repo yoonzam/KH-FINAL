@@ -1,14 +1,11 @@
 package com.kh.eatsMap.timeline.controller;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
-import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -21,12 +18,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.google.common.collect.Lists;
 import com.kh.eatsMap.common.util.PageObject;
 import com.kh.eatsMap.member.model.dto.Member;
 import com.kh.eatsMap.member.model.dto.Notice;
 import com.kh.eatsMap.member.model.service.MemberService;
-import com.kh.eatsMap.myeats.model.dto.Group;
 import com.kh.eatsMap.timeline.model.dto.Review;
 import com.kh.eatsMap.timeline.model.service.TimelineService;
 
@@ -116,7 +111,7 @@ public class TimelineController {
 	@GetMapping("search")
 	public void search(String keyword_, String[] area_, String[] category_, String[] hashtag_, Model model, @SessionAttribute("authentication") Member member) {
 		String keyword = keyword_ == null ? "" : keyword_;
-		
+
 		String[] category = new String[0];
 		if(category_ != null) {
 			category = new String[category_.length];		
