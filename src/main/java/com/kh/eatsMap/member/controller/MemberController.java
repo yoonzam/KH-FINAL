@@ -290,7 +290,7 @@ public class MemberController {
 	public String follow(@PathVariable String nickname, @SessionAttribute("authentication") Member member
 						,Model model) {
 		
-		if(member.getNickname().toString() == nickname) {
+		if(member.getNickname().equals(nickname)) {
 			return "redirect:/myeats/post";
 		}
 		Member writer = memberService.findMemberByNickname(nickname);

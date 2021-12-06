@@ -1,16 +1,5 @@
 @charset "UTF-8";
 
-.main-visual {
-    height: 347px;
-    background: url(../img/main/main.png) no-repeat center;
-    background-size: cover;
-    position: relative;
-    text-align: center;
-    color: #ffffff;
-    line-height: 200px;
-    background-color: gray;
-}
-
 .section-wrap {
     /* position: fixed; */
     width: 100%;
@@ -20,81 +9,7 @@
 #calendar {
     display: flex;
     max-width: 1100px;
-    /* min-height: 1000px; */
     margin: 40px auto;
 }
 
-.schedule-list .list{
-	vertical-align: middle;
-}
 
-.schedule-list .list select{
-	height: 100px;
-}
-
-/* .schedule-list .list input{
-	text-align:center;
-}
- */
-
-
-/*  */
-
-.fc-event-title.fc-sticky {
-    color: #fff !important;
-    margin: 5px;
-    padding: 5px;
-    font-size: 15px;
-    font-weight: 700;
-}
-
-.schedule-list .locationList {
-    max-height: 180px;
-    z-index: 10;
-    overflow: auto;
-    border: 1px solid #ddd;
-    border-top: none;
-    background-color: #fff;
-    display: none;
-    width: 300px;
-    margin-left: 110px;
-}
-
-.schedule-list .locationList>li {
-    position: relative;
-    padding: 13px;
-    cursor: pointer;
-    z-index: 11;
-}
-
-.schedule-list .locationList>li:hover {
-    background-color: #eee;
-}
-
-.schedule-list .locationList>li .place-name {
-    font-size: 14px;
-    font-weight: 500;
-    width: 180px;
-    text-align: center;
-}
-
-.schedule-list .locationList>li .road-address-name {
-    font-size: 13px;
-    color: #aaa;
-    width: 250px;
-    text-align: center;
-}
-
-@media screen and (max-width: 1000px) {
-    .timeline-brd li {
-        width: 33.3%;
-        padding: 15px;
-    }
-}
-
-@media screen and (max-width: 768px) {
-    .timeline-brd li {
-        width: 50%;
-        padding: 15px;
-    }
-}

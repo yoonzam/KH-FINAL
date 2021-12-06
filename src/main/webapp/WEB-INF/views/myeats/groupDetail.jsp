@@ -30,7 +30,7 @@
 						<div class="group-service">
 							<button class="main-btn">잇츠맵 바로가기</button>
 							<c:if test="${authentication.id == groups.memberId }">
-								<a href="groupDetailModify?id=${groups.id}"><button class = "modifybtn">수정</button></a>
+								<a href="/myeats/groupDetailModify?id=${groups.id}"><button class = "modifybtn">수정</button></a>
 								<button class="deletebtn">삭제</button>
 							</c:if>
 							<c:if test="${authentication.id != groups.memberId }">
@@ -43,7 +43,7 @@
 				<div class="group-member">
 					<h4>함께하는 잇친 리스트</h4>
 					<ul id='nickNames'>
-					<c:forEach items="${nickNames}" var="nickNames" begin="0" end="5" step = "1" >
+					<c:forEach items="${nickNames}" var="nickNames" >
 						<li><i class="fas fa-user"></i>&nbsp; ${nickNames}</li>
 					</c:forEach>
 					</ul>
@@ -59,23 +59,22 @@
 <script>
 $(document).ready(function(){
 	var frmObj = $("form[role='form']");
-	console.log("group.jsp지정된 폼태그..");
 	
 	 $(".leavebtn").on("click", function(){
 			frmObj.attr("action", "/myeats/groupLeave");
 			frmObj.attr("method", "post");
 			frmObj.submit();
-			});
+	});
 	
 	 $(".deletebtn").on("click", function(){
 		frmObj.attr("action", "/myeats/delete");
 		frmObj.submit();
-		}); 
+	}); 
 	 
 	 $(".modifybtn").on("click", function(){
 			frmObj.attr("action", "/myeats/groupDetailModify");
 			frmObj.submit();
-		}); 
+	}); 
 });
 </script>
 </body>

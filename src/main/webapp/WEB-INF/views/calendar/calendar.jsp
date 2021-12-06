@@ -5,11 +5,9 @@
 <head>
 <%@ include file="/WEB-INF/views/include/head.jsp" %>
 <link rel="stylesheet" type="text/css" href="/resources/css/calendar/calendar.css" />
-<script defer type="text/javascript" src="/resources/js/calendar/calendar.js"></script>
 <link href='/resources/fullcalendar/main.css' rel='stylesheet'/>
 <script src='/resources/fullcalendar/main.js'></script>
 <script src='/resources/fullcalendar/ko.js'></script>
-
 </head>
 <body>
 <%@ include file="/WEB-INF/views/include/header.jsp" %>
@@ -24,17 +22,11 @@
 <%@ include file="/WEB-INF/views/include/footer.jsp" %>
 <%@ include file="/WEB-INF/views/calendar/schedule.jsp" %>
 <script>
-	 /* $(document).ready(function() {  */
 	 document.addEventListener('DOMContentLoaded', function() {
 		 
-		 
-		 
-	 
-
     	let schedules = [];
 
     	var calendarEl = document.getElementById('calendar');
-
     	var calendar = new FullCalendar.Calendar(calendarEl, {
     		
     		/* themeSystem: 'bootstrap', */
@@ -168,9 +160,6 @@
     	calendar.render();
     });
 	
-	 /* $('.fc-event-title-container').click(function(){
-			$('#pop-schedule-detail').show();
-		}) */
 	
 		
 		

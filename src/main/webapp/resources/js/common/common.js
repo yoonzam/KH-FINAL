@@ -238,7 +238,7 @@ let uploadReview = (reviewId) => {
 						html += '<li data-place-idx="'+i+'"><span class="place-name">'+data[i].place_name+'</span> <span class="road-address-name">'+data[i].road_address_name+'</span></li>';
 				}
 				$('.location-list').html(html);
-				$('.location-list').show();
+				/*$('.location-list').show();*/
 			}
 		}); 
 	});

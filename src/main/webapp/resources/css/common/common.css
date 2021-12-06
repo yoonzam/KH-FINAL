@@ -386,6 +386,60 @@ footer{color:#aaa; font-size:0.8em; padding:30px; text-align:center;}
 .schedule-list .list select{
 	font-size: 15px;
 }
+.schedule-list .list select{	/* 얘 체크 */
+	height: 100px;
+}
+
+.schedule-list .list{
+	vertical-align: middle;
+}
+
+
+.fc-event-title.fc-sticky {
+    color: #fff !important;
+    margin: 5px;
+    padding: 5px;
+    font-size: 15px;
+    font-weight: 700;
+}
+
+.schedule-list .locationList {
+    max-height: 180px;
+    z-index: 10;
+    overflow: auto;
+    border: 1px solid #ddd;
+    border-top: none;
+    background-color: #fff;
+    display: none;
+    width: 300px;
+    margin-left: 110px;
+}
+
+.schedule-list .locationList>li {
+    position: relative;
+    padding: 13px;
+    cursor: pointer;
+    z-index: 11;
+}
+
+.schedule-list .locationList>li:hover {
+    background-color: #eee;
+}
+
+.schedule-list .locationList>li .place-name {
+    font-size: 14px;
+    font-weight: 500;
+    width: 180px;
+    text-align: center;
+}
+
+.schedule-list .locationList>li .road-address-name {
+    font-size: 13px;
+    color: #aaa;
+    width: 250px;
+    text-align: center;
+}
+
 .schedule .btn-wrap {
     text-align: center;
 }
@@ -436,6 +490,8 @@ footer{color:#aaa; font-size:0.8em; padding:30px; text-align:center;}
 .layer-popup .schedule{
 	max-width: 600px;
 }
+
+
 
 .loading-img{display:flex; position:fixed; top:0; left:0; width:100%; height:100%; align-items:center; justify-content:center; background-color:rgba(255,255,255,0.5); z-index:5000;}
 .loading-img.display-none{display:none;}

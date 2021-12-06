@@ -156,6 +156,7 @@ public class MyeatsController {
 			
 			model.addAllAttributes(map);
 	}
+	
 	@RequestMapping(value="/delete", method=RequestMethod.GET)
 	public String deleteGet(@RequestParam("id") String id, RedirectAttributes reAttr)throws Exception{ 
 		

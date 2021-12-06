@@ -44,17 +44,16 @@
 }
 #inviteButton {
     background-color: var(--main-color);
-    width: 25px;
     cursor: pointer;
     border-radius: 5px;
-    padding: 2px 0px;
+    padding: 10px;
     color: #fff;
     border: none;
 }
 #invited-select {
 	margin-top:8px;
     width: 30%;
-    padding: 2px;
+    padding: 10px;
     border-radius: 5px;
     border: 1px solid #aaa;
 }
@@ -248,7 +247,6 @@ function addList()  {
 			document.getElementById(addValueThree).remove("input");
 			document.getElementById(addValueTwo).remove("i");
 			};
-	  
 	}
 
 //문서시작시

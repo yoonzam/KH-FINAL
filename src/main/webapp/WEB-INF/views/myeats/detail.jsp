@@ -73,20 +73,20 @@
 						<c:if test="${not empty reviews }">
 							<ul class="detail-brd">
 								<c:forEach items="${reviews}" var="review" varStatus="status"  begin="0"  >
-								<li onclick="viewTimeline('${review.id}')">
-									<div class="eats-list">
-										<div class="thum thum2">
-											<img src="${ not empty review.thumUrl ? review.thumUrl : '/resources/img/common/upload-logo.png'}">
-											<div class="info2">
-												<div class="eats-location">${review.resName}<i onclick="clickLike();" class="eats-like far fa-heart"></i></div>
-												<div class="eats-score">
-													<i class="fas fa-star"></i>
-													<fmt:formatNumber value="${(review.taste+review.clean+review.service)/3}" pattern=".0"/>
+									<li onclick="viewTimeline('${review.id}')">
+										<div class="eats-list">
+											<div class="thum thum2">
+												<img src="${ not empty review.thumUrl ? review.thumUrl : '/resources/img/common/upload-logo.png'}">
+												<div class="info2">
+													<div class="eats-location">${review.resName}<i onclick="clickLike();" class="eats-like far fa-heart"></i></div>
+													<div class="eats-score">
+														<i class="fas fa-star"></i>
+														<fmt:formatNumber value="${(review.taste+review.clean+review.service)/3}" pattern=".0"/>
+													</div>
 												</div>
 											</div>
 										</div>
-									</div>
-								</li>
+									</li>
 								</c:forEach>
 							</ul>						
 						</c:if>
