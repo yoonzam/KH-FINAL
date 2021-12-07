@@ -586,7 +586,7 @@
 				console.dir(json.groupReview);
 				if (!json.groupReview) {
 					console.dir("비었습니다.");
-					removeAllChildNodes();
+					return alert("그룹 리뷰가 존재하지 않습니다.");
 				}else{
 					//그룹 리스트 출력
 					
