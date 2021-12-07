@@ -7,11 +7,11 @@
          <form id="frmSchedule" class="schedule" method="post" action="/calendar/upload">
             <div class="popup-title">일정 만들기</div>
             <div class="schedule-list">
-               <div class="list title"><span>제목</span><input type="text" name="title" id="scheduleForm-title" placeholder="제목을 입력하세요" required/></div>
-               <div class="list date"><span>일자</span><input type="date" name="date" id="scheduleForm-date" required/></div>
-               <div class="list time"><span>시간</span><input type="time" name="time" id="scheduleForm-time" required/></div>
-               <div class="list place"><span>장소</span><input type="text" name="resName" id="scheduleForm-location" placeholder="장소를 입력하세요" required/><ul class="locationList"></ul></div>   
-               <div class="list member"><span>참석자</span>
+               <div class="list title"><span><i class="fas fa-hamburger"></i> 제목</span><input type="text" name="title" id="scheduleForm-title" placeholder="제목을 입력하세요" required/></div>
+               <div class="list date"><span><i class="far fa-calendar-plus"></i> 일자</span><input type="date" name="date" id="scheduleForm-date" required/></div>
+               <div class="list time"><span><i class="far fa-clock"></i> 시간</span><input type="time" name="time" id="scheduleForm-time" required/></div>
+               <div class="list place"><span><i class="fas fa-store"></i> 장소</span><input type="text" name="resName" id="scheduleForm-location" placeholder="장소를 입력하세요" required/><ul class="locationList"></ul></div>   
+               <div class="list member"><span><i class="fas fa-user-friends"></i> 참석자</span>
                   <select class="list" name="participants[]" id="participant" multiple size="5">
                      <!-- <option value="" id="default-option">---함께할 잇친을 추가하세요---</option> -->
                   </select>

@@ -14,6 +14,13 @@
 
 <script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+
+<style type="text/css">
+i.eats-like.fas.fa-heart {
+   color: #f15050;
+}
+</style>
+
 </head>
 <body>
 <%@ include file="/WEB-INF/views/include/header.jsp" %>
@@ -29,7 +36,11 @@
 				</div>
 			</div>
 			<div class="timeline-wrap">
-				<h2><i class="fas fa-search color-m"></i> <span class="color-m">${keyword}</span> 검색결과"</h2>
+				<h2><i class="fas fa-search color-m"></i> 
+					<span class="color-m">
+						<c:if test="${empty keyword }">전체</c:if>
+						<c:if test="${not empty keyword }">${keyword}</c:if>
+					</span> 검색결과</h2>
 				<ul class="timeline-brd">
 				
 				<c:forEach items="${reviews}" var="reviews">
@@ -73,22 +84,26 @@
 			            <li class="disabled"><a href="#" >«</a></li>
 					</c:if>
 					<c:if test="${1 != pageObject.page}">
-			            <li><a href="/main/search?page=${pageObject.page-1}" >«</a></li>
+			            <li><a href="/main/search?keyword_=${keyword}${area}${category}${hashtag}&page=${pageObject.page-1}" >«</a></li>
 					</c:if>
+					
+					
 					<c:forEach var="i" begin="${pageObject.startPage}" end="${pageObject.endPage}">
 						<c:if test="${i == pageObject.page}">
 			             <li class="active"><a href="/main/search?page=${i}"><b><c:out value="${i}"/></b></a></li>
 						</c:if>
 						<c:if test="${i != pageObject.page}">
-					 	<li><a href="/main/search?page=${i}"><c:out value="${i}"/></a></li>
+					 	<li><a href="/main/search?keyword_=${keyword}${area}${category}${hashtag}&page=${i}"><c:out value="${i}"/></a></li>
 						</c:if>
 					</c:forEach>
+					
+					
 					<%-- [다음] --%>
 					<c:if test="${pageObject.totalPage == pageObject.page}">
 			            <li class="disabled"><a href="#" >»</a></li>
 					</c:if>
 					<c:if test="${pageObject.totalPage != pageObject.page}">
-			            <li><a href="/main/search?page=${pageObject.page+1}" >»</a></li>
+			            <li><a href="/main/search?keyword_=${keyword}${area}${category}${hashtag}&page=${pageObject.page+1}" >»</a></li>
 					</c:if>
 	            </ul>
 			</div>

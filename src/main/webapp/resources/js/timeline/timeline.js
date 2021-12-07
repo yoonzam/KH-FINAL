@@ -66,7 +66,7 @@ document.addEventListener('scroll', function() {
 		    			  + '</div>'
 		    			  + '			<div class="eats-name">' + data[i].review.resName;
 		    		if(data[i].review.like > 0) {
-		    			html += '			<i data-like="' + data[i].reviewId + '" class="eats-like fas fa-heart"></i>';
+		    			html += '			<i data-like="' + data[i].reviewId + '" class="eats-like fas fa-heart" co></i>';
 		    		} else{
 		    			html += '			<i data-like="' + data[i].reviewId + '" class="eats-like far fa-heart"></i>';
 		    		}

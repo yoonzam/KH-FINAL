@@ -70,8 +70,8 @@
 				<li><a href="/myeats/detail">맛찜리스트</a></li>
 				<li><a href="/member/edit-profile">회원정보 수정</a></li>
 			</ul>
-		    <div class="profile">
-				<div class="wrap-profile-img">
+			<div class="profile">
+				<div class="profile-my">
 					<div class="profile-img">
 						<c:if test="${empty member.profile }">
 							<img src="/resources/img/member/user.png">
@@ -80,27 +80,27 @@
 							<img src="http://localhost:9090/file/${member.profile}">
 						</c:if>
 					</div>
-				</div><!-- wrap-profile-img -->
-	            <div class="wrap-profile-info">
+				</div>
+				<div class="wrap-profile-info">
 					<div class="postCnt">
-						<h3 class="postCnt-txt">게시물</h3>
 						<%-- <span class="cnt">${fn:length(reviews)}</span> --%>
 						<span class="cnt">${totalCount}</span>
+						<span class="postCnt-txt">개의 후기</span>
 					</div>
-					<div class="followCnt">
-						<h3 class="postCnt-txt" ><a onclick="viewFollowing('${memberId}')">내 잇친</a></h3>
-						<span class="cnt">${followCnt}</span>
-					</div>
-					<div class="followingCnt">
-						<h3 class="postCnt-txt" ><a onclick="viewFollower('${memberId}')">나를 추가한 잇친</a></h3>
+					<div class="followingCnt" onclick="viewFollower('${memberId}')">
 						<span class="cnt">${followerCnt }</span>
+						<span class="postCnt-txt" >명의 잇친</span>
+					</div>
+					<div class="followCnt" onclick="viewFollowing('${memberId}')">
+						<span class="cnt">${followCnt}</span>
+						<span class="postCnt-txt" >명의 나의 잇친</span>
 					</div>
 				</div><!-- wrap-profile-info -->
 			</div>
 
             <div class="section">
 				<div class="detail-wrap">
-					<h2><i class="fas fa-utensils color-m"></i> 게시글 <span class="color-m">관리하기 </span> </h2>
+					<!-- h2><i class="fas fa-utensils color-m"></i> 게시글 <span class="color-m">관리하기 </span> </h2 -->
 					
 						<c:if test="${empty reviews }">
 							<h4 class="empty-review" style="padding: 40px; text-align:center; border: 1px solid #ddd; width: 928px; margin: auto;">게시물이 존재하지 않습니다.</h4>

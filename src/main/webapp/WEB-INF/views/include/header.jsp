@@ -41,7 +41,7 @@
 								<li class="notice" id="follow">누군가 회원님과 잇친을 맺었어요!</li>
 							</c:if>
 							<c:if test="${notice.participantNotice == 1 }">	
-								<li class="notice" id="calendar">누군가 회원님과 맛집에 가고 싶어해요!</li>
+								<li class="notice" id="notice-calendar">누군가 회원님과 맛집에 가고 싶어해요!</li>
 							</c:if>
 							<c:if test="${notice.groupNotice == 1 }">
 								<li class="notice" id="group">니캉내캉 그룹에 초대되었어요!</li>

@@ -199,19 +199,20 @@ When it's NOT activated, the fc-button classes won't even be in the DOM.
 }
 .fc .fc-button-primary {
     color: #fff;
+    font-weight:700;
     color: var(--fc-button-text-color, #fff);
-    background-color: #2C3E50;
-    background-color: var(--fc-button-bg-color, #2C3E50);
-    border-color: #2C3E50;
-    border-color: var(--fc-button-border-color, #2C3E50);
+    background-color: #335e89;
+    background-color: var(--fc-button-hover-bg-color, #335e89);
+    border-color: #3e658d;
+    border-color: var(--fc-button-hover-border-color, #3e658d);
   }
 .fc .fc-button-primary:hover {
     color: #fff;
     color: var(--fc-button-text-color, #fff);
-    background-color: #1e2b37;
-    background-color: var(--fc-button-hover-bg-color, #1e2b37);
-    border-color: #1a252f;
-    border-color: var(--fc-button-hover-border-color, #1a252f);
+    background-color: #326ca7;
+    background-color: var(--fc-button-hover-bg-color, #326ca7);
+    border-color: #326ca7;
+    border-color: var(--fc-button-hover-border-color, #326ca7);
   }
 .fc .fc-button-primary:disabled { /* not DRY */
     color: #fff;
@@ -244,6 +245,7 @@ When it's NOT activated, the fc-button classes won't even be in the DOM.
 }
 .fc .fc-button .fc-icon {
     vertical-align: middle;
+    color:#dbe2e9;
     font-size: 1.5em; /* bump up the size (but don't make it bigger than line-height of button, which is 1.5em also) */
   }
 .fc .fc-button-group {

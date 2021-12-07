@@ -51,9 +51,10 @@
     border: none;
 }
 #invited-select {
-	margin-top:8px;
-    width: 30%;
+	display:none;
+    width: 40%;
     padding: 10px;
+    margin-left:10px;
     border-radius: 5px;
     border: 1px solid #aaa;
 }
@@ -110,12 +111,11 @@ li, input {
 					<ul> 
 						<li>
 							<span>초대하기</span>
-							<div class="friend-list"> 
+							<div class="friend-list" style="display:flex; align-items:center;"> 
+								<input id="inviteButton" type='button' value='잇친목록 조회하기'/>
 								<select id="invited-select" name="participant" onchange="addList()"></select>
-								<input id="inviteButton" type='button' value='초대'/>
-								<ul id='nickNames'>
-								</ul>
 							</div>
+							<ul id='nickNames'></ul>
 						</li>
 					</ul>
 					<ul id='nickNames'>
@@ -185,6 +185,7 @@ $("#inviteButton").click(function(){
 				html += '<option class="option" value='+data[i].memberId+'>'+data[i].member.nickname +'</option>';
 	      	}
 	      	$('#invited-select').html(html);
+	      	$('#invited-select').show();
         },   
         error:function(e){  
         }  

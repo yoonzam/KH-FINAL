@@ -27,6 +27,11 @@ public class AuthInterceptor implements HandlerInterceptor {
 				case "member":
 					memberAuthorize(request, response, uriArr);
 					break;
+				case "calendar":
+					if(request.getSession().getAttribute("authentication") == null) {
+						throw new HandlableException(ErrorCode.REDIRECT_LOGIN_PAGE);
+					}
+					break;
 				case "timeline":
 					if(request.getSession().getAttribute("authentication") == null) {
 						throw new HandlableException(ErrorCode.REDIRECT_LOGIN_PAGE);
