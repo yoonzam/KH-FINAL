@@ -67,7 +67,6 @@ public class IndexServiceImpl implements IndexService{
 		int[] cnt = hashtagCnt(reviews_);
 		String[] hashtags = maxOfHashtag(cnt);
 		List<Review> hashReviews  = reviewRepository.findReviewByPrivacyAndHashtagLike(0,hashtags);
-//		debug(reviews.toString());
 		
 		List<Review> reviews = new ArrayList<Review>();
 		if(hashReviews.size() > 0) {

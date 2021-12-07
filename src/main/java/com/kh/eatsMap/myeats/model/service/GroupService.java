@@ -38,7 +38,7 @@ public interface GroupService {
 	
 	public void remove(String id);
 	
-	public void modify(Group group,List<MultipartFile> photos, Member member,
+	public void modify(Group group,MultipartFile photo, Member member,
 			ObjectId delNickNameOne,ObjectId delNickNameTwo,ObjectId delNickNameThree,
 			ObjectId delNickNameFour,ObjectId delNickNameFive,ObjectId delNickNameSix,
 			ObjectId newNickNameOne,ObjectId newNickNameTwo,ObjectId newNickNameThree,

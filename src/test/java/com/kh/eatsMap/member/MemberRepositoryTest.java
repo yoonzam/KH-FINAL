@@ -45,6 +45,7 @@ import com.kh.eatsMap.member.model.repository.MemberRepository;
 import com.kh.eatsMap.member.model.repository.NoticeRepository;
 import com.kh.eatsMap.member.model.service.MemberService;
 import com.kh.eatsMap.myeats.model.repository.GroupRepository;
+import com.kh.eatsMap.myeats.model.repository.LikeRepository;
 import com.kh.eatsMap.timeline.model.dto.Review;
 import com.kh.eatsMap.timeline.model.service.TimelineService;
 
@@ -73,6 +74,8 @@ public class MemberRepositoryTest {
     private MongoTemplate mongoTemplate;
     @Autowired
     private GroupRepository groupRepo;
+    @Autowired
+    private LikeRepository likeRepo;
     
     @Autowired 
 	WebApplicationContext context;
@@ -381,6 +384,10 @@ public class MemberRepositoryTest {
     @Test
     public void deleteAll() {
     	groupRepo.deleteAll();
+    }
+    @Test
+    public void deleteLike() {
+    	likeRepo.deleteAll();
     }
     
 }

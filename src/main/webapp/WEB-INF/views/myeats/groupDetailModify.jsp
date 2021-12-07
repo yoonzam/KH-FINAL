@@ -87,7 +87,7 @@ li, input {
 				<div class="group-info">
 					<div class="group-profile">
 						<div class="group-img">
-							<img id="target_img" src="${!empty groups.thumUrl ? groups.thumUrl : '/resources/img/common/upload-logo.png'}" name="thumUrl">
+							<img id="target_img" src="${!empty groups.thumUrl ? groups.thumUrl : '/resources/img/common/EatsMap_logo.png'}" name="thumUrl">
 						</div>
 					</div>
 					<div class="group-menu">

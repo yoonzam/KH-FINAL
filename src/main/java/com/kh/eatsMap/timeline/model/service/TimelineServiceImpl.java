@@ -73,7 +73,6 @@ public class TimelineServiceImpl implements TimelineService{
 			List<Fileinfo> files = fileRepository.findByTypeId(review.getId());
 			if(files.size() > 0) review.setThumUrl(files.get(0).getDownloadURL());
 			review.toString();
-			System.out.println(review);
 		}
 		return reviews;
 	}
