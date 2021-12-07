@@ -63,7 +63,6 @@ public class IndexController {
 		if(member.getLocation() != null) {	
 			//*위치기반 잇친픽 출력 
 			reviews = indexService.localReview(member);	
-//			logger.debug(reviews.toString());
 		}
 
 		return reviews;
@@ -135,22 +134,8 @@ public class IndexController {
 			}	
 		}
 		String paramHashString = Arrays.stream(paramHash).collect(Collectors.joining());
-		
+	
 		List<Review> searchedReviewList = indexService.searchReview(keyword, area, category, hashtag, member, pageObject);
-		
-		long count = searchedReviewList.size();
-		
-		// 데이터 건수를 세팅
-		pageObject.setPerPageNum(8);
-		pageObject.setPerGroupPageNum(8);
-		pageObject.setTotalRow(count);
-
-		System.out.println(pageObject);
-//		System.out.println(keyword_);
-//		System.out.println(paramAreaString);
-//		System.out.println(paramCateString);
-//		System.out.println(paramHashString);
-		
 		
 		model.addAttribute("reviews", searchedReviewList);
 		model.addAttribute("keyword", keyword_);

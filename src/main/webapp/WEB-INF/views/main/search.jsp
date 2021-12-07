@@ -36,7 +36,11 @@ i.eats-like.fas.fa-heart {
 				</div>
 			</div>
 			<div class="timeline-wrap">
-				<h2><i class="fas fa-search color-m"></i> <span class="color-m">${keyword}</span> 검색결과"</h2>
+				<h2><i class="fas fa-search color-m"></i> 
+					<span class="color-m">
+						<c:if test="${empty keyword }">전체</c:if>
+						<c:if test="${not empty keyword }">${keyword}</c:if>
+					</span> 검색결과</h2>
 				<ul class="timeline-brd">
 				
 				<c:forEach items="${reviews}" var="reviews">
