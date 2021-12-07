@@ -250,26 +250,28 @@
 		
 		/*비동기로 백으로 값보내기 */
 		let searchKeyword = (keyword) =>{
-			let reviews = ${reviews};
+			fetch("/map/search?keyword=" + keyword)
+			  .then(response => {
+				  if(response.ok){	//통신 성공시
+					  return response.json();
+				  }else{
+					  throw new Error(response.status);
+				  }
+			  }).then(json => {	//promise객체의 json
+				
+				removeMarker();
+			  	removeOverlay();
+			  	searchMap(keyword,json);		  
+				
+			  	markerCreate(json);
+			  	
+				
+			  }).catch(error => {
+				  alert("실패");
+			  });
 			
-			console.dir("키워드 필터전");
-			console.dir(reviews);
 			
-			let filterdKeyword = reviews.filter((review)=>{
-				if (review.review.resName == keyword) {
-					return true;
-				}
-				return false;	
-			});
-			console.dir("키워드 필터후");
-			console.dir(filterdKeyword);
-		  	//마크 찍어주기
-		  	removeMarker();
-		  	removeOverlay();
-		  	
-			markerCreate(filterdKeyword);
-		  	
-			searchMap(keyword,filterdKeyword);		  
+		  
 				
 		}
 		//이전 검색 삭제
@@ -319,7 +321,7 @@
 					} 
 				});
 				if (filterdMap.length == 0) {
-					return alert("내가 작성한 후기글이 없습니다.");
+					return alert("후기글이 없습니다.");
 				}
 				
 			}else{
@@ -664,8 +666,6 @@
 		let myFollowMap = () => {
 			let myEetsMap = ${reviews};
 			let following = ${jsonFollow};
-			console.dir("팔로우 리스트")
-			console.dir(following);
 			if (following.length == 0) {	
 				return alert("내가 팔로워한 잇친이들이 없습니다.");
 			}
