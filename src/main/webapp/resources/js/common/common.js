@@ -21,6 +21,9 @@ window.onload  = function() {
 	$('#loadingImg').addClass('display-none');
 };
 
+let currentUrl = (window.location.pathname).split('/');
+$('.gnb > li.gnb-'+currentUrl[1]).css('color','#fa8633');
+
 /** 후기 **/
 let uploadStep;
 let placeFlag;
@@ -235,7 +238,7 @@ let uploadReview = (reviewId) => {
 						html += '<li data-place-idx="'+i+'"><span class="place-name">'+data[i].place_name+'</span> <span class="road-address-name">'+data[i].road_address_name+'</span></li>';
 				}
 				$('.location-list').html(html);
-				$('.location-list').show();
+				/*$('.location-list').show();*/
 			}
 		}); 
 	});

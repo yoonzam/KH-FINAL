@@ -119,7 +119,13 @@ public class GroupDAO {
 		Query query = new Query();
 		//groupIdx로 최근순 정렬
 		//id로 잡으면 알아서 최신순 정렬됨
-		query.addCriteria(Criteria.where("participants").in(member.getId()));
+		//query.addCriteria(Criteria.where("participants").in(member.getId()));
+		query.addCriteria(
+			    Criteria.where("").orOperator(
+			            Criteria.where("memberId").is(member.getId()),
+			            Criteria.where("participants").in(member.getId())
+			        )
+			    );
 		query = query.with(Sort.by(Sort.Direction.DESC,"id"));
 		//이전 페이지의 데이터는 skip 시킨다.
 		query.skip((pageObject.getPage()-1) * pageObject.getPerPageNum());

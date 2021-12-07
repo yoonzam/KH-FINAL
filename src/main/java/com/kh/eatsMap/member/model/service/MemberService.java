@@ -5,8 +5,10 @@ import java.util.List;
 import java.util.Map;
 
 import org.bson.types.ObjectId;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.kh.eatsMap.common.util.PageObject;
 import com.kh.eatsMap.member.model.dto.Follow;
 import com.kh.eatsMap.member.model.dto.Member;
 import com.kh.eatsMap.member.model.dto.Notice;
@@ -53,8 +55,6 @@ public interface MemberService {
 
 	Member findMemberById(ObjectId followingId);
 
-	List<Review> findLikedByMemberId(Member member);
-
 	List<Map<String, Object>> findAllFollowingToMap(Member member);
 
 	Member findByStringId(String memberId);
@@ -64,5 +64,9 @@ public interface MemberService {
 	Notice findNoticeByMemberId(ObjectId memberId);
 
 	boolean quitImpl(Member member);
+	
+	List<Review> findLikedByMemberIdWithPage(Pageable page, Member member);
+
+	int countLikedReview(Member member);
 
 }

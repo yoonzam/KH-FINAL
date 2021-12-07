@@ -6,7 +6,6 @@
 <script type="text/javascript" src="/resources/js/firebase/firebase-init.js"></script>
 <script type="text/javascript" src="/resources/js/firebase/firebase-app.js"></script>
 <script type="text/javascript" src="/resources/js/firebase/firebase-messaging.js"></script>	
-<script defer type="text/javascript" src="/resources/js/calendar/calendar.js"></script>
 <script type="text/javascript">
 
 	/* push시작 */

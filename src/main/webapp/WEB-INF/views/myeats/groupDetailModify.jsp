@@ -44,17 +44,16 @@
 }
 #inviteButton {
     background-color: var(--main-color);
-    width: 25px;
     cursor: pointer;
     border-radius: 5px;
-    padding: 2px 0px;
+    padding: 10px;
     color: #fff;
     border: none;
 }
 #invited-select {
 	margin-top:8px;
     width: 30%;
-    padding: 2px;
+    padding: 10px;
     border-radius: 5px;
     border: 1px solid #aaa;
 }
@@ -177,12 +176,15 @@ $("#inviteButton").click(function(){
         url:url,   
         dataType: 'json',
         success:function(data){ 
+        	let html = '';
         	
-      		let html = '';
+        	if (data.length == 0) {
+        		html += '<option class="option" value="" disabled="disabled">초대할 잇친이 없습니다.</option>';
+			}
 	      	for (var i = 0; i < data.length; i++){
 				html += '<option class="option" value='+data[i].memberId+'>'+data[i].member.nickname +'</option>';
-				$('#invited-select').html(html);
 	      	}
+	      	$('#invited-select').html(html);
         },   
         error:function(e){  
         }  
@@ -208,7 +210,6 @@ function addList()  {
 	//name 값 보여줌  
 	var show = document.createElement("input");
 		show.setAttribute('class', "show-input");
-		//
 		show.setAttribute('id', text);
 		show.setAttribute("value", text);
 		
@@ -219,7 +220,6 @@ function addList()  {
 	  
 	 var icon = document.createElement("i");
 		 icon.setAttribute('class', "fas fa-times");
-		 //
 		 icon.setAttribute('id', addValueTwo);
 		
 	  document.getElementById("nickNames").append(show,icon,li);
@@ -242,13 +242,11 @@ function addList()  {
 		
 		//
 		icon.onclick=function(){
-			alert('test');
 			document.getElementById(addValueThree).removeAttribute("name");
 			document.getElementById(text).style.display  = 'none';
 			document.getElementById(addValueThree).remove("input");
 			document.getElementById(addValueTwo).remove("i");
 			};
-	  
 	}
 
 //문서시작시

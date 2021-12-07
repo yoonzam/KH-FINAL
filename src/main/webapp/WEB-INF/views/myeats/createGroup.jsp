@@ -95,12 +95,15 @@ $("#inviteButton").click(function(){
         url:url,   
         dataType: 'json',
         success:function(data){ 
-        	
       		let html = '';
+      		
+        	if (data.length == 0) {
+        		html += '<option class="option" value="" selected>초대할 잇친이 없습니다.</option>';
+			}
 	      	for (var i = 0; i < data.length; i++){
 				html += '<option class="option" value='+data[i].memberId+'>'+data[i].member.nickname +'</option>';
-				$('#invited-select').html(html);
 	      	}
+	      	$('#invited-select').html(html);
         },   
         error:function(e){  
         }  
@@ -148,12 +151,11 @@ function removeItem()  {
  $(document).ready(function(){
 		var frmObj = $("form[role='form']");
 		
-		
-		$(".create-btn").on("click", function(){
+		$(".create-btn").on("click", function(e){
 			frmObj.attr("action", "/myeats/createGroup");
 			formObj.attr("method", "post");
 			frmObj.submit();
-			});
+		});
 		
 		 
 	});

@@ -9,7 +9,8 @@ public enum ErrorCode {
 	AUTHENTICATION_FAILED_ERROR("유효하지 않은 인증입니다."),
 	UNAUTHORIZED_PAGE("접근 권한이 없는 페이지 입니다."),
 	REDIRECT_LOGIN_PAGE("로그인이 필요합니다.","/member/login"),
-	FAILED_FILE_UPLOAD_ERROR("파일업로드에 실패했습니다.");
+	FAILED_FILE_UPLOAD_ERROR("파일업로드에 실패했습니다."),
+	NULL_OF_PARTICIPANT("그룹원은 1명 이상이어야 합니다.","/myeats/group");
 	
 	public final String MESSAGE;
 	public final String URL;

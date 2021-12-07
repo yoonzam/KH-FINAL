@@ -89,22 +89,28 @@ public class TimelineServiceImpl implements TimelineService{
 		
 		Query query = new Query();
 		if(followingIds.size() > 0) {
-			Criteria citeria = new Criteria();
-			Criteria citeriaArr[] = new Criteria[followingIds.size()+1];
-			
-			for(int i = 0; i < followingIds.size()+1; i++){
-				if(i < followingIds.size()) {
-					citeriaArr[i] = Criteria.where("memberId").is(new ObjectId(followingIds.get(i))).and("privacy").is(1);
-				} else {
-					citeriaArr[i] = Criteria.where("privacy").is(0);
-				}
-			}
-			query.addCriteria(citeria.orOperator(citeriaArr));
-		} else {
-			query.addCriteria(Criteria.where("privacy").is(0));
-		}
+	         Criteria citeria = new Criteria();
+	         Criteria citeriaArr[] = new Criteria[followingIds.size()+2];
+	         
+	         for(int i = 0; i < followingIds.size()+2; i++){
+	            if(i < followingIds.size()) {
+	               citeriaArr[i] = Criteria.where("memberId").is(new ObjectId(followingIds.get(i))).and("privacy").is(1);
+	            } else if(i == followingIds.size()) {
+	               citeriaArr[i] = Criteria.where("memberId").is(member.getId());
+	            } else {
+	               citeriaArr[i] = Criteria.where("privacy").is(0);
+	            }
+	         }
+	         query.addCriteria(citeria.orOperator(citeriaArr));
+	      } else {
+	         Criteria citeria = new Criteria();
+	         Criteria citeriaArr[] = new Criteria[2];
+	         citeriaArr[0] = Criteria.where("memberId").is(member.getId());
+	         citeriaArr[1] = Criteria.where("privacy").is(0);
+	         query.addCriteria(citeria.orOperator(citeriaArr));
+	      }
 
-		query = query.with(Sort.by(Sort.Direction.DESC, "id"));
+		query.with(Sort.by(Sort.Direction.DESC, "id"));
 		query.skip((pageObject.getPage()-1) * pageObject.getPerPageNum());
 		query.limit((int)pageObject.getPerPageNum());
 		List<Review> reviews = mongoTemplate.find(query, com.kh.eatsMap.timeline.model.dto.Review.class);
@@ -254,21 +260,28 @@ public class TimelineServiceImpl implements TimelineService{
 		List<String> followingIds = new ArrayList<String>();
 		if(followings.isPresent()) for (Follow following : followings.get()) followingIds.add(following.getFollowingId().toString());
 		
-		Criteria followingCriteria = new Criteria();
-		Criteria followingArr[] = new Criteria[followingIds.size()+1];
 		if(followingIds.size() > 0) {
-			for(int i = 0; i < followingIds.size()+1; i++){
+			Criteria citeria = new Criteria();
+			Criteria citeriaArr[] = new Criteria[followingIds.size()+2];
+			
+			for(int i = 0; i < followingIds.size()+2; i++){
 				if(i < followingIds.size()) {
-					followingArr[i] = Criteria.where("memberId").is(new ObjectId(followingIds.get(i))).and("privacy").is(1);
+					citeriaArr[i] = Criteria.where("memberId").is(new ObjectId(followingIds.get(i))).and("privacy").is(1);
+				} else if(i == followingIds.size()) {
+					citeriaArr[i] = Criteria.where("memberId").is(member.getId());
 				} else {
-					followingArr[i] = Criteria.where("privacy").is(0);
+					citeriaArr[i] = Criteria.where("privacy").is(0);
 				}
 			}
-			query.addCriteria(followingCriteria.orOperator(followingArr));
-		} else {
-			query.addCriteria(Criteria.where("privacy").is(0));
-		}
-
+			query.addCriteria(citeria.orOperator(citeriaArr));
+	 	} else {
+	 		Criteria citeria = new Criteria();
+	 		Criteria citeriaArr[] = new Criteria[2];
+	 		citeriaArr[0] = Criteria.where("memberId").is(member.getId());
+	 		citeriaArr[1] = Criteria.where("privacy").is(0);
+	 		query.addCriteria(citeria.orOperator(citeriaArr));
+	 	}
+		
 		query.with(Sort.by(Sort.Direction.DESC, "id"));
 		List<Review> reviews = mongoTemplate.find(query, com.kh.eatsMap.timeline.model.dto.Review.class);
 		
@@ -316,13 +329,13 @@ public class TimelineServiceImpl implements TimelineService{
 				searchHashtag = timelineRepository.findByHashtagLike(hashtag);
 				reviews.retainAll(searchHashtag);
 			}
-			
-			//키워드로 검색
-			List<Review> searchKeyword = new ArrayList<Review>();
-			if(!keyword.equals("")) {
-				searchKeyword = timelineRepository.findByResNameIgnoreCaseContaining(keyword);
-				reviews.retainAll(searchKeyword);
-			}
+		}
+		
+		//키워드로 검색
+		List<Review> searchKeyword = new ArrayList<Review>();
+		if(!keyword.equals("")) {
+			searchKeyword = timelineRepository.findByResNameIgnoreCaseContaining(keyword);
+			reviews.retainAll(searchKeyword);
 		}
 		
 		//리뷰 가공

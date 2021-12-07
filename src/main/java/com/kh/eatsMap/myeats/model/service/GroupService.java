@@ -2,6 +2,7 @@ package com.kh.eatsMap.myeats.model.service;
 
 
 import java.util.List;
+import java.util.Map;
 
 import org.bson.types.ObjectId;
 import org.springframework.web.multipart.MultipartFile;
@@ -53,4 +54,14 @@ public interface GroupService {
 	
 	//회원의 그룹나가기
 	public void groupLeave(Group group,ObjectId id) throws Exception;
+	
+	//Post Paging 처리
+	Map<String,Object> findMemberAndReviewByMemberIdPage(PageObject pageObject,ObjectId memberId);
+	Integer getTotalCount(); 
+	Integer getTotalCountBymemberId(ObjectId memberId); 
+	
+	Integer getTotalCountGroupBymemberId(ObjectId memberId); 
+	
+	//Dtail Paging 처리
+	List<Review> findLikedByMemberId(PageObject pageObject,Member member);
 }

@@ -88,34 +88,30 @@
 				<li><a href="/member/edit-profile">회원정보 수정</a></li>
 			</ul>
 				<c:forEach items="${groups}" var="groups" varStatus="status"  begin="0"  >
-				<c:if test="${status.first}"><ul class="group-wrap"></c:if>
-				<c:choose>
-					<c:when test="true">
-					<li>
-						<div class="group">
-							<div class="group-img"><img src="${!empty groups.thumUrl ? groups.thumUrl : '/resources/img/common/upload-logo.png'}"></div>
-								<p class="group-info">
-									<strong>${groups.groupName}</strong><br>
-									<i class="fas fa-user"></i> ${fn:length(groups.participants) }    &nbsp;&nbsp;<i class="fas fa-feather"></i>
-									<fmt:formatDate pattern="yyyy/MM/dd" value="${groups.groupcreatedate}"/>
-								</p>
-						</div>
-						<c:if test="${authentication.id == groups.memberId }">
-						<div class="controller">
-							<a href="groupDetail?id=${groups.id}" class="group-menu">그룹관리</a>
-							<a href="groupDetail?id=${groups.id}">수정</a>
-							<a href="/myeats/delete?id=${groups.id}">삭제</a> 
-						</div>
-						</c:if>
-						<c:if test="${authentication.id != groups.memberId }">
-						<div class="controller">
-							<a href="groupDetail?id=${groups.id}" class="group-menu">그룹보기</a>
-						</div>
-						</c:if>
-					</li>
-					</c:when>
-				</c:choose> 
-				<c:if test="${status.last}"></ul></c:if>
+					<ul class="group-wrap">
+						<li>
+							<div class="group">
+								<div class="group-img"><img src="${!empty groups.thumUrl ? groups.thumUrl : '/resources/img/common/upload-logo.png'}"></div>
+									<p class="group-info">
+										<strong>${groups.groupName}</strong><br>
+										<i class="fas fa-user"></i> ${fn:length(groups.participants) }    &nbsp;&nbsp;<i class="fas fa-feather"></i>
+										<fmt:formatDate pattern="yyyy/MM/dd" value="${groups.groupcreatedate}"/>
+									</p>
+							</div>
+							<c:if test="${authentication.id == groups.memberId }">
+							<div class="controller">
+								<a href="/myeats/groupDetail?id=${groups.id}" class="group-menu">그룹관리</a>
+								<a href="/myeats/groupDetailModify?id=${groups.id}">수정</a>
+								<a href="/myeats/delete?id=${groups.id}">삭제</a> 
+							</div>
+							</c:if>
+							<c:if test="${authentication.id != groups.memberId }">
+							<div class="controller">
+								<a href="/myeats/groupDetail?id=${groups.id}" class="group-menu">그룹보기</a>
+							</div>
+							</c:if>
+						</li>
+					</ul>
 				</c:forEach>
 			
 				<div class="btn-area">

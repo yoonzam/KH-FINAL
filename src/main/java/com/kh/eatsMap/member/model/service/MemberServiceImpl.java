@@ -7,6 +7,7 @@ import java.util.Map;
 import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.http.RequestEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -21,6 +22,7 @@ import com.kh.eatsMap.common.code.Config;
 import com.kh.eatsMap.common.mail.MailSender;
 import com.kh.eatsMap.common.util.FileUtil;
 import com.kh.eatsMap.common.util.Fileinfo;
+import com.kh.eatsMap.common.util.PageObject;
 import com.kh.eatsMap.member.model.dto.Follow;
 import com.kh.eatsMap.member.model.dto.Follower;
 import com.kh.eatsMap.member.model.dto.Member;
@@ -265,21 +267,6 @@ public class MemberServiceImpl implements MemberService{
 			.ifPresent(e -> followerRepository.delete(e));
 	}
 
-
-	@Override
-	public List<Review> findLikedByMemberId(Member member) {
-		List<Like> likes = new ArrayList<Like>();
-		List<Review> reviews = new ArrayList<Review>();
-		likes = likeRepository.findByMemberId(member.getId());
-		
-		if(!likes.isEmpty()) {
-			for (Like like : likes) {
-				reviews.add(reviewRepository.findById(like.getRevId()).orElse(new Review()));
-			}
-		}
-		return reviews;
-	}
-
 	@Override
 	public List<Map<String, Object>> findAllFollowingToMap(Member member) {
 		List<Map<String,Object>> memberList = new ArrayList<Map<String,Object>>();
@@ -354,6 +341,29 @@ public class MemberServiceImpl implements MemberService{
 		if (!member.getPassword().equals("") && member.getPassword() != null) return passwordEncoder.matches(member.getPassword(), authUser.getPassword());
 		
 		return true;
+	}
+
+	@Override
+	public List<Review> findLikedByMemberIdWithPage(Pageable page, Member member) {
+		List<Like> likes = new ArrayList<Like>();
+		List<Review> reviews = new ArrayList<Review>();
+		likes = likeRepository.findByMemberId(member.getId(),page);
+		
+		if(!likes.isEmpty()) {
+			for (Like like : likes) {
+				reviews.add(reviewRepository.findById(like.getRevId()).orElse(new Review()));
+			}
+		}
+		for (Review review : reviews) {
+			List<Fileinfo> files = fileRepository.findByTypeId(review.getId());
+			if(files.size() > 0) review.setThumUrl(files.get(0).getDownloadURL());
+		}
+		return reviews;
+	}
+
+	@Override
+	public int countLikedReview(Member member) {
+		return likeRepository.countByMemberId(member.getId());
 	}
 
 
