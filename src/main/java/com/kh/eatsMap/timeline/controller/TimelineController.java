@@ -1,8 +1,11 @@
 package com.kh.eatsMap.timeline.controller;
 
+import java.lang.reflect.Array;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpSession;
 
@@ -53,7 +56,6 @@ public class TimelineController {
 	@PostMapping("/")
 	@ResponseBody
 	public List<HashMap<String, Object>> timelinePaging(int page, @SessionAttribute("authentication") Member member) {
-		System.out.println(1);
 		PageObject pageObject = new PageObject(page, 8);
 		return timelineService.findReviewsForPaging(pageObject, member);
 	}
@@ -110,33 +112,59 @@ public class TimelineController {
 	
 	@GetMapping("search")
 	public void search(String keyword_, String[] area_, String[] category_, String[] hashtag_, Model model, @SessionAttribute("authentication") Member member) {
-		String keyword = keyword_ == null ? "" : keyword_;
-
-		String[] category = new String[0];
-		if(category_ != null) {
-			category = new String[category_.length];		
-			for (int i = 0; i < category_.length; i++) {
-				category[i] = category_[i];
-			}
-		}
-		String[] hashtag = new String[0];
-		if(hashtag_ != null) {
-			hashtag = new String[hashtag_.length];		
-			for (int i = 0; i < hashtag_.length; i++) {
-				hashtag[i] = hashtag_[i];
-			}	
-		}
+String keyword = keyword_ == null ? "" : keyword_;
+		
 		String[] area = new String[0];
+		String[] paramArea = new String[0];
 		if(area_ != null) {
-			area = new String[area_.length];		
+			area = new String[area_.length];	
+			paramArea = new String[area_.length];
 			for (int i = 0; i < area_.length; i++) {
 				area[i] = area_[i];
+				paramArea[i] = "&area_=" + area_[i]; 
 			}	
 		}
+		String paramAreaString = Arrays.stream(paramArea).collect(Collectors.joining());
 		
-		List<Review> searchedReviewList = timelineService.searchReview(model, keyword, area, category, hashtag, member);
+		String[] category = new String[0];
+		String[] paramCate = new String[0];
+		if(category_ != null) {
+			category = new String[category_.length];	
+			paramCate = new String[category_.length];
+			for (int i = 0; i < category_.length; i++) {
+				category[i] = category_[i];
+				paramCate[i] = "&category_=" + category_[i];
+			}
+		}
+		String paramCateString = Arrays.stream(paramCate).collect(Collectors.joining());
+		
+		String[] hashtag = new String[0];
+		String[] paramHash = new String[0];
+		if(hashtag_ != null) {
+			hashtag = new String[hashtag_.length];	
+			paramHash = new String[hashtag_.length];
+			for (int i = 0; i < hashtag_.length; i++) {
+				hashtag[i] = hashtag_[i];
+				paramHash[i] = "&hashtag_=" + hashtag_[i];
+			}	
+		}
+		String paramHashString = Arrays.stream(paramHash).collect(Collectors.joining());
+		
+		PageObject pageObject = new PageObject(1, 8);
+		List<Review> searchedReviewList = timelineService.searchReview(pageObject, keyword, area, category, hashtag, member);
 		model.addAttribute("reviews", searchedReviewList);
 		model.addAttribute("keyword", keyword_);
+		model.addAttribute("area", paramAreaString);
+		model.addAttribute("category", paramCateString);
+		model.addAttribute("hashtag", paramHashString);
+		model.addAttribute("pageObject", pageObject);
+	}
+	
+	@PostMapping("search")
+	@ResponseBody
+	public List<HashMap<String, Object>> searchForPaging(@RequestParam(value = "keyword") String keyword, String[] area, String[] category, String[] hashtag, int page, @SessionAttribute("authentication") Member member) {
+		PageObject pageObject = new PageObject(page, 8);
+		return timelineService.searchReviewForPaging(pageObject, keyword, area, category, hashtag, member);
 	}
 	
 }

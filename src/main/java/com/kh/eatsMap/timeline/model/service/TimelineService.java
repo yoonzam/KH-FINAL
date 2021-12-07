@@ -32,8 +32,10 @@ public interface TimelineService {
 
 	void deleteLike(String revId, Member member);
 
-	List<Review> searchReview(Model model, String keyword, String[] area, String[] category, String[] hashtag, Member member);
-
 	List<Map<String, String>> findGroup(Member member);
+
+	List<Review> searchReview(PageObject pageObject, String keyword, String[] area, String[] category, String[] hashtag, Member member);
+
+	List<HashMap<String, Object>> searchReviewForPaging(PageObject pageObject, String keyword, String[] area, String[] category, String[] hashtag, Member member);
 
 }

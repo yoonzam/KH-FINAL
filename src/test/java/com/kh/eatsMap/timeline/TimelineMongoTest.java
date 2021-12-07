@@ -26,6 +26,7 @@ import org.springframework.web.context.WebApplicationContext;
 
 import com.kh.eatsMap.common.util.PageObject;
 import com.kh.eatsMap.member.model.dto.Member;
+import com.kh.eatsMap.myeats.model.dto.Group;
 import com.kh.eatsMap.myeats.model.dto.Like;
 import com.kh.eatsMap.myeats.model.repository.GroupRepository;
 import com.kh.eatsMap.myeats.model.repository.LikeRepository;
@@ -199,6 +200,11 @@ public class TimelineMongoTest {
 //		for (Review hashMap : reviews) {
 //			System.out.println(hashMap.getResName() + ",	" + hashMap.getAddr() + ",	" + hashMap.getCategory().toString() + ",	" + hashMap.getHashtag().toString() + ",	" + hashMap.getPrivacy());
 //		}
+	}
+	
+	@Test
+	public void groupTest() {
+		List<Group> groups = groupRepository.findByMemberIdOrParticipants(new ObjectId("619e26bba6d62426e2e2aaf0"), new ObjectId("619e26bba6d62426e2e2aaf0"));
 	}
 
 }

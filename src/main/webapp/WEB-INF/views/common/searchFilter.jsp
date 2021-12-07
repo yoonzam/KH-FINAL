@@ -1,8 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 	<div class="search-form">
 		<label>
-			<input type="text" name="keyword_" placeholder="찾으시는 맛집을 입력하세요."/>
+			<input type="text" name="keyword_" placeholder="찾으시는 맛집을 입력하세요." value="${keyword}"/>
 		</label>
 		<a class="filter-btn"><i class="fas fa-filter">검색필터</i></a>
 		<button type="submit"><i class="fas fa-search"></i></button>

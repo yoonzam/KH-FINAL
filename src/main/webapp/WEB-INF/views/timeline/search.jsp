@@ -27,7 +27,12 @@
 				</div>
 			</div>
 			<div class="timeline-wrap">
-				<h2><i class="fas fa-search color-m"></i> <span class="color-m">${keyword}</span> 검색결과</h2>
+				<h2><i class="fas fa-search color-m"></i> 
+					<span class="color-m">
+						<c:if test="${empty keyword }">전체</c:if>
+						<c:if test="${not empty keyword }">${keyword}</c:if>
+					</span> 검색결과
+				</h2>
 				<ul class="timeline-brd">
 					<c:forEach items="${reviews}" var="reviews">
 						<li onclick="viewTimeline('${reviews.id}')">
@@ -61,5 +66,70 @@
 		</div>
 	</section>
 <%@ include file="/WEB-INF/views/include/footer.jsp" %>
+<script>
+	$('.filter-menu label').removeClass('checked');
+	$('.filter-menu input:checkbox').prop('checked', false);
+	
+	//페이징
+	let timelinePageCnt = 1;
+	document.addEventListener('scroll', function() {
+	    if((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
+	    	let area = '${area}'.split('&area_=');
+	    	let category = '${category}'.split('&category_=');
+	    	let hashtag = '${hashtag}'.split('&hashtag_=');
+	    	$.ajax({
+				type: 'POST',
+				url: '/timeline/search',
+				data: { page:timelinePageCnt+1, area:area.join(','), category:category.join(','), hashtag:hashtag.join(','), keyword:'${keyword}' },
+				dataType: 'json',
+			 	cache:false,
+				success: (data) => {
+					if(data.length == 0) return;
+					timelinePageCnt++;
+					let html = '';
+					for(let i = 0; i < data.length; i++) {
+			    		html += '<li onclick="viewTimeline(\'' + data[i].reviewId + '\')">'
+			    			  + '	<div class="eats-list">'
+			    			  + '		<div class="thum">'
+			    			  + '			<img src="'+ data[i].review.thumUrl +'">'
+			    			  + '		</div>'
+			    			  + '		<div class="info">'
+			    			  + '			<div class="eats-location">'
+			    			  + 				data[i].review.addr.split(' ')[0] + data[i].review.addr.split(' ')[1]
+			    			  + 				' > ' + data[i].review.category
+			    			  + '</div>'
+			    			  + '			<div class="eats-name">' + data[i].review.resName;
+			    		if(data[i].review.like > 0) {
+			    			html += '			<i data-like="' + data[i].reviewId + '" class="eats-like fas fa-heart" co></i>';
+			    		} else{
+			    			html += '			<i data-like="' + data[i].reviewId + '" class="eats-like far fa-heart"></i>';
+			    		}
+			    		html += '			</div>'
+			    			  + '			<div class="eats-tag">';
+		    		 	for(let j = 0; j < data[i].review.hashtag.length; j++) {
+		    		 		html += '				<span>#' + data[i].review.hashtag[j] + '</span>';
+		    		 	}
+			    		html += '			</div>'
+			    			  + '		<div class="eats-score">'
+			    			  + '			<i class="fas fa-star"></i>' + ((data[i].review.taste+data[i].review.clean+data[i].review.service)/3).toFixed(1)
+			    			  + '		</div>'
+			    			  + '	</div>'
+			    			  + '</li>';
+			    	} //for-end
+					$('.timeline-brd').append(html);
+					resizeImg();
+				},
+				beforeSend:function(){
+			        $('#loadingImg').removeClass('display-none');
+			    }
+			    ,complete:function(){
+			        $('#loadingImg').addClass('display-none');
+			    },
+				error: (e) => {
+				}
+			});
+	    }
+	});
+</script>
 </body>
 </html>

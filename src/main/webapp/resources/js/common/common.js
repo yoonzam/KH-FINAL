@@ -122,7 +122,7 @@ let uploadReview = (reviewId) => {
 	$('#pop-review-form textarea').val('');
 	$('.preview-photo').css('display','none');
 	
-	$('#pop-review-form select[name="group"]').val('').prop("selected", true);
+	$('#pop-review-form select[name="group"]').val('my').prop("selected", true);
 	$('#pop-review-form select[name="privacy"]').val('0').prop("selected", true);
 	$('#pop-review-form select[name="privacy"]').attr('disabled',false);
 	$('#pop-review-form').fadeIn(200);
@@ -399,11 +399,9 @@ let uploadConfirm = (reviewId) => {
 	    	processData : false,
 		 	cache:false,
 			success: () => {
-				alert("성공");
 				location.reload();
 			},
 			error: (e) => {
-				alert("실패");
 			}
 		});
 	} else{
@@ -415,11 +413,9 @@ let uploadConfirm = (reviewId) => {
 	    	processData : false,
 		 	cache:false,
 			success: () => {
-				alert("성공");
 				location.reload();
 			},
 			error: (e) => {
-				alert("실패");
 			}
 		});
 	}
@@ -564,11 +560,9 @@ let deleteReview = (reviewId) => {
 		data: { id:reviewId },
 	 	cache:false,
 		success: () => {
-			alert("성공");
 			location.reload();
 		},
 		error: (e) => {
-			alert("실패");
 		}
 	});
 }

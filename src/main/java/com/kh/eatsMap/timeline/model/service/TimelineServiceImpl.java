@@ -240,8 +240,7 @@ public class TimelineServiceImpl implements TimelineService{
 	@Override
 	public List<Map<String, String>> findGroup(Member member) {
 		List<Map<String, String>> result = new ArrayList<>();
-		List<Group> groups = groupRepository.findByParticipants(member.getId());
-		
+		List<Group> groups = groupRepository.findByMemberIdOrParticipants(member.getId(), member.getId());
 		for (Group group : groups) {
 			Map<String, String> map = new HashMap<>();
 			map.put("id", group.getId().toString());
@@ -253,7 +252,7 @@ public class TimelineServiceImpl implements TimelineService{
 	}
 	
 	@Override
-	public List<Review> searchReview(Model model, String keyword, String[] area, String[] category, String[] hashtag, Member member) {
+	public List<Review> searchReview(PageObject pageObject, String keyword, String[] area, String[] category, String[] hashtag, Member member) {
 		Query query = new Query();
 		
 		Optional<List<Follow>> followings = followingRepository.findByMemberId(member.getId());
@@ -338,6 +337,11 @@ public class TimelineServiceImpl implements TimelineService{
 			reviews.retainAll(searchKeyword);
 		}
 		
+		long firstIdx = (pageObject.getPage()-1) * pageObject.getPerPageNum();
+		if(firstIdx > reviews.size()) return null;
+		long lastIdx = (firstIdx*8 == 0 ? 8 : reviews.size() < firstIdx*8 ? reviews.size() : firstIdx*8);
+		reviews = reviews.subList((int) firstIdx, (int) lastIdx);
+		
 		//리뷰 가공
 		List<Like> likes = likeRepository.findByMemberId(member.getId());
 		for (Review review : reviews) {
@@ -347,6 +351,23 @@ public class TimelineServiceImpl implements TimelineService{
 			review.toString();
 		}
 		return reviews;
+	}
+	
+	@Override
+	public List<HashMap<String, Object>> searchReviewForPaging(PageObject pageObject, String keyword, String[] area, String[] category, String[] hashtag, Member member) {
+		List<HashMap<String, Object>> mapList = new ArrayList<>();
+		List<Review> reviews = searchReview(pageObject, keyword, area, category, hashtag, member);
+		if(reviews != null) {
+			for (Review review : reviews) {
+				HashMap<String, Object> hashmap = new HashMap<>();
+				hashmap.put("review", review);
+				hashmap.put("reviewId", review.getId().toString());
+				mapList.add(hashmap);
+			}
+			return mapList;			
+		} else {
+			return null;
+		}
 	}
 	
 	private String[] getAreaName(String areaNum[]) {

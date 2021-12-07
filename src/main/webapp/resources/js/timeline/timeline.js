@@ -92,7 +92,6 @@ document.addEventListener('scroll', function() {
 		        $('#loadingImg').addClass('display-none');
 		    },
 			error: (e) => {
-				alert("실패");
 			}
 		});
     }
