@@ -13,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import com.kh.eatsMap.common.code.Category;
+import com.kh.eatsMap.common.code.HashCode;
 import com.kh.eatsMap.common.util.Fileinfo;
 import com.kh.eatsMap.map.model.dto.Map;
 import com.kh.eatsMap.map.model.repository.MapRepository;
@@ -63,9 +65,12 @@ public class MapServiceImpl implements MapService {
 		
 		for (Review review : reviews) {
 			HashMap<String, Object> hashmap = new HashMap<>();
-			
-			List<Fileinfo> fileInfos = fileRepository.findByTypeId(review.getId());
-			if(fileInfos.size() > 0) review.setThumUrl(fileInfos.get(0).getDownloadURL());
+			List<Fileinfo> files = fileRepository.findByTypeId(review.getId());
+	        if(files.size() > 0) {
+	        	review.setThumUrl(files.get(0).getDownloadURL());
+	        }
+	        review.setCategory(converterCategory(review.getCategory()));
+	        review.setHashtag(converterHashtag(review.getHashtag()));
 			hashmap.put("review", review);
 			hashmap.put("reviewId", review.getId().toString());
 			mapList.add(hashmap);
@@ -98,29 +103,18 @@ public class MapServiceImpl implements MapService {
 			followReview.addAll(mapRepository.findByMemberIdAndPrivacy(follow.getFollowingId(), 1));
 		}
 		
-		/*
-		 * reviews = reviews.stream().filter(e-> e.getPrivacy() == 0 || (e.getPrivacy()
-		 * == 1 && e.getMemberId() == )
-		 */
 		
 		reviews.addAll(followReview);
 		
 
-		/*
-		 * reviews = reviews.stream() .filter(e -> e.getPrivacy() == 0 ||
-		 * e.getMemberId().toString() == member_id.toString())
-		 * .collect(Collectors.toList());
-		 */
-
-		// 본인이 쓴 리뷰 가져와야함
-		// 팔로우한거 가져와야함
-		// 프라이버시가 0인거 가져와야함
-		
-
 		for (Review review : reviews) {
 			HashMap<String, Object> hashmap = new HashMap<>();
-			List<Fileinfo> fileInfos = fileRepository.findByTypeId(review.getId());
-			if(fileInfos.size() > 0) review.setThumUrl(fileInfos.get(0).getDownloadURL());
+			List<Fileinfo> files = fileRepository.findByTypeId(review.getId());
+	        if(files.size() > 0) {
+	        	review.setThumUrl(files.get(0).getDownloadURL());
+	        }
+	        review.setCategory(converterCategory(review.getCategory()));
+	        review.setHashtag(converterHashtag(review.getHashtag()));
 			hashmap.put("review", review);
 			hashmap.put("reviewId", review.getId().toString());
 			mapList.add(hashmap);
@@ -164,17 +158,12 @@ public class MapServiceImpl implements MapService {
 			ObjectId[] ObjectArr = group.getParticipants();
 			for (int i = 0; i < group.getParticipants().length; i++) {
 				HashMap<String, Object> hashmap = new HashMap<>();
-				System.out.println("그룹멤버 아이디");
-				System.out.println(ObjectArr[i]);
-				member = memberRepository.findById(ObjectArr[i]);
-				System.out.println("찾은 멤버");
-				System.out.println(member);	
+				member = memberRepository.findById(ObjectArr[i]);	
 				hashmap.put("memberName", member.getNickname());
 				hashmap.put("memberId", member.getId().toString());
 				memberList.add(hashmap);
 				
 			}
-			System.out.println("최종 그룹멤버");
 			System.out.println(memberList);	
 			
 		}
@@ -189,6 +178,12 @@ public class MapServiceImpl implements MapService {
 		List<Review> reviews = mapRepository.findByGroup(groupId);
 		for (Review review : reviews) {
 			HashMap<String, Object> hashmap = new HashMap<>();
+			List<Fileinfo> files = fileRepository.findByTypeId(review.getId());
+	        if(files.size() > 0) {
+	        	review.setThumUrl(files.get(0).getDownloadURL());
+	        }
+	        review.setCategory(converterCategory(review.getCategory()));
+	        review.setHashtag(converterHashtag(review.getHashtag()));
 			hashmap.put("review", review);
 			hashmap.put("reviewId", review.getId().toString());
 			groupReview.add(hashmap);
@@ -202,15 +197,59 @@ public class MapServiceImpl implements MapService {
 		ObjectId id = new ObjectId(groupId);
 		
 		List<Review> reviews = mapRepository.findByGroupAndMemberId(id,memberId);
-		System.out.println("그룹 내 멤버 리뷰");
-		System.out.println(reviews);
 		for (Review review : reviews) {
 			HashMap<String, Object> hashmap = new HashMap<>();
-			hashmap.put("review", review);
+			List<Fileinfo> files = fileRepository.findByTypeId(review.getId());
+	        if(files.size() > 0) {
+	        	review.setThumUrl(files.get(0).getDownloadURL());
+	        }
+	        
+			hashmap.put("review", review.toString());
 			hashmap.put("reviewId", review.getId().toString());
 			groupMemberReview.add(hashmap);
 		}
+		
 		return groupMemberReview;
 	}
+	
+	public String converterCategory(String category) {
+		switch (category) {
+		case "cg01": category = Category.CG01.desc(); break;
+		case "cg02": category = Category.CG02.desc(); break;
+		case "cg03": category = Category.CG03.desc(); break;
+		case "cg04": category = Category.CG04.desc(); break;
+		case "cg05": category = Category.CG05.desc(); break;
+		case "cg06": category = Category.CG06.desc(); break;
+		case "cg07": category = Category.CG07.desc(); break;
+		case "cg08": category = Category.CG08.desc(); break;
+		default:
+			break;
+		}
+		
+		return category;
+	}
+	
+	public String[] converterHashtag(String[] hashtag) {
+		for (int i = 0; i < hashtag.length; i++) {
+			switch (hashtag[i]) {
+			case "md01": hashtag[i] = HashCode.MD01.desc(); break;
+			case "md02": hashtag[i] = HashCode.MD02.desc(); break;
+			case "md03": hashtag[i] = HashCode.MD03.desc(); break;
+			case "md04": hashtag[i] = HashCode.MD04.desc(); break;
+			case "md05": hashtag[i] = HashCode.MD05.desc(); break;
+			case "md06": hashtag[i] = HashCode.MD06.desc(); break;
+			case "pr01": hashtag[i] = HashCode.PR01.desc(); break;
+			case "pr02": hashtag[i] = HashCode.PR02.desc(); break;
+			case "pr03": hashtag[i] = HashCode.PR03.desc(); break;
+			case "pr04": hashtag[i] = HashCode.PR04.desc(); break;
+			case "pr05": hashtag[i] = HashCode.PR05.desc(); break;
+			default:
+				break;
+			}			
+		}
+		return hashtag;
+
+	}
+
 
 }
