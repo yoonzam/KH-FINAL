@@ -18,7 +18,12 @@
 <!-- 화살표 아이콘 -->
 <link rel="stylesheet" href="http://cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
 
+<style type="text/css">
 
+i.eats-like.fas.fa-heart {
+   color: #f15050;
+}
+</style>
 
 </head>
 <body>
@@ -54,8 +59,7 @@
 						<c:set var="addr" value="${fn:split(reviews.addr,' ')}" />
 						${addr[0]} ${addr[1]}&nbsp;&#62;&nbsp;${reviews.category}
 					</div>
-					<div class="eats-name">
-						${reviews.resName}
+					<div class="eats-name">${reviews.resName} 
 						<i data-like="${reviews.id}" class="eats-like ${reviews.like > 0 ? 'fas fa-heart' : 'far fa-heart'}"></i>
 					</div>
 					<div class="eats-tag">
@@ -78,6 +82,8 @@
 <%@ include file="/WEB-INF/views/include/footer.jsp"%>
 <script type="text/javascript">
 resetUI();
+
+
 </script>
 </body>
 </html>

@@ -1,10 +1,11 @@
 package com.kh.eatsMap.index.controller;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpSession;
 
@@ -14,13 +15,10 @@ import org.springframework.data.mongodb.core.geo.GeoJsonPoint;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.kh.eatsMap.common.util.Fileinfo;
 import com.kh.eatsMap.common.util.PageObject;
 import com.kh.eatsMap.index.model.service.IndexService;
 import com.kh.eatsMap.member.model.dto.Member;
@@ -102,41 +100,63 @@ public class IndexController {
 		
 		String keyword = keyword_ == null ? "" : keyword_;
 		
-		String[] category = new String[0];
-		if(category_ != null) {
-			category = new String[category_.length];		
-			for (int i = 0; i < category_.length; i++) {
-				category[i] = category_[i];
-			}
-		}
-		String[] hashtag = new String[0];
-		if(hashtag_ != null) {
-			hashtag = new String[hashtag_.length];		
-			for (int i = 0; i < hashtag_.length; i++) {
-				hashtag[i] = hashtag_[i];
-			}	
-		}
 		String[] area = new String[0];
+		String[] paramArea = new String[0];
 		if(area_ != null) {
-			area = new String[area_.length];		
+			area = new String[area_.length];	
+			paramArea = new String[area_.length];
 			for (int i = 0; i < area_.length; i++) {
 				area[i] = area_[i];
+				paramArea[i] = "&area_=" + area_[i]; 
 			}	
 		}
+		String paramAreaString = Arrays.stream(paramArea).collect(Collectors.joining());
 		
-		pageObject.setPerPageNum(8);
-		pageObject.setPerGroupPageNum(8);
-		// 데이터 건수를 세팅
-		long count = indexService.count(keyword, area, category, hashtag, member);
+		String[] category = new String[0];
+		String[] paramCate = new String[0];
+		if(category_ != null) {
+			category = new String[category_.length];	
+			paramCate = new String[category_.length];
+			for (int i = 0; i < category_.length; i++) {
+				category[i] = category_[i];
+				paramCate[i] = "&category_=" + category_[i];
+			}
+		}
+		String paramCateString = Arrays.stream(paramCate).collect(Collectors.joining());
 		
-		pageObject.setTotalRow(count);
+		String[] hashtag = new String[0];
+		String[] paramHash = new String[0];
+		if(hashtag_ != null) {
+			hashtag = new String[hashtag_.length];	
+			paramHash = new String[hashtag_.length];
+			for (int i = 0; i < hashtag_.length; i++) {
+				hashtag[i] = hashtag_[i];
+				paramHash[i] = "&hashtag_=" + hashtag_[i];
+			}	
+		}
+		String paramHashString = Arrays.stream(paramHash).collect(Collectors.joining());
 		
 		List<Review> searchedReviewList = indexService.searchReview(keyword, area, category, hashtag, member, pageObject);
 		
-//		System.out.println(pageObject);
+		long count = searchedReviewList.size();
+		
+		// 데이터 건수를 세팅
+		pageObject.setPerPageNum(8);
+		pageObject.setPerGroupPageNum(8);
+		pageObject.setTotalRow(count);
+
+		System.out.println(pageObject);
+//		System.out.println(keyword_);
+//		System.out.println(paramAreaString);
+//		System.out.println(paramCateString);
+//		System.out.println(paramHashString);
+		
 		
 		model.addAttribute("reviews", searchedReviewList);
 		model.addAttribute("keyword", keyword_);
+		model.addAttribute("area", paramAreaString);
+		model.addAttribute("category", paramCateString);
+		model.addAttribute("hashtag", paramHashString);
 		model.addAttribute("pageObject", pageObject);
 
 		return "main/search";

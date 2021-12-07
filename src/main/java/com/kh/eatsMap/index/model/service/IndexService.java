@@ -30,7 +30,4 @@ public interface IndexService {
 	List<Review> searchReview(String keyword, String[] area, String[] category, String[] hashtag, Member member,
 			PageObject pageObject);
 
-	// 리뷰 개수 조회
-	long count(String keyword, String[] area, String[] category, String[] hashtag, Member member);
-
 }
