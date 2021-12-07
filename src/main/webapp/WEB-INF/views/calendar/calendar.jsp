@@ -99,7 +99,7 @@
 		 					text += data.participant[i].nickname + ' ';
 						}
 		 				$('#detail-participant').text(text);
-		 				
+		 				$('#pop-schedule-detail').show();
 		 				
 		 				
 		 				$('#sch-change-btn').click(e => {
@@ -141,7 +141,7 @@
 		 			}
     			})
 		 			
-    			$('#pop-schedule-detail').show();
+    			
     		}//eventClick
 	    		
 	 	}); 
