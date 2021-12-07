@@ -100,16 +100,15 @@ public class MyeatsController {
 		int noticeCnt = notice.getCalendarNotice() + notice.getGroupNotice() + notice.getParticipantNotice() + notice.getFollowNotice();
 		session.setAttribute("notice", notice);
 		session.setAttribute("noticeCnt", noticeCnt);
+		pageObject.setTotalRow(groupService.getTotalCountGroupBymemberId(member.getId()));
 		
-		List<Group> groups = groupService.list(pageObject,member);
+		List<Group> groups = memberService.findGroupListWithPage(pageObject,member);
 		for (Group group : groups) {
 			List<Fileinfo> files = groupService.findFiles(group.getId());
 			if(files.size() > 0) group.setThumUrl(files.get(0).getDownloadURL());
 		}
 		
-		pageObject.setTotalRow(groupService.getTotalCountGroupBymemberId(member.getId()));
 		model.addAttribute("groups", groups);
-		
 		model.addAttribute("pageObject", pageObject);
 	}
 	

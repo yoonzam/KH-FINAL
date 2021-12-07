@@ -193,7 +193,7 @@ public class RepositoryTest {
 					Member member = repository.findByNickname("yang");
 					
 					List<Group> list = new ArrayList<Group>();
-					list = groupRepository.findByParticipants(member.getId());
+					list = groupRepository.findByParticipants(member.getId()).get();
 					list.forEach(e -> logger.debug(e.toString()));
 				}
 				@Test

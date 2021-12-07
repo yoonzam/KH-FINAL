@@ -35,7 +35,9 @@ import com.kh.eatsMap.member.model.repository.NoticeRepository;
 import com.kh.eatsMap.member.validator.EmailForm;
 import com.kh.eatsMap.member.validator.JoinForm;
 import com.kh.eatsMap.member.validator.ModifyForm;
+import com.kh.eatsMap.myeats.model.dto.Group;
 import com.kh.eatsMap.myeats.model.dto.Like;
+import com.kh.eatsMap.myeats.model.repository.GroupRepository;
 import com.kh.eatsMap.myeats.model.repository.LikeRepository;
 import com.kh.eatsMap.timeline.model.dto.Review;
 import com.kh.eatsMap.timeline.model.repository.FileRepository;
@@ -56,6 +58,7 @@ public class MemberServiceImpl implements MemberService{
 	private final MemberReviewRepository reviewRepository;
 	private final FollowerRepository followerRepository;
 	private final LikeRepository likeRepository;
+	private final GroupRepository groupRepository;
 	
 	Logger logger = LoggerFactory.getLogger(this.getClass());
 	
@@ -364,6 +367,15 @@ public class MemberServiceImpl implements MemberService{
 	@Override
 	public int countLikedReview(Member member) {
 		return likeRepository.countByMemberId(member.getId());
+	}
+
+	@Override
+	public List<Group> findGroupListWithPage(PageObject pageObject, Member member) {
+		List<Group> myGroups = groupRepository.findByMemberId(member.getId()).orElse(List.of());
+		myGroups.addAll(groupRepository.findByParticipants(member.getId()).orElse(List.of()));
+		long lastIdx = pageObject.getEndRow() < pageObject.getTotalRow() ? pageObject.getEndRow() : pageObject.getTotalRow();
+		myGroups = myGroups.subList((int)pageObject.getStartRow()-1, (int)lastIdx);
+		return myGroups;
 	}
 
 

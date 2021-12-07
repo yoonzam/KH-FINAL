@@ -139,7 +139,7 @@ public class MapServiceImpl implements MapService {
 	@Override
 	public List<Group> findGroupList(ObjectId id) {
 		// TODO Auto-generated method stub
-		return groupRepository.findByParticipants(id);
+		return groupRepository.findByParticipants(id).orElse(List.of());
 	}
 
 	@Override

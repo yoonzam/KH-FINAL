@@ -1,5 +1,6 @@
 package com.kh.eatsMap.myeats.model.repository;
 import java.util.List;
+import java.util.Optional;
 
 import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.repository.MongoRepository;
@@ -12,9 +13,11 @@ public interface GroupRepository extends MongoRepository<Group, String>{
 	
 	List<Group> findById(ObjectId Id);
 
-	List<Group> findByParticipants(ObjectId memberId);
+	Optional<List<Group>> findByParticipants(ObjectId memberId);
 
 	List<Group> findByMemberIdOrParticipants(ObjectId id, ObjectId id2);
+
+	Optional<List<Group>> findByMemberId(ObjectId id);
 
 
 

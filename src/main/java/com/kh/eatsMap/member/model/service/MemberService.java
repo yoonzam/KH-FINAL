@@ -15,6 +15,7 @@ import com.kh.eatsMap.member.model.dto.Notice;
 import com.kh.eatsMap.member.validator.EmailForm;
 import com.kh.eatsMap.member.validator.JoinForm;
 import com.kh.eatsMap.member.validator.ModifyForm;
+import com.kh.eatsMap.myeats.model.dto.Group;
 import com.kh.eatsMap.myeats.model.dto.Like;
 import com.kh.eatsMap.timeline.model.dto.Review;
 
@@ -68,5 +69,7 @@ public interface MemberService {
 	List<Review> findLikedByMemberIdWithPage(Pageable page, Member member);
 
 	int countLikedReview(Member member);
+
+	List<Group> findGroupListWithPage(PageObject pageObject, Member member);
 
 }
