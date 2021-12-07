@@ -100,21 +100,6 @@ public class MapController {
 		return "map/map";
 	}
 
-	/*
-	 * @ResponseBody
-	 * 
-	 * @GetMapping("search") public List<HashMap<String, Object>>
-	 * searchReview(String keyword) { System.out.println(keyword);
-	 * 
-	 * System.out.println("출력 되는중? " + keyword);
-	 * 
-	 * List<HashMap<String, Object>> reviewList = mapService.reviewList();
-	 * 
-	 * System.out.println(reviewList.toString());
-	 * 
-	 * return reviewList; }
-	 */
-	
 	@ResponseBody
 	@GetMapping("group")
 	public HashMap<String,List<HashMap<String, Object>>> groupMember(Model model,String groupId) throws JsonProcessingException{
@@ -124,11 +109,10 @@ public class MapController {
 		ObjectMapper mapper = new ObjectMapper();
 		String groupReview = mapper.writeValueAsString(groupReviewList);
 		if (groupReviewList.isEmpty()) {
-			System.out.println("비었습니다.");
 		}else {
 			reviewMap.put("groupReview", groupReviewList);
 		}
-		System.out.println(groupReview);
+
 		
 		
 		//검색을 위한 그룹 멤버 
@@ -144,7 +128,6 @@ public class MapController {
 	@ResponseBody
 	@GetMapping("group-member")
 	public List<HashMap<String, Object>> groupMemberReview(String groupId,String memberId){
-		System.out.println("멤머 리뷰 동작중?");
 		List<HashMap<String, Object>> memberReview = mapService.findByGroupIdAndMemberId(groupId,memberId);
 		
 		return memberReview;
