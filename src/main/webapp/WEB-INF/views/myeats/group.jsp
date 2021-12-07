@@ -23,9 +23,8 @@
 	}
 	
 /* 그룹생성 */	
-.btn-area {
-    text-align: end;
-}
+.btn-area {text-align: end;}
+.btn-area.no-groups{text-align:center;margin-top:10px;}
 
 .btn-area button {
     cursor: pointer;
@@ -85,49 +84,56 @@
 				<li><a href="/myeats/detail">맛찜리스트</a></li>
 				<li><a href="/member/edit-profile">회원정보 수정</a></li>
 			</ul>
-				<c:forEach items="${groups}" var="groups" varStatus="status"  begin="0"  >
-				<c:if test="${status.first}"><ul class="group-wrap"></c:if>
-				<c:choose>
-					<c:when test="true">
-					<li>
-						<div class="group">
-							<div class="group-img"><img src="${!empty groups.thumUrl ? groups.thumUrl : '/resources/img/common/upload-logo.png'}"></div>
-								<p class="group-info">
-									<strong>${groups.groupName}</strong><br>
-									<i class="fas fa-user"></i> ${fn:length(groups.participants) }    &nbsp;&nbsp;<i class="fas fa-feather"></i>
-									<fmt:formatDate pattern="yyyy/MM/dd" value="${groups.groupcreatedate}"/>
-								</p>
-						</div>
-						<c:if test="${authentication.id == groups.memberId }">
-						<div class="controller">
-							<a href="groupDetail?id=${groups.id}" class="group-menu">그룹관리</a>
-							<a href="groupDetail?id=${groups.id}">수정</a>
-							<a href="/myeats/delete?id=${groups.id}">삭제</a> 
-						</div>
-						</c:if>
-						<c:if test="${authentication.id != groups.memberId }">
-						<div class="controller">
-							<a href="groupDetail?id=${groups.id}" class="group-menu">그룹보기</a>
-						</div>
-						</c:if>
-					</li>
-					</c:when>
-				</c:choose> 
-				<c:if test="${status.last}"></ul></c:if>
-				</c:forEach>
-			
-			
+			<c:if test="${!empty groups}">
+				<ul class="group-wrap">
+					<c:forEach items="${groups}" var="groups" varStatus="status" begin="0">
+						<c:choose>
+							<c:when test="true">
+							<li>
+								<div class="group">
+									<div class="group-img"><img src="${!empty groups.thumUrl ? groups.thumUrl : '/resources/img/common/upload-logo.png'}"></div>
+										<p class="group-info">
+											<strong>${groups.groupName}</strong><br>
+											<i class="fas fa-user"></i> ${fn:length(groups.participants) }    &nbsp;&nbsp;<i class="fas fa-feather"></i>
+											<fmt:formatDate pattern="yyyy/MM/dd" value="${groups.groupcreatedate}"/>
+										</p>
+								</div>
+								<c:if test="${authentication.id == groups.memberId }">
+								<div class="controller">
+									<a href="groupDetail?id=${groups.id}" class="group-menu">그룹관리</a>
+									<a href="groupDetail?id=${groups.id}">수정</a>
+									<a href="/myeats/delete?id=${groups.id}">삭제</a> 
+								</div>
+								</c:if>
+								<c:if test="${authentication.id != groups.memberId }">
+								<div class="controller">
+									<a href="groupDetail?id=${groups.id}" class="group-menu">그룹보기</a>
+								</div>
+								</c:if>
+							</li>
+							</c:when>
+						</c:choose>
+					</c:forEach>
+				</ul>
 				<!-- paging -->
 	  		 	<div class="page">
 	      			<ul class="pagination">
 	       				<li class="<c:out value="${pageObject.page == cnt? 'pagebtn active':'btn'}"/>">
-	       					<pageNav:pageNav listURI="group" pageObject="${pageObject}" ></pageNav:pageNav>
+	       					<pageNav:pageNav listURI="group" pageObject="${pageObject}"></pageNav:pageNav>
 	       				</li>
 	      			</ul>
 	  			</div>
 				<div class="btn-area">
 					<a href = "createGroup"><button type="submit" class="create-btn">그룹 만들기</button></a>
 				</div>
+			</c:if>
+			<c:if test="${empty groups}">
+				<div class="empty-list"><i class="far fa-sad-cry"></i><br>참여하고 계신 그룹이 없어요.</div>
+				<div class="btn-area no-groups">
+					<a href = "createGroup"><button type="submit" class="create-btn">그룹 만들기</button></a>
+				</div>
+			</c:if>
+			
 		</div><!-- container -->
 	</div><!-- container-wrap -->
 </section>  
