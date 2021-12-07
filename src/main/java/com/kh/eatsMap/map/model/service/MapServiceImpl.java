@@ -11,6 +11,9 @@ import java.util.stream.Collectors;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
 import com.kh.eatsMap.common.code.Category;
@@ -46,36 +49,37 @@ public class MapServiceImpl implements MapService {
 
 	@Autowired
 	private final myMapRepository myMapRepository;
-	
+
 	@Autowired
 	private final GroupRepository groupRepository;
-	
+
 	@Autowired
 	private final MemberRepository memberRepository;
-	
+
 	@Autowired
 	private final FileRepository fileRepository;
+
+	private final MongoTemplate mongoTemplate;
 
 	@Override
 	public List<HashMap<String, Object>> reviewList() {
 		List<HashMap<String, Object>> mapList = new ArrayList<>();
 
 		List<Review> reviews = mapRepository.findAll();
-		
-		
+
 		for (Review review : reviews) {
 			HashMap<String, Object> hashmap = new HashMap<>();
 			List<Fileinfo> files = fileRepository.findByTypeId(review.getId());
-	        if(files.size() > 0) {
-	        	review.setThumUrl(files.get(0).getDownloadURL());
-	        }
-	        review.setCategory(converterCategory(review.getCategory()));
-	        review.setHashtag(converterHashtag(review.getHashtag()));
+			if (files.size() > 0) {
+				review.setThumUrl(files.get(0).getDownloadURL());
+			}
+			review.setCategory(converterCategory(review.getCategory()));
+			review.setHashtag(converterHashtag(review.getHashtag()));
 			hashmap.put("review", review);
 			hashmap.put("reviewId", review.getId().toString());
 			mapList.add(hashmap);
 		}
-		
+
 		return mapList;
 
 	}
@@ -102,19 +106,17 @@ public class MapServiceImpl implements MapService {
 		for (Follow follow : follows) {
 			followReview.addAll(mapRepository.findByMemberIdAndPrivacy(follow.getFollowingId(), 1));
 		}
-		
-		
+
 		reviews.addAll(followReview);
-		
 
 		for (Review review : reviews) {
 			HashMap<String, Object> hashmap = new HashMap<>();
 			List<Fileinfo> files = fileRepository.findByTypeId(review.getId());
-	        if(files.size() > 0) {
-	        	review.setThumUrl(files.get(0).getDownloadURL());
-	        }
-	        review.setCategory(converterCategory(review.getCategory()));
-	        review.setHashtag(converterHashtag(review.getHashtag()));
+			if (files.size() > 0) {
+				review.setThumUrl(files.get(0).getDownloadURL());
+			}
+			review.setCategory(converterCategory(review.getCategory()));
+			review.setHashtag(converterHashtag(review.getHashtag()));
 			hashmap.put("review", review);
 			hashmap.put("reviewId", review.getId().toString());
 			mapList.add(hashmap);
@@ -144,46 +146,46 @@ public class MapServiceImpl implements MapService {
 
 	@Override
 	public List<HashMap<String, Object>> findMemberList(String groupId) {
-		
+
 		List<HashMap<String, Object>> memberList = new ArrayList<>();
-		
+
 		ObjectId grid = new ObjectId(groupId);
 
 		List<Group> groups = groupRepository.findById(grid);
-		
+
 		System.out.println(groups);
 		Member member = new Member();
-		
+
 		for (Group group : groups) {
 			ObjectId[] ObjectArr = group.getParticipants();
 			for (int i = 0; i < group.getParticipants().length; i++) {
 				HashMap<String, Object> hashmap = new HashMap<>();
-				member = memberRepository.findById(ObjectArr[i]);	
+				member = memberRepository.findById(ObjectArr[i]);
 				hashmap.put("memberName", member.getNickname());
 				hashmap.put("memberId", member.getId().toString());
 				memberList.add(hashmap);
-				
+
 			}
-			System.out.println(memberList);	
-			
+			System.out.println(memberList);
+
 		}
-		
+
 		return memberList;
 	}
 
 	@Override
 	public List<HashMap<String, Object>> findGroupReview(String groupId) {
 		List<HashMap<String, Object>> groupReview = new ArrayList<>();
-		
+
 		List<Review> reviews = mapRepository.findByGroup(groupId);
 		for (Review review : reviews) {
 			HashMap<String, Object> hashmap = new HashMap<>();
 			List<Fileinfo> files = fileRepository.findByTypeId(review.getId());
-	        if(files.size() > 0) {
-	        	review.setThumUrl(files.get(0).getDownloadURL());
-	        }
-	        review.setCategory(converterCategory(review.getCategory()));
-	        review.setHashtag(converterHashtag(review.getHashtag()));
+			if (files.size() > 0) {
+				review.setThumUrl(files.get(0).getDownloadURL());
+			}
+			review.setCategory(converterCategory(review.getCategory()));
+			review.setHashtag(converterHashtag(review.getHashtag()));
 			hashmap.put("review", review);
 			hashmap.put("reviewId", review.getId().toString());
 			groupReview.add(hashmap);
@@ -195,61 +197,160 @@ public class MapServiceImpl implements MapService {
 	public List<HashMap<String, Object>> findByGroupIdAndMemberId(String groupId, String memberId) {
 		List<HashMap<String, Object>> groupMemberReview = new ArrayList<>();
 		ObjectId id = new ObjectId(groupId);
-		
-		List<Review> reviews = mapRepository.findByGroupAndMemberId(id,memberId);
+
+		List<Review> reviews = mapRepository.findByGroupAndMemberId(id, memberId);
 		for (Review review : reviews) {
 			HashMap<String, Object> hashmap = new HashMap<>();
 			List<Fileinfo> files = fileRepository.findByTypeId(review.getId());
-	        if(files.size() > 0) {
-	        	review.setThumUrl(files.get(0).getDownloadURL());
-	        }
-	        
+			if (files.size() > 0) {
+				review.setThumUrl(files.get(0).getDownloadURL());
+			}
+
 			hashmap.put("review", review.toString());
 			hashmap.put("reviewId", review.getId().toString());
 			groupMemberReview.add(hashmap);
 		}
-		
+
 		return groupMemberReview;
 	}
-	
+
 	public String converterCategory(String category) {
 		switch (category) {
-		case "cg01": category = Category.CG01.desc(); break;
-		case "cg02": category = Category.CG02.desc(); break;
-		case "cg03": category = Category.CG03.desc(); break;
-		case "cg04": category = Category.CG04.desc(); break;
-		case "cg05": category = Category.CG05.desc(); break;
-		case "cg06": category = Category.CG06.desc(); break;
-		case "cg07": category = Category.CG07.desc(); break;
-		case "cg08": category = Category.CG08.desc(); break;
+		case "cg01":
+			category = Category.CG01.desc();
+			break;
+		case "cg02":
+			category = Category.CG02.desc();
+			break;
+		case "cg03":
+			category = Category.CG03.desc();
+			break;
+		case "cg04":
+			category = Category.CG04.desc();
+			break;
+		case "cg05":
+			category = Category.CG05.desc();
+			break;
+		case "cg06":
+			category = Category.CG06.desc();
+			break;
+		case "cg07":
+			category = Category.CG07.desc();
+			break;
+		case "cg08":
+			category = Category.CG08.desc();
+			break;
 		default:
 			break;
 		}
-		
+
 		return category;
 	}
-	
+
 	public String[] converterHashtag(String[] hashtag) {
 		for (int i = 0; i < hashtag.length; i++) {
 			switch (hashtag[i]) {
-			case "md01": hashtag[i] = HashCode.MD01.desc(); break;
-			case "md02": hashtag[i] = HashCode.MD02.desc(); break;
-			case "md03": hashtag[i] = HashCode.MD03.desc(); break;
-			case "md04": hashtag[i] = HashCode.MD04.desc(); break;
-			case "md05": hashtag[i] = HashCode.MD05.desc(); break;
-			case "md06": hashtag[i] = HashCode.MD06.desc(); break;
-			case "pr01": hashtag[i] = HashCode.PR01.desc(); break;
-			case "pr02": hashtag[i] = HashCode.PR02.desc(); break;
-			case "pr03": hashtag[i] = HashCode.PR03.desc(); break;
-			case "pr04": hashtag[i] = HashCode.PR04.desc(); break;
-			case "pr05": hashtag[i] = HashCode.PR05.desc(); break;
+			case "md01":
+				hashtag[i] = HashCode.MD01.desc();
+				break;
+			case "md02":
+				hashtag[i] = HashCode.MD02.desc();
+				break;
+			case "md03":
+				hashtag[i] = HashCode.MD03.desc();
+				break;
+			case "md04":
+				hashtag[i] = HashCode.MD04.desc();
+				break;
+			case "md05":
+				hashtag[i] = HashCode.MD05.desc();
+				break;
+			case "md06":
+				hashtag[i] = HashCode.MD06.desc();
+				break;
+			case "pr01":
+				hashtag[i] = HashCode.PR01.desc();
+				break;
+			case "pr02":
+				hashtag[i] = HashCode.PR02.desc();
+				break;
+			case "pr03":
+				hashtag[i] = HashCode.PR03.desc();
+				break;
+			case "pr04":
+				hashtag[i] = HashCode.PR04.desc();
+				break;
+			case "pr05":
+				hashtag[i] = HashCode.PR05.desc();
+				break;
 			default:
 				break;
-			}			
+			}
 		}
 		return hashtag;
 
 	}
 
+	@Override
+	public List<HashMap<String, Object>> findReviewByKeyword(String keyword, ObjectId id, List<Follow> follows) {
+		// 팔로워로 표시된 리뷰만 가져오기
+
+		Query query = new Query();
+
+		Optional<List<Follow>> followings = followingRepository.findByMemberId(id);
+		List<String> followingIds = new ArrayList<String>();
+		if (followings.isPresent())
+			for (Follow following : followings.get())
+				followingIds.add(following.getFollowingId().toString());
+
+		if (followingIds.size() > 0) {
+			Criteria citeria = new Criteria();
+			Criteria citeriaArr[] = new Criteria[followingIds.size() + 2];
+
+			for (int i = 0; i < followingIds.size() + 2; i++) {
+				if (i < followingIds.size()) {
+					citeriaArr[i] = Criteria.where("memberId").is(new ObjectId(followingIds.get(i))).and("privacy")
+							.is(1);
+				} else if (i == followingIds.size()) {
+					citeriaArr[i] = Criteria.where("memberId").is(id);
+				} else {
+					citeriaArr[i] = Criteria.where("privacy").is(0);
+				}
+			}
+			query.addCriteria(citeria.orOperator(citeriaArr));
+		} else {
+			Criteria citeria = new Criteria();
+			Criteria citeriaArr[] = new Criteria[2];
+			citeriaArr[0] = Criteria.where("memberId").is(id);
+			citeriaArr[1] = Criteria.where("privacy").is(0);
+			query.addCriteria(citeria.orOperator(citeriaArr));
+		}
+
+		query.with(Sort.by(Sort.Direction.DESC, "id"));
+		List<Review> reviews = mongoTemplate.find(query, com.kh.eatsMap.timeline.model.dto.Review.class);
+
+		// 키워드로 검색
+		List<Review> searchKeyword = new ArrayList<Review>();
+		if (!keyword.equals("")) {
+			searchKeyword = timelineRepository.findByResNameIgnoreCaseContaining(keyword);
+			reviews.retainAll(searchKeyword);
+		}
+		List<HashMap<String, Object>> searchReview = new ArrayList<>();
+		for (Review review : reviews) {
+			HashMap<String, Object> hashmap = new HashMap<>();
+			List<Fileinfo> files = fileRepository.findByTypeId(review.getId());
+			if (files.size() > 0) {
+				review.setThumUrl(files.get(0).getDownloadURL());
+			}
+			review.setCategory(converterCategory(review.getCategory()));
+			review.setHashtag(converterHashtag(review.getHashtag()));
+			hashmap.put("review", review);
+			hashmap.put("reviewId", review.getId().toString());
+			searchReview.add(hashmap);
+		}
+
+		
+		return searchReview;
+	}
 
 }

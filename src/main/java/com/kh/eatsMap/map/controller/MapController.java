@@ -42,96 +42,100 @@ public class MapController {
 		// 공개 설정이 0인 리뷰
 
 		Map myMap = new Map();
-		
 
-		
-		//검색을 위한 자신의 팔로우 리스트 
+		// 검색을 위한 자신의 팔로우 리스트
 		List<Follow> follows = mapService.findFollowList(member.getId());
-		
-		
+
 		// 공개된 리뷰목록과 팔로워한 리뷰를 가져옴
 		List<HashMap<String, Object>> reviews = mapService.myEatsMap(member.getId(), follows);
-		
-		//자신의 group리스트
+
+		// 자신의 group리스트
 		List<Group> groups = mapService.findGroupList(member.getId());
-		
-		//js 에서 사용하기 위해 json으로 변환
+
+		// js 에서 사용하기 위해 json으로 변환
 		ObjectMapper mapper = new ObjectMapper();
 		String jsonReview = mapper.writeValueAsString(reviews);
 		String jsonId = mapper.writeValueAsString(member.getId());
 		String jsonFollow = mapper.writeValueAsString(follows);
-		
-		//view단에 사용하기 위해 model에 데이터 담기
-		model.addAttribute("reviews",jsonReview);
-		model.addAttribute("groups",groups);
-		model.addAttribute("myObjectId",jsonId);
-		model.addAttribute("jsonFollow",jsonFollow);
-		
-		//hashmap에서 데이터 추출후 분리 저장
+
+		// view단에 사용하기 위해 model에 데이터 담기
+		model.addAttribute("reviews", jsonReview);
+		model.addAttribute("groups", groups);
+		model.addAttribute("myObjectId", jsonId);
+		model.addAttribute("jsonFollow", jsonFollow);
+
+		// hashmap에서 데이터 추출후 분리 저장
 		List<Review> saveReview = new ArrayList();
 		for (HashMap<String, Object> hashMap : reviews) {
-			
-			saveReview.add((Review)hashMap.get("review"));
+
+			saveReview.add((Review) hashMap.get("review"));
 		}
-		//맵 콜랙션에 저장
+		// 맵 콜랙션에 저장
 		myMap.setMemberId(member.getId());
 		myMap.setFollows(follows);
 		myMap.setReviews(saveReview);
 		myMap.setGroups(groups);
-		
-		
-		//저장 전에 map collection에 자신의 맵이 존재하는지 확인
+
+		// 저장 전에 map collection에 자신의 맵이 존재하는지 확인
 		Map mymap = mapService.findByMemberId(member.getId());
-		
+
 		try {
-			//존재하면 맵 업데이트
-			
+			// 존재하면 맵 업데이트
+
 			myMap.setId(mymap.getId());
 			mapService.insertMap(myMap);
-			
+
 		} catch (NullPointerException n) {
-			//없으면 생성
+			// 없으면 생성
 			mapService.insertMap(myMap);
 		}
-		
+
 		//
-		
 
 		return "map/map";
 	}
 
 	@ResponseBody
+	@GetMapping("search")
+	public List<HashMap<String, Object>> searchReview(@SessionAttribute("authentication") Member member,String keyword) {
+		
+		// 검색을 위한 자신의 팔로우 리스트
+		List<Follow> follows = mapService.findFollowList(member.getId());
+		List<HashMap<String, Object>> reviewList = mapService.findReviewByKeyword(keyword,member.getId(),follows);
+
+		
+
+		return reviewList;
+	}
+
+	@ResponseBody
 	@GetMapping("group")
-	public HashMap<String,List<HashMap<String, Object>>> groupMember(Model model,String groupId) throws JsonProcessingException{
-		HashMap<String,List<HashMap<String, Object>>> reviewMap = new HashMap<String, List<HashMap<String,Object>>>();
-		//그룹 리뷰
+	public HashMap<String, List<HashMap<String, Object>>> groupMember(Model model, String groupId)
+			throws JsonProcessingException {
+		HashMap<String, List<HashMap<String, Object>>> reviewMap = new HashMap<String, List<HashMap<String, Object>>>();
+		// 그룹 리뷰
 		List<HashMap<String, Object>> groupReviewList = mapService.findGroupReview(groupId);
 		ObjectMapper mapper = new ObjectMapper();
 		String groupReview = mapper.writeValueAsString(groupReviewList);
 		if (groupReviewList.isEmpty()) {
-		}else {
+		} else {
 			reviewMap.put("groupReview", groupReviewList);
 		}
 
-		
-		
-		//검색을 위한 그룹 멤버 
+		// 검색을 위한 그룹 멤버
 		List<HashMap<String, Object>> memberList = mapService.findMemberList(groupId);
-		
 
 		reviewMap.put("memberList", memberList);
-		
-		
+
 		return reviewMap;
 	}
-	
+
 	@ResponseBody
 	@GetMapping("group-member")
-	public List<HashMap<String, Object>> groupMemberReview(String groupId,String memberId){
-		List<HashMap<String, Object>> memberReview = mapService.findByGroupIdAndMemberId(groupId,memberId);
-		
+	public List<HashMap<String, Object>> groupMemberReview(String groupId, String memberId) {
+		List<HashMap<String, Object>> memberReview = mapService.findByGroupIdAndMemberId(groupId, memberId);
+
 		return memberReview;
 	}
-	
 
 }

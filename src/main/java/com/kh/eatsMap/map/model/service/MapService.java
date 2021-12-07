@@ -40,6 +40,9 @@ public interface MapService {
 	List<HashMap<String, Object>> findByGroupIdAndMemberId(String groupId, String memberId);
 
 
+	List<HashMap<String, Object>> findReviewByKeyword(String keyword, ObjectId id, List<Follow> follows);
+
+
 
 
 }
