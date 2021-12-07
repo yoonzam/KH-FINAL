@@ -115,7 +115,7 @@ li, input {
 								<input id="inviteButton" type='button' value='잇친목록 조회하기'/>
 								<select id="invited-select" name="participant" onchange="addList()"></select>
 							</div>
-								<ul id='nickNames'></ul>
+							<ul id='nickNames'></ul>
 						</li>
 					</ul>
 					<ul id='nickNames'>
