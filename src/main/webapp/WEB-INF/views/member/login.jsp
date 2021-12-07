@@ -3,6 +3,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+<title>잇츠맵 나만의 맛집 지도</title>
 <%@ include file="/WEB-INF/views/include/head.jsp" %>
 <link rel="stylesheet" href="/resources/css/member/login.css">
 </head>
