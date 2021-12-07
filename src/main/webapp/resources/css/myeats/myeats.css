@@ -58,7 +58,7 @@
 .group-view .group-member{margin-top:10px;}
 .group-view .group-member h4{font-size:18px; color:#333; font-weight:700; margin-top:20px;}
 .group-view .group-member li{color:#333; padding:13px; border:1px solid #ddd; margin-top:10px;}
-.group-view .group-member li span{font-size:14px; color:#999;}
+.group-view .group-member li span{font-size:14px; color:#999; display:block; margin-bottom:10px;}
 .group-view .group-member li a{float:right;}
 .group-view .group-member li a:hover *{color:var(--red-color);}
 .group-view .group-member li a *{color:#999; transition-duration:0.5s;}

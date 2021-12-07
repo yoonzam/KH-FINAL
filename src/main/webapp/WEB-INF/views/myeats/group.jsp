@@ -44,7 +44,6 @@
   list-style: none;
   display: inline-block;
   padding: 0;
-  margin-top: 20px;
   }
 
 .pagination li {
@@ -72,7 +71,6 @@
 	border:1px solid #ccc;
 	border-radius: 5px;
 }
-
 </style>
 
 </head>
@@ -118,9 +116,6 @@
 				<c:if test="${status.last}"></ul></c:if>
 				</c:forEach>
 			
-				<div class="btn-area">
-					<a href = "createGroup"><button type="submit" class="create-btn">그룹 만들기</button></a>
-				</div>
 			
 				<!-- paging -->
 	  		 	<div class="page">
@@ -130,6 +125,9 @@
 	       				</li>
 	      			</ul>
 	  			</div>
+				<div class="btn-area">
+					<a href = "createGroup"><button type="submit" class="create-btn">그룹 만들기</button></a>
+				</div>
 		</div><!-- container -->
 	</div><!-- container-wrap -->
 </section>  

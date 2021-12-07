@@ -38,16 +38,16 @@
 				</div><!-- wrap-profile-img -->
 	            <div class="wrap-profile-info">
 					<div class="postCnt">
-						<h3 class="postCnt-txt">게시물</h3>
 						<span class="cnt">${fn:length(reviews)}</span>
+						<span class="postCnt-txt">개의 후기</span>
 					</div>
 					<div class="followCnt">
-						<h3 class="postCnt-txt">내 잇친</h3>
 						<span class="cnt">${followCnt}</span>
+						<span class="postCnt-txt" >명의 잇친</span>
 					</div>
 					<div class="followingCnt">
-						<h3 class="postCnt-txt">나를 추가한 잇친</h3>
 						<span class="cnt">${followerCnt }</span>
+						<span class="postCnt-txt" >명의 나의 잇친</span>
 					</div>
 				</div><!-- wrap-profile-info -->
 			</div>
