@@ -15,7 +15,7 @@
 		<div class="section"></div>
 			<div class="section-wrap">
 				<div class="calendar-area">
-					<div id="calendar"></div>
+					<div id="container-calendar"></div>
 				</div>
 			</div>
 	</section>
@@ -24,7 +24,7 @@
 <script>
 	 document.addEventListener('DOMContentLoaded', function() {
     	
-    	var calendarEl = document.getElementById('calendar');
+    	var calendarEl = document.getElementById('container-calendar');
     	var calendar = new FullCalendar.Calendar(calendarEl, {
     		
     		/* themeSystem: 'bootstrap', */
