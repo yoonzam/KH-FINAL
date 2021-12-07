@@ -86,11 +86,8 @@ public class MyeatsController {
 	public String invitePost(HttpServletRequest request, Model model,RedirectAttributes rttr)throws Exception{ 
 		
 		String keyword = request.getParameter("keyword");
-		//http://localhost:7979/myeats/createGroup
 		 rttr.addFlashAttribute("keyword", keyword);
-		//http://localhost:7979/myeats/invite?page=1&numPerPage=10&findType=S&keyword=%EB%8C%95%EB%8C%95%EC%9D%B4
-		//http://localhost:7979/myeats/createGroup?keyword=알파카%2C알파카%2C알파카
-		
+	
 		return  "redirect:/myeats/createGroup";
 	}
 
@@ -113,27 +110,13 @@ public class MyeatsController {
 		pageObject.setTotalRow(groupService.getTotalCountGroupBymemberId(member.getId()));
 		model.addAttribute("groups", groups);
 		
-		//model.addAttribute("list", groupService.list(pageObject));
 		model.addAttribute("pageObject", pageObject);
 	}
 	
 	//그룹생성 폼/createGroup.jsp
 	@RequestMapping(value="/createGroup", method = RequestMethod.GET)
-	public void createGroupGet(Group group, Model model, String memberNickName) throws Exception{
-		model.addAttribute("group",memberService.findMemberByNickname("알파카").getNickname());
-		//System.out.println(memberService.findMemberByNickname("geoTest1").toString());
-	}
+	public void createGroupGet() {}
 	
-	//그룹생성 처리/createGroup.jsp
-//	@RequestMapping(value="/createGroup", method = RequestMethod.POST)
-//	public String writePost(Group group, RedirectAttributes reAttr, PageObject pageObject,List<MultipartFile> photos, @SessionAttribute("authentication") Member member) throws Exception{
-//		
-//		groupService.write(group,photos,member);
-//		reAttr.addFlashAttribute("list", groupService.list(pageObject,member));
-//		reAttr.addFlashAttribute("result", "success");
-//		
-//		return "redirect:/myeats/group";
-//	}
 	
 	//그룹상세보기 폼/groupDetail.jsp
 	@RequestMapping(value="/groupDetail", method=RequestMethod.GET)
@@ -150,16 +133,16 @@ public class MyeatsController {
 		String nickName = null;
 		List<String> nickNames =  new ArrayList<String>(); 
 		int i = 0;
-			for (ObjectId currentParticipant : currentParticipants) {
-				member = groupService.findMemberById(currentParticipant);
-				nickName = member.getNickname(); 
-				nickNames.add(i,nickName);
-				i++;
-			}
-			 Map<String,Object> map = new HashMap<String,Object>();
-				map = Map.of("groups", groups, "nickNames", nickNames);
-			
-			model.addAllAttributes(map);
+		for (ObjectId currentParticipant : currentParticipants) {
+			member = groupService.findMemberById(currentParticipant);
+			nickName = member.getNickname(); 
+			nickNames.add(i,nickName);
+			i++;
+		}
+		 Map<String,Object> map = new HashMap<String,Object>();
+			map = Map.of("groups", groups, "nickNames", nickNames);
+		
+		model.addAllAttributes(map);
 	}
 	
 	@RequestMapping(value="/delete", method=RequestMethod.GET)
@@ -188,7 +171,6 @@ public class MyeatsController {
 			List<Fileinfo> files = groupService.findFiles(group.getId());
 			if(files.size() > 0) group.setThumUrl(files.get(0).getDownloadURL());
 		}
-//		model.addAttribute("groups", groups);
 		
 		//Groupid로 Member nickName찾기
 		Group currentGroup = groupService.findGroupById(id);
@@ -210,51 +192,37 @@ public class MyeatsController {
 	}
 	
 	//수정처리
-		@RequestMapping(value="/groupDetailModify", method=RequestMethod.POST)
-		public String modifyPOST(Group group,
-				List<MultipartFile> photos, Member member,
-				@RequestParam(value="delNickNameOne", required = false) ObjectId delNickNameOne,
-				@RequestParam(value="delNickNameTwo", required = false) ObjectId delNickNameTwo,
-				@RequestParam(value="delNickNameThree", required = false) ObjectId delNickNameThree,
-				@RequestParam(value="delNickNameFour", required = false) ObjectId delNickNameFour,
-				@RequestParam(value="delNickNameFive", required = false) ObjectId delNickNameFive,
-				@RequestParam(value="delNickNameSix", required = false) ObjectId delNickNameSix,
-				@RequestParam(value ="newNickNameOne",required = false)ObjectId newNickNameOne,
-				@RequestParam(value ="newNickNameTwo",required = false)ObjectId newNickNameTwo,
-				@RequestParam(value ="newNickNameThree",required = false)ObjectId newNickNameThree,
-				@RequestParam(value ="newNickNameFour",required = false)ObjectId newNickNameFour,
-				@RequestParam(value ="newNickNameFive",required = false)ObjectId newNickNameFive,
-				@RequestParam(value ="newNickNameSix",required = false)ObjectId newNickNameSix) throws Exception{
-			//System.out.println(photos);
-//			System.out.println(delNickNameOne+ ","+ delNickNameTwo+ ","+delNickNameThree+ ","
-//					+ delNickNameFour+ ","+ delNickNameFive+ ","+ ","+ delNickNameSix
-//					+newNickNameOne+ ","+ group+ ","+ member);
-			System.out.println(delNickNameOne+ ","+ delNickNameTwo+ ","+delNickNameThree+ ","
-					+ delNickNameFour+ ","+ delNickNameFive+ ","+ delNickNameSix+ "//"
-					+ newNickNameOne+ ","+ newNickNameTwo + ","+newNickNameThree+ ","
-					+ newNickNameFour + ","+ newNickNameFive + ","+newNickNameSix);
-			groupService.modify(group,photos,member,
-					delNickNameOne,delNickNameTwo,delNickNameThree,
-					delNickNameFour,delNickNameFive,delNickNameSix,
-					newNickNameOne,newNickNameTwo,newNickNameThree,
-					newNickNameFour,newNickNameFive,newNickNameSix);
-			return "redirect:/myeats/groupDetail?id="+group.getId();
-		}
+	@RequestMapping(value="/groupDetailModify", method=RequestMethod.POST)
+	public String modifyPOST(Group group
+			,@RequestParam(name = "photos", required = false) MultipartFile photo, Member member,
+			@RequestParam(value="delNickNameOne", required = false) ObjectId delNickNameOne,
+			@RequestParam(value="delNickNameTwo", required = false) ObjectId delNickNameTwo,
+			@RequestParam(value="delNickNameThree", required = false) ObjectId delNickNameThree,
+			@RequestParam(value="delNickNameFour", required = false) ObjectId delNickNameFour,
+			@RequestParam(value="delNickNameFive", required = false) ObjectId delNickNameFive,
+			@RequestParam(value="delNickNameSix", required = false) ObjectId delNickNameSix,
+			@RequestParam(value ="newNickNameOne",required = false)ObjectId newNickNameOne,
+			@RequestParam(value ="newNickNameTwo",required = false)ObjectId newNickNameTwo,
+			@RequestParam(value ="newNickNameThree",required = false)ObjectId newNickNameThree,
+			@RequestParam(value ="newNickNameFour",required = false)ObjectId newNickNameFour,
+			@RequestParam(value ="newNickNameFive",required = false)ObjectId newNickNameFive,
+			@RequestParam(value ="newNickNameSix",required = false)ObjectId newNickNameSix) throws Exception{
+		groupService.modify(group,photo,member,
+				delNickNameOne,delNickNameTwo,delNickNameThree,
+				delNickNameFour,delNickNameFive,delNickNameSix,
+				newNickNameOne,newNickNameTwo,newNickNameThree,
+				newNickNameFour,newNickNameFive,newNickNameSix);
+		return "redirect:/myeats/groupDetail?id="+group.getId();
+	}
 		
-		//그룹 나가기
-				@RequestMapping(value="/groupLeave", method=RequestMethod.POST)
-				public String groupLeavePost(Group group,@SessionAttribute("authentication") Member member)throws Exception{ 
-					groupService.groupLeave(group,member.getId());
-					return "redirect:/myeats/group";
-				}	
+	//그룹 나가기
+	@RequestMapping(value="/groupLeave", method=RequestMethod.POST)
+	public String groupLeavePost(Group group,@SessionAttribute("authentication") Member member)throws Exception{ 
+		groupService.groupLeave(group,member.getId());
+		return "redirect:/myeats/group";
+	}	
 	
-		
-	//유진 11/30
-//	@GetMapping("post")
-//	public void group(@SessionAttribute("authentication") Member member,Model model) {
-//		model.addAllAttributes(memberService.findMemberAndReviewByMemberId(member.getId(), member));
-//	}
-	//이슬 12/06
+
 	@GetMapping("post")
 	public void group(@SessionAttribute("authentication") Member member,Model model, PageObject pageObject,@ModelAttribute("fCri") FindCriteria fCri) {
 		
@@ -268,7 +236,6 @@ public class MyeatsController {
 		model.addAttribute("totalCount", groupService.getTotalCountBymemberId(member.getId()));	
 		model.addAttribute("pageObject", pageObject);	
 	}	
-	//유진 12/07
 	@GetMapping("detail")
 	public void likedReview(@SessionAttribute("authentication") Member member, Model model, PageObject pageObject, @ModelAttribute("fCri") FindCriteria fCri) {
 		int cnt = memberService.countLikedReview(member);
@@ -280,22 +247,6 @@ public class MyeatsController {
 		model.addAttribute("reviews",memberService.findLikedByMemberIdWithPage(page, member));
 	}
 	
-	//이슬 12/07
-//	@GetMapping("detail")
-//	public void likedReview(@SessionAttribute("authentication") Member member,Model model, PageObject pageObject,@ModelAttribute("fCri") FindCriteria fCri) {
-//		
-//		model.addAttribute("reviews",groupService.findLikedByMemberId(pageObject,member));
-//		
-//		//model.addAllAttributes(groupService.findMemberAndReviewByMemberIdPage(pageObject,member.getId()));
-//		
-//		pageObject.setPage(fCri.getPage());
-//		pageObject.setPerPageNum(fCri.getPerPageNum());
-//		pageObject.setTotalRow(groupService.getTotalCountBymemberId(member.getId()));
-//		
-//		model.addAttribute("pageObject", pageObject);	
-//	}	
-	
-   //유진 12/02
    @PostMapping("createGroup")
    public String createGroup(Group group, PageObject pageObject,List<MultipartFile> photos
                      , @SessionAttribute("authentication") Member member, RedirectAttributes reAttr, Model model ) {

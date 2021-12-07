@@ -27,21 +27,16 @@ import com.kh.eatsMap.myeats.model.repository.GroupRepository;
 import com.kh.eatsMap.timeline.model.repository.FileRepository;
 import com.kh.eatsMap.timeline.model.repository.TimelineRepository;
 
+import lombok.RequiredArgsConstructor;
+
 @Repository
+@RequiredArgsConstructor
 public class GroupDAO {
 	
-	private static GroupRepository groupRepository;
-	private static TimelineRepository timelineRepository;
-	private static FileRepository fileRepository;
+	private final FileRepository fileRepository;
 	
 	 @Autowired
 	 private MongoTemplate mongoTemplate;
-	 
-	 @Autowired
-	 private static Group group;
-	 
-	 @Autowired
-	 private static Member member;
 	 
 		
 		//검색기능
@@ -150,7 +145,7 @@ public class GroupDAO {
 	
 
 	
-	public void update(Group group,List<MultipartFile> photos, Member member,
+	public void update(Group group,MultipartFile photo, Member member,
 			ObjectId delNickNameOne,ObjectId delNickNameTwo,ObjectId delNickNameThree,
 			ObjectId delNickNameFour,ObjectId delNickNameFive,ObjectId delNickNameSix,
 			ObjectId newNickNameOne,ObjectId newNickNameTwo,ObjectId newNickNameThree,
@@ -220,33 +215,14 @@ public class GroupDAO {
 		    mongoTemplate.updateFirst(query, update, Group.class);  
 			}
 		
-		 
-	     
-
-
-		Query fileDelQuery = new Query();
-		//fileDelQuery.addCriteria(Criteria.where("typeId").in(new ObjectId("61a9da068c3f5568d074376e")));
-		fileDelQuery.addCriteria(Criteria.where("typeId").is(group.getId()));
-		mongoTemplate.remove(fileDelQuery, com.kh.eatsMap.common.util.Fileinfo.class);
-	     
-	     //fileRepository.deleteByTypeId(group.getId());
-		
-		FileUtil fileUtil = new FileUtil();
-		for (MultipartFile photo : photos) {
-			//System.out.println("2"+photo);
-			//System.out.println("3"+!photo.isEmpty());
-			
-			if(!photo.isEmpty()) {
-				Fileinfo fileInfo = fileUtil.fileUpload(photo);
-				fileInfo.setTypeId(group.getId());
-				mongoTemplate.save(fileInfo);
-			}
+		if(!photo.isEmpty()) {
+			FileUtil fileUtil = new FileUtil();
+			Fileinfo fileInfo = fileUtil.fileUpload(photo);
+			fileInfo.setTypeId(group.getId());
+			fileRepository.save(fileInfo);
 		}
-	    
-	    
-
 		
-		}
+	}
 	
 	 public Member findMemberById(ObjectId id){
 	        Query query = new Query(Criteria.where("_id").is(id));

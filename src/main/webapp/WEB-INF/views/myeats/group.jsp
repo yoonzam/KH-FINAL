@@ -91,17 +91,17 @@
 							<c:when test="true">
 							<li>
 								<div class="group">
-									<div class="group-img"><img src="${!empty groups.thumUrl ? groups.thumUrl : '/resources/img/common/upload-logo.png'}"></div>
-										<p class="group-info">
-											<strong>${groups.groupName}</strong><br>
-											<i class="fas fa-user"></i> ${fn:length(groups.participants) }    &nbsp;&nbsp;<i class="fas fa-feather"></i>
-											<fmt:formatDate pattern="yyyy/MM/dd" value="${groups.groupcreatedate}"/>
-										</p>
+									<div class="group-img"><img src="${!empty groups.thumUrl ? groups.thumUrl : '/resources/img/common/EatsMap_logo.png'}"></div>
+									<p class="group-info">
+										<strong>${groups.groupName}</strong><br>
+										<i class="fas fa-user"></i> ${fn:length(groups.participants) }    &nbsp;&nbsp;<i class="fas fa-feather"></i>
+										<fmt:formatDate pattern="yyyy/MM/dd" value="${groups.groupcreatedate}"/>
+									</p>
 								</div>
 								<c:if test="${authentication.id == groups.memberId }">
 								<div class="controller">
 									<a href="groupDetail?id=${groups.id}" class="group-menu">그룹관리</a>
-									<a href="groupDetail?id=${groups.id}">수정</a>
+									<a href="groupDetailModify?id=${groups.id}">수정</a>
 									<a href="/myeats/delete?id=${groups.id}">삭제</a> 
 								</div>
 								</c:if>
