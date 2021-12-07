@@ -10,6 +10,8 @@ import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.geo.Distance;
 import org.springframework.data.geo.Metrics;
@@ -141,12 +143,6 @@ public class IndexServiceImpl implements IndexService{
 				maxIndex2 = i;
 			}
 		}
-		
-//		System.out.println("max : " + max);
-//		System.out.println("maxIndex : " + maxIndex); 
-//		System.out.println("max2 : " + max2);
-//		System.out.println("maxIndex2 : " + maxIndex2); 
-		
 		int[] cnt = new int[]{maxIndex, maxIndex2};
 		
 		return cnt;
@@ -342,15 +338,11 @@ public class IndexServiceImpl implements IndexService{
 			reviews.retainAll(searchKeyword);
 		}
 		
-
-		
-		
-		//여기서 쿼리에 리밋을 못 걸음 
-		query.skip((pageObject.getPage()-1) * pageObject.getPerPageNum());
-		System.out.println("몇 건씩 ? " + (int)pageObject.getPerPageNum());
-		query.limit((int)pageObject.getPerPageNum());
-
-
+		pageObject.setPerPageNum(8);
+		pageObject.setPerGroupPageNum(8);
+		pageObject.setTotalRow(reviews.size());		
+		long lastIdx = pageObject.getEndRow() < pageObject.getTotalRow() ? pageObject.getEndRow() : pageObject.getTotalRow();
+		reviews = reviews.subList((int)pageObject.getStartRow()-1, (int)lastIdx);
 		
 		//리뷰 가공
 		List<Like> likes = likeRepository.findByMemberId(member.getId());
