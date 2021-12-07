@@ -44,6 +44,7 @@ import com.kh.eatsMap.member.model.repository.FollowingRepository;
 import com.kh.eatsMap.member.model.repository.MemberRepository;
 import com.kh.eatsMap.member.model.repository.NoticeRepository;
 import com.kh.eatsMap.member.model.service.MemberService;
+import com.kh.eatsMap.myeats.model.repository.GroupRepository;
 import com.kh.eatsMap.timeline.model.dto.Review;
 import com.kh.eatsMap.timeline.model.service.TimelineService;
 
@@ -70,6 +71,8 @@ public class MemberRepositoryTest {
 	private TimelineService timelineService;
     @Autowired
     private MongoTemplate mongoTemplate;
+    @Autowired
+    private GroupRepository groupRepo;
     
     @Autowired 
 	WebApplicationContext context;
@@ -373,6 +376,11 @@ public class MemberRepositoryTest {
     	Member member = repository.findByNickname("잇츠잇츠");
     	memberService.findAllFollowerToMap(member);
 
+    }
+    
+    @Test
+    public void deleteAll() {
+    	groupRepo.deleteAll();
     }
     
 }

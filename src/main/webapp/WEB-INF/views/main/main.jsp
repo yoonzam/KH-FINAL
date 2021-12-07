@@ -7,22 +7,23 @@
 <html>
 <head>
 <%@ include file="/WEB-INF/views/include/head.jsp"%>
-<link rel="stylesheet" type="text/css" href="/resources/css/main/main.css" />
-<script defer type="text/javascript" src="/resources/js/main/main.js"></script>
-
-<!-- slick.js -->
-<link rel="stylesheet" type="text/css" href="http://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-<script type="text/javascript" src="http://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
-
 <!-- 화살표 아이콘 -->
 <link rel="stylesheet" href="http://cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
-
+<!-- slick.js -->
+<link rel="stylesheet" type="text/css" href="http://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
+<link rel="stylesheet" type="text/css" href="/resources/css/main/main.css" />
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="http://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+<script defer type="text/javascript" src="/resources/js/main/main.js"></script>
 <style type="text/css">
 
 i.eats-like.fas.fa-heart {
    color: #f15050;
 }
+.slick-slide{opacity:1; cursor: pointer; }
+.slick-slide .thum img, .slick-slide .thum1 img{transform:scale(1); transition-duration: 0.5s;}, 
+.slick-slide:hover .thum img{transform:scale(1.1);}
+.slick-slide:hover .thum1 img{transform:scale(1.1);} 
 </style>
 
 </head>
