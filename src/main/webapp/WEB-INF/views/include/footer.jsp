@@ -49,8 +49,7 @@
 	    messaging.getToken({vapidKey: 'BDaUhaUUutwgMI44dAQhkANJgRcgHHWWlEI05fvaQswJf5RmJrupDaTIiSGM1h9xxeaZcR13_lzGKZpTi07ahCs'})
 	    .then((currentToken) => {
 	      if (currentToken) {
-	    	  console.dir('token : ' + currentToken);
-	    	  //clientToken = currentToken;	//execute()실행시 담길 값
+	    	  //console.dir('token : ' + currentToken);
 	    	  fetch('http://localhost:9090/member/saveToken/' + currentToken)
 	    	  	.then(response => {
 	    	  		if(response.ok) console.dir('성공');
@@ -85,8 +84,7 @@
       // TODO(developer): Send the current token to your server.
       setTokenSentToServer(true);
     } else {
-      console.log('Token already sent to server so won\'t send it again ' +
-          'unless it changes');
+      console.log('Token already sent to server so won\'t send it again unless it changes');
     }
   }
 		  

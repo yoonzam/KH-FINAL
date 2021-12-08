@@ -27,7 +27,7 @@ function setLocation(obj){
 	    type: "json",
 	    data: obj,
 	    success: function(data) {
-			console.dir(data);
+			//console.dir(data);
 			let html = "";
 			for(i = 0; i < data.length; i++){
 				html += '<div class="eats-list" onclick="viewTimeline(\'' + data[i].reviewId + '\')">'

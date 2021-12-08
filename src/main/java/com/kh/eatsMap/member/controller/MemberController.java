@@ -280,7 +280,7 @@ public class MemberController {
 	@GetMapping("saveToken/{currentToken}")	
 	@ResponseBody
 	public void saveToken(@PathVariable String currentToken, @SessionAttribute("authentication") Member member) {
-		logger.debug("token받아오기 : " + currentToken);
+		//logger.debug("token받아오기 : " + currentToken);
 		member.setToken(currentToken);
 		memberService.saveMember(member);
 	}

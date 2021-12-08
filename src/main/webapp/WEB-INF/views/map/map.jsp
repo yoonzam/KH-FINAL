@@ -381,7 +381,6 @@
 				.then(response => response.json())
 				.then(json => {
 				// 받은 json으로 기능 구현
-				console.dir(json.documents[0]);
 				markerInfo = json.documents[0];
 				//음식점 이름, 주소 텍스트로 변환 
 				let placeName = json.documents[0].place_name;
@@ -461,12 +460,9 @@
 			        
 			        //데이타 중복 마커 처리
 			        let processingData = processingMarker(data,markerData);
-			        console.dir("확인");
-			        console.dir(processingData);
 			        if (processingData.length == 0) {
 						return;
 					}
-			        console.dir("확인");
 			        for (var i=0; i<processingData.length; i++) {
 			        	
 			            displayMarker(processingData[i]);    
@@ -553,18 +549,14 @@
 		let changeLangSelect = () => {
 			let check = document.getElementById("checkCategory");
 			if ('group' == check.options[check.selectedIndex].value) {
-				console.dir("3동작");
-				console.dir(check.options[check.selectedIndex].value);
 				document.querySelector('#friendList').style.display = "";
 			}else{
-				console.dir("2동작");
 				document.querySelector('#friendList').style.display = "none";
 			}
 		}
 		
 		//그룹창 리뷰 리스트 출력
 		let findGroupMember = (groupId) =>{
-			console.dir("클릭 확인");
 			fetch("/map/group?groupId=" + groupId)
 			  .then(response => {
 				  if(response.ok){	//통신 성공시
@@ -573,31 +565,21 @@
 					  throw new Error(response.status);
 				  }
 			  }).then(json => {	//promise객체의 json
-				console.dir("그룹 멤버리스트");
-				console.dir(json);
-				console.dir(json.memberList);
 				//optionAdd(json.memberList,groupId);
 				//groupFilterMap(groupId);
 				if (document.querySelector(".popup-wrap").style.display == "") {
 					document.querySelector(".popup-wrap").style.display = "none";
 				}
 				//맵에 그룹 마크 출력
-				console.dir("그룹 리뷰 잘 받아왔나?");
-				console.dir(json.groupReview);
 				if (!json.groupReview) {
-					console.dir("비었습니다.");
 					return alert("그룹 리뷰가 존재하지 않습니다.");
 				}else{
 					//그룹 리스트 출력
-					
 					
 					//원래 있는 지도에 마커 지우기
 					removeOverlay();
 					removeMarker();
 					//지도 위치 수정 및 마커 출력 //"http://t1.daumcdn.net/localimg/localimages/07/2012/img/marker_normal.png";
-					
-				
-
 					markerCreate(json.groupReview);
 				}
 						  
@@ -609,8 +591,6 @@
 		
 		let groupFilterMap = (groupId) => {
 			let filteredMap = myEetsReview.filter((data)=>{
-				console.dir(data.review);
-				console.dir(groupId);
 	        	if (data.review.group == groupId) {
 					return true;
 				}
@@ -640,10 +620,6 @@
 		
 		//map 초기 화면에 리뷰 리스트와 마커 뿌려주기
 		var myEetsReview = 	${reviews};	
-		console.dir("json잘 받아왔나?");
-		console.dir(myEetsReview);
-		console.dir("authentication");
-		console.dir(); 
 		
 		let changeMemberSelect = (groupId) => {
 			let check = document.getElementById("friendList");
@@ -668,7 +644,6 @@
 				return alert("내가 팔로워한 잇친이들이 없습니다.");
 			}
 		  	let filterdMap = filterFollowMap(myEetsMap,following);
-		  	console.dir(filterdMap);
 			markerCreate(filterdMap); 
 		}
 		
