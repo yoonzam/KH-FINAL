@@ -16,13 +16,10 @@ import com.kh.eatsMap.common.code.Config;
 @Controller
 public class FileHandler {
 	
-	Logger logger = LoggerFactory.getLogger(this.getClass());
-	
 	@GetMapping("download")
 	public ResponseEntity<UrlResource> downloadFile(Fileinfo file) throws MalformedURLException, UnsupportedEncodingException{
 		
 		UrlResource resource = new UrlResource(Config.DOMAIN.DESC+file.getDownloadURL());
-		logger.debug(file.getDownloadURL());
 		
 		String originFileName = URLEncoder.encode(file.getOriginFileName(), "UTF-8");
 		
