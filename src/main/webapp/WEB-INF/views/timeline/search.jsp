@@ -67,20 +67,18 @@
 	</section>
 <%@ include file="/WEB-INF/views/include/footer.jsp" %>
 <script>
-	$('.filter-menu label').removeClass('checked');
-	$('.filter-menu input:checkbox').prop('checked', false);
 	
 	//페이징
 	let timelinePageCnt = 1;
 	document.addEventListener('scroll', function() {
 	    if((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
 	    	let area = '${area}'.split('&area_=');
-	    	let category = '${category}'.split('&category_=');
-	    	let hashtag = '${hashtag}'.split('&hashtag_=');
+	       	let category = '${category}'.split('&category_=');
+	       	let hashtag = '${hashtag}'.split('&hashtag_=');
 	    	$.ajax({
 				type: 'POST',
 				url: '/timeline/search',
-				data: { page:timelinePageCnt+1, area:area.join(','), category:category.join(','), hashtag:hashtag.join(','), keyword:'${keyword}' },
+				data: { page:timelinePageCnt+1, area_:area.join(','), category_:category.join(','), hashtag_:hashtag.join(','), keyword:'${keyword}' },
 				dataType: 'json',
 			 	cache:false,
 				success: (data) => {

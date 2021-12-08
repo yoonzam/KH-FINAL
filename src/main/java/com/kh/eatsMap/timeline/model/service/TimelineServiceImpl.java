@@ -13,7 +13,6 @@ import org.springframework.data.mongodb.core.geo.GeoJsonPoint;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.Model;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.kh.eatsMap.common.code.ErrorCode;
@@ -338,7 +337,8 @@ public class TimelineServiceImpl implements TimelineService{
 		
 		long firstIdx = (pageObject.getPage()-1) * pageObject.getPerPageNum();
 		if(firstIdx > reviews.size()) return null;
-		long lastIdx = (firstIdx*8 == 0 ? 8 : reviews.size() < firstIdx*8 ? reviews.size() : firstIdx*8);
+		long lastIdx = firstIdx+8;
+		if(lastIdx > reviews.size()) lastIdx = reviews.size();
 		reviews = reviews.subList((int) firstIdx, (int) lastIdx);
 		
 		//리뷰 가공

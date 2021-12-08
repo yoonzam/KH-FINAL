@@ -1,6 +1,5 @@
 package com.kh.eatsMap.timeline.controller;
 
-import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -162,7 +161,30 @@ String keyword = keyword_ == null ? "" : keyword_;
 	
 	@PostMapping("search")
 	@ResponseBody
-	public List<HashMap<String, Object>> searchForPaging(@RequestParam(value = "keyword") String keyword, String[] area, String[] category, String[] hashtag, int page, @SessionAttribute("authentication") Member member) {
+	public List<HashMap<String, Object>> searchForPaging(@RequestParam(value = "keyword") String keyword, String[] area_, String[] category_, String[] hashtag_, int page, @SessionAttribute("authentication") Member member) {
+		
+		String[] area = new String[0];
+		if(area_.length > 0) {
+			area = new String[area_.length-1];
+			for (int i = 1; i < area_.length; i++) {
+				area[i-1] = area_[i];
+			}	
+		}
+		String[] category = new String[0];
+		if(category_.length > 0) {
+			category = new String[category_.length-1];
+			for (int i = 1; i < category_.length; i++) {
+				category[i-1] = category_[i];
+			}
+		}
+		String[] hashtag = new String[0];
+		if(hashtag_.length > 0) {
+			hashtag = new String[hashtag_.length-1];
+			for (int i = 1; i < hashtag_.length; i++) {
+				hashtag[i-1] = hashtag_[i];
+			}	
+		}
+		
 		PageObject pageObject = new PageObject(page, 8);
 		return timelineService.searchReviewForPaging(pageObject, keyword, area, category, hashtag, member);
 	}
