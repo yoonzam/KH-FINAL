@@ -214,7 +214,7 @@ public class IndexServiceImpl implements IndexService{
 		
 		//내 반경 5키로 미터 이내의 공개된 모든 식당 리뷰 조회
 		List<Review> locationReviewList_ = 
-				reviewRepository.findByPrivacyAndLocationNear(0, member.getLocation(), new Distance(50, Metrics.KILOMETERS));
+				reviewRepository.findByPrivacyAndLocationNear(0, member.getLocation(), new Distance(10, Metrics.KILOMETERS));
 
 		List<Review> locationReviewList = new ArrayList<Review>();
 				
