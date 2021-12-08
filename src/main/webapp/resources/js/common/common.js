@@ -90,12 +90,16 @@ let uploadReview = (reviewId) => {
 		url: '/timeline/group',
 		dataType: 'json',
 		success: (data) => {
+			$('.upload-group .group-box').html();
+			
 			groupInfo = data;
-			html = '';
+			html  = '<select name="group">';
+			html += ' <option value="my"> 내 피드 </option>';
 			for(var i = 0; i < data.length; i++){
 				html += '<option value="' + data[i].id + '"> '+ data[i].name +' </option>';
 			}
-			$('.upload-group select[name="group"]').append(html);
+			html += '</select>';
+			$('.upload-group .group-box').html(html);
 		},
 		error: function (e) {
 			alert('에러발생');
@@ -126,6 +130,8 @@ let uploadReview = (reviewId) => {
 	$('#pop-review-form select[name="privacy"]').val('0').prop("selected", true);
 	$('#pop-review-form select[name="privacy"]').attr('disabled',false);
 	$('#pop-review-form').fadeIn(200);
+	$('.review-upload label').css('background-color','');
+	$('.review-upload label').css('color','');
 	
 	let options = { center: new kakao.maps.LatLng(37.55317, 126.97279), level: 8 };
 	let map = new kakao.maps.Map(document.getElementById('uploadMap'), options);
@@ -264,12 +270,21 @@ let uploadReview = (reviewId) => {
 	    label.classList.add('checked');
 	});
 	$('.review-upload input:checkbox').click((e)=>{
-	    let label = e.target.parentNode;
-	    if(label.className == 'checked') {
+		let target = e.target;
+	    if(e.target.checked){
+			e.target.parentNode.style.backgroundColor='var(--main-color)';
+			e.target.parentNode.style.color='#fff';
+			console.log("체크되어있었듬");
+		} else {
+			e.target.parentNode.style.backgroundColor='#e7e2df';
+			e.target.parentNode.style.color='#666';
+			console.log("체크안되어있었듬");
+		}
+	    /*if(label.className == 'checked') {
 			label.classList.remove('checked');
 		} else{
 			label.classList.add('checked');
-		}
+		}*/
 	});
 	
 	//별점&리뷰
