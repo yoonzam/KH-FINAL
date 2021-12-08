@@ -90,16 +90,14 @@ let uploadReview = (reviewId) => {
 		url: '/timeline/group',
 		dataType: 'json',
 		success: (data) => {
-			$('.upload-group .group-box').html();
+			$('.upload-group .group-box select').html();
 			
 			groupInfo = data;
-			html  = '<select name="group">';
-			html += ' <option value="my"> 내 피드 </option>';
+			html = ' <option value="my"> 내 피드 </option>';
 			for(var i = 0; i < data.length; i++){
 				html += '<option value="' + data[i].id + '"> '+ data[i].name +' </option>';
 			}
-			html += '</select>';
-			$('.upload-group .group-box').html(html);
+			$('.upload-group .group-box select').html(html);
 		},
 		error: function (e) {
 			alert('에러발생');
@@ -270,21 +268,13 @@ let uploadReview = (reviewId) => {
 	    label.classList.add('checked');
 	});
 	$('.review-upload input:checkbox').click((e)=>{
-		let target = e.target;
 	    if(e.target.checked){
 			e.target.parentNode.style.backgroundColor='var(--main-color)';
 			e.target.parentNode.style.color='#fff';
-			console.log("체크되어있었듬");
 		} else {
 			e.target.parentNode.style.backgroundColor='#e7e2df';
 			e.target.parentNode.style.color='#666';
-			console.log("체크안되어있었듬");
 		}
-	    /*if(label.className == 'checked') {
-			label.classList.remove('checked');
-		} else{
-			label.classList.add('checked');
-		}*/
 	});
 	
 	//별점&리뷰
@@ -338,9 +328,11 @@ let uploadReview = (reviewId) => {
 	//그룹&공개범위
 	$('#pop-review-form select[name="group"]').on('change',function(e){
 		if(e.target.value != "my"){
+			console.log(1);
 			$('#pop-review-form select[name="privacy"]').prop('disabled',true);
 			$('#pop-review-form select[name="privacy"]').val('0').prop("selected", true);
 		} else{
+			console.log(2);
 			$('#pop-review-form select[name="privacy"]').prop('disabled',false);
 		}
 	});

@@ -115,7 +115,7 @@ body::-webkit-scrollbar {
 	font-size: 18px;
 }
 
-select option {
+.search-option select option {
 	background: #fa8633;
 	color: #fff;
 	padding: 3px 0;
