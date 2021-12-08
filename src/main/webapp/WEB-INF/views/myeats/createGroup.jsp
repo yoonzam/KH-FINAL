@@ -109,9 +109,8 @@ $("#inviteButton").click(function(){
         }  
     });  
 });  
-
 function addList()  {
-		
+
 	let select = document.querySelector('#invited-select');
 	const text = select.options[select.selectedIndex].text;
 	const addValue = select.options[select.selectedIndex].value;
@@ -132,7 +131,6 @@ function addList()  {
 	document.getElementById('nickNames').appendChild(li);
 	document.getElementById('nickNames').appendChild(input);
 }
-	
 	
 function removeItem()  {
 	  

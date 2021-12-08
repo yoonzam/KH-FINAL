@@ -2,6 +2,7 @@
 let viewFollowing = (memberId) => {
 	
 	$('.wrap-list-following').empty();
+	$('.wrap-list-follower').empty();
 
 	let data = {id : memberId};
 	let header = new Headers();
@@ -44,7 +45,7 @@ let viewFollowing = (memberId) => {
 };
 
 let viewFollower = (memberId) => {
-	
+	$('.wrap-list-following').empty();
 	$('.wrap-list-follower').empty();
 
 	let data = {id : memberId};
@@ -76,7 +77,6 @@ let viewFollower = (memberId) => {
 		}
 		
 		if(followerInfo.length > 0){
-			
 			//서로 잇친 x
 			for (var i = 0; i < followDiffId.length; i++) {	
 				let list = document.createElement('li');
@@ -142,9 +142,8 @@ let viewFollower = (memberId) => {
 				$('#' + followDiffId[i].memberId ).append($(aBtn));
 				$('#' + followDiffId[i].memberId + ' a:nth-child(2)').attr('onclick', "popfollow('"+ followDiffId[i].memberId +"')");	
 			}
+			document.querySelector('#follower-pop').style.display = 'flex';
 		}
-		document.querySelector('#follower-pop').style.display = 'flex';
-	
 	}).catch((error) => {
 		  console.error('Error', error);
 	});	
