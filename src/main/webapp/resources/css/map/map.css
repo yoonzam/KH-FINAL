@@ -20,6 +20,7 @@
 	display: flex;
 	justify-content: space-between;
 	height: 100%;
+	padding:10px;
 }
 
 .map-review {
@@ -27,42 +28,55 @@
 	grid-row: 2/18;
 	display: flex;
 	flex-direction: column;
-	overflow: scroll;
+	overflow: auto;
 	z-index: 3;
-	padding-left: 10px;
 	z-index: 3;
 	background-color: #fff;
 	overflow-x: hidden;
 }
 
 .map-review::-webkit-scrollbar {
-	/* display: none; */
+	width: 10px;
+}
+.map-review::-webkit-scrollbar-thumb {
+	background-color: #ddd;
+	border-radius: 10px;
+	background-clip: padding-box;
+    border: 2px solid transparent;
+}
+.map-review::-webkit-scrollbar-track {
+	background-color: white;
 }
 
 body::-webkit-scrollbar {
 	display: none;
 	
 }
-
+.search-option{
+	display:flex;
+	align-items:center;
+}
 .eatsMap {
 	grid-column: 1/5;
 	grid-row: 2/18;
 }
 
+.search-form label{
+	width:60%;
+}
 .search-form input {
-	width: 80%;
-	padding: 20px 40px 20px 20px;
-	font-size: 18px;
-	border: none;
+	border:1px solid #ddd;
+	border-radius:5px;
+	width: 100%;
+	padding: 13px;
 }
 
 .search-form .search-btn {
-	top: 9px;
-	left: 9px;
-	width: 120px;
+	margin-left:5px;
+	border-radius:5px;
 	border: 1px solid #ddd;
 	background-color: #fff;
-	padding: 10px;
+	padding: 13px 20px;
 	text-align: center;
 	cursor: pointer;
 	color: #fa8633;
@@ -85,8 +99,8 @@ body::-webkit-scrollbar {
 
 .search-box {
 	width: 30%;
-	margin-left: 10px;
-	margin-top: 3px;
+	display:flex;
+	align-items:center;
 }
 
 .select {
@@ -95,10 +109,10 @@ body::-webkit-scrollbar {
 	background: transparent;
 	border: 0 none;
 	outline: 0 none;
-	padding: 0 5px;
+	padding: 13px;
 	position: relative;
 	z-index: 3; /*  select가 위로 올라와야 함 */
-	font-size: 20px;
+	font-size: 18px;
 }
 
 select option {
@@ -109,41 +123,35 @@ select option {
 }
 
 .select-bar {
-	align-self: center;
-	border: dashed;
-	margin-right: 10px;
-	border-color: #ff7f50;
+	margin-left: 5px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    background-color: #fff;
+    text-align: center;
 }
 
 .review_wrap {
-	margin-bottom: 10px;
-	margin-top: 10px;
-	width: 98%;
-	height: 25%;
 	display: flex;
-	border-radius: 8px;
-	border: 1px;
-	background-color: white;
-	box-shadow: 2px 2px 4px rgb(0 0 0/ 30%);
+	border-bottom:1px solid #ddd;
+	cursor:pointer;
 }
 
 .img-box {
-	width: 45%;
-	height: 100%;
-	margin-right: 10px;
+	width: 9vw;
+	height:9vw;
 }
 
 .image-thumbnail {
 	width: 100%;
 	height: 100%;
 	object-fit: cover;
-	border-radius: 8px 0px 0px 8px;
 }
 
 .eats-tag span {
 	display: inline-block;
 	background-color: #e7e2df;
 	border-radius: 5px;
+	font-size:15px;
 	padding: 3px;
 	margin-bottom: 3px;
 	margin-right: 3px;
@@ -167,12 +175,13 @@ select option {
 }
 
 .info {
-	width: 55%;
-	margin-left: 10px;
+	width: 63%;
+	padding:10px 20px 20px 20px;
 }
 
 .eats-location {
 	margin-bottom: 10px;
+	font-size:16px;
 }
 
 #map {
@@ -190,7 +199,7 @@ select option {
 }
 
 .popup-wrap {
-	width: 65%;
+	width: 50%;
 	height: 100%;
 	background-color: white;
 	border-radius: 8px;
