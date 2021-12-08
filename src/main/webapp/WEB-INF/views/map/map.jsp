@@ -31,10 +31,10 @@
 
 .rest-info {
 	padding: 20px 0;
-	flex: 6;
+	flex: 5;
 	display: flex;
 	flex-direction: column;
-	justify-content: space-around;
+	justify-content: center;
 }
 
 .rest-title {
@@ -105,9 +105,6 @@
     height: 100%;
     object-fit: cover;
 }
-.search-option{
-	align-self: center;
-}
 .noSearch{
 	width: 100%;
 	align-self: center;
@@ -161,22 +158,23 @@
 					<div class="search-option">
 						<a id="search" class="search-btn" onclick="myEatsMap()">마이잇츠맵</a>
 						<a id="search" class="search-btn" onclick="myFollowMap()">소셜맵</a>
-					</div>
-					<div class="select-bar">
-						
-						<select id="friendList" name="friends" class="select"
-							style="display: none;" onchange="changeMemberSelect('${groupId.id}')">
-							<option disabled selected>🍟잇친이들의 맛집</option>
-							<c:forEach items="${groups}" var="groups">
-								<option value="${groups.id}">${groups.groupName}</option>
-							</c:forEach>
-						</select> 
-						<select name="category" class="select"
-							onchange="changeLangSelect()" id="checkCategory">
-							<option selected="selected">🎈잇츠맵카테고리</option>
-							<option value="group">니캉내캉</option>
+					
+						<div class="select-bar">
 							
-						</select>
+							<select id="friendList" name="friends" class="select"
+								style="display: none;" onchange="changeMemberSelect('${groupId.id}')">
+								<option disabled selected>🍟잇친이들의 맛집</option>
+								<c:forEach items="${groups}" var="groups">
+									<option value="${groups.id}">${groups.groupName}</option>
+								</c:forEach>
+							</select> 
+							<select name="category" class="select"
+								onchange="changeLangSelect()" id="checkCategory">
+								<option selected="selected">🎈잇츠맵카테고리</option>
+								<option value="group">니캉내캉</option>
+								
+							</select>
+						</div>
 					</div>
 				</div>
 			</div>
