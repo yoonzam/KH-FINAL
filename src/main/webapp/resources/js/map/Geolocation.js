@@ -10,7 +10,7 @@
       	 
 
       	let filterd = myEetsMap.filter((review)=>{
-				if(1.5 > getDistanceFromLatLonInKm(lat,lng,review.review.location.y,review.review.location.x)){
+				if(5 > getDistanceFromLatLonInKm(lat,lng,review.review.location.y,review.review.location.x)){
 					return true;
 				}
 				return false;
