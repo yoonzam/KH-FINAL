@@ -132,7 +132,7 @@ let viewFollower = (memberId) => {
 				aBtn.className = 'btn-pop unfollow';
 				aBtn.innerHTML = '잇친 끊기';
 				$('#' + followEachOther[i].memberId ).append($(aBtn));
-				$('#' + followEachOther[i].memberId + ' a:nth-child(2)').attr('onclick', "popUnfollow('"+ followEachOther[i].memberId +"')");
+				$('#' + followEachOther[i].memberId + ' a:nth-child(2)').attr('onclick', "followerPopUnfollow('"+ followEachOther[i].memberId +"')");
 			}
 
 			for (var i = 0; i < followDiffId.length; i++) {
@@ -149,6 +149,24 @@ let viewFollower = (memberId) => {
 	});	
 	
 	
+}
+
+let followerPopUnfollow = (followingId) => {
+	$.ajax({
+		type: 'POST',
+		url: '/member/follow-cancel',
+		data: JSON.stringify({ followingId : followingId }),
+		contentType: 'application/json',
+	 	cache:false,
+		success: (memberId) => {
+			$('#' + memberId + ' a:nth-child(2)').attr('onclick', "popfollow('"+ memberId +"')");	
+			$('#' + memberId + ' a:nth-child(2)').attr('class', 'btn-pop follow');	
+			$('#' + memberId + ' a:nth-child(2)').text('잇친 맺기');
+		},
+		error: (e) => {
+			console.error("Error" , e);
+		}
+	});
 }
 
 
