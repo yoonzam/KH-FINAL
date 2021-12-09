@@ -3,10 +3,10 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.kh</groupId>
-	<artifactId>eatsMap</artifactId>
-	<name>com.kh.eatsMap</name>
+	<artifactId>eatsmap</artifactId>
+	<name>com.kh.eatsmap</name>
 	<packaging>war</packaging>
-	<version>1.0.0-BUILD-SNAPSHOT</version>
+	<version>1.0</version>
 	
 	<dependencyManagement>
 	  <dependencies>
