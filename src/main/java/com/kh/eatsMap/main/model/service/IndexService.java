@@ -1,4 +1,4 @@
-package com.kh.eatsMap.index.model.service;
+package com.kh.eatsMap.main.model.service;
 
 import java.util.HashMap;
 import java.util.List;

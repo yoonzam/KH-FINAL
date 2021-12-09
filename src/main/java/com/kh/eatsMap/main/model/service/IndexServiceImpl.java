@@ -1,4 +1,4 @@
-package com.kh.eatsMap.index.model.service;
+package com.kh.eatsMap.main.model.service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,11 +24,11 @@ import org.springframework.stereotype.Service;
 
 import com.kh.eatsMap.common.util.Fileinfo;
 import com.kh.eatsMap.common.util.PageObject;
-import com.kh.eatsMap.index.model.repository.IndexFileRepository;
-import com.kh.eatsMap.index.model.repository.IndexFollowRepository;
-import com.kh.eatsMap.index.model.repository.IndexLikeRepository;
-import com.kh.eatsMap.index.model.repository.IndexRepository;
-import com.kh.eatsMap.index.model.repository.ReviewRepository;
+import com.kh.eatsMap.main.model.repository.IndexFileRepository;
+import com.kh.eatsMap.main.model.repository.IndexFollowRepository;
+import com.kh.eatsMap.main.model.repository.IndexLikeRepository;
+import com.kh.eatsMap.main.model.repository.IndexRepository;
+import com.kh.eatsMap.main.model.repository.ReviewRepository;
 import com.kh.eatsMap.member.model.dto.Follow;
 import com.kh.eatsMap.member.model.dto.Member;
 import com.kh.eatsMap.myeats.model.dto.Like;

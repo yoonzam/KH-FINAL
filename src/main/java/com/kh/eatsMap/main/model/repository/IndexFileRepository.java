@@ -1,4 +1,4 @@
-package com.kh.eatsMap.index.model.repository;
+package com.kh.eatsMap.main.model.repository;
 
 import java.util.List;
 

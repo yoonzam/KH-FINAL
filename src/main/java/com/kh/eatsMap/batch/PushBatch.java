@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 
 import com.kh.eatsMap.calendar.model.repository.CalendarRepository;
 import com.kh.eatsMap.firebase.PushMessaging;
-import com.kh.eatsMap.index.model.repository.ReviewRepository;
+import com.kh.eatsMap.main.model.repository.ReviewRepository;
 import com.kh.eatsMap.member.model.dto.Member;
 import com.kh.eatsMap.member.model.dto.Notice;
 import com.kh.eatsMap.member.model.repository.MemberRepository;
