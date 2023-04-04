@@ -56,7 +56,7 @@ public class CalendarController {
 		int noticeCnt = notice.getCalendarNotice() + notice.getGroupNotice() + notice.getParticipantNotice() + notice.getFollowNotice();
 		session.setAttribute("notice", notice);
 		session.setAttribute("noticeCnt", noticeCnt);
-		
+		logger.info("test");
 		return "calendar/calendar";
 	}
 	
